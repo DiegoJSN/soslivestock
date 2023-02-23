@@ -641,6 +641,7 @@ to become-steer
   set coefB 0
   set pregnancy-time 0
   set lactating-time 0
+
 end
 
 to become-cow
@@ -699,6 +700,8 @@ to-report grass-height-report ; To report the mean grass-height of the herbage
   report mean [grass-height] of patches
 end
 
+ ;;; AÑADIDO POR DIEGO: el código que está escrito a partir de esta línea (hasta el ;;;) son incorporaciones nuevas hechas por Diego
+
 to-report season-report ; To show the name of the season
     report  item current-season current-season-name
 end
@@ -707,9 +710,14 @@ end
   report DM-cm-ha * sum [grass-height] of patches
 end
 
+
+
+
 to-report ALWG ; ALWG (Annual Live Weight Gain, kg/year/ha), o WGH (Weight Gain per Hectare, kg/ha)
   report (sum [live-weight] of cows - sum [initial-weight] of cows) / count patches
 end
+
+
 
 to-report ILWG ; ILWG (Inidividual Live Weight Gain, kg/animal/day)
   report mean [live-weight-gain] of cows
@@ -723,6 +731,8 @@ to-report ILWG_YEAR
   report mean [live-weight-gain-historyXticks-year] of cows; Average LWG YEAR
 end
 
+
+
 to-report crop-efficiency ; Reporter to output the crop eficiency (DM consumed / DM offered)
   report sum [DDMC] of cows / (DM-cm-ha * sum [grass-height] of patches) * 100
   ;report sum [DDMC] of cows / ((DM-cm-ha * DM-available-for-cattle ) * sum [grass-height] of patches) * 100
@@ -735,6 +745,14 @@ to-report crop-efficiency ; Reporter to output the crop eficiency (DM consumed /
   ;let totDDMC DM-cm-ha * sum [GH-consumed] of patches ; El "DM consumed" se puede calcular de otra manera: sumamos los cm de hierba que han perdido los patches como consecuencia de la alimentación de los animales. Como GH-consumed está en cm, lo multiplicamos por el DM-cm-ha para obtener la DM consumed (que se expresa en Kg/ha)
   ;report totDDMC / (DM-cm-ha * sum [grass-height] of patches)
  end
+
+
+to-report bcs ; Reporter to output the Body Condition Score: The body condition score is calculated as a linear regression of LW, where the survival LW of the LU is 220 Kg, and each point of BCS represents 40 Kg of LW. Thus, BCS = (live weight – 220) / 40
+  ;report (mean [live-weight] of cows - 220) / 40
+  ;report (mean [live-weight] of cows - mean [min-weight] of cows) / 40
+  report (mean [live-weight] of cows with [cow?] - mean [min-weight] of cows with [cow?]) / 40
+end
+
 
 
 
