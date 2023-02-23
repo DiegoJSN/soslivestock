@@ -1,30 +1,59 @@
-;***********************************************************************
-; ADAPTATION OF SEQUIA-BASALTO MODEL TO NETLOGO
-;***********************************************************************
-; The original model was built in CORMAS, for more information about the original model see Dieguez-Cameroni et al. (2012, 2014).
-; Some aspects of the model related with the growth of livestock and the transition through different age classes are based on Robins et al. (2015).
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;; REPLICATION OF SEQUIA-BASALTO MODEL IN NETLOGO ;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; The original model was built in CORMAS, for more information about the original model see Dieguez-Cameroni et al. (2012, 2014)
+;; Some aspects of the model related with the growth of livestock and the transition through different age classes are based on Robins et al. (2015).
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Declaration of agents and variables
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 globals [ ;  It defines new global variables. Global variables are "global" because they are accessible by all agents and can be used anywhere in a model. Most often, globals is used to define variables or constants that need to be used in many parts of the program.
 
 ;Climate related global variables
-
- climacoef ; External data, It relates the primary production in a season with the average for that season due to climate variations
+  climacoef ; External data, It relates the primary production in a season with the average for that season due to climate variations
            ;;;;;;;;;;;;; AGENTS AFFECTED: patches; PROPERTY OF THE AGENT AFFECTED: grass-height (climaCoef variable)
- current-season ; Initial-season (slider) ;Variable to define the season in which the simulation begins, it should take the values: 0 = winter, 1 = spring, 2 = summer, 3 = fall.
- current-season-name ; this variable just converts the numbers "0, 1, 2, 3" of the seasons to text "winter, spring, summer, fall", and this variable ONLY is used in the reporter/procedure "to-report season-report"
- season-coef ;It affects the live weight gain in relation with the grass quality according to the season, winter = 1; spring = 1.15, summer = 1.05, fall = 1.
+  current-season ; Initial-season (slider) ;Variable to define the season in which the simulation begins, it should take the values: 0 = winter, 1 = spring, 2 = summer, 3 = fall.
+  current-season-name ; this variable just converts the numbers "0, 1, 2, 3" of the seasons to text "winter, spring, summer, fall", and this variable ONLY is used in the reporter/procedure "to-report season-report"
+  season-coef ;It affects the live weight gain in relation with the grass quality according to the season, winter = 1; spring = 1.15, summer = 1.05, fall = 1.
              ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: live-weight-gain (seasonCoef variable)
 
 ;Time related global variables
+  days-per-tick ; variable to simulate time.
+  number-of-season ; to keep track of the number of seasons in 10 years of simulation (10 years = 3680 days = 40 seasons).
+  simulation-time ; variable to keep track of the days of the simulation.
+  season-days ; variable to keep track of the years that has passed since the start of the station (values from 1 to 92)
+  year-days ; variable to keep track of the days that has passed since the start of a year (values from 1 to 368)
 
- days-per-tick ; variable to simulate time.
- number-of-season ; to keep track of the number of seasons in 10 years of simulation (10 years = 3680 days = 40 seasons).
- simulation-time ; variable to keep track of the days of the simulation.
- season-days ; variable to keep track of the years that has passed since the start of the station (values from 1 to 92)
- year-days ; variable to keep track of the days that has passed since the start of a year (values from 1 to 368)
+
+;Grass related global variables
+  kmax  ;Paramater: maximum carrying capacity (maximum grass height), it varies according to the season, winter= 7.4 cm, spring= 22.2 cm, summer= 15.6 cm, fall= 11.1 cm
+       ;;;;;;;;;;;;; AGENTS AFFECTED: patches; PROPERTY OF THE AGENT AFFECTED: grass-height (K variable)
+  DM-cm-ha ;Parameter used to calculate the grass-height consumed from the dry matter consumed = 180 Kg of DM/cm/ha
+         ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: ddmc
+  grass-energy ;Parameter: metabolizable energy per Kg of dry matter = 1.8 Mcal/Kg of DM
+         ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: ddmc (grass-energy variable)
+
+
+;Livestock related global variables
+
+  maxLWG ;Parameter (mi) that defines the maximum live weight gain per animal according to the season. Spring= 60 Kg/animal; Winter, Summer and Fall= 40 Kg/animal.
+        ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: live-weight-gain (mi variable = maxLWG)
+  ni ;Parameter used to define the live weight gain per animal (it's a constant: 0.24 1/cm).
+    ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: live-weight-gain (ni variable)
+  xi ;Parameter used to define the live weight gain per animal (it's a constant: 132 kg/animal).
+    ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: live-weight-gain (xi variable)
+  weaned-calf-age-min ; 246 days (8 months (245 days) + 1 day) ; Esta global variable determina el comienzo de la etapa "weaned-calf" del ciclo de vida de livestock (es decir, cuando el turtle alcanza los 246 días de edad, pasa a la age class de "weaned-calf")
+  heifer-age-min ; 369 days (1 year (368 days) + 1 day) ; Esta global variable determina el comienzo de la etapa "heifer/steer" (heifer = hembra; steer = macho) del ciclo de vida de livestock (es decir, cuando el turtle alcanza los 368 días de edad, pasa a la age class de "heifer/steer": el turtle tiene un 50% de probabilidades de convertirse en uno u otro)
+  cow-age-min ; 737 (2 years (736 days) + 1 day) ; Esta global variable determina el comienzo de la etapa "cow" del ciclo de vida de livestock (es decir, cuando el turtle alcanza los 737 días de edad, pasa a la age class de "cow")
+  cow-age-max ; 5520 days (15 years) ; Esta global variable determina la esperanza de vida de las vacas (es decir, cuando el turtle alcanza los 5520 días, muere)
+  gestation-period ; 276 days (9 months) ; Determines the gestation period of pregnant cows ; Esta global variable determina el FINAL de la etapa "pregnant" del ciclo de vida de livestock (es decir, cuando el agente de la age class "pregnant" alcanza los 276 días, pasa a la age class de "cow-with-calf")
+  lactation-period ; 184 days (6 months) ; Determines the lactating period of cows with calves ; Esta global variable determina el FINAL de la etapa "cow-with-calf" del ciclo de vida de livestock (es decir, cuando el agente de la age class "cow-with-calf" alcanza los 184 días, pasa a la age class de "cow")
+  weight-gain-lactation ; 0.61 Kg / day. The born calves do not depend on grasslands. We assume that born calves increase their live weight by 0.61 Kg/day. After 6 months, they should reach 150 Kg (the initial weight for weaned calves).
+
 
 ;Market prices & economic balance related global variables
-
   exploitation-costs ; External data, regular costs for maintaining the plot ($/ha).
   grazing-prices ; External data, costs for renting an external plot ($/head/season sent it to the external plot).
   supplement-prices ; External data, costs for feeding the animals with food supplements (grains, $/head/season).
@@ -40,34 +69,7 @@ globals [ ;  It defines new global variables. Global variables are "global" beca
   exploitation-net-incomes
   exploitation-balance
   initial-balance
-
-
-;Grass related global variables
-
- kmax  ;Paramater: maximum carrying capacity (maximum grass height), it varies according to the season, winter= 7.4 cm, spring= 22.2 cm, summer= 15.6 cm, fall= 11.1 cm
-       ;;;;;;;;;;;;; AGENTS AFFECTED: patches; PROPERTY OF THE AGENT AFFECTED: grass-height (K variable)
- DM-cm-ha ;Parameter used to calculate the grass-height consumed from the dry matter consumed = 180 Kg of DM/cm/ha
-         ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: ddmc
- grass-energy ;Parameter: metabolizable energy per Kg of dry matter = 1.8 Mcal/Kg of DM
-         ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: ddmc (grass-energy variable)
-
-
-;Livestock related global variables
-
- maxLWG ;Parameter (mi) that defines the maximum live weight gain per animal according to the season. Spring= 60 Kg/animal; Winter, Summer and Fall= 40 Kg/animal.
-        ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: live-weight-gain (mi variable = maxLWG)
- ni ;Parameter used to define the live weight gain per animal (it's a constant: 0.24 1/cm).
-    ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: live-weight-gain (ni variable)
- xi ;Parameter used to define the live weight gain per animal (it's a constant: 132 kg/animal).
-    ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: live-weight-gain (xi variable)
- weaned-calf-age-min ; 246 days (8 months (245 days) + 1 day) ; Esta global variable determina el comienzo de la etapa "weaned-calf" del ciclo de vida de livestock (es decir, cuando el turtle alcanza los 246 días de edad, pasa a la age class de "weaned-calf")
- heifer-age-min ; 369 days (1 year (368 days) + 1 day) ; Esta global variable determina el comienzo de la etapa "heifer/steer" (heifer = hembra; steer = macho) del ciclo de vida de livestock (es decir, cuando el turtle alcanza los 368 días de edad, pasa a la age class de "heifer/steer": el turtle tiene un 50% de probabilidades de convertirse en uno u otro)
- cow-age-min ; 737 (2 years (736 days) + 1 day) ; Esta global variable determina el comienzo de la etapa "cow" del ciclo de vida de livestock (es decir, cuando el turtle alcanza los 737 días de edad, pasa a la age class de "cow")
- cow-age-max ; 5520 days (15 years) ; Esta global variable determina la esperanza de vida de las vacas (es decir, cuando el turtle alcanza los 5520 días, muere)
- gestation-period ; 276 days (9 months) ; Determines the gestation period of pregnant cows ; Esta global variable determina el FINAL de la etapa "pregnant" del ciclo de vida de livestock (es decir, cuando el agente de la age class "pregnant" alcanza los 276 días, pasa a la age class de "cow-with-calf")
- lactation-period ; 184 days (6 months) ; Determines the lactating period of cows with calves ; Esta global variable determina el FINAL de la etapa "cow-with-calf" del ciclo de vida de livestock (es decir, cuando el agente de la age class "cow-with-calf" alcanza los 184 días, pasa a la age class de "cow")
- weight-gain-lactation ; 0.61 Kg / day. The born calves do not depend on grasslands. We assume that born calves increase their live weight by 0.61 Kg/day. After 6 months, they should reach 150 Kg (the initial weight for weaned calves).
-]
+  ]
 
 breed [cows cow] ;We consider cows as the unique type of livestock (***future-step: to include sheep or goats as other types of livestock, and producers as decision makers).
 
@@ -81,7 +83,6 @@ patches-own [ ; This keyword, like the globals, breed, <breed>-own, and turtles-
   GH-consumed ; grass-height consumed from the total consumption of dry matter
 
   DM-kg-ha
-
    ]
 
 cows-own [ ; The turtles-own keyword, like the globals, breed, <breeds>-own, and patches-own keywords, can only be used at the beginning of a program, before any function definitions. It defines the variables belonging to each turtle. If you specify a breed instead of "turtles", only turtles of that breed have the listed variables. (More than one turtle breed may list the same variable.)
@@ -111,6 +112,8 @@ cows-own [ ; The turtles-own keyword, like the globals, breed, <breeds>-own, and
   DDMC ;Daily dry matter consumption, variable that defines the individual grass consumption (depends on LWG). *Note: 1 cm of grass/ha/92 days = 180 Kg of dry matter (Units: Kg/animal/day).
        ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: ddmc
 
+  DM-kg-cow
+
   metabolic-body-size ;metabolic body size (MBS) = LW^(3/4)
                       ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: ddmc (LW^(3/4) = MBS variable)
   mortality-rate
@@ -124,9 +127,6 @@ cows-own [ ; The turtles-own keyword, like the globals, breed, <breeds>-own, and
         ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: pregnancy-rate (coefB variable)
   pregnancy-time ; variable to determine gestation-period.
   lactating-time ; variable to determine lactating-period.
-
-  DM-kg-cow
-
   ]
 
 
