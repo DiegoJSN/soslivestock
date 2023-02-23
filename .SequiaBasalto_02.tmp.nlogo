@@ -1,59 +1,47 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;; REPLICATION OF SEQUIA-BASALTO MODEL IN NETLOGO ;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;; REPLICATION OF SEQUIA-BASALTO MODEL IN NETLOGO ;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; The original model was built in CORMAS, for more information about the original model see Dieguez-Cameroni et al. (2012, 2014)
 ;; Some aspects of the model related with the growth of livestock and the transition through different age classes are based on Robins et al. (2015).
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Declaration of agents and variables
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-globals [ ;  It defines new global variables. Global variables are "global" because they are accessible by all agents and can be used anywhere in a model. Most often, globals is used to define variables or constants that need to be used in many parts of the program.
+globals [
+;; Climate related global variables
+  climacoef                                                             ;; relates the primary production in a season with the average for that season due to climate variations
+  current-season                                                        ;; define the season in which the simulation begins: 0 = winter, 1 = spring, 2 = summer, 3 = fall
+  current-season-name                                                   ;; translates the numbers "0, 1, 2, 3" to "winter, spring, summer, fall"
+  season-coef                                                           ;; affects the live weight gain of animals in relation with the grass quality according to the season: winter = 1, spring = 1.15, summer = 1.05, fall = 1
 
-;Climate related global variables
-  climacoef ; External data, It relates the primary production in a season with the average for that season due to climate variations
-           ;;;;;;;;;;;;; AGENTS AFFECTED: patches; PROPERTY OF THE AGENT AFFECTED: grass-height (climaCoef variable)
-  current-season ; Initial-season (slider) ;Variable to define the season in which the simulation begins, it should take the values: 0 = winter, 1 = spring, 2 = summer, 3 = fall.
-  current-season-name ; this variable just converts the numbers "0, 1, 2, 3" of the seasons to text "winter, spring, summer, fall", and this variable ONLY is used in the reporter/procedure "to-report season-report"
-  season-coef ;It affects the live weight gain in relation with the grass quality according to the season, winter = 1; spring = 1.15, summer = 1.05, fall = 1.
-             ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: live-weight-gain (seasonCoef variable)
+;; Time related global variables
+  days-per-tick                                                         ;; variable to simulate time
+  number-of-season                                                      ;; variable to keep track of the number of seasons that have passed since the start of the simulation
+  simulation-time                                                       ;; variable to keep track of the days of the simulation
+  season-days                                                           ;; variable to keep track of the days that have passed since the start of the season (values from 1 to 92)
+  year-days                                                             ;; variable to keep track of the days that have passed since the start of a year (values from 1 to 368)
 
-;Time related global variables
-  days-per-tick ; variable to simulate time.
-  number-of-season ; to keep track of the number of seasons in 10 years of simulation (10 years = 3680 days = 40 seasons).
-  simulation-time ; variable to keep track of the days of the simulation.
-  season-days ; variable to keep track of the years that has passed since the start of the station (values from 1 to 92)
-  year-days ; variable to keep track of the days that has passed since the start of a year (values from 1 to 368)
+;; Grass related global variables
+  kmax                                                                  ;; maximum carrying capacity (maximum grass height), it varies according to the season: winter= 7.4 cm, spring= 22.2 cm, summer= 15.6 cm, fall= 11.1 cm
+  DM-cm-ha                                                              ;; variable used to calculate the grass-height consumed from the dry matter consumed: 180 Kg of DM/cm/ha
+  grass-energy                                                          ;; metabolizable energy per Kg of dry matter: 1.8 Mcal/Kg of DM
 
-
-;Grass related global variables
-  kmax  ;Paramater: maximum carrying capacity (maximum grass height), it varies according to the season, winter= 7.4 cm, spring= 22.2 cm, summer= 15.6 cm, fall= 11.1 cm
-       ;;;;;;;;;;;;; AGENTS AFFECTED: patches; PROPERTY OF THE AGENT AFFECTED: grass-height (K variable)
-  DM-cm-ha ;Parameter used to calculate the grass-height consumed from the dry matter consumed = 180 Kg of DM/cm/ha
-         ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: ddmc
-  grass-energy ;Parameter: metabolizable energy per Kg of dry matter = 1.8 Mcal/Kg of DM
-         ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: ddmc (grass-energy variable)
-
-
-;Livestock related global variables
-
-  maxLWG ;Parameter (mi) that defines the maximum live weight gain per animal according to the season. Spring= 60 Kg/animal; Winter, Summer and Fall= 40 Kg/animal.
-        ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: live-weight-gain (mi variable = maxLWG)
-  ni ;Parameter used to define the live weight gain per animal (it's a constant: 0.24 1/cm).
-    ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: live-weight-gain (ni variable)
-  xi ;Parameter used to define the live weight gain per animal (it's a constant: 132 kg/animal).
-    ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: live-weight-gain (xi variable)
-  weaned-calf-age-min ; 246 days (8 months (245 days) + 1 day) ; Esta global variable determina el comienzo de la etapa "weaned-calf" del ciclo de vida de livestock (es decir, cuando el turtle alcanza los 246 días de edad, pasa a la age class de "weaned-calf")
-  heifer-age-min ; 369 days (1 year (368 days) + 1 day) ; Esta global variable determina el comienzo de la etapa "heifer/steer" (heifer = hembra; steer = macho) del ciclo de vida de livestock (es decir, cuando el turtle alcanza los 368 días de edad, pasa a la age class de "heifer/steer": el turtle tiene un 50% de probabilidades de convertirse en uno u otro)
-  cow-age-min ; 737 (2 years (736 days) + 1 day) ; Esta global variable determina el comienzo de la etapa "cow" del ciclo de vida de livestock (es decir, cuando el turtle alcanza los 737 días de edad, pasa a la age class de "cow")
-  cow-age-max ; 5520 days (15 years) ; Esta global variable determina la esperanza de vida de las vacas (es decir, cuando el turtle alcanza los 5520 días, muere)
-  gestation-period ; 276 days (9 months) ; Determines the gestation period of pregnant cows ; Esta global variable determina el FINAL de la etapa "pregnant" del ciclo de vida de livestock (es decir, cuando el agente de la age class "pregnant" alcanza los 276 días, pasa a la age class de "cow-with-calf")
-  lactation-period ; 184 days (6 months) ; Determines the lactating period of cows with calves ; Esta global variable determina el FINAL de la etapa "cow-with-calf" del ciclo de vida de livestock (es decir, cuando el agente de la age class "cow-with-calf" alcanza los 184 días, pasa a la age class de "cow")
-  weight-gain-lactation ; 0.61 Kg / day. The born calves do not depend on grasslands. We assume that born calves increase their live weight by 0.61 Kg/day. After 6 months, they should reach 150 Kg (the initial weight for weaned calves).
+;; Livestock related global variables
+  maxLWG                                                                ;; variable that defines the maximum live weight gain per animal according to the season: spring = 60 Kg/animal; winter, summer and fall = 40 Kg/animal.
+  ni                                                                    ;; variable used to define the live weight gain per animal: 0.24 1/cm
+  xi                                                                    ;; variable used to define the live weight gain per animal: 132 kg
+  weaned-calf-age-min                                                   ;; determines the beginning of the “weaned-calf” age class of the livestock life cycle: 246 days
+  heifer-age-min                                                        ;; determines the beginning of the “heifer” (for female calves) or “steer” (for male calves) age class of the livestock life cycle: 369 days
+  cow-age-min                                                           ;; determines the beginning of the “cow” age class for heifers: 737 days
+  cow-age-max                                                           ;; determines the life expectancy of cattle: 5520 days
+  gestation-period                                                      ;; determines the gestation period of pregnant cows: 276 days
+  lactation-period                                                      ;; determines the lactating period of cows with calves: 184 days
+  weight-gain-lactation                                                 ;; affects the live weight gain of lactating animals (i.e., “born-calf” age class): 0.61 Kg/day
 
 
-;Market prices & economic balance related global variables
+;; Market prices & economic balance related global variables
   exploitation-costs ; External data, regular costs for maintaining the plot ($/ha).
   grazing-prices ; External data, costs for renting an external plot ($/head/season sent it to the external plot).
   supplement-prices ; External data, costs for feeding the animals with food supplements (grains, $/head/season).
@@ -303,7 +291,7 @@ to go
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; BIOPHYSICAL SUBMODEL (GRASS AND LIVE
+;; BIOPHYSICAL SUBMODEL (GRASS AND LIVESTOCK)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to grow-grass ; Fórmula de GH (Primary production (biomass) expressed in centimeters)
@@ -602,9 +590,8 @@ to become-cow-with-calf
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; DECISIONAL SUBMODEL
+;; DECISIONAL SUBMODEL (FARMER)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 to sell-males ; DECISIONAL (I.E., MANAGEMENT) MODEL. POR HACER
 
@@ -666,15 +653,6 @@ to-report crop-efficiency ; Reporter to output the crop eficiency (DM consumed /
   ;report totDDMC / (DM-cm-ha * sum [grass-height] of patches)
  end
 
-
-
-;OTRA INFO DE INTERES
-; Para exportar los resultados de un plot, escribir en el "Command center" de la pestaña "Interfaz" lo siguiente:
-; export-plot plotname filename ; por ejemplo 1: export-plot "Seasonal Accumulation DM per ha" "dm_winter.csv"
-;                                     ejemplo 2: export-plot "Average of grass-height (GH)" "gh_winter.csv"
-;                                     ejemplo 3: export-plot "Daily live-weight-gain (LWG)" "047_05_winter.csv"
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; References
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -687,6 +665,14 @@ to-report crop-efficiency ; Reporter to output the crop eficiency (DM consumed /
 
 ;; Robins, R., Bogen, S., Francis, A., Westhoek, A., Kanarek, A., Lenhart, S., Eda, S. 2015. Agent-based model for Johne’s disease dynamics
 ;; in a dairy herd. Veterinary Research 46: 68.
+
+
+
+;OTRA INFO DE INTERES
+; Para exportar los resultados de un plot, escribir en el "Command center" de la pestaña "Interfaz" lo siguiente:
+; export-plot plotname filename ; por ejemplo 1: export-plot "Seasonal Accumulation DM per ha" "dm_winter.csv"
+;                                     ejemplo 2: export-plot "Average of grass-height (GH)" "gh_winter.csv"
+;                                     ejemplo 3: export-plot "Daily live-weight-gain (LWG)" "047_05_winter.csv"
 @#$#@#$#@
 GRAPHICS-WINDOW
 386
