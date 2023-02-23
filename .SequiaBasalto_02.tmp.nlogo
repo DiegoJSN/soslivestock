@@ -5,13 +5,13 @@
 ;; The original model was built in CORMAS, for more information about the original model see Dieguez-Cameroni et al. (2012, 2014)
 ;; Some aspects of the model related with the growth of livestock and the transition through different age classes are based on Robins et al. (2015).
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Declaration of agents and variables
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 globals [
 ;; Climate related global variables
-  climacoef                                                             ;; relates the primary production in a season with the average for that season due to climate variations
+  climacoef-historic                                                    ;; external (real world) data, historic climacoef values. Climacoef relates the primary production in a season with the average for that season due to climate variations
   current-season                                                        ;; define the season in which the simulation begins: 0 = winter, 1 = spring, 2 = summer, 3 = fall
   current-season-name                                                   ;; translates the numbers "0, 1, 2, 3" to "winter, spring, summer, fall"
   season-coef                                                           ;; affects the live weight gain of animals in relation with the grass quality according to the season: winter = 1, spring = 1.15, summer = 1.05, fall = 1
@@ -40,91 +40,74 @@ globals [
   lactation-period                                                      ;; determines the lactating period of cows with calves: 184 days
   weight-gain-lactation                                                 ;; affects the live weight gain of lactating animals (i.e., “born-calf” age class): 0.61 Kg/day
 
-
 ;; Market prices & economic balance related global variables
-  exploitation-costs ; External data, regular costs for maintaining the plot ($/ha).
-  grazing-prices ; External data, costs for renting an external plot ($/head/season sent it to the external plot).
-  supplement-prices ; External data, costs for feeding the animals with food supplements (grains, $/head/season).
-  born-calves-prices ; External data, prices for selling born calves ($/Kg).
-  weaned-calves-prices ; External data, prices for selling weaned calves ($/Kg).
-  steers-prices ; External data, prices for selling born steers ($/Kg).
-  heifers-prices ; External data, prices for selling heifers ($/Kg).
-  cows-prices; External data, prices for selling empty cows ($/Kg).
-  pregnant-cows-prices ; External data, prices for selling pregnant cows ($/Kg).
-  lactating-cows-prices ; External data, prices for selling lactating cows ($/Kg).
-  sheep-prices ; External data, prices for selling sheep-meat ($/Kg).
-  wool-prices ; External data, prices for selling wool ($/Kg).
+  exploitation-costs                                                    ;; external (real world) data, regular historic costs for maintaining the plot ($/ha).
+  grazing-prices                                                        ;; external (real world) data, historic costs for renting an external plot ($/head/season sent it to the external plot).
+  supplement-prices                                                     ;; external (real world) data, historic costs for feeding the animals with food supplements (grains, $/head/season).
+  born-calves-prices                                                    ;; external (real world) data, historic prices for selling born calves ($/Kg).
+  weaned-calves-prices                                                  ;; external (real world) data, historic prices for selling weaned calves ($/Kg).
+  steers-prices                                                         ;; external (real world) data, historic prices for selling born steers ($/Kg).
+  heifers-prices                                                        ;; external (real world) data, historic prices for selling heifers ($/Kg).
+  cows-prices                                                           ;; external (real world) data, historic prices for selling empty cows ($/Kg).
+  pregnant-cows-prices                                                  ;; external (real world) data, historic prices for selling pregnant cows ($/Kg).
+  lactating-cows-prices                                                 ;; external (real world) data, historic prices for selling lactating cows ($/Kg).
+  sheep-prices                                                          ;; external (real world) data, historic prices for selling sheep-meat ($/Kg).
+  wool-prices                                                           ;; external (real world) data, historic prices for selling wool ($/Kg).
   exploitation-net-incomes
   exploitation-balance
   initial-balance
   ]
 
-breed [cows cow] ;We consider cows as the unique type of livestock (***future-step: to include sheep or goats as other types of livestock, and producers as decision makers).
+breed [cows cow]
 
-patches-own [ ; This keyword, like the globals, breed, <breed>-own, and turtles-own keywords, can only be used at the beginning of a program, before any function definitions. It defines the variables that all patches can use. All patches will then have the given variables and be able to use them.
-  grass-height ;State of the grass height, determines the carrying capacity of the system.
-               ;;;;;;;;;;;;; AGENTS AFFECTED: patches; PROPERTY OF THE AGENT AFFECTED: grass-height
-  gh-individual
-
-  r ;Parameter: growth rate for the grass = 0.002 1/day
-    ;;;;;;;;;;;;; AGENTS AFFECTED: patches; PROPERTY OF THE AGENT AFFECTED: grass-height (r variable)
-  GH-consumed ; grass-height consumed from the total consumption of dry matter
-
-  DM-kg-ha
+patches-own [
+  grass-height                                                          ;; primary production (biomass), expressed in centimeters
+  gh-individual                                                         ;; grass height consumed per cow
+  r                                                                     ;; growth rate for the grass = 0.002 1/day
+  GH-consumed                                                           ;; grass-height consumed from the total consumption of dry matter
+  DM-kg-ha                                                              ;; primary production (biomass), expressed in kg of Dry Matter (DM)
    ]
 
-cows-own [ ; The turtles-own keyword, like the globals, breed, <breeds>-own, and patches-own keywords, can only be used at the beginning of a program, before any function definitions. It defines the variables belonging to each turtle. If you specify a breed instead of "turtles", only turtles of that breed have the listed variables. (More than one turtle breed may list the same variable.)
-  age ;Variable that define the age of each animal (in days)
-  born-calf?
-  weaned-calf?
-  heifer?
-  steer?
-  cow?
-  cow-with-calf?
-  pregnant?
-  animal-units ;parameter used to calculate the stocking rate. Cow = 1, cow-with-calf= 1, born-calf= 0.2, weaned-calf= 0.5, steer= 0.7, heifer= 0.7.
-  category-coef ;This parameter is used to obtain the DDMC. It varies according the category of the animal, is equal to 1 in all categories, except for cow-with-calf = 1.1.
-                ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: ddmc (category-coef variable)
-  initial-weight ;cow= 280Kg, born-calf= 40Kg, weaned-calf= 150Kg, steer= 150Kg, and heifer= 200Kg.
-  min-weight ;parameter to define the critical weight which below the animal can die by forage crisis. Cow= 180 Kg, weaned-calf= 60 Kg, Steer= 100 Kg, Heifer= 100 Kg.
-  live-weight ;variable that defines the state of the animals in terms of live weight.
-  live-weight-gain ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: live-weight-gain
-
+cows-own [
+  age                                                                   ;; defines the age of each animal (in days)
+  born-calf?                                                            ;; boolean variable that determines the "born-calf" age class of the livestock life cycle
+  weaned-calf?                                                          ;; boolean variable that determines the "weaned-calf" age class of the livestock life cycle
+  heifer?                                                               ;; boolean variable that determines the "heifer" age class of the livestock life cycle
+  steer?                                                                ;; boolean variable that determines the "steer" age class of the livestock life cycle
+  cow?                                                                  ;; boolean variable that determines the "cow" age class of the livestock life cycle
+  cow-with-calf?                                                        ;; boolean variable that determines the "cow-withcalf" age class of the livestock life cycle
+  pregnant?                                                             ;; boolean variable that determines the "pregnant" age class of the livestock life cycle
+  animal-units                                                          ;; variable used to calculate the stocking rate. AU = LW / 380
+  category-coef                                                         ;; coefficient that varies with age class and affects the grass consumption of animals. Equal to 1 in all age classes, except for cow-with-calf = 1.1
+  initial-weight                                                        ;; initial weight of the animal at the beginning of the simulation
+  min-weight                                                            ;; defines the critical weight which below the animal can die by forage crisis
+  live-weight                                                           ;; variable that defines the state of the animals in terms of live weight
+  live-weight-gain                                                      ;; defines the increment of weight.
   live-weight-gain-history-season
-  live-weight-gain-historyXticks-season
-
+  live-weight-gain-historyXticks-season                                 ;; live weight gain since start of season
   live-weight-gain-history-year
-  live-weight-gain-historyXticks-year
+  live-weight-gain-historyXticks-year                                   ;; live weight gain since start of year
+  DM-kg-cow                                                             ;; biomass available (not consumed!) for one cow
+  DDMC                                                                  ;; Daily Dry Matter Consumption. Is the biomass consumed by one cow
+  metabolic-body-size                                                   ;; Metabolic Body Size (MBS) = LW^(3/4)
+  mortality-rate                                                        ;; mortality rate can be natural or exceptional
+  natural-mortality-rate                                                ;; annual natural mortality = 2%
+  except-mort-rate                                                      ;; exceptional mortality rates increases to 15% in cows, 30% in pregnant cows, and 23% in the rest of age classes when animal LW falls below the minimum weight
+  pregnancy-rate                                                        ;; probability that a heifer/cow/cow-with-calf will become pregnant
+  coefA                                                                 ;; constant used to calculate the pregnancy rate. Cow= 20000, cow-with-calf= 12000, heifer= 4000.
+  coefB                                                                 ;; constant used to calculate the pregnancy rate. Cow= 0.0285, cow-with-calf= 0.0265, heifer= 0.029.
+  pregnancy-time                                                        ;; determines the gestation period of pregnant cows.
+  lactating-time                                                        ;; determines the lactating period of cows with calves.
+   ]
 
-
-  DDMC ;Daily dry matter consumption, variable that defines the individual grass consumption (depends on LWG). *Note: 1 cm of grass/ha/92 days = 180 Kg of dry matter (Units: Kg/animal/day).
-       ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: ddmc
-
-  DM-kg-cow
-
-  metabolic-body-size ;metabolic body size (MBS) = LW^(3/4)
-                      ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: ddmc (LW^(3/4) = MBS variable)
-  mortality-rate
-  natural-mortality-rate ;annual natural mortality = 2% (in a day = 0.000054).
-  except-mort-rate ;exceptional mortality rates increases to 15% (in a day = 0.00041) in cows, 30% (= 0.000815) in pregnant cows, and 23% (0.000625) in the rest of categories when animal Live Weight (LW) falls below a critical survival value (i.e., Minimun weight, min-weight in the code).
-  pregnancy-rate ;is calculated as a logistic function of LW, but it also varies with the category of the animals.
-                 ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: pregnancy-rate
-  coefA ;constant used to calculate the pregnancy rate. Cow= 20000, cow-with-calf= 12000, heifer= 4000.
-                 ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: pregnancy-rate (coefA variable)
-  coefB ;constant used to calculate the pregnancy rate. Cow= 0.0285, cow-with-calf= 0.0265, heifer= 0.029.
-        ;;;;;;;;;;;;; AGENTS AFFECTED: turtles (cows); PROPERTY OF THE AGENT AFFECTED: pregnancy-rate (coefB variable)
-  pregnancy-time ; variable to determine gestation-period.
-  lactating-time ; variable to determine lactating-period.
-  ]
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Setting up the environment and the variables for the agents
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to setup
   ca
-  resize-world 0 (set-x-size - 1)  0 (set-y-size - 1) ; resize-world min-x-cor max-x-cor min-y-cor max-y-cor; Changes the size of the patch grid. Remember min coordinate must be 0 or less than 0
-  setup-globals ; Procedure para darle valores (info) a las globals variables
+  resize-world 0 (set-x-size - 1)  0 (set-y-size - 1)                   ;; changes the size of the world, set by the observer in the interface
+  setup-globals
   setup-grassland
   setup-livestock
   use-new-seed
@@ -132,15 +115,15 @@ to setup
 end
 
 to use-new-seed
-  let my-seed new-seed            ;; generate a new seed
-  output-print word "Seed: " my-seed  ;; print it out
-  random-seed my-seed             ;; use the new seed
+  let my-seed new-seed                                                  ;; generate a new seed
+  output-print word "Seed: " my-seed                                    ;; print it out
+  random-seed my-seed                                                   ;; use the generated seed
 end
 
 to setup_seed
   ca
-  resize-world 0 (set-x-size - 1)  0 (set-y-size - 1) ; resize-world min-x-cor max-x-cor min-y-cor max-y-cor; Changes the size of the patch grid. Remember min coordinate must be 0 or less than 0
-  setup-globals ; Procedure para darle valores (info) a las globals variables
+  resize-world 0 (set-x-size - 1)  0 (set-y-size - 1)
+  setup-globals
   setup-grassland
   setup-livestock
   seed-1070152876
@@ -148,15 +131,15 @@ to setup_seed
 end
 
 to seed-1070152876
-  let my-seed 1070152876          ;; generate a new seed
-  output-print word "Seed: " my-seed  ;; print it out
-  random-seed my-seed            ;; use the new seed
+  let my-seed 1070152876
+  output-print word "Seed: " my-seed
+  random-seed my-seed
 end
 
-to setup-globals ; Procedure para darle valores (datos) a las globals variables
+to setup-globals
   set days-per-tick 1
   set number-of-season 0
-  set current-season-name ["winter" "spring" "summer" "fall"] ;this variable just converts the numbers "0, 1, 2, 3" of the seasons to text "winter, spring, summer, fall", and this variable ONLY is used in the reporter/procedure "to-report season-report"
+  set current-season-name ["winter" "spring" "summer" "fall"]
   set simulation-time 0
   set weaned-calf-age-min 246
   set heifer-age-min 369
@@ -169,23 +152,24 @@ to setup-globals ; Procedure para darle valores (datos) a las globals variables
   set xi 132
   set grass-energy 1.8
   set DM-cm-ha 180
-  set season-coef [1 1.15 1.05 1] ; al usar corchetes se crea una lista de n valores (en este caso, 4). En este caso, la lógica de crear una lista con valores distintos para la misma variable es que, como veremos más adelante, haremos que esta variable tenga un valor u otro en función del valor de otra variable (utilizando el el comando de NetLogo "item"), de manera que la variable adoptará uno de estos valores en función del valor de otra variable (en este caso, current-season, que puede adoptar 4 valores posibles: 0, 1, 2 ,3). Es decir, cuando current-season tiene valor 0 (i.e., winter) , se llama al primer valor de la lista de season-coef, que es 1 (es decir, season-coef tiene un valor de 1 en winter)
-  set kmax [7.4 22.2 15.6 11.1] ; 4 valores: misma lógica que antes
-  set maxLWG [40 60 40 40] ; 4 valores: misma lógica que antes
-  set current-season initial-season ; initial-season is the slider in Interface (0 = winter, 1 = spring, 2 = summer, 3 = fall). The initial season is chosen by the user.
-  set climacoef [1.53 1.31 1.23	1.48 1.29	0.87 0.96	1.26 1.17	0.71 0.86	1.44 1.34	0.86 1.06 1.19 0.72	0.80 0.93	0.98 0.87	1.17 1.02	0.83 0.09	1.32 0.87	1.08 1.42	0.75 1.00	0.65 0.50	1.19 1.07	0.62 0.77 1.05 1.18 1.05] ; variable con 40 valores. Esto es así porque el tiempo que vamos a simular son 10 años. Como cada año tiene 4 estaciones, y como el ClimaCoef varía cada año pues tenemos que: 10 años * 4 estaciones = 40 estaciones en total = 40 valores distintos para climaCoef (recordemos que estos 40 valores son datos históricos)
-  set exploitation-costs [5.76 5.76	5.76 5.76	6.25 6.25	6.25 6.25	6.80 6.80	6.80 6.80 5.50 5.50	5.50 5.50	6.63 6.63	6.63 6.63	8.53 8.53	8.53 8.53	11.03	11.03	11.03	11.03	12.50	12.50	12.50	12.50	15.88	15.88	15.88	15.88	16.15	16.15	16.15	16.15] ; 40 valores: misma lógica que antes
-  set grazing-prices [4	10 16	8	9	19 20	12 12	22 22	9	8	19 19	13 21	20 21	17 18	13 19	20 34	10 22	16 7 21	20 24	26 12	19 24	20 15	36 36] ; 40 valores: misma lógica que antes
-  set supplement-prices [0.09	0.09 0.09	0.09 0.09	0.09 0.09	0.09 0.09	0.09 0.09	0.09 0.08	0.08 0.1 0.1 0.11	0.13 0.1 0.09	0.09 0.1 0.1 0.1 0.1 0.12 0.13 0.13 0.14 0.15 0.15 0.16	0.19 0.21	0.23 0.15	0.15 0.15	0.15 0.15] ; 40 valores: misma lógica que antes
-  set born-calves-prices [0.74 0.8 0.84	0.88 0.87	0.71 0.69	0.7	0.66 0.63	0.66 0.76	0.74 0.8 0.86	0.83 0.86	0.98 0.99	0.99 1.02	1.02 0.94	0.98 0.91	1.06 1.13	1.17 1.26	1.3	1.36 1.33	1.31 1.74	1.2	0.94 1.03	1.03 1.03 1.03] ; 40 valores: misma lógica que antes
-  set weaned-calves-prices [0.83 0.81	0.88 0.9 0.89	0.76 0.81	0.72 0.73	0.69 0.71	0.73 0.77	0.84 0.87	0.93 0.88	0.95 1 1.05	1.05 1.05	1.01 0.98	0.95 1.17 1.09 1.2 1.3 1.27	1.38 1.35	1.36 1.67	1.21 0.92	1.04 1.04	1.04 1.04] ; 40 valores: misma lógica que antes
-  set steers-prices [0.68	0.72 0.76	0.8	0.79 0.65	0.63 0.64	0.6	0.57 0.6 0.69	0.67 0.73	0.78 0.75	0.79 0.89	0.9	0.9	0.93 0.93	0.86 0.89	0.82 0.97 1.02 1.06	1.15 1.18	1.23 1.21	1.19 1.59	1.09 0.85	0.94 0.94	0.94 0.94] ; 40 valores: misma lógica que antes
-  set heifers-prices [0.63 0.63	0.68 0.71	0.69 0.6 0.6 0.56	0.53 0.45	0.49 0.48	0.53 0.58	0.64 0.67	0.59 0.7 0.73	0.72 0.75	0.75 0.66	0.69 0.65	0.81 0.83	0.82 0.94	0.92 1.05	0.97 0.98	1.17 0.87	0.62 0.72	0.72 0.72	0.72] ; 40 valores: misma lógica que antes
-  set cows-prices [0.45	0.48 0.49	0.57 0.49	0.51 0.51	0.44 0.45	0.4	0.37 0.43	0.48 0.49	0.47 0.59	0.51 0.57	0.62 0.6 0.55	0.55 0.56	0.63 0.46	0.7	0.65 0.74	0.78 0.74	0.89 0.79	0.94 1.17	0.67 0.52	0.5	0.5	0.5	0.5] ; 40 valores: misma lógica que antes
-  set pregnant-cows-prices [0.45 0.48	0.49 0.57	0.49 0.51	0.51 0.44	0.45 0.4 0.37 0.43 0.48 0.49 0.47 0.59 0.51	0.57 0.62	0.6	0.55 0.55	0.56 0.63	0.46 0.7 0.65	0.74 0.78	0.74 0.89	0.79 0.94	1.17 0.67	0.52 0.5 0.5	0.5	0.5] ; 40 valores: misma lógica que antes
-  set lactating-cows-prices [0.51	0.52 0.54	0.55 0.53	0.45 0.47	0.42 0.42	0.39 0.42	0.42 0.45	0.55 0.61	0.63 0.57	0.64 0.7 0.68	0.67 0.67	0.78 0.65	0.58 0.85	0.77 0.77	0.81 0.83	0.91 0.89	0.92 1.1 0.81	0.52 0.64	0.64 0.64	0.64] ; 40 valores: misma lógica que antes
-  set sheep-prices [0.47 0.52	0.47 0.48	0.51 0.49	0.54 0.46	0.49 0.49	0.56 0.51	0.59 0.76	0.92 0.81	0.82 0.96	1.05 0.84	0.81 0.77	0.68 0.59	0.45 0.46	0.56 0.57	0.48 0.64	0.8	0.92 0.94	0.88 0.98	0.98 0.98	0.98 0.98	0.98] ; 40 valores: misma lógica que antes
-  set wool-prices [5.6 5.81	5.65 5.76	6.18 5.81	5.86 7.08	9.52 9.31	11.83	13.01	13.79	8.65 12.37 12.43 12.69 12.53 11.59 10.64 10.43 10.01 9.85	8.52 8.26	9	9	9.15 11.1 12.78	14.27 15.4 17.36 17.75 16.07 8.17	8.17 8.17	8.17 8.17] ; 40 valores: misma lógica que antes
+  set season-coef [1 1.15 1.05 1]
+  set kmax [7.4 22.2 15.6 11.1]
+  set maxLWG [40 60 40 40]
+  set current-season initial-season                                     ;; the initial season is set by the observer in the interface
+
+  ;set climacoef-historic [1.53 1.31 1.23	1.48 1.29	0.87 0.96	1.26 1.17	0.71 0.86	1.44 1.34	0.86 1.06 1.19 0.72	0.80 0.93	0.98 0.87	1.17 1.02	0.83 0.09	1.32 0.87	1.08 1.42	0.75 1.00	0.65 0.50	1.19 1.07	0.62 0.77 1.05 1.18 1.05] ; variable con 40 valores. Esto es así porque el tiempo que vamos a simular son 10 años. Como cada año tiene 4 estaciones, y como el ClimaCoef varía cada año pues tenemos que: 10 años * 4 estaciones = 40 estaciones en total = 40 valores distintos para climaCoef (recordemos que estos 40 valores son datos históricos)
+  ;set exploitation-costs [5.76 5.76	5.76 5.76	6.25 6.25	6.25 6.25	6.80 6.80	6.80 6.80 5.50 5.50	5.50 5.50	6.63 6.63	6.63 6.63	8.53 8.53	8.53 8.53	11.03	11.03	11.03	11.03	12.50	12.50	12.50	12.50	15.88	15.88	15.88	15.88	16.15	16.15	16.15	16.15] ; 40 valores: misma lógica que antes
+  ;set grazing-prices [4	10 16	8	9	19 20	12 12	22 22	9	8	19 19	13 21	20 21	17 18	13 19	20 34	10 22	16 7 21	20 24	26 12	19 24	20 15	36 36] ; 40 valores: misma lógica que antes
+  ;set supplement-prices [0.09	0.09 0.09	0.09 0.09	0.09 0.09	0.09 0.09	0.09 0.09	0.09 0.08	0.08 0.1 0.1 0.11	0.13 0.1 0.09	0.09 0.1 0.1 0.1 0.1 0.12 0.13 0.13 0.14 0.15 0.15 0.16	0.19 0.21	0.23 0.15	0.15 0.15	0.15 0.15] ; 40 valores: misma lógica que antes
+  ;set born-calves-prices [0.74 0.8 0.84	0.88 0.87	0.71 0.69	0.7	0.66 0.63	0.66 0.76	0.74 0.8 0.86	0.83 0.86	0.98 0.99	0.99 1.02	1.02 0.94	0.98 0.91	1.06 1.13	1.17 1.26	1.3	1.36 1.33	1.31 1.74	1.2	0.94 1.03	1.03 1.03 1.03] ; 40 valores: misma lógica que antes
+  ;set weaned-calves-prices [0.83 0.81	0.88 0.9 0.89	0.76 0.81	0.72 0.73	0.69 0.71	0.73 0.77	0.84 0.87	0.93 0.88	0.95 1 1.05	1.05 1.05	1.01 0.98	0.95 1.17 1.09 1.2 1.3 1.27	1.38 1.35	1.36 1.67	1.21 0.92	1.04 1.04	1.04 1.04] ; 40 valores: misma lógica que antes
+  ;set steers-prices [0.68	0.72 0.76	0.8	0.79 0.65	0.63 0.64	0.6	0.57 0.6 0.69	0.67 0.73	0.78 0.75	0.79 0.89	0.9	0.9	0.93 0.93	0.86 0.89	0.82 0.97 1.02 1.06	1.15 1.18	1.23 1.21	1.19 1.59	1.09 0.85	0.94 0.94	0.94 0.94] ; 40 valores: misma lógica que antes
+  ;set heifers-prices [0.63 0.63	0.68 0.71	0.69 0.6 0.6 0.56	0.53 0.45	0.49 0.48	0.53 0.58	0.64 0.67	0.59 0.7 0.73	0.72 0.75	0.75 0.66	0.69 0.65	0.81 0.83	0.82 0.94	0.92 1.05	0.97 0.98	1.17 0.87	0.62 0.72	0.72 0.72	0.72] ; 40 valores: misma lógica que antes
+  ;set cows-prices [0.45	0.48 0.49	0.57 0.49	0.51 0.51	0.44 0.45	0.4	0.37 0.43	0.48 0.49	0.47 0.59	0.51 0.57	0.62 0.6 0.55	0.55 0.56	0.63 0.46	0.7	0.65 0.74	0.78 0.74	0.89 0.79	0.94 1.17	0.67 0.52	0.5	0.5	0.5	0.5] ; 40 valores: misma lógica que antes
+  ;set pregnant-cows-prices [0.45 0.48	0.49 0.57	0.49 0.51	0.51 0.44	0.45 0.4 0.37 0.43 0.48 0.49 0.47 0.59 0.51	0.57 0.62	0.6	0.55 0.55	0.56 0.63	0.46 0.7 0.65	0.74 0.78	0.74 0.89	0.79 0.94	1.17 0.67	0.52 0.5 0.5	0.5	0.5] ; 40 valores: misma lógica que antes
+  ;set lactating-cows-prices [0.51	0.52 0.54	0.55 0.53	0.45 0.47	0.42 0.42	0.39 0.42	0.42 0.45	0.55 0.61	0.63 0.57	0.64 0.7 0.68	0.67 0.67	0.78 0.65	0.58 0.85	0.77 0.77	0.81 0.83	0.91 0.89	0.92 1.1 0.81	0.52 0.64	0.64 0.64	0.64] ; 40 valores: misma lógica que antes
+  ;set sheep-prices [0.47 0.52	0.47 0.48	0.51 0.49	0.54 0.46	0.49 0.49	0.56 0.51	0.59 0.76	0.92 0.81	0.82 0.96	1.05 0.84	0.81 0.77	0.68 0.59	0.45 0.46	0.56 0.57	0.48 0.64	0.8	0.92 0.94	0.88 0.98	0.98 0.98	0.98 0.98	0.98] ; 40 valores: misma lógica que antes
+  ;set wool-prices [5.6 5.81	5.65 5.76	6.18 5.81	5.86 7.08	9.52 9.31	11.83	13.01	13.79	8.65 12.37 12.43 12.69 12.53 11.59 10.64 10.43 10.01 9.85	8.52 8.26	9	9	9.15 11.1 12.78	14.27 15.4 17.36 17.75 16.07 8.17	8.17 8.17	8.17 8.17] ; 40 valores: misma lógica que antes
 end
 
 to setup-grassland ; Procedure para darle valores (info) a los "patches-own" variables
@@ -238,9 +222,9 @@ create-cows initial-num-heifers [
   ]
 end
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Main procedures
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to go
     if season-days >= 92 [ ; en esta primera parte se escribe el código relacionado con el cambio de estaciones.
@@ -290,9 +274,9 @@ to go
   tick
 end
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; BIOPHYSICAL SUBMODEL (GRASS AND LIVESTOCK)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to grow-grass ; Fórmula de GH (Primary production (biomass) expressed in centimeters)
   ask patches [
@@ -438,9 +422,9 @@ to move1
      ]
 end
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; This section of the code sets up the parameters that define each of the age classes
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to become-born-calf
   set born-calf? true
@@ -589,9 +573,9 @@ to become-cow-with-calf
   set lactating-time 0
 end
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; DECISIONAL SUBMODEL (FARMER)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to sell-males ; DECISIONAL (I.E., MANAGEMENT) MODEL. POR HACER
 
@@ -604,9 +588,9 @@ end
 to sacrifice-animals ; DECISIONAL (I.E., MANAGEMENT) MODEL. POR HACER
 end
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; This section of the code contains the reporters that collect the model outputs
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
  to-report stocking-rate ; Reporter to output the relation between the stock of livestock (in terms of animal units) and the grassland area (num of patches, 1 patch = 1 ha).
   report sum [animal-units] of cows / count patches
@@ -653,9 +637,9 @@ to-report crop-efficiency ; Reporter to output the crop eficiency (DM consumed /
   ;report totDDMC / (DM-cm-ha * sum [grass-height] of patches)
  end
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; References
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Dieguez-Cameroni, F.J., et al. 2014. Virtual experiments using a participatory model to explore interactions between climatic variability
 ;; and management decisions in extensive systems in the basaltic region of Uruguay. Agricultural Systems 130: 89–104.
@@ -1532,9 +1516,9 @@ OUTPUT
 BUTTON
 692
 65
-833
+847
 98
-seed-1070152876 
+setup_seed-1070152876 
 setup_seed
 NIL
 1
