@@ -338,7 +338,6 @@ ask cows [
     if live-weight < 0 [set live-weight 0]
 
     set animal-units live-weight / 380
-    set size animal-units
   ]
 end
 
@@ -424,9 +423,9 @@ to become-born-calf
   ;set animal-units 0.2
   set animal-units live-weight / set-1-AU
   ;set min-weight 0
-  set min-weight set-MW-1-AU * 0.2
-  ;set size 0.4
-  set size animal-units
+  ;set min-weight set-MW-1-AU * 0.2
+  set size 0.3
+  ;set size animal-units
   set natural-mortality-rate 0.000054
   set except-mort-rate 0
   set category-coef 1
@@ -447,10 +446,10 @@ to become-weaned-calf
   set color orange
   ;set animal-units 0.5
   set animal-units live-weight / set-1-AU
-  ;set min-weight 60
-  set min-weight set-MW-1-AU * 0.5
-  ;set size 0.6
-  set size animal-units
+  set min-weight 60
+  ;set min-weight set-MW-1-AU * 0.5
+  set size 0.5
+  ;set size animal-units
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.23
   set category-coef 1
@@ -470,10 +469,10 @@ to become-heifer
   set color pink
   ;set animal-units 0.7
   set animal-units live-weight / set-1-AU
-  ;set min-weight 100
-  set min-weight set-MW-1-AU * 0.7
-  ;set size 0.8
-  set size animal-units
+  set min-weight 100
+  ;set min-weight set-MW-1-AU * 0.7
+  set size 0.7
+  ;set size animal-units
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.23
   set category-coef 1
@@ -494,10 +493,10 @@ to become-steer
   set color red
   ;set animal-units 0.7
   set animal-units live-weight / set-1-AU
-  ;set min-weight 100
-  set min-weight set-MW-1-AU * 0.7
-  ;set size 0.9
-  set size animal-units
+  set min-weight 100
+  ;set min-weight set-MW-1-AU * 0.7
+  set size 0.7
+  ;set size animal-units
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.23
   set category-coef 1
@@ -518,10 +517,10 @@ to become-cow
   set color brown
   ;set animal-units 1
   set animal-units live-weight / set-1-AU
-  ;set min-weight 180
-  set min-weight set-MW-1-AU
-  ;set size 1
-  set size animal-units
+  set min-weight 180
+  ;set min-weight set-MW-1-AU
+  set size 1
+  ;set size animal-units
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.15
   set category-coef 1
@@ -542,10 +541,10 @@ to become-cow-with-calf
   set color magenta
   ;set animal-units 1
   set animal-units live-weight / set-1-AU
-  ;set min-weight 180
-  set min-weight set-MW-1-AU
-  ;set size 1.1
-  set size animal-units
+  set min-weight 180
+  ;set min-weight set-MW-1-AU
+  set size 1.1
+  ;set size animal-units
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.3
   set category-coef 1.1
