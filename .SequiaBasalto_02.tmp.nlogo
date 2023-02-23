@@ -303,7 +303,7 @@ to go
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; BIOPHYSICAL SUBMODEL (GRASS AND LIVESTOCK)
+;; BIOPHYSICAL SUBMODEL (GRASS AND LIVE
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to grow-grass ; Fórmula de GH (Primary production (biomass) expressed in centimeters)
@@ -602,8 +602,9 @@ to become-cow-with-calf
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; DECISIONAL SUBMODEL (FARMER)
+;; DECISIONAL SUBMODEL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 to sell-males ; DECISIONAL (I.E., MANAGEMENT) MODEL. POR HACER
 
@@ -665,6 +666,15 @@ to-report crop-efficiency ; Reporter to output the crop eficiency (DM consumed /
   ;report totDDMC / (DM-cm-ha * sum [grass-height] of patches)
  end
 
+
+
+;OTRA INFO DE INTERES
+; Para exportar los resultados de un plot, escribir en el "Command center" de la pestaña "Interfaz" lo siguiente:
+; export-plot plotname filename ; por ejemplo 1: export-plot "Seasonal Accumulation DM per ha" "dm_winter.csv"
+;                                     ejemplo 2: export-plot "Average of grass-height (GH)" "gh_winter.csv"
+;                                     ejemplo 3: export-plot "Daily live-weight-gain (LWG)" "047_05_winter.csv"
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; References
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -677,14 +687,6 @@ to-report crop-efficiency ; Reporter to output the crop eficiency (DM consumed /
 
 ;; Robins, R., Bogen, S., Francis, A., Westhoek, A., Kanarek, A., Lenhart, S., Eda, S. 2015. Agent-based model for Johne’s disease dynamics
 ;; in a dairy herd. Veterinary Research 46: 68.
-
-
-
-;OTRA INFO DE INTERES
-; Para exportar los resultados de un plot, escribir en el "Command center" de la pestaña "Interfaz" lo siguiente:
-; export-plot plotname filename ; por ejemplo 1: export-plot "Seasonal Accumulation DM per ha" "dm_winter.csv"
-;                                     ejemplo 2: export-plot "Average of grass-height (GH)" "gh_winter.csv"
-;                                     ejemplo 3: export-plot "Daily live-weight-gain (LWG)" "047_05_winter.csv"
 @#$#@#$#@
 GRAPHICS-WINDOW
 386
