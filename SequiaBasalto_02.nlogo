@@ -188,6 +188,7 @@ to setup-livestock
   create-cows initial-num-cows [
     set shape "cow"
     set live-weight initial-weight-cows                                 ;; the initial weight is set by the observer in the interface
+    set initial-weight initial-weight-cows
     set mortality-rate natural-mortality-rate
     set DDMC 0
     set age cow-age-min
@@ -197,6 +198,7 @@ to setup-livestock
   create-cows initial-num-heifers [
     set shape "cow"
     set live-weight initial-weight-heifers                              ;; the initial weight is set by the observer in the interface
+    set initial-weight initial-weight-heifers
     set mortality-rate natural-mortality-rate
     set DDMC 0
     set age heifer-age-min
@@ -206,6 +208,7 @@ to setup-livestock
   create-cows initial-num-steers [
     set shape "cow"
     set live-weight initial-weight-steers                               ;; the initial weight is set by the observer in the interface
+    set initial-weight initial-weight-steers
     set mortality-rate natural-mortality-rate
     set DDMC 0
     set age heifer-age-min
