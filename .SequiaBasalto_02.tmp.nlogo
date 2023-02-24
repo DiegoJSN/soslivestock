@@ -308,11 +308,14 @@ to grow-grass                                                           ;; each 
   ]
 end
 
-to move                                                                 ;; once the grass height of each patch is updated, cows move to the patch with fewer cows and the highest grass height
+to move                                                                 ;; once the grass height of each patch is updated, When grass height in a patch is minor than five centimeters (the minimum grass height
+that maintains the live weight of a cow, Dieguez-Cameroni et al. 2014), the cows moves to
+another patch.cows move to the patch with fewer cows and the highest grass height
   ask cows [
-    let empty-patches patches with [not any? cows-here]
-    let target max-one-of empty-patches [grass-height]
-    if target != nobody and [grass-height] of target > grass-height [move-to target]
+    if grass-height < 5
+    [ifelse random-float 1 < perception
+      [uphill grass-height]
+      [move-to one-of neighbors]]
      ]
 end
 
@@ -337,7 +340,7 @@ ask cows [
     set live-weight live-weight + live-weight-gain
     if live-weight < 0 [set live-weight 0]
 
-    set animal-units live-weight /
+    set animal-units live-weight / set-1-AU
   ]
 end
 

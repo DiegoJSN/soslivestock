@@ -308,11 +308,12 @@ to grow-grass                                                           ;; each 
   ]
 end
 
-to move                                                                 ;; once the grass height of each patch is updated, cows move to the patch with fewer cows and the highest grass height
+to move                                                                 ;; once the grass height of each patch is updated, if the grass height in a patch is minor than 5 cm (the minimum grass height that maintains the live weight of a cow), the cows moves to another patch
   ask cows [
-    let empty-patches patches with [not any? cows-here]
-    let target max-one-of empty-patches [grass-height]
-    if target != nobody and [grass-height] of target > grass-height [move-to target]
+    if grass-height < 5
+    [ifelse random-float 1 < perception
+      [uphill grass-height]
+      [move-to one-of neighbors]]
      ]
 end
 
@@ -828,7 +829,7 @@ perception
 perception
 0
 1
-1.0
+0.7
 0.1
 1
 NIL
