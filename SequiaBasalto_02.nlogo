@@ -337,7 +337,7 @@ ask cows [
     set live-weight live-weight + live-weight-gain
     if live-weight < 0 [set live-weight 0]
 
-    set animal-units live-weight / 380
+    set animal-units live-weight / set-1-AU
   ]
 end
 
@@ -1416,7 +1416,7 @@ set-1-AU
 set-1-AU
 1
 1500
-385.0
+380.0
 1
 1
 kg

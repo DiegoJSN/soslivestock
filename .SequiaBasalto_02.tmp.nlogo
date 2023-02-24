@@ -337,8 +337,7 @@ ask cows [
     set live-weight live-weight + live-weight-gain
     if live-weight < 0 [set live-weight 0]
 
-    set animal-units live-weight / 380
-
+    set animal-units live-weight /
   ]
 end
 
@@ -424,7 +423,7 @@ to become-born-calf
   ;set animal-units 0.2
   set animal-units live-weight / set-1-AU
   ;set min-weight 0
-  set min-weight set-MW-1-AU * 0.2
+  ;set min-weight set-MW-1-AU * 0.2
   set size 0.3
   ;set size animal-units
   set natural-mortality-rate 0.000054
@@ -447,8 +446,8 @@ to become-weaned-calf
   set color orange
   ;set animal-units 0.5
   set animal-units live-weight / set-1-AU
-  ;set min-weight 60
-  set min-weight set-MW-1-AU * 0.5
+  set min-weight 60
+  ;set min-weight set-MW-1-AU * 0.5
   set size 0.5
   ;set size animal-units
   set natural-mortality-rate 0.000054
@@ -470,8 +469,8 @@ to become-heifer
   set color pink
   ;set animal-units 0.7
   set animal-units live-weight / set-1-AU
-  ;set min-weight 100
-  set min-weight set-MW-1-AU * 0.7
+  set min-weight 100
+  ;set min-weight set-MW-1-AU * 0.7
   set size 0.7
   ;set size animal-units
   set natural-mortality-rate 0.000054
@@ -494,8 +493,8 @@ to become-steer
   set color red
   ;set animal-units 0.7
   set animal-units live-weight / set-1-AU
-  ;set min-weight 100
-  set min-weight set-MW-1-AU * 0.7
+  set min-weight 100
+  ;set min-weight set-MW-1-AU * 0.7
   set size 0.7
   ;set size animal-units
   set natural-mortality-rate 0.000054
@@ -518,8 +517,8 @@ to become-cow
   set color brown
   ;set animal-units 1
   set animal-units live-weight / set-1-AU
-  ;set min-weight 180
-  set min-weight set-MW-1-AU
+  set min-weight 180
+  ;set min-weight set-MW-1-AU
   set size 1
   ;set size animal-units
   set natural-mortality-rate 0.000054
@@ -542,9 +541,9 @@ to become-cow-with-calf
   set color magenta
   ;set animal-units 1
   set animal-units live-weight / set-1-AU
-  ;set min-weight 180
-  set min-weight set-MW-1-AU
-  set size 1
+  set min-weight 180
+  ;set min-weight set-MW-1-AU
+  set size 1.1
   ;set size animal-units
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.3
@@ -1417,7 +1416,7 @@ set-1-AU
 set-1-AU
 1
 1500
-385.0
+380.0
 1
 1
 kg
