@@ -243,7 +243,7 @@ to go
   set simulation-time simulation-time + days-per-tick
 
   set season-days season-days + days-per-tick
-  if season-days >= 93 [set season-days 1]                              ;; This restart important to make sure that the "live-weight-gain-history-season" variable works, which is used in the "ILWG_SEASON" report
+  if season-days >= 93 [set season-days 1]                              ;; his restart important to make sure that the "live-weight-gain-history-season" variable works, which is used in the "ILWG_SEASON" report
 
   set year-days year-days + days-per-tick
   if year-days >= 369 [set year-days 1]                                 ;; This restart important to make sure that the "live-weight-gain-history-year" variable works, which is used in the "ILWG_YEAR" report
@@ -337,7 +337,7 @@ ask cows [
     set live-weight live-weight + live-weight-gain
     if live-weight < 0 [set live-weight 0]
 
-    set animal-units live-weight /
+    set animal-units live-weight / set-1-AU
   ]
 end
 
