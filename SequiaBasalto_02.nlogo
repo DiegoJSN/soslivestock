@@ -299,19 +299,19 @@ end
 to grow-grass                                                           ;; each patch calculates the height of its grass following a logistic regression. Grass height is affected by season, climacoef (set by the observer in the interface) and consumption of grass by animals  (GH consumed is the grass consumed by cows on the previous tick)
   ask patches [
     ;;;OPCION 1: NO TIENE UNA VARIABLE ESPECIFICA PARA EL TIEMPO
-    ;set grass-height (grass-height + r * grass-height * (1 - grass-height / (item current-season kmax * set-climacoef))) - GH-consumed
+    ;set grass-height (grass-height + r * grass-height * (1 - grass-height / ((item current-season kmax * grass-quality) * set-climacoef))) - GH-consumed
 
     ;;;OPCION 1.1: NO TIENE UNA VARIABLE ESPECIFICA PARA EL TIEMPO. ES UNA FORMULA INVENTADA POR MI... POR ESO LE LLAMO "GH INVENT"
-    ;set grass-height (grass-height + r * simulation-time * (1 - grass-height / (item current-season kmax * set-climacoef))) - GH-consumed
+    ;set grass-height (grass-height + r * simulation-time * (1 - grass-height / ((item current-season kmax * grass-quality) * set-climacoef))) - GH-consumed
 
     ;,OPCION 2: VARIABLE ESPECIFICA PARA EL TIEMPO USANDO "initial-grass-height"
-    ;set grass-height ((item current-season kmax / (1 + ((((item current-season kmax * set-climacoef) - (initial-grass-height)) / (initial-grass-height)) * (e ^ (- r * simulation-time))))) * set-climacoef) - GH-consumed
+    ;set grass-height (((item current-season kmax * grass-quality) / (1 + (((((item current-season kmax * grass-quality) * set-climacoef) - (initial-grass-height)) / (initial-grass-height)) * (e ^ (- r * simulation-time))))) * set-climacoef) - GH-consumed
 
     ;;OPCION 3: VARIABLE ESPECIFICA PARA EL TIEMPO USANDO "grass-height"
     set grass-height (((item current-season kmax * grass-quality) / (1 + (((((item current-season kmax * grass-quality) * set-climacoef) - (grass-height)) / (grass-height)) * (e ^ (- r * simulation-time))))) * set-climacoef) - GH-consumed                                                                                                                                                                                ; COMENTARIO IMPORTANTE SOBRE ESTA FORMULA: se ha añadido lo siguiente: ahora, la variable "K" del denominador ahora TAMBIÉN multiplica a "climacoef". Ahora que lo pienso, así tiene más sentido... ya que la capacidad de carga (K) se verá afectada dependiendo de la variabilidad climática (antes solo se tenía en cuenta en el numerador). Ahora que recuerdo, en Dieguez-Cameroni et al. 2012, se menciona lo siguiente sobre la variable K "es una constante estacional que determina la altura máxima de la pastura, multiplicada por el coeficiente climático (coefClima) explicado anteriormente", así que parece que la modificacion nueva que he hecho tiene sentido.
 
     ;;OPCION 4: r = 0.0004334. CON ESTE VALOR DE r CONSIGO REPLICAR LA FIGURA 2 Y CUADRO 3 DE Dieguez-Cameroni et al. 2012. ESTOY "FORZANDO" LA FORMULA PARA QUE DEN LOS NUMEROS QUE QUIERO, POR ESO LLAMO A ESTA VERSION "GH FORZADO"
-    ;set grass-height ((item current-season kmax / (1 + ((((item current-season kmax * set-climacoef) - (grass-height)) / (grass-height)) * (e ^ (- 0.0004334 * simulation-time))))) * set-climacoef) - GH-consumed
+    ;set grass-height (((item current-season kmax * grass-quality) / (1 + (((((item current-season kmax * grass-quality) * set-climacoef) - (grass-height)) / (grass-height)) * (e ^ (- 0.0004334 * simulation-time))))) * set-climacoef) - GH-consumed
 
 
     ;if grass-height <= 0 [set grass-height 0.001] ; to avoid negative values.
@@ -662,11 +662,11 @@ to-report crop-efficiency                                               ;; outpu
 GRAPHICS-WINDOW
 386
 68
-594
-177
+641
+199
 -1
 -1
-20.0
+32.3
 1
 10
 1
@@ -1498,17 +1498,17 @@ max [count cows-here] of patches
 11
 
 OUTPUT
-889
-15
-1089
-60
+911
+17
+1111
+62
 12
 
 BUTTON
-1102
-20
-1257
-53
+1124
+21
+1279
+54
 setup_seed-1070152876 
 setup_seed
 NIL
@@ -1533,10 +1533,10 @@ Average annual live weight gain per hectare (ALWG, kg/ha)
 11
 
 MONITOR
-598
-117
-682
-162
+817
+19
+901
+64
 NIL
 year-days
 17
@@ -1544,10 +1544,10 @@ year-days
 11
 
 MONITOR
-599
-68
-682
-113
+730
+19
+813
+64
 NIL
 season-days
 17
@@ -1721,10 +1721,10 @@ PENS
 "Total DDMC" 1.0 0 -7500403 true "" "plot sum [DDMC] of cows"
 
 MONITOR
-732
-16
-874
-61
+770
+70
+907
+116
 Total number of cattle_
 count cows
 17
@@ -1772,10 +1772,10 @@ NIL
 HORIZONTAL
 
 PLOT
-761
-178
-1083
-399
+770
+177
+1092
+398
 Average of grass-height (GH)_
 Days
 cm
@@ -1790,10 +1790,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot mean [grass-height] of patches"
 
 PLOT
-1086
-179
-1421
-399
+1095
+178
+1430
+398
 Grass height distribution
 cm
 nº patches
@@ -1808,9 +1808,9 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [grass-height] of patches"
 
 MONITOR
-762
+771
 130
-877
+886
 175
 Average GH (cm)_
 mean [grass-height] of patches
@@ -1819,9 +1819,9 @@ mean [grass-height] of patches
 11
 
 MONITOR
-1087
+1096
 131
-1292
+1301
 176
 Grass quality of patches (average)
 mean [grass-quality] of patches
@@ -1830,9 +1830,9 @@ mean [grass-quality] of patches
 11
 
 MONITOR
-1086
+1095
 401
-1251
+1260
 446
 NIL
 min [grass-height] of patches
@@ -1841,9 +1841,9 @@ min [grass-height] of patches
 11
 
 MONITOR
-1255
+1264
 401
-1421
+1430
 446
 NIL
 max [grass-height] of patches
