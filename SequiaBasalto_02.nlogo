@@ -186,9 +186,9 @@ to setup-grassland
       let b median (list 0.001 (random-normal set-grass-quality grass-quality-sd) 1)
       set grass-quality b]
 
-    if (grass-quality-distribution = "exponential") [set grass-quality random-exponential set-grass-quality]                       ;; DISTRIBUCION EXPONENCIAL SIN LIMITE SUPERIOR ####################################################################################################################
+    if (grass-quality-distribution = "exponential") [set grass-quality random-exponential set-grass-quality]                       ;; DISTRIBUCION EXPONENCIAL SIN LIMITE SUPERIOR ###################################################################################################################
 
-    if (grass-quality-distribution = "exponential-restricted") [                                                                   ;; DISTRIBUCION EXPONENCIAL CON LIMITE SUPERIOR ####################################################################################################################
+    if (grass-quality-distribution = "exponential-restricted") [                                                                   ;; DISTRIBUCION EXPONENCIAL CON LIMITE SUPERIOR ###################################################################################################################
       let b median (list 0.001 (random-exponential set-grass-quality) 1)
       set grass-quality b]
 
@@ -939,7 +939,7 @@ set-climaCoef
 set-climaCoef
 0.1
 1.5
-1.5
+1.0
 0.1
 1
 NIL

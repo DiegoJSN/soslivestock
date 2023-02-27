@@ -186,10 +186,10 @@ to setup-grassland
       let b median (list 0.001 (random-normal set-grass-quality grass-quality-sd) 1)
       set grass-quality b]
 
-    if (grass-quality-distribution = "exponential") [set grass-quality random-exponential set-grass-quality]                       ;; DISTRIBUCION EXPONENCIAL SIN LIMITE SUPERIOR ####################################################################################################################
+    if (grass-quality-distribution = "exponential") [set grass-quality random-exponential set-grass-quality]                       ;; DISTRIBUCION EXPONENCIAL SIN LIMITE SUPERIOR ###################################################################################################################
 
     if (grass-quality-distribution = "exponential-restricted") [                                                                   ;; DISTRIBUCION EXPONENCIAL CON LIMITE SUPERIOR ####################################################################################################################
-      let b median (list 0.01 (random-exponential set-grass-quality) 1)
+      let b median (list 0.001 (random-exponential set-grass-quality) 1)
       set grass-quality b]
 
 
@@ -1739,7 +1739,7 @@ CHOOSER
 grass-quality-distribution
 grass-quality-distribution
 "homogeneus" "uniform" "normal" "normal-restricted" "exponential" "exponential-restricted"
-3
+1
 
 SLIDER
 148
