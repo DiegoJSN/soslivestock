@@ -267,21 +267,22 @@ to setup-livestock
   ]
 
   if (spatial-management = "rotational grazing") [   ;; REGLAS PARA CREACION VACAS EN "ROTATIONAL GRAZING" ####################################################################################################################
-    if (starting-paddock = "paddock a") [ask n-of initial-num-cows (patches with [paddock-a = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min become-cow]]]
-    if (starting-paddock = "paddock a") [ask n-of initial-num-heifers (patches with [paddock-a = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min become-heifer]]]
-    if (starting-paddock = "paddock a") [ask n-of initial-num-steers (patches with [paddock-a = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min become-steer]]]
 
-    if (starting-paddock = "paddock b") [ask n-of initial-num-cows (patches with [paddock-b = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min become-cow]]]
-    if (starting-paddock = "paddock b") [ask n-of initial-num-heifers (patches with [paddock-b = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min become-heifer]]]
-    if (starting-paddock = "paddock b") [ask n-of initial-num-steers (patches with [paddock-b = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min become-steer]]]
+    if (starting-paddock = "paddock a") [create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min ask cows [move-to one-of patches with [paddock-a = 1]] become-cow]]
+    if (starting-paddock = "paddock a") [create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-a = 1]] become-heifer]]
+    if (starting-paddock = "paddock a") [create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-a = 1]] become-steer]]
 
-    if (starting-paddock = "paddock c") [ask n-of initial-num-cows (patches with [paddock-c = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min become-cow]]]
-    if (starting-paddock = "paddock c") [ask n-of initial-num-heifers (patches with [paddock-c = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min become-heifer]]]
-    if (starting-paddock = "paddock c") [ask n-of initial-num-steers (patches with [paddock-c = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min become-steer]]]
+    if (starting-paddock = "paddock b") [create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min ask cows [move-to one-of patches with [paddock-b = 1]] become-cow]]
+    if (starting-paddock = "paddock b") [create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-b = 1]] become-heifer]]
+    if (starting-paddock = "paddock b") [create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-b = 1]] become-steer]]
 
-    if (starting-paddock = "paddock d") [ask n-of initial-num-cows (patches with [paddock-d = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min become-cow]]]
-    if (starting-paddock = "paddock d") [ask n-of initial-num-heifers (patches with [paddock-d = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min become-heifer]]]
-    if (starting-paddock = "paddock d") [ask n-of initial-num-steers (patches with [paddock-d = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min become-steer]]]
+    if (starting-paddock = "paddock c") [create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min ask cows [move-to one-of patches with [paddock-c = 1]] become-cow]]
+    if (starting-paddock = "paddock c") [create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-c = 1]] become-heifer]]
+    if (starting-paddock = "paddock c") [create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-c = 1]] become-steer]]
+
+    if (starting-paddock = "paddock d") [create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min ask cows [move-to one-of patches with [paddock-d = 1]] become-cow]]
+    if (starting-paddock = "paddock d") [create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-d = 1]] become-heifer]]
+    if (starting-paddock = "paddock d") [create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-d = 1]] become-steer]]
   ]
 
   ask cows [
@@ -385,7 +386,7 @@ to move                                                                 ;; once 
       [move-to one-of neighbors]]
      ]
 
-  if (spatial-management = "rotational grazing") [
+  if (spatial-management = "rotational grazing") [                      ;; REGLAS PARA EL MOVIMIENTO DE LAS VACAS EN "ROTATIONAL GRAZING" ####################################################################################################################
   if season-days >= 92 [
     ask cows
     [ifelse paddock-a = 1
@@ -405,36 +406,6 @@ to move                                                                 ;; once 
 
 
 end
-
-
-
-to move2                                                                 ;; once the grass height of each patch is updated, if the grass height in a patch is minor than 5 cm (the minimum grass height that maintains the live weight of a cow), the cows moves to another patch
-  ask cows [
-    set heading random 360
-    ifelse [pcolor] of patch-ahead 1 = white
-    [ set heading random 360 ]   ;; We see a blue patch in front of us. Turn a random amount.
-    [ fd 1 ]                  ;; Otherwise, it is safe to move forward.
-     ]
-
-  if (spatial-management = "rotational grazing") [
-  if season-days >= 92 [
-    ask cows
-    [ifelse paddock-a = 1
-      [let next-paddock one-of patches with [paddock-b = 1] move-to next-paddock]
-      [ifelse paddock-b = 1
-        [let next-paddock one-of patches with [paddock-c = 1] move-to next-paddock]
-        [ifelse paddock-c = 1
-          [let next-paddock one-of patches with [paddock-d = 1] move-to next-paddock]
-          [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]
-          ]
-        ]
-      ]
-    ]
-  ]
-
-end
-
-
 
 to kgDM/cow                                                             ;; after the cows have moved to a new patch, each cow calculates the amount of Kg of DM it will receive.
   ask cows [set DM-kg-cow 0]
@@ -695,7 +666,7 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to-report paddock-size
-  if (spatial-management = "rotational grazing") [report count patches with [wall = 0] / 4]
+  if (spatial-management = "rotational grazing") [report count patches with [wall = 0] / 4]    ;;  ####################################################################################################################
 end
 
 to-report stocking-rate                                                 ;; outputs the relation between the number of livestock (in terms of animal units) and the grassland area (num. of patches)
@@ -767,11 +738,11 @@ to-report crop-efficiency                                               ;; outpu
 GRAPHICS-WINDOW
 387
 111
-750
-475
+835
+560
 -1
 -1
-14.2
+17.6
 1
 10
 1
@@ -834,7 +805,7 @@ initial-num-cows
 initial-num-cows
 0
 1000
-0.0
+10.0
 1
 1
 cows
@@ -1081,7 +1052,7 @@ initial-num-heifers
 initial-num-heifers
 0
 1000
-0.0
+10.0
 1
 1
 NIL
@@ -1439,7 +1410,7 @@ initial-num-steers
 initial-num-steers
 0
 1000
-121.0
+10.0
 1
 1
 NIL
@@ -1826,10 +1797,10 @@ PENS
 "Total DDMC" 1.0 0 -7500403 true "" "plot sum [DDMC] of cows"
 
 MONITOR
-770
-70
-907
-115
+766
+65
+903
+110
 Total number of cattle_
 count cows
 17
@@ -1844,7 +1815,7 @@ CHOOSER
 grass-quality-distribution
 grass-quality-distribution
 "homogeneus" "uniform" "normal" "normal-restricted" "exponential" "exponential-restricted"
-0
+2
 
 SLIDER
 148
@@ -1877,10 +1848,10 @@ NIL
 HORIZONTAL
 
 PLOT
-770
-177
-1092
-398
+842
+167
+1164
+388
 Average of grass-height (GH)_
 Days
 cm
@@ -1895,10 +1866,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot mean [grass-height] of patches with [wall = 0]"
 
 PLOT
-1095
-178
-1430
-398
+1167
+168
+1502
+388
 Grass height distribution
 cm
 nº patches
@@ -1913,10 +1884,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [grass-height] of patches with [wall = 0]"
 
 MONITOR
-771
-130
-886
-175
+843
+120
+958
+165
 Average GH (cm)_
 mean [grass-height] of patches with [wall = 0]
 3
@@ -1924,10 +1895,10 @@ mean [grass-height] of patches with [wall = 0]
 11
 
 MONITOR
-1096
-131
-1301
-176
+1168
+121
+1373
+166
 Grass quality of patches (average)
 mean [grass-quality] of patches with [wall = 0]
 17
@@ -1935,10 +1906,10 @@ mean [grass-quality] of patches with [wall = 0]
 11
 
 MONITOR
-1096
-399
-1243
-444
+1168
+389
+1315
+434
 min grass-height of patches
 min [grass-height] of patches with [wall = 0]
 17
@@ -1946,10 +1917,10 @@ min [grass-height] of patches with [wall = 0]
 11
 
 MONITOR
-1260
-399
-1431
-444
+1332
+389
+1503
+434
 max grass-height of patches
 max [grass-height] of patches with [wall = 0]
 17
