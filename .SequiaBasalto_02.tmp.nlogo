@@ -694,12 +694,16 @@ end
 ;; This section of the code contains the reporters that collect the model outputs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+to-report paddock-size
+  if (spatial-management = "rotational grazing") [report count patches with [wall = 0] / 4]
+end
+
 to-report stocking-rate                                                 ;; outputs the relation between the number of livestock (in terms of animal units) and the grassland area (num. of patches)
-  report sum [animal-units] of cows / count patches
+  report sum [animal-units] of cows / count patches with [wall = 0]
 end
 
 to-report grass-height-report                                           ;; outputs the mean grass-height of the grassland
-  report mean [grass-height] of patches
+  report mean [grass-height] of patches with [wall = 0]
 end
 
 to-report season-report                                                 ;; outputs the name of the season
@@ -707,11 +711,11 @@ to-report season-report                                                 ;; outpu
 end
 
  to-report dmgr                                                         ;; outputs the Dry Matter Growth Rate (DMGR, units: kgDM/ha/day)
-  report DM-cm-ha * sum [grass-height] of patches
+  report DM-cm-ha * sum [grass-height] of patches with [wall = 0]
 end
 
 to-report ALWG                                                          ;; outputs the Annual Live Weight Gain per hectare (kg/year/ha)
-  report (sum [live-weight] of cows - sum [initial-weight] of cows) / count patches
+  report (sum [live-weight] of cows - sum [initial-weight] of cows) / count patches with [wall = 0]
 end
 
 to-report ILWG                                                          ;; outputs the mean Inidividual Live Weight Gain (kg/animal)
@@ -727,16 +731,16 @@ to-report ILWG_YEAR                                                     ;; outpu
 end
 
 to-report crop-efficiency                                               ;; outputs the crop eficiency (DM consumed / DM offered)
-  report sum [DDMC] of cows / (DM-cm-ha * sum [grass-height] of patches) * 100
-  ;report sum [DDMC] of cows / ((DM-cm-ha * DM-available-for-cattle ) * sum [grass-height] of patches) * 100
+  report sum [DDMC] of cows / (DM-cm-ha * sum [grass-height] of patches with [wall = 0]) * 100
+  ;report sum [DDMC] of cows / ((DM-cm-ha * DM-available-for-cattle ) * sum [grass-height] of patches with [wall = 0]) * 100
 
 
  ;let totDDMC sum [DDMC] of cows ; totDDMC = DM consumed
- ;report (totDDMC / (DM-cm-ha * sum [grass-height] of patches)) * 100 ; (DM-cm-ha * sum [grass-height] of patches) = DM offered
+ ;report (totDDMC / (DM-cm-ha * sum [grass-height] of patches with [wall = 0])) * 100 ; (DM-cm-ha * sum [grass-height] of patches with [wall = 0]) = DM offered
 
  ;; OTRA ALTERNATIVA PARA CALCULAR EL CROP-EFFICIENCY;;
-  ;let totDDMC DM-cm-ha * sum [GH-consumed] of patches ; El "DM consumed" se puede calcular de otra manera: sumamos los cm de hierba que han perdido los patches como consecuencia de la alimentación de los animales. Como GH-consumed está en cm, lo multiplicamos por el DM-cm-ha para obtener la DM consumed (que se expresa en Kg/ha)
-  ;report totDDMC / (DM-cm-ha * sum [grass-height] of patches)
+  ;let totDDMC DM-cm-ha * sum [GH-consumed] of patches with [wall = 0] ; El "DM consumed" se puede calcular de otra manera: sumamos los cm de hierba que han perdido los patches como consecuencia de la alimentación de los animales. Como GH-consumed está en cm, lo multiplicamos por el DM-cm-ha para obtener la DM consumed (que se expresa en Kg/ha)
+  ;report totDDMC / (DM-cm-ha * sum [grass-height] of patches with [wall = 0])
  end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -830,7 +834,7 @@ initial-num-cows
 initial-num-cows
 0
 1000
-5.0
+0.0
 1
 1
 cows
@@ -1104,8 +1108,8 @@ MONITOR
 459
 62
 Area (ha)
-count patches ;grassland-area, 1 patch = 1 ha\n; Other option:\n; sum [animal-units] of cows / count patches
-7
+;count patches ;grassland-area, 1 patch = 1 ha\n; Other option:\n; sum [animal-units] of cows / count patches\ncount patches with [wall = 0]
+3
 1
 11
 
@@ -1435,7 +1439,7 @@ initial-num-steers
 initial-num-steers
 0
 1000
-0.0
+121.0
 1
 1
 NIL
@@ -1672,7 +1676,7 @@ MONITOR
 3419
 290
 Total DM per ha (kg/ha)
-;(DM-cm-ha * mean [grass-height] of patches) / DM-available-for-cattle\n(dmgr) / count patches
+;(DM-cm-ha * mean [grass-height] of patches) / DM-available-for-cattle\n(dmgr) / count patches with [wall = 0]
 3
 1
 11
@@ -1683,7 +1687,7 @@ MONITOR
 3594
 290
 Total DM G. Rate (kg/ha/day)
-;((DM-cm-ha * mean [grass-height] of patches) / DM-available-for-cattle) / 92\n(dmgr / count patches) / 92
+;((DM-cm-ha * mean [grass-height] of patches) / DM-available-for-cattle) / 92\n(dmgr / count patches with [wall = 0]) / 92
 3
 1
 11
@@ -1844,9 +1848,9 @@ grass-quality-distribution
 
 SLIDER
 148
-151
+157
 266
-184
+190
 set-grass-quality
 set-grass-quality
 0
@@ -1859,9 +1863,9 @@ HORIZONTAL
 
 SLIDER
 269
-151
+157
 383
-184
+190
 grass-quality-sd
 grass-quality-sd
 0
@@ -1888,7 +1892,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "plot mean [grass-height] of patches"
+"default" 1.0 0 -16777216 true "" "plot mean [grass-height] of patches with [wall = 0]"
 
 PLOT
 1095
@@ -1906,7 +1910,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 1 -16777216 true "" "histogram [grass-height] of patches"
+"default" 1.0 1 -16777216 true "" "histogram [grass-height] of patches with [wall = 0]"
 
 MONITOR
 771
@@ -1914,7 +1918,7 @@ MONITOR
 886
 175
 Average GH (cm)_
-mean [grass-height] of patches
+mean [grass-height] of patches with [wall = 0]
 3
 1
 11
@@ -1925,29 +1929,29 @@ MONITOR
 1301
 176
 Grass quality of patches (average)
-mean [grass-quality] of patches
+mean [grass-quality] of patches with [wall = 0]
 17
 1
 11
 
 MONITOR
-1095
-401
+1096
+399
+1243
+444
+min grass-height of patches
+min [grass-height] of patches with [wall = 0]
+17
+1
+11
+
+MONITOR
 1260
-446
-NIL
-min [grass-height] of patches
-17
-1
-11
-
-MONITOR
-1264
-401
-1430
-446
-NIL
-max [grass-height] of patches
+399
+1431
+444
+max grass-height of patches
+max [grass-height] of patches with [wall = 0]
 17
 1
 11
@@ -1960,7 +1964,7 @@ CHOOSER
 spatial-management
 spatial-management
 "open access" "rotational grazing"
-1
+0
 
 CHOOSER
 151
@@ -1971,6 +1975,17 @@ starting-paddock
 starting-paddock
 "paddock a" "paddock b" "paddock c" "paddock d"
 0
+
+MONITOR
+387
+65
+501
+110
+Paddock area (ha)
+paddock-size
+3
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
