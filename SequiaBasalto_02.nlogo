@@ -180,10 +180,36 @@ to setup-globals
 end
 
 to setup-grassland
-  ask patches [
+                                                                          ;; PREPARANDO LOS PARCHES QUE ACTUARÁN COMO VALLADO ####################################################################################################################
+  if (spatial-management = "rotational grazing") [
+    ask patches with [ pycor = (set-y-size) / 2 or pycor = (set-y-size - 1) / 2 ] [ set pcolor white ]
+    ask patches with [ pxcor = (set-x-size) / 2 or pxcor = (set-x-size - 1) / 2 ] [ set pcolor white ]
+
+    ask patches with [ pycor = 0 ] [ set pcolor white ]
+    ask patches with [ pycor = set-y-size - 1] [ set pcolor white ]
+
+    ask patches with [ pxcor = 0 ] [ set pcolor white ]
+    ask patches with [ pxcor = set-x-size - 1] [ set pcolor white ]
+
+                                                                          ;; DIVIDIENDO EL MUNDO EN PADDOCKS ####################################################################################################################
+    ask patches with [ (pxcor < (set-x-size) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor > (set-y-size) / 2 or pycor = (set-y-size - 1) / 2)] [set paddock-a 1]
+    ask patches with [ (pxcor > (set-x-size) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor > (set-y-size) / 2 or pycor = (set-y-size - 1) / 2)]  [set paddock-b 1]
+    ask patches with [ (pxcor > (set-x-size) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor < (set-y-size) / 2 or pycor = (set-y-size - 1) / 2)] [set paddock-c 1]
+    ask patches with [ (pxcor < (set-x-size) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor < (set-y-size) / 2 or pycor = (set-y-size - 1) / 2)] [set paddock-d 1]
+
+
+    ask patches with [pcolor = white] [set wall 1]                          ;; MATERIALIZANDO EL VALLADO ####################################################################################################################
+    ask patches with [wall = 1] [
+      set paddock-a 0
+      set paddock-b 0
+      set paddock-c 0
+      set paddock-d 0
+    ]
+  ]
+
+  ask patches with [wall = 0 ] [
     set grass-quality set-grass-quality
     if (grass-quality-distribution = "uniform") [set grass-quality random-float set-grass-quality]
-
 
     if (grass-quality-distribution = "normal") [set grass-quality random-normal set-grass-quality grass-quality-sd]                ;; DISTRIBUCION NORMAL SIN LIMITE SUPERIOR ####################################################################################################################
 
@@ -302,7 +328,7 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to grow-grass                                                           ;; each patch calculates the height of its grass following a logistic regression. Grass height is affected by season, climacoef (set by the observer in the interface) and consumption of grass by animals  (GH consumed is the grass consumed by cows on the previous tick)
-  ask patches [
+  ask patches with [wall = 0 ] [
     ;;;OPCION 1: NO TIENE UNA VARIABLE ESPECIFICA PARA EL TIEMPO
     ;set grass-height (grass-height + r * grass-height * (1 - grass-height / ((item current-season kmax * grass-quality) * set-climacoef))) - GH-consumed
 
@@ -1855,6 +1881,16 @@ max [grass-height] of patches
 17
 1
 11
+
+CHOOSER
+9
+199
+147
+244
+spatial-management
+spatial-management
+"open access" "rotational grazing"
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
