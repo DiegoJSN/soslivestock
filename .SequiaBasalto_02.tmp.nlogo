@@ -190,6 +190,7 @@ to setup-grassland
 
     ask patches with [ pxcor = 0 ] [ set pcolor white ]
     ask patches with [ pxcor = set-x-size - 1] [ set pcolor white ]
+
                                                                           ;; DIVIDIENDO EL MUNDO EN PADDOCKS ####################################################################################################################
     ask patches with [ (pxcor < (set-x-size) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor > (set-y-size) / 2 or pycor = (set-y-size - 1) / 2)] [set paddock-a 1]
     ask patches with [ (pxcor > (set-x-size) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor > (set-y-size) / 2 or pycor = (set-y-size - 1) / 2)]  [set paddock-b 1]
@@ -197,15 +198,14 @@ to setup-grassland
     ask patches with [ (pxcor < (set-x-size) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor < (set-y-size) / 2 or pycor = (set-y-size - 1) / 2)] [set paddock-d 1]
 
 
-
-  ask patches with [pcolor = white] [set wall 1]                          ;; MATERIALIZANDO EL VALLADO ####################################################################################################################
-  ask patches with [wall = 1] [
-    set paddock-a 0
-    set paddock-b 0
-    set paddock-c 0
-    set paddock-d 0
+    ask patches with [pcolor = white] [set wall 1]                          ;; MATERIALIZANDO EL VALLADO ####################################################################################################################
+    ask patches with [wall = 1] [
+      set paddock-a 0
+      set paddock-b 0
+      set paddock-c 0
+      set paddock-d 0
+    ]
   ]
-
 
   ask patches with [wall = 0 ] [
     set grass-quality set-grass-quality
@@ -234,42 +234,64 @@ to setup-grassland
 end
 
 to setup-livestock
-  create-cows initial-num-cows [
-    set shape "cow"
-    set live-weight initial-weight-cows                                 ;; the initial weight is set by the observer in the interface
-    set initial-weight initial-weight-cows
-    set mortality-rate natural-mortality-rate
-    set DDMC 0
-    set age cow-age-min
-    setxy random-pxcor random-pycor
-    become-cow ]
+  if (spatial-management = "open access") [   ;; REGLAS PARA CREACION VACAS EN "OPEN ACCESS" ####################################################################################################################
+    create-cows initial-num-cows [
+      set shape "cow"
+      set live-weight initial-weight-cows                                 ;; the initial weight is set by the observer in the interface
+      set initial-weight initial-weight-cows
+      set mortality-rate natural-mortality-rate
+      set DDMC 0
+      set age cow-age-min
+      setxy random-pxcor random-pycor
+      become-cow ]
 
-  create-cows initial-num-heifers [
-    set shape "cow"
-    set live-weight initial-weight-heifers                              ;; the initial weight is set by the observer in the interface
-    set initial-weight initial-weight-heifers
-    set mortality-rate natural-mortality-rate
-    set DDMC 0
-    set age heifer-age-min
-    setxy random-pxcor random-pycor
-    become-heifer ]
+    create-cows initial-num-heifers [
+      set shape "cow"
+      set live-weight initial-weight-heifers                              ;; the initial weight is set by the observer in the interface
+      set initial-weight initial-weight-heifers
+      set mortality-rate natural-mortality-rate
+      set DDMC 0
+      set age heifer-age-min
+      setxy random-pxcor random-pycor
+      become-heifer ]
 
-  create-cows initial-num-steers [
-    set shape "cow"
-    set live-weight initial-weight-steers                               ;; the initial weight is set by the observer in the interface
-    set initial-weight initial-weight-steers
-    set mortality-rate natural-mortality-rate
-    set DDMC 0
-    set age heifer-age-min
-    setxy random-pxcor random-pycor
-    become-steer ]
+    create-cows initial-num-steers [
+      set shape "cow"
+      set live-weight initial-weight-steers                               ;; the initial weight is set by the observer in the interface
+      set initial-weight initial-weight-steers
+      set mortality-rate natural-mortality-rate
+      set DDMC 0
+      set age heifer-age-min
+      setxy random-pxcor random-pycor
+      become-steer ]
+  ]
 
-    ask cows [
+  if (spatial-management = "rotational grazing") [   ;; REGLAS PARA CREACION VACAS EN "ROTATIONAL GRAZING" ####################################################################################################################
+    if (starting-paddock = "paddock a") [ask n-of initial-num-cows (patches with [paddock-a = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min become-cow]]]
+    if (starting-paddock = "paddock a") [ask n-of initial-num-heifers (patches with [paddock-a = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min become-heifer]]]
+    if (starting-paddock = "paddock a") [ask n-of initial-num-steers (patches with [paddock-a = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min become-steer]]]
+
+    if (starting-paddock = "paddock b") [ask n-of initial-num-cows (patches with [paddock-b = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min become-cow]]]
+    if (starting-paddock = "paddock b") [ask n-of initial-num-heifers (patches with [paddock-b = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min become-heifer]]]
+    if (starting-paddock = "paddock b") [ask n-of initial-num-steers (patches with [paddock-b = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min become-steer]]]
+
+    if (starting-paddock = "paddock c") [ask n-of initial-num-cows (patches with [paddock-c = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min become-cow]]]
+    if (starting-paddock = "paddock c") [ask n-of initial-num-heifers (patches with [paddock-c = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min become-heifer]]]
+    if (starting-paddock = "paddock c") [ask n-of initial-num-steers (patches with [paddock-c = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min become-steer]]]
+
+    if (starting-paddock = "paddock d") [ask n-of initial-num-cows (patches with [paddock-d = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min become-cow]]]
+    if (starting-paddock = "paddock d") [ask n-of initial-num-heifers (patches with [paddock-d = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min become-heifer]]]
+    if (starting-paddock = "paddock d") [ask n-of initial-num-steers (patches with [paddock-d = 1]) [sprout-cows 1 [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min become-steer]]]
+  ]
+
+  ask cows [
     set live-weight-gain-history-season []
     set live-weight-gain-historyXticks-season []
     set live-weight-gain-history-year []
     set live-weight-gain-historyXticks-year []
   ]
+
+
   end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1891,6 +1913,16 @@ spatial-management
 spatial-management
 "open access" "rotational grazing"
 1
+
+CHOOSER
+228
+283
+366
+328
+starting-paddock
+starting-paddock
+"paddock a" "paddock b" "paddock c" "paddock d"
+0
 
 @#$#@#$#@
 ## WHAT IS IT?
