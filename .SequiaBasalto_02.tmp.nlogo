@@ -290,9 +290,7 @@ to setup-livestock
     set live-weight-gain-history-year []
     set live-weight-gain-historyXticks-year []
   ]
-
-
-  end
+end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Main procedures
@@ -386,7 +384,57 @@ to move                                                                 ;; once 
       [uphill grass-height]
       [move-to one-of neighbors]]
      ]
+
+  if (spatial-management = "rotational grazing") [
+  if season-days >= 92 [
+    ask cows
+    [ifelse paddock-a = 1
+      [let next-paddock one-of patches with [paddock-b = 1] move-to next-paddock]
+      [ifelse paddock-b = 1
+        [let next-paddock one-of patches with [paddock-c = 1] move-to next-paddock]
+        [ifelse paddock-c = 1
+          [let next-paddock one-of patches with [paddock-d = 1] move-to next-paddock]
+          [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]
+          ]
+        ]
+      ]
+    ]
+  ]
+
+
+
+
 end
+
+
+
+to move2                                                                 ;; once the grass height of each patch is updated, if the grass height in a patch is minor than 5 cm (the minimum grass height that maintains the live weight of a cow), the cows moves to another patch
+  ask cows [
+    set heading random 360
+    ifelse [pcolor] of patch-ahead 1 = white
+    [ set heading random 360 ]   ;; We see a blue patch in front of us. Turn a random amount.
+    [ fd 1 ]                  ;; Otherwise, it is safe to move forward.
+     ]
+
+  if (spatial-management = "rotational grazing") [
+  if season-days >= 92 [
+    ask cows
+    [ifelse paddock-a = 1
+      [let next-paddock one-of patches with [paddock-b = 1] move-to next-paddock]
+      [ifelse paddock-b = 1
+        [let next-paddock one-of patches with [paddock-c = 1] move-to next-paddock]
+        [ifelse paddock-c = 1
+          [let next-paddock one-of patches with [paddock-d = 1] move-to next-paddock]
+          [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]
+          ]
+        ]
+      ]
+    ]
+  ]
+
+end
+
+
 
 to kgDM/cow                                                             ;; after the cows have moved to a new patch, each cow calculates the amount of Kg of DM it will receive.
   ask cows [set DM-kg-cow 0]
@@ -715,11 +763,11 @@ to-report crop-efficiency                                               ;; outpu
 GRAPHICS-WINDOW
 387
 111
-747
-472
+750
+475
 -1
 -1
-32.3
+14.2
 1
 10
 1
@@ -730,9 +778,9 @@ GRAPHICS-WINDOW
 1
 1
 0
-10
+24
 0
-10
+24
 1
 1
 1
@@ -1029,7 +1077,7 @@ initial-num-heifers
 initial-num-heifers
 0
 1000
-5.0
+0.0
 1
 1
 NIL
@@ -1387,7 +1435,7 @@ initial-num-steers
 initial-num-steers
 0
 1000
-5.0
+0.0
 1
 1
 NIL
@@ -1417,7 +1465,7 @@ set-X-size
 set-X-size
 1
 99
-11.0
+25.0
 2
 1
 hm
@@ -1432,7 +1480,7 @@ set-Y-size
 set-Y-size
 1
 99
-11.0
+25.0
 2
 1
 hm
@@ -1915,10 +1963,10 @@ spatial-management
 1
 
 CHOOSER
-228
-283
-366
-328
+151
+200
+289
+245
 starting-paddock
 starting-paddock
 "paddock a" "paddock b" "paddock c" "paddock d"
