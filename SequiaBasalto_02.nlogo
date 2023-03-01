@@ -797,12 +797,12 @@ to-report crop-efficiency                                               ;; outpu
 @#$#@#$#@
 GRAPHICS-WINDOW
 387
-111
-839
-564
+116
+1086
+816
 -1
 -1
-17.76
+27.64
 1
 10
 1
@@ -1908,10 +1908,10 @@ NIL
 HORIZONTAL
 
 PLOT
-842
-167
-1164
-388
+1095
+168
+1417
+389
 Average of grass-height (GH)_
 Days
 cm
@@ -1926,10 +1926,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot mean [grass-height] of patches with [wall = 0]"
 
 PLOT
-1167
-168
-1502
-388
+1420
+169
+1755
+389
 Grass height distribution
 cm
 nº patches
@@ -1944,10 +1944,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [grass-height] of patches with [wall = 0]"
 
 MONITOR
-843
-120
-958
-165
+1096
+114
+1211
+159
 Average GH (cm)_
 mean [grass-height] of patches with [wall = 0]
 3
@@ -1955,10 +1955,10 @@ mean [grass-height] of patches with [wall = 0]
 11
 
 MONITOR
-1168
-121
-1373
-166
+1421
+122
+1626
+167
 Grass quality of patches (average)
 mean [grass-quality] of patches with [wall = 0]
 17
@@ -1966,10 +1966,10 @@ mean [grass-quality] of patches with [wall = 0]
 11
 
 MONITOR
-1168
-389
-1315
-434
+1421
+390
+1568
+435
 min grass-height of patches
 min [grass-height] of patches with [wall = 0]
 17
@@ -1977,10 +1977,10 @@ min [grass-height] of patches with [wall = 0]
 11
 
 MONITOR
-1332
-389
-1503
-434
+1585
+390
+1756
+435
 max grass-height of patches
 max [grass-height] of patches with [wall = 0]
 17
