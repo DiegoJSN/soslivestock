@@ -235,35 +235,10 @@ end
 
 to setup-livestock
   if (spatial-management = "open access") [   ;; REGLAS PARA CREACION VACAS EN "OPEN ACCESS" ####################################################################################################################
-    create-cows initial-num-cows [
-      set shape "cow"
-      set live-weight initial-weight-cows                                 ;; the initial weight is set by the observer in the interface
-      set initial-weight initial-weight-cows
-      set mortality-rate natural-mortality-rate
-      set DDMC 0
-      set age cow-age-min
-      setxy random-pxcor random-pycor
-      become-cow ]
 
-    create-cows initial-num-heifers [
-      set shape "cow"
-      set live-weight initial-weight-heifers                              ;; the initial weight is set by the observer in the interface
-      set initial-weight initial-weight-heifers
-      set mortality-rate natural-mortality-rate
-      set DDMC 0
-      set age heifer-age-min
-      setxy random-pxcor random-pycor
-      become-heifer ]
-
-    create-cows initial-num-steers [
-      set shape "cow"
-      set live-weight initial-weight-steers                               ;; the initial weight is set by the observer in the interface
-      set initial-weight initial-weight-steers
-      set mortality-rate natural-mortality-rate
-      set DDMC 0
-      set age heifer-age-min
-      setxy random-pxcor random-pycor
-      become-steer ]
+    create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min setxy random-pxcor random-pycor become-cow ]
+    create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min setxy random-pxcor random-pycor become-heifer ]
+    create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min setxy random-pxcor random-pycor become-steer ]
   ]
 
   if (spatial-management = "rotational grazing") [   ;; REGLAS PARA CREACION VACAS EN "ROTATIONAL GRAZING" ####################################################################################################################
@@ -383,7 +358,7 @@ to move                                                                 ;; once 
     if grass-height < 5
     [ifelse random-float 1 < perception
       [uphill grass-height]
-      [move-to one-of neighbors]]
+      [move-to one-of neighbors with [wall = 0]]]
      ]
 
   if (spatial-management = "rotational grazing") [                      ;; REGLAS PARA EL MOVIMIENTO DE LAS VACAS EN "ROTATIONAL GRAZING" ####################################################################################################################
@@ -478,7 +453,6 @@ to reproduce                                                            ;; this 
 
     if pregnancy-time = gestation-period [
       hatch-cows 1 [
-        setxy random-pxcor random-pycor
         become-born-calf]
     set pregnant? false
     set pregnancy-time 0
@@ -1790,11 +1764,11 @@ kg
 0.0
 10.0
 true
-false
+true
 "" ""
 PENS
 "Total DM" 1.0 0 -16777216 true "" "plot dmgr"
-"Total DDMC" 1.0 0 -7500403 true "" "plot sum [DDMC] of cows"
+"Total DDMC" 1.0 0 -2674135 true "" "plot sum [DDMC] of cows"
 
 MONITOR
 766
@@ -1815,7 +1789,7 @@ CHOOSER
 grass-quality-distribution
 grass-quality-distribution
 "homogeneus" "uniform" "normal" "normal-restricted" "exponential" "exponential-restricted"
-2
+3
 
 SLIDER
 148

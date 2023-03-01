@@ -235,35 +235,10 @@ end
 
 to setup-livestock
   if (spatial-management = "open access") [   ;; REGLAS PARA CREACION VACAS EN "OPEN ACCESS" ####################################################################################################################
-    create-cows initial-num-cows [
-      set shape "cow"
-      set live-weight initial-weight-cows                                 ;; the initial weight is set by the observer in the interface
-      set initial-weight initial-weight-cows
-      set mortality-rate natural-mortality-rate
-      set DDMC 0
-      set age cow-age-min
-      setxy random-pxcor random-pycor
-      become-cow ]
 
-    create-cows initial-num-heifers [
-      set shape "cow"
-      set live-weight initial-weight-heifers                              ;; the initial weight is set by the observer in the interface
-      set initial-weight initial-weight-heifers
-      set mortality-rate natural-mortality-rate
-      set DDMC 0
-      set age heifer-age-min
-      setxy random-pxcor random-pycor
-      become-heifer ]
-
-    create-cows initial-num-steers [
-      set shape "cow"
-      set live-weight initial-weight-steers                               ;; the initial weight is set by the observer in the interface
-      set initial-weight initial-weight-steers
-      set mortality-rate natural-mortality-rate
-      set DDMC 0
-      set age heifer-age-min
-      setxy random-pxcor random-pycor
-      become-steer ]
+    create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min setxy random-pxcor random-pycor become-cow ]
+    create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min setxy random-pxcor random-pycor become-heifer ]
+    create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min setxy random-pxcor random-pycor become-steer ]
   ]
 
   if (spatial-management = "rotational grazing") [   ;; REGLAS PARA CREACION VACAS EN "ROTATIONAL GRAZING" ####################################################################################################################
@@ -383,7 +358,7 @@ to move                                                                 ;; once 
     if grass-height < 5
     [ifelse random-float 1 < perception
       [uphill grass-height]
-      [move-to one-of neighbors]]
+      [move-to one-of neighbors with [wall = 0]]]
      ]
 
   if (spatial-management = "rotational grazing") [                      ;; REGLAS PARA EL MOVIMIENTO DE LAS VACAS EN "ROTATIONAL GRAZING" ####################################################################################################################
@@ -478,7 +453,7 @@ to reproduce                                                            ;; this 
 
     if pregnancy-time = gestation-period [
       hatch-cows 1 [
-        setxy random-pxcor random-pycor
+
         become-born-calf]
     set pregnant? false
     set pregnancy-time 0
@@ -738,8 +713,8 @@ to-report crop-efficiency                                               ;; outpu
 GRAPHICS-WINDOW
 387
 111
-764
-665
+835
+560
 -1
 -1
 17.6
@@ -753,9 +728,9 @@ GRAPHICS-WINDOW
 1
 1
 0
-20
+24
 0
-30
+24
 1
 1
 1
@@ -1440,7 +1415,7 @@ set-X-size
 set-X-size
 1
 99
-21.0
+25.0
 2
 1
 hm
@@ -1455,7 +1430,7 @@ set-Y-size
 set-Y-size
 1
 99
-31.0
+25.0
 2
 1
 hm
@@ -1790,17 +1765,17 @@ kg
 0.0
 10.0
 true
-false
+true
 "" ""
 PENS
 "Total DM" 1.0 0 -16777216 true "" "plot dmgr"
-"Total DDMC" 1.0 0 -7500403 true "" "plot sum [DDMC] of cows"
+"Total DDMC" 1.0 0 -2674135 true "" "plot sum [DDMC] of cows"
 
 MONITOR
-770
-70
-907
-115
+766
+65
+903
+110
 Total number of cattle_
 count cows
 17
@@ -1815,7 +1790,7 @@ CHOOSER
 grass-quality-distribution
 grass-quality-distribution
 "homogeneus" "uniform" "normal" "normal-restricted" "exponential" "exponential-restricted"
-0
+3
 
 SLIDER
 148
@@ -1848,10 +1823,10 @@ NIL
 HORIZONTAL
 
 PLOT
-770
-177
-1092
-398
+842
+167
+1164
+388
 Average of grass-height (GH)_
 Days
 cm
@@ -1866,10 +1841,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot mean [grass-height] of patches with [wall = 0]"
 
 PLOT
-1095
-178
-1430
-398
+1167
+168
+1502
+388
 Grass height distribution
 cm
 nº patches
@@ -1884,10 +1859,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [grass-height] of patches with [wall = 0]"
 
 MONITOR
-771
-130
-886
-175
+843
+120
+958
+165
 Average GH (cm)_
 mean [grass-height] of patches with [wall = 0]
 3
@@ -1895,10 +1870,10 @@ mean [grass-height] of patches with [wall = 0]
 11
 
 MONITOR
-1096
-131
-1301
-176
+1168
+121
+1373
+166
 Grass quality of patches (average)
 mean [grass-quality] of patches with [wall = 0]
 17
@@ -1906,10 +1881,10 @@ mean [grass-quality] of patches with [wall = 0]
 11
 
 MONITOR
-1096
-399
-1243
-444
+1168
+389
+1315
+434
 min grass-height of patches
 min [grass-height] of patches with [wall = 0]
 17
@@ -1917,10 +1892,10 @@ min [grass-height] of patches with [wall = 0]
 11
 
 MONITOR
-1260
-399
-1431
-444
+1332
+389
+1503
+434
 max grass-height of patches
 max [grass-height] of patches with [wall = 0]
 17
@@ -1945,7 +1920,7 @@ CHOOSER
 starting-paddock
 starting-paddock
 "paddock a" "paddock b" "paddock c" "paddock d"
-3
+0
 
 MONITOR
 387
