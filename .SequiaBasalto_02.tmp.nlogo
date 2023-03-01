@@ -77,7 +77,11 @@ patches-own [
 cows-own [
   age                                                                   ;; defines the age of each animal (in days)
   born-calf?                                                            ;; boolean variable that determines the "born-calf" age class of the livestock life cycle
+  born-calf-female?
+  born-calf-male?
   weaned-calf?                                                          ;; boolean variable that determines the "weaned-calf" age class of the livestock life cycle
+  weaned-calf-female?
+  weaned-calf-male?
   heifer?                                                               ;; boolean variable that determines the "heifer" age class of the livestock life cycle
   steer?                                                                ;; boolean variable that determines the "steer" age class of the livestock life cycle
   cow?                                                                  ;; boolean variable that determines the "cow" age class of the livestock life cycle
@@ -358,17 +362,10 @@ to move                                                                 ;; once 
     if grass-height < 5
     [ifelse random-float 1 < perception
       [uphill grass-height]
-
-
-
-       ;; ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-      [move-to one-of neighbors with [wall = 0]]]                       ;; ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-      ;[move-to one-of neighbors]]
-     ;; ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-
-
-
-     ]
+      [move-to one-of neighbors with [wall = 0]
+      ]
+    ]
+  ]
 
   if (spatial-management = "rotational grazing") [                      ;; REGLAS PARA EL MOVIMIENTO DE LAS VACAS EN "ROTATIONAL GRAZING" ####################################################################################################################
   if season-days >= 92 [
@@ -391,7 +388,6 @@ to kgDM/cow                                                             ;; after
   ask cows [set DM-kg-cow 0]
 
   ask patches [
-
   ask cows-here with [weaned-calf? or heifer? or steer? or cow? or cow-with-calf?] [set DM-kg-cow DM-kg-ha / count cows-here with [weaned-calf? or heifer? or steer? or cow? or cow-with-calf?] ] ;; LOS BORN-CALF NO SE ALIMENTAN DE PASTO. POR TANTO, EL REPARTO DEL RECURSO SE HACE SIN TENER EN CUENTA A LOS BORN-CALF ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
   ]
 
@@ -425,27 +421,22 @@ ask cows [
   ]
 end
 
-to grow-livestock                                                       ;; this procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactating time of animals
+to grow-livestock                                                      ;; this procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactating time of animals
 ask cows [
-  set age age + days-per-tick
-  if age > cow-age-max [die]
-   ifelse live-weight < min-weight
+    set age age + days-per-tick
+    if age > cow-age-max [die]
+    ifelse live-weight < min-weight
     [set mortality-rate except-mort-rate]
     [set mortality-rate natural-mortality-rate]
     if random-float 1 < mortality-rate [die]
 
-  if age = weaned-calf-age-min [become-weaned-calf]
-
-  if age = heifer-age-min [
-    ifelse random-float 1 < 0.5
-      [become-heifer]
-      [become-steer]]
-
-  if (heifer? = true) and (age >= cow-age-min) and (live-weight >= 280 ) [become-cow]
-
-  if cow-with-calf? = true [set lactating-time lactating-time + days-per-tick]
-
-  if lactating-time = lactation-period [become-cow]
+    if (born-calf-female? = true) and (age = weaned-calf-age-min) [become-weaned-calf-female]
+    if (born-calf-male? = true) and (age = weaned-calf-age-min) [become-weaned-calf-male]
+    if (weaned-calf-female? = true) and (age = heifer-age-min) [become-heifer]
+    if (weaned-calf-male? = true) and (age = heifer-age-min) [become-steer]
+    if (heifer? = true) and (age >= cow-age-min) and (live-weight >= 280 ) [become-cow]
+    if cow-with-calf? = true [set lactating-time lactating-time + days-per-tick]
+    if lactating-time = lactation-period [become-cow]
   ]
 end
 
@@ -459,8 +450,10 @@ to reproduce                                                            ;; this 
 
     if pregnancy-time = gestation-period [
       hatch-cows 1 [
-        move-to one-of neighbors with [wall = 0]                                 ;; ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-        become-born-calf]
+        move-to one-of neighbors with [wall = 0]
+        ifelse random-float 1 < 0.5
+      [become-born-calf-female]
+      [become-born-calf-male]]
     set pregnant? false
     set pregnancy-time 0
     become-cow-with-calf]
@@ -480,9 +473,53 @@ end
 ;; This section of the code sets up the parameters that define each of the age classes
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to become-born-calf
+to become-born-calf-female                           ;;  ####################################################################################################################
   set born-calf? true
+
+  set born-calf-female? true
+  set born-calf-male? false
+
   set weaned-calf? false
+
+  set weaned-calf-female? false
+  set weaned-calf-male? false
+
+  set heifer? false
+  set steer? false
+  set cow? false
+  set cow-with-calf? false
+  set pregnant? false
+  set color cyan
+  set age 0
+  set initial-weight 40
+  set live-weight initial-weight
+  ;set animal-units 0.2
+  set animal-units live-weight / set-1-AU
+  ;set min-weight 0
+  ;set min-weight set-MW-1-AU * 0.2
+  set size 0.3
+  ;set size animal-units
+  set natural-mortality-rate 0.000054
+  set except-mort-rate 0
+  set category-coef 1
+  set pregnancy-rate 0
+  set coefA 0
+  set coefB 0
+  set pregnancy-time 0
+  set lactating-time 0
+end
+
+to become-born-calf-male                           ;;  ####################################################################################################################
+  set born-calf? true
+
+  set born-calf-female? false
+  set born-calf-male? true
+
+  set weaned-calf? false
+
+  set weaned-calf-female? false
+  set weaned-calf-male? false
+
   set heifer? false
   set steer? false
   set cow? false
@@ -508,9 +545,48 @@ to become-born-calf
   set lactating-time 0
 end
 
-to become-weaned-calf
+
+to become-weaned-calf-female                           ;;  ####################################################################################################################
   set born-calf? false
+
+  set born-calf-female? false
+  set born-calf-male? false
+
   set weaned-calf? true
+
+  set weaned-calf-female? true
+  set weaned-calf-male? false
+
+  set heifer? false
+  set steer? false
+  set cow? false
+  set cow-with-calf? false
+  set color yellow - 2
+  ;set animal-units 0.5
+  set animal-units live-weight / set-1-AU
+  set min-weight 60
+  ;set min-weight set-MW-1-AU * 0.5
+  set size 0.5
+  ;set size animal-units
+  set natural-mortality-rate 0.000054
+  set except-mort-rate 0.23
+  set category-coef 1
+  set pregnancy-rate 0
+  set coefA 0
+  set coefB 0
+  set pregnancy-time 0
+  set lactating-time 0
+end
+
+
+to become-weaned-calf-male                           ;;  ####################################################################################################################
+  set born-calf? false
+
+  set born-calf-female? false
+  set born-calf-male? false
+  set weaned-calf? true
+  set weaned-calf-female? false
+  set weaned-calf-male? true
   set heifer? false
   set steer? false
   set cow? false
@@ -534,7 +610,11 @@ end
 
 to become-heifer
   set born-calf? false
+  set born-calf-female? false
+  set born-calf-male? false
   set weaned-calf? false
+  set weaned-calf-female? false
+  set weaned-calf-male? false
   set heifer? true
   set steer? false
   set cow? false
@@ -557,7 +637,11 @@ end
 
 to become-steer
   set born-calf? false
+  set born-calf-female? false
+  set born-calf-male? false
   set weaned-calf? false
+  set weaned-calf-female? false
+  set weaned-calf-male? false
   set heifer? false
   set steer? true
   set cow? false
@@ -581,7 +665,11 @@ end
 
 to become-cow
   set born-calf? false
+  set born-calf-female? false
+  set born-calf-male? false
   set weaned-calf? false
+  set weaned-calf-female? false
+  set weaned-calf-male? false
   set heifer? false
   set steer? false
   set cow? true
@@ -605,7 +693,11 @@ end
 
 to become-cow-with-calf
   set born-calf? false
+  set born-calf-female? false
+  set born-calf-male? false
   set weaned-calf? false
+  set weaned-calf-female? false
+  set weaned-calf-male? false
   set heifer? false
   set steer? false
   set cow? false
@@ -719,11 +811,11 @@ to-report crop-efficiency                                               ;; outpu
 GRAPHICS-WINDOW
 387
 111
-623
-348
+839
+564
 -1
 -1
-17.6
+17.76
 1
 10
 1
@@ -734,9 +826,9 @@ GRAPHICS-WINDOW
 1
 1
 0
-12
+24
 0
-12
+24
 1
 1
 1
@@ -786,7 +878,7 @@ initial-num-cows
 initial-num-cows
 0
 1000
-10.0
+5.0
 1
 1
 cows
@@ -1033,7 +1125,7 @@ initial-num-heifers
 initial-num-heifers
 0
 1000
-10.0
+5.0
 1
 1
 NIL
@@ -1391,7 +1483,7 @@ initial-num-steers
 initial-num-steers
 0
 1000
-10.0
+5.0
 1
 1
 NIL
@@ -1421,7 +1513,7 @@ set-X-size
 set-X-size
 1
 99
-13.0
+25.0
 2
 1
 hm
@@ -1436,7 +1528,7 @@ set-Y-size
 set-Y-size
 1
 99
-13.0
+25.0
 2
 1
 hm
@@ -1686,7 +1778,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-30.0
+100.0
 1
 1
 years
