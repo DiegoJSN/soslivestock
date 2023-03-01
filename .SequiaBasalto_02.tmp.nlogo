@@ -305,7 +305,7 @@ to go
     if year-days = 368 [set live-weight-gain-history-year []]
   ]
 
-  if simulation-time = STOP-SIMULATION-AT [stop]                        ;; the observer can decide whether the simulation should run indefinitely (STOP-SIMULATION-AT 0 days) or after X days
+  if simulation-time / 368 = STOP-SIMULATION-AT [stop]                        ;; the observer can decide whether the simulation should run indefinitely (STOP-SIMULATION-AT 0 days) or after X days
 
   grow-grass
   move
@@ -358,7 +358,16 @@ to move                                                                 ;; once 
     if grass-height < 5
     [ifelse random-float 1 < perception
       [uphill grass-height]
-      [move-to one-of neighbors with [wall = 0]]]
+
+
+
+       ;; ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+      [move-to one-of neighbors with [wall = 0]]]                       ;; ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+      ;[move-to one-of neighbors]]
+     ;; ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+
+
+
      ]
 
   if (spatial-management = "rotational grazing") [                      ;; REGLAS PARA EL MOVIMIENTO DE LAS VACAS EN "ROTATIONAL GRAZING" ####################################################################################################################
@@ -376,17 +385,14 @@ to move                                                                 ;; once 
       ]
     ]
   ]
-
-
-
-
 end
 
 to kgDM/cow                                                             ;; after the cows have moved to a new patch, each cow calculates the amount of Kg of DM it will receive.
   ask cows [set DM-kg-cow 0]
 
   ask patches [
-   ask cows-here [set DM-kg-cow DM-kg-ha / count cows-here]
+
+  ask cows-here with [weaned-calf? or heifer? or steer? or cow? or cow-with-calf?] [set DM-kg-cow DM-kg-ha / count cows-here with [weaned-calf? or heifer? or steer? or cow? or cow-with-calf?] ] ;; LOS BORN-CALF NO SE ALIMENTAN DE PASTO. POR TANTO, EL REPARTO DEL RECURSO SE HACE SIN TENER EN CUENTA A LOS BORN-CALF ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
   ]
 
    ask cows [set gh-individual ((DM-kg-cow) / DM-cm-ha )]               ;; for its use in the following procedures, this amount of DM (kg) is converted back to grass height (cm) (important: this is not the grass height the animal consumes!!)
@@ -453,7 +459,7 @@ to reproduce                                                            ;; this 
 
     if pregnancy-time = gestation-period [
       hatch-cows 1 [
-
+        move-to one-of neighbors with [wall = 0]                                 ;; ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
         become-born-calf]
     set pregnant? false
     set pregnancy-time 0
@@ -713,8 +719,8 @@ to-report crop-efficiency                                               ;; outpu
 GRAPHICS-WINDOW
 387
 111
-835
-560
+623
+348
 -1
 -1
 17.6
@@ -728,9 +734,9 @@ GRAPHICS-WINDOW
 1
 1
 0
-24
+12
 0
-24
+12
 1
 1
 1
@@ -1415,7 +1421,7 @@ set-X-size
 set-X-size
 1
 99
-25.0
+13.0
 2
 1
 hm
@@ -1430,7 +1436,7 @@ set-Y-size
 set-Y-size
 1
 99
-25.0
+13.0
 2
 1
 hm
@@ -1674,16 +1680,16 @@ PR of cows (%)
 SLIDER
 192
 12
-371
+372
 45
 STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
-7360
-0.0
+100
+30.0
 1
 1
-days
+years
 HORIZONTAL
 
 PLOT
