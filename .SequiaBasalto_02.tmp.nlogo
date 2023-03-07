@@ -243,10 +243,10 @@ to go
   set simulation-time simulation-time + days-per-tick
 
   set season-days season-days + days-per-tick
-  if season-days >= 93 [set season-days 1]                              ;; his restart important to make sure that the "live-weight-gain-history-season" variable works, which is used in the "ILWG_SEASON" report
+  if season-days >= 93 [set season-days 1]                              ;; this restart important to make sure that the "live-weight-gain-history-season" variable works, which is used in the "ILWG_SEASON" report
 
   set year-days year-days + days-per-tick
-  if year-days >= 369 [set year-days 1]                                 ;; This restart important to make sure that the "live-weight-gain-history-year" variable works, which is used in the "ILWG_YEAR" report
+  if year-days >= 369 [set year-days 1]                                 ;; this restart important to make sure that the "live-weight-gain-history-year" variable works, which is used in the "ILWG_YEAR" report
 
   ask cows [                                                            ;; in this line, the average live weight gain of the cows during the season (from day 1 to day 92 and in between) is calculated
     set live-weight-gain-history-season fput live-weight-gain live-weight-gain-history-season
@@ -1122,13 +1122,13 @@ true
 true
 "" ""
 PENS
-"Born-calf" 1.0 0 -13791810 true "" "plot (mean [live-weight] of cows with [born-calf?] - (((mean [live-weight] of cows with [born-calf?]) * set-MW-1-AU) / set-1-AU)) / 40"
-"Weaned-calf" 1.0 0 -955883 true "" "plot (mean [live-weight] of cows with [weaned-calf?] - (((mean [live-weight] of cows with [weaned-calf?]) * set-MW-1-AU) / set-1-AU)) / 40"
-"Heifer" 1.0 0 -2064490 true "" "plot (mean [live-weight] of cows with [heifer?] - (((mean [live-weight] of cows with [heifer?]) * set-MW-1-AU) / set-1-AU)) / 40"
-"Steer" 1.0 0 -2674135 true "" "plot (mean [live-weight] of cows with [steer?] - (((mean [live-weight] of cows with [steer?]) * set-MW-1-AU) / set-1-AU)) / 40"
-"Cow" 1.0 0 -6459832 true "" "plot (mean [live-weight] of cows with [cow?] - (((mean [live-weight] of cows with [cow?]) * set-MW-1-AU) / set-1-AU)) / 40"
-"Cow-with-calf" 1.0 0 -5825686 true "" "plot (mean [live-weight] of cows with [cow-with-calf?] - (((mean [live-weight] of cows with [cow-with-calf?]) * set-MW-1-AU) / set-1-AU)) / 40"
-"Average BCS" 1.0 0 -16777216 true "" "plot (mean [live-weight] of cows - (((mean [live-weight] of cows) * set-MW-1-AU) / set-1-AU)) / 40"
+"Born-calf" 1.0 0 -13791810 true "" "plot (mean [live-weight] of cows with [born-calf?] - set-MW-1-AU) / 40"
+"Weaned-calf" 1.0 0 -955883 true "" "plot (mean [live-weight] of cows with [weaned-calf?] - set-MW-1-AU) / 40"
+"Heifer" 1.0 0 -2064490 true "" "plot (mean [live-weight] of cows with [heifer?] - set-MW-1-AU) / 40"
+"Steer" 1.0 0 -2674135 true "" "plot (mean [live-weight] of cows with [steer?] - set-MW-1-AU) / 40"
+"Cow" 1.0 0 -6459832 true "" "plot (mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40"
+"Cow-with-calf" 1.0 0 -5825686 true "" "plot (mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40"
+"Average BCS" 1.0 0 -16777216 true "" "plot (mean [live-weight] of cows - set-MW-1-AU) / 40"
 
 MONITOR
 1772
@@ -1136,7 +1136,7 @@ MONITOR
 1903
 412
 Average BCS (points)
-;(mean [live-weight] of cows - mean [min-weight] of cows) / 40\n(mean [live-weight] of cows - (((mean [live-weight] of cows) * set-MW-1-AU) / set-1-AU)) / 40
+;(mean [live-weight] of cows - mean [min-weight] of cows) / 40\n;(mean [live-weight] of cows - (((mean [live-weight] of cows) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows - set-MW-1-AU) / 40
 2
 1
 11
@@ -1147,7 +1147,7 @@ MONITOR
 1837
 323
 BCS of cows (points)
-;(mean [live-weight] of cows with [cow?] - mean [min-weight] of cows with [cow?]) / 40\n(mean [live-weight] of cows with [cow?] - (((mean [live-weight] of cows with [cow?]) * set-MW-1-AU) / set-1-AU)) / 40
+;(mean [live-weight] of cows with [cow?] - mean [min-weight] of cows with [cow?]) / 40\n;(mean [live-weight] of cows with [cow?] - (((mean [live-weight] of cows with [cow?]) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40
 2
 1
 11
@@ -1158,7 +1158,7 @@ MONITOR
 1837
 368
 BCS of heifers (points)
-;(mean [live-weight] of cows with [heifer?] - mean [min-weight] of cows with [heifer?]) / 40\n(mean [live-weight] of cows with [heifer?] - (((mean [live-weight] of cows with [heifer?]) * set-MW-1-AU) / set-1-AU)) / 40
+;(mean [live-weight] of cows with [heifer?] - mean [min-weight] of cows with [heifer?]) / 40\n;(mean [live-weight] of cows with [heifer?] - (((mean [live-weight] of cows with [heifer?]) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows with [heifer?] - set-MW-1-AU) / 40
 2
 1
 11
@@ -1256,7 +1256,7 @@ MONITOR
 1862
 278
 BCS of cows-with-calf (points)
-;(mean [live-weight] of cows with [cow-with-calf?] - mean [min-weight] of cows with [cow-with-calf?]) / 40\n(mean [live-weight] of cows with [cow-with-calf?] - (((mean [live-weight] of cows with [cow-with-calf?]) * set-MW-1-AU) / set-1-AU)) / 40
+;(mean [live-weight] of cows with [cow-with-calf?] - mean [min-weight] of cows with [cow-with-calf?]) / 40\n;(mean [live-weight] of cows with [cow-with-calf?] - (((mean [live-weight] of cows with [cow-with-calf?]) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40
 2
 1
 11
@@ -1267,7 +1267,7 @@ MONITOR
 2003
 322
 BCS of weaned-calf (points)
-;(mean [live-weight] of cows with [weaned-calf?] - mean [min-weight] of cows with [weaned-calf?]) / 40\n(mean [live-weight] of cows with [weaned-calf?] - (((mean [live-weight] of cows with [weaned-calf?]) * set-MW-1-AU) / set-1-AU)) / 40
+;(mean [live-weight] of cows with [weaned-calf?] - mean [min-weight] of cows with [weaned-calf?]) / 40\n;(mean [live-weight] of cows with [weaned-calf?] - (((mean [live-weight] of cows with [weaned-calf?]) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows with [weaned-calf?] - set-MW-1-AU) / 40
 2
 1
 11
@@ -1278,7 +1278,7 @@ MONITOR
 2003
 367
 BCS of steer (points)
-;(mean [live-weight] of cows with [steer?] - mean [min-weight] of cows with [steer?]) / 40\n(mean [live-weight] of cows with [steer?] - (((mean [live-weight] of cows with [steer?]) * set-MW-1-AU) / set-1-AU)) / 40
+;(mean [live-weight] of cows with [steer?] - mean [min-weight] of cows with [steer?]) / 40\n;(mean [live-weight] of cows with [steer?] - (((mean [live-weight] of cows with [steer?]) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows with [steer?] - set-MW-1-AU) / 40
 2
 1
 11
@@ -1289,7 +1289,7 @@ MONITOR
 2003
 278
 BCS of born-calf (points)
-;(mean [live-weight] of cows with [born-calf?] - mean [min-weight] of cows with [born-calf?]) / 40\n(mean [live-weight] of cows with [born-calf?] - (((mean [live-weight] of cows with [born-calf?]) * set-MW-1-AU) / set-1-AU)) / 40
+;(mean [live-weight] of cows with [born-calf?] - mean [min-weight] of cows with [born-calf?]) / 40\n;(mean [live-weight] of cows with [born-calf?] - (((mean [live-weight] of cows with [born-calf?]) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows with [born-calf?] - set-MW-1-AU) / 40
 2
 1
 11
