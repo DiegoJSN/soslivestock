@@ -1634,7 +1634,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 7360
-0.0
+92.0
 1
 1
 days
@@ -2150,6 +2150,7 @@ NetLogo 6.2.2
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
     <metric>ILWG_SEASON</metric>
+    <metric>ILWG_SEASON_DIV</metric>
     <enumeratedValueSet variable="DM-cm-ha?">
       <value value="&quot;180&quot;"/>
     </enumeratedValueSet>
