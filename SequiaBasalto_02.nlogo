@@ -739,7 +739,7 @@ initial-season
 initial-season
 0
 3
-0.0
+1.0
 1
 1
 NIL
@@ -944,7 +944,7 @@ set-climaCoef
 set-climaCoef
 0.1
 1.5
-1.0
+1.5
 0.1
 1
 NIL
@@ -1114,7 +1114,7 @@ initial-weight-cows
 initial-weight-cows
 100
 1500
-380.0
+340.0
 1
 1
 kg
@@ -2156,9 +2156,6 @@ NetLogo 6.2.2
     </enumeratedValueSet>
     <enumeratedValueSet variable="perception">
       <value value="1"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="model-version">
-      <value value="&quot;open access&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-steers">
       <value value="300"/>
