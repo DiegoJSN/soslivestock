@@ -180,7 +180,7 @@ to setup-grassland
     ifelse grass-height < 2                                             ;; patches with grass height less than 2 cm are colored light green. This is based on the assumption that cows cannot eat grass less than 2 cm high
     [set pcolor 37]
     [set pcolor scale-color green grass-height 23 0]
-    set r 0.002
+    set r 0.02
   ]
 end
 
@@ -423,7 +423,7 @@ to become-born-calf
   ;set animal-units 0.2
   set animal-units live-weight / set-1-AU
   ;set min-weight 0
-  ;set min-weight 220
+  ;set min-weight 220                                                          ;; ####################################################################################################
   ;set min-weight set-MW-1-AU * 0.2
   set size 0.3
   ;set size animal-units
@@ -448,7 +448,7 @@ to become-weaned-calf
   ;set animal-units 0.5
   set animal-units live-weight / set-1-AU
   set min-weight 60
-  ;set min-weight 220
+  ;set min-weight 220                                                          ;; ####################################################################################################
   ;set min-weight set-MW-1-AU * 0.5
   set size 0.5
   ;set size animal-units
@@ -472,7 +472,7 @@ to become-heifer
   ;set animal-units 0.7
   set animal-units live-weight / set-1-AU
   set min-weight 100
-  ;set min-weight 220
+  ;set min-weight 220                                                          ;; ####################################################################################################
   ;set min-weight set-MW-1-AU * 0.7
   set size 0.7
   ;set size animal-units
@@ -497,7 +497,7 @@ to become-steer
   ;set animal-units 0.7
   set animal-units live-weight / set-1-AU
   set min-weight 100
-  ;set min-weight 220
+  ;set min-weight 220                                                          ;; ####################################################################################################
   ;set min-weight set-MW-1-AU * 0.7
   set size 0.7
   ;set size animal-units
@@ -522,7 +522,7 @@ to become-cow
   ;set animal-units 1
   set animal-units live-weight / set-1-AU
   set min-weight 180
-  ;set min-weight 220
+  ;set min-weight 220                                                          ;; ####################################################################################################
   ;set min-weight set-MW-1-AU
   set size 1
   ;set size animal-units
@@ -547,7 +547,7 @@ to become-cow-with-calf
   ;set animal-units 1
   set animal-units live-weight / set-1-AU
   set min-weight 180
-  ;set min-weight 220
+  ;set min-weight 220                                                          ;; ####################################################################################################
   ;set min-weight set-MW-1-AU
   set size 1.1
   ;set size animal-units
