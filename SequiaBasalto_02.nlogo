@@ -608,6 +608,14 @@ to-report ILWG_SEASON                                                   ;; outpu
   report mean [live-weight-gain-historyXticks-season] of cows
 end
 
+to-report ILWG_SEASON_DIV                                                  ;; ORIGINAL AUTORES ####################################################################################################
+  report ((mean [live-weight] of cows - mean [initial-weight] of cows) / 2) / 92
+end
+
+to-report ILWG_SEASON_NODIV                                                 ;; SIN DIVIDIR ENTRE 2 ####################################################################################################
+  report ((mean [live-weight] of cows - mean [initial-weight] of cows)) / 92
+end
+
 to-report ILWG_YEAR                                                     ;; outputs the mean IWLG throughout the year
   report mean [live-weight-gain-historyXticks-year] of cows
 end
@@ -1585,10 +1593,10 @@ Total DM G. Rate (kg/ha/day)
 11
 
 MONITOR
-432
-295
-522
-340
+431
+278
+521
+323
 ALWG (kg/ha)
 ;(sum [live-weight] of cows with [steer?] - sum [initial-weight] of cows with [steer?]) / count patches; para calcular el WGH de los steers\n;(sum [live-weight] of cows - sum [initial-weight] of cows) / count patches\nALWG
 3
@@ -1631,6 +1639,28 @@ STOP-SIMULATION-AT
 1
 days
 HORIZONTAL
+
+MONITOR
+438
+334
+593
+379
+NIL
+ILWG_SEASON_NODIV
+13
+1
+11
+
+MONITOR
+605
+334
+728
+379
+NIL
+ILWG_SEASON_DIV
+13
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?

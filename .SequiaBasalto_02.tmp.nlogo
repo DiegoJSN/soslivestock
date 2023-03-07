@@ -423,7 +423,7 @@ to become-born-calf
   ;set animal-units 0.2
   set animal-units live-weight / set-1-AU
   ;set min-weight 0
-  ;set min-weight 200
+  ;set min-weight 220
   ;set min-weight set-MW-1-AU * 0.2
   set size 0.3
   ;set size animal-units
@@ -448,7 +448,7 @@ to become-weaned-calf
   ;set animal-units 0.5
   set animal-units live-weight / set-1-AU
   set min-weight 60
-  ;set min-weight 200
+  ;set min-weight 220
   ;set min-weight set-MW-1-AU * 0.5
   set size 0.5
   ;set size animal-units
@@ -472,7 +472,7 @@ to become-heifer
   ;set animal-units 0.7
   set animal-units live-weight / set-1-AU
   set min-weight 100
-  ;set min-weight 200
+  ;set min-weight 220
   ;set min-weight set-MW-1-AU * 0.7
   set size 0.7
   ;set size animal-units
@@ -497,7 +497,7 @@ to become-steer
   ;set animal-units 0.7
   set animal-units live-weight / set-1-AU
   set min-weight 100
-  ;set min-weight 200
+  ;set min-weight 220
   ;set min-weight set-MW-1-AU * 0.7
   set size 0.7
   ;set size animal-units
@@ -522,7 +522,7 @@ to become-cow
   ;set animal-units 1
   set animal-units live-weight / set-1-AU
   set min-weight 180
-  ;set min-weight 20
+  ;set min-weight 220
   ;set min-weight set-MW-1-AU
   set size 1
   ;set size animal-units
@@ -547,7 +547,7 @@ to become-cow-with-calf
   ;set animal-units 1
   set animal-units live-weight / set-1-AU
   set min-weight 180
-  ;set min-weight 200
+  ;set min-weight 220
   ;set min-weight set-MW-1-AU
   set size 1.1
   ;set size animal-units
@@ -606,6 +606,15 @@ end
 
 to-report ILWG_SEASON                                                   ;; outputs the mean IWLG throughout the season
   report mean [live-weight-gain-historyXticks-season] of cows
+end
+
+
+to-report ILWG_SEASON_NODIV                                                 ;; ####################################################################################################
+  report ((mean [live-weight] of cows - mean [initial-weight] of cows)) / 92
+end
+
+to-report ILWG_SEASON_DIV                                                  ;; ####################################################################################################
+  report ((mean [live-weight] of cows - mean [initial-weight] of cows) / 2) / 92
 end
 
 to-report ILWG_YEAR                                                     ;; outputs the mean IWLG throughout the year
@@ -1585,10 +1594,10 @@ Total DM G. Rate (kg/ha/day)
 11
 
 MONITOR
-432
-295
-522
-340
+431
+278
+521
+323
 ALWG (kg/ha)
 ;(sum [live-weight] of cows with [steer?] - sum [initial-weight] of cows with [steer?]) / count patches; para calcular el WGH de los steers\n;(sum [live-weight] of cows - sum [initial-weight] of cows) / count patches\nALWG
 3
@@ -1626,11 +1635,33 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 7360
-0.0
+92.0
 1
 1
 days
 HORIZONTAL
+
+MONITOR
+438
+334
+593
+379
+NIL
+ILWG_SEASON_NODIV
+13
+1
+11
+
+MONITOR
+605
+334
+728
+379
+NIL
+ILWG_SEASON_DIV
+13
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
