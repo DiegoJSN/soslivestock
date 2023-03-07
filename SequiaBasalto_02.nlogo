@@ -2087,9 +2087,6 @@ NetLogo 6.2.2
     <metric>stocking-rate</metric>
     <metric>ALWG</metric>
     <metric>ILWG_YEAR</metric>
-    <enumeratedValueSet variable="DM-cm-ha?">
-      <value value="&quot;180&quot;"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
     </enumeratedValueSet>
@@ -2108,14 +2105,8 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="set-MW-1-AU">
       <value value="220"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="DM-available-for-cattle">
-      <value value="1"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="perception">
       <value value="1"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="model-version">
-      <value value="&quot;open access&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-steer">
       <value value="300"/>
@@ -2126,18 +2117,12 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="initial-grass-height">
       <value value="7"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="management-strategy">
-      <value value="&quot;reactive&quot;"/>
-    </enumeratedValueSet>
     <steppedValueSet variable="initial-num-steers" first="0" step="2" last="100"/>
     <enumeratedValueSet variable="initial-season">
       <value value="0"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-cows">
       <value value="380"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="changing-seasons?">
-      <value value="&quot;yes&quot;"/>
     </enumeratedValueSet>
     <steppedValueSet variable="set-climaCoef" first="0.5" step="0.25" last="1.5"/>
   </experiment>
@@ -2151,9 +2136,6 @@ NetLogo 6.2.2
     <metric>stocking-rate</metric>
     <metric>ILWG_SEASON</metric>
     <metric>ILWG_SEASON_DIV</metric>
-    <enumeratedValueSet variable="DM-cm-ha?">
-      <value value="&quot;180&quot;"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
     </enumeratedValueSet>
@@ -2172,9 +2154,6 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="set-MW-1-AU">
       <value value="220"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="DM-available-for-cattle">
-      <value value="1"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="perception">
       <value value="1"/>
     </enumeratedValueSet>
@@ -2189,9 +2168,6 @@ NetLogo 6.2.2
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-grass-height">
       <value value="7"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="management-strategy">
-      <value value="&quot;reactive&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-num-steers">
       <value value="30"/>
@@ -2207,9 +2183,6 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="initial-weight-cows">
       <value value="380"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="changing-seasons?">
-      <value value="&quot;yes&quot;"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="set-climaCoef">
       <value value="0.5"/>
       <value value="1"/>
@@ -2223,9 +2196,6 @@ NetLogo 6.2.2
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
     <metric>crop-efficiency</metric>
-    <enumeratedValueSet variable="DM-cm-ha?">
-      <value value="&quot;180&quot;"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
     </enumeratedValueSet>
@@ -2244,14 +2214,8 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="set-MW-1-AU">
       <value value="220"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="DM-available-for-cattle">
-      <value value="1"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="perception">
       <value value="1"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="model-version">
-      <value value="&quot;open access&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-steer">
       <value value="300"/>
@@ -2262,18 +2226,12 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="initial-grass-height">
       <value value="7"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="management-strategy">
-      <value value="&quot;reactive&quot;"/>
-    </enumeratedValueSet>
     <steppedValueSet variable="initial-num-steers" first="0" step="2" last="100"/>
     <enumeratedValueSet variable="initial-season">
       <value value="0"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-cows">
       <value value="380"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="changing-seasons?">
-      <value value="&quot;yes&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="set-climaCoef">
       <value value="1"/>
@@ -2286,9 +2244,6 @@ NetLogo 6.2.2
     <metric>simulation-time</metric>
     <metric>season-report</metric>
     <metric>dmgr / count patches ;DM/ha</metric>
-    <enumeratedValueSet variable="DM-cm-ha?">
-      <value value="&quot;180&quot;"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
     </enumeratedValueSet>
@@ -2302,19 +2257,13 @@ NetLogo 6.2.2
       <value value="380"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-num-cows">
-      <value value="50"/>
+      <value value="0"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="set-MW-1-AU">
       <value value="220"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="DM-available-for-cattle">
-      <value value="1"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="perception">
       <value value="1"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="model-version">
-      <value value="&quot;grass model&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-steer">
       <value value="300"/>
@@ -2324,9 +2273,6 @@ NetLogo 6.2.2
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-grass-height">
       <value value="3"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="management-strategy">
-      <value value="&quot;reactive&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-num-steers">
       <value value="0"/>
@@ -2339,9 +2285,6 @@ NetLogo 6.2.2
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-cows">
       <value value="340"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="changing-seasons?">
-      <value value="&quot;yes&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="set-climaCoef">
       <value value="1"/>
@@ -2355,9 +2298,6 @@ NetLogo 6.2.2
     <metric>set-climaCoef</metric>
     <metric>season-report</metric>
     <metric>dmgr / count patches ;DM/ha</metric>
-    <enumeratedValueSet variable="DM-cm-ha?">
-      <value value="&quot;180&quot;"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
     </enumeratedValueSet>
@@ -2371,19 +2311,13 @@ NetLogo 6.2.2
       <value value="380"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-num-cows">
-      <value value="50"/>
+      <value value="0"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="set-MW-1-AU">
       <value value="220"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="DM-available-for-cattle">
-      <value value="1"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="perception">
       <value value="1"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="model-version">
-      <value value="&quot;grass model&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-steer">
       <value value="300"/>
@@ -2394,9 +2328,6 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="initial-grass-height">
       <value value="3"/>
       <value value="7"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="management-strategy">
-      <value value="&quot;reactive&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-num-steers">
       <value value="0"/>
@@ -2409,9 +2340,6 @@ NetLogo 6.2.2
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-cows">
       <value value="340"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="changing-seasons?">
-      <value value="&quot;yes&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="set-climaCoef">
       <value value="0.5"/>
