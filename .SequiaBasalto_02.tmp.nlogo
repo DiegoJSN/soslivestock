@@ -2108,10 +2108,10 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="perception">
       <value value="1"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-steer">
+    <enumeratedValueSet variable="initial-weight-steers">
       <value value="300"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-heifer">
+    <enumeratedValueSet variable="initial-weight-heifers">
       <value value="200"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-grass-height">
@@ -2160,10 +2160,10 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="model-version">
       <value value="&quot;open access&quot;"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-steer">
+    <enumeratedValueSet variable="initial-weight-steers">
       <value value="300"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-heifer">
+    <enumeratedValueSet variable="initial-weight-heifers">
       <value value="200"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-grass-height">
@@ -2196,9 +2196,6 @@ NetLogo 6.2.2
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
     <metric>crop-efficiency</metric>
-    <enumeratedValueSet variable="DM-cm-ha?">
-      <value value="&quot;180&quot;"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
     </enumeratedValueSet>
@@ -2217,26 +2214,17 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="set-MW-1-AU">
       <value value="220"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="DM-available-for-cattle">
-      <value value="1"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="perception">
       <value value="1"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="model-version">
-      <value value="&quot;open access&quot;"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-steer">
+    <enumeratedValueSet variable="initial-weight-steers">
       <value value="300"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-heifer">
+    <enumeratedValueSet variable="initial-weight-heifers">
       <value value="200"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-grass-height">
       <value value="7"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="management-strategy">
-      <value value="&quot;reactive&quot;"/>
     </enumeratedValueSet>
     <steppedValueSet variable="initial-num-steers" first="0" step="2" last="100"/>
     <enumeratedValueSet variable="initial-season">
@@ -2244,9 +2232,6 @@ NetLogo 6.2.2
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-cows">
       <value value="380"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="changing-seasons?">
-      <value value="&quot;yes&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="set-climaCoef">
       <value value="1"/>
@@ -2280,7 +2265,7 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="perception">
       <value value="1"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-steer">
+    <enumeratedValueSet variable="initial-weight-steers">
       <value value="300"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-heifer">
@@ -2334,7 +2319,7 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="perception">
       <value value="1"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-steer">
+    <enumeratedValueSet variable="initial-weight-steers">
       <value value="300"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-heifer">

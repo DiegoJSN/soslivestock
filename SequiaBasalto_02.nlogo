@@ -2108,10 +2108,10 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="perception">
       <value value="1"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-steer">
+    <enumeratedValueSet variable="initial-weight-steers">
       <value value="300"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-heifer">
+    <enumeratedValueSet variable="initial-weight-heifers">
       <value value="200"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-grass-height">
@@ -2160,10 +2160,10 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="model-version">
       <value value="&quot;open access&quot;"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-steer">
+    <enumeratedValueSet variable="initial-weight-steers">
       <value value="300"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-heifer">
+    <enumeratedValueSet variable="initial-weight-heifers">
       <value value="200"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-grass-height">
@@ -2217,10 +2217,10 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="perception">
       <value value="1"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-steer">
+    <enumeratedValueSet variable="initial-weight-steers">
       <value value="300"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-heifer">
+    <enumeratedValueSet variable="initial-weight-heifers">
       <value value="200"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-grass-height">
@@ -2265,10 +2265,10 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="perception">
       <value value="1"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-steer">
+    <enumeratedValueSet variable="initial-weight-steers">
       <value value="300"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-heifer">
+    <enumeratedValueSet variable="initial-weight-heifers">
       <value value="200"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-grass-height">
@@ -2319,10 +2319,10 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="perception">
       <value value="1"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-steer">
+    <enumeratedValueSet variable="initial-weight-steers">
       <value value="300"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-heifer">
+    <enumeratedValueSet variable="initial-weight-heifers">
       <value value="200"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-grass-height">
