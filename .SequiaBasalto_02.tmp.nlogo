@@ -423,6 +423,7 @@ to become-born-calf
   ;set animal-units 0.2
   set animal-units live-weight / set-1-AU
   ;set min-weight 0
+  ;set min-weight 200
   ;set min-weight set-MW-1-AU * 0.2
   set size 0.3
   ;set size animal-units
@@ -447,6 +448,7 @@ to become-weaned-calf
   ;set animal-units 0.5
   set animal-units live-weight / set-1-AU
   set min-weight 60
+  ;set min-weight 200
   ;set min-weight set-MW-1-AU * 0.5
   set size 0.5
   ;set size animal-units
@@ -470,6 +472,7 @@ to become-heifer
   ;set animal-units 0.7
   set animal-units live-weight / set-1-AU
   set min-weight 100
+  ;set min-weight 200
   ;set min-weight set-MW-1-AU * 0.7
   set size 0.7
   ;set size animal-units
@@ -494,6 +497,7 @@ to become-steer
   ;set animal-units 0.7
   set animal-units live-weight / set-1-AU
   set min-weight 100
+  ;set min-weight 200
   ;set min-weight set-MW-1-AU * 0.7
   set size 0.7
   ;set size animal-units
@@ -518,6 +522,7 @@ to become-cow
   ;set animal-units 1
   set animal-units live-weight / set-1-AU
   set min-weight 180
+  ;set min-weight 20
   ;set min-weight set-MW-1-AU
   set size 1
   ;set size animal-units
@@ -542,6 +547,7 @@ to become-cow-with-calf
   ;set animal-units 1
   set animal-units live-weight / set-1-AU
   set min-weight 180
+  ;set min-weight 200
   ;set min-weight set-MW-1-AU
   set size 1.1
   ;set size animal-units
@@ -1595,7 +1601,7 @@ MONITOR
 717
 252
 BCS of cows (points)
-;(mean [live-weight] of cows with [cow?] - mean [min-weight] of cows with [cow?]) / 40\n(mean [live-weight] of cows with [cow?] - (((mean [live-weight] of cows with [cow?]) * set-MW-1-AU) / set-1-AU)) / 40
+;(mean [live-weight] of cows with [cow?] - mean [min-weight] of cows with [cow?]) / 40\n(mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40
 2
 1
 11
