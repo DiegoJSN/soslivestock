@@ -67,7 +67,7 @@ patches-own [
   r                                                                     ;; growth rate for the grass = 0.002 1/day
   GH-consumed                                                           ;; grass-height consumed from the total consumption of dry matter
   DM-kg-ha                                                              ;; primary production (biomass), expressed in kg of Dry Matter (DM)
-  wall                                                                  ;; ####################################################################################################################
+  ;wall                                                                  ;; ####################################################################################################################
   paddock-a                                                             ;; ####################################################################################################################
   paddock-b                                                             ;; ####################################################################################################################
   paddock-c                                                             ;; ####################################################################################################################
@@ -186,32 +186,32 @@ end
 to setup-grassland
                                                                           ;; PREPARANDO LOS PARCHES QUE ACTUARÁN COMO VALLADO ####################################################################################################################
   if (spatial-management = "rotational grazing") [
-    ask patches with [ pycor = (set-y-size) / 2 or pycor = (set-y-size - 1) / 2 ] [ set pcolor white ]
-    ask patches with [ pxcor = (set-x-size) / 2 or pxcor = (set-x-size - 1) / 2 ] [ set pcolor white ]
+    ;ask patches with [ pycor = (set-y-size) / 2 or pycor = (set-y-size - 1) / 2 ] [ set pcolor white ]
+    ;ask patches with [ pxcor = (set-x-size) / 2 or pxcor = (set-x-size - 1) / 2 ] [ set pcolor white ]
 
-    ask patches with [ pycor = 0 ] [ set pcolor white ]
-    ask patches with [ pycor = set-y-size - 1] [ set pcolor white ]
+    ;ask patches with [ pycor = 0 ] [ set pcolor white ]
+    ;ask patches with [ pycor = set-y-size - 1] [ set pcolor white ]
 
-    ask patches with [ pxcor = 0 ] [ set pcolor white ]
-    ask patches with [ pxcor = set-x-size - 1] [ set pcolor white ]
+    ;ask patches with [ pxcor = 0 ] [ set pcolor white ]
+    ;ask patches with [ pxcor = set-x-size - 1] [ set pcolor white ]
 
                                                                           ;; DIVIDIENDO EL MUNDO EN PADDOCKS ####################################################################################################################
-    ask patches with [ (pxcor < (set-x-size) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor > (set-y-size) / 2 or pycor = (set-y-size - 1) / 2)] [set paddock-a 1]
-    ask patches with [ (pxcor > (set-x-size) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor > (set-y-size) / 2 or pycor = (set-y-size - 1) / 2)]  [set paddock-b 1]
-    ask patches with [ (pxcor > (set-x-size) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor < (set-y-size) / 2 or pycor = (set-y-size - 1) / 2)] [set paddock-c 1]
+    ask patches with [ (pxcor < (set-x-size) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor > (set-y-size - 1) / 2 or pycor = (set-y-size) / 2)] [set paddock-a 1]
+    ask patches with [ (pxcor > (set-x-size - 1) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor > (set-y-size) / 2 or pycor = (set-y-size) / 2)]  [set paddock-b 1]
+    ask patches with [ (pxcor > (set-x-size) / 2 or pxcor = (set-x-size) / 2) and (pycor < (set-y-size) / 2 or pycor = (set-y-size - 1) / 2)] [set paddock-c 1]
     ask patches with [ (pxcor < (set-x-size) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor < (set-y-size) / 2 or pycor = (set-y-size - 1) / 2)] [set paddock-d 1]
 
 
-    ask patches with [pcolor = white] [set wall 1]                          ;; MATERIALIZANDO EL VALLADO ####################################################################################################################
-    ask patches with [wall = 1] [
-      set paddock-a 0
-      set paddock-b 0
-      set paddock-c 0
-      set paddock-d 0
-    ]
+;    ask patches with [pcolor = white] [set wall 1]                          ;; MATERIALIZANDO EL VALLADO ####################################################################################################################
+;    ask patches with [wall = 1] [
+;      set paddock-a 0
+;      set paddock-b 0
+;      set paddock-c 0
+;      set paddock-d 0
+;    ]
   ]
 
-  ask patches with [wall = 0 ] [
+  ask patches [
     set grass-quality 1
     if (grass-quality-distribution = "uniform") [set grass-quality random-float 1]
 
@@ -328,7 +328,7 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to grow-grass                                                           ;; each patch calculates the height of its grass following a logistic regression. Grass height is affected by season, climacoef (set by the observer in the interface) and consumption of grass by animals  (GH consumed is the grass consumed by cows on the previous tick)
-  ask patches with [wall = 0 ] [
+  ask patches [
     ;;;OPCION 1: NO TIENE UNA VARIABLE ESPECIFICA PARA EL TIEMPO
     ;set grass-height (grass-height + r * grass-height * (1 - grass-height / ((item current-season kmax * grass-quality) * set-climacoef))) - GH-consumed
 
@@ -362,7 +362,7 @@ to move                                                                 ;; once 
     if grass-height < 5
     [ifelse random-float 1 < perception
       [uphill grass-height]
-      [move-to one-of neighbors with [wall = 0]
+      [move-to one-of neighbors
       ]
     ]
   ]
@@ -450,7 +450,7 @@ to reproduce                                                            ;; this 
 
     if pregnancy-time = gestation-period [
       hatch-cows 1 [
-        move-to one-of neighbors with [wall = 0]
+        move-to one-of neighbors
         ifelse random-float 1 < 0.5
       [become-born-calf-female]
       [become-born-calf-male]]
@@ -726,15 +726,15 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to-report paddock-size
-  if (spatial-management = "rotational grazing") [report count patches with [wall = 0] / 4]    ;;  ####################################################################################################################
+  if (spatial-management = "rotational grazing") [report count patches / 4]    ;;  ####################################################################################################################
 end
 
 to-report stocking-rate                                                 ;; outputs the relation between the number of livestock (in terms of animal units) and the grassland area (num. of patches)
-  report sum [animal-units] of cows / count patches with [wall = 0]
+  report sum [animal-units] of cows / count patches
 end
 
 to-report grass-height-report                                           ;; outputs the mean grass-height of the grassland
-  report mean [grass-height] of patches with [wall = 0]
+  report mean [grass-height] of patches
 end
 
 to-report season-report                                                 ;; outputs the name of the season
@@ -742,11 +742,11 @@ to-report season-report                                                 ;; outpu
 end
 
  to-report dmgr                                                         ;; outputs the Dry Matter Growth Rate (DMGR, units: kgDM/ha/day)
-  report DM-cm-ha * sum [grass-height] of patches with [wall = 0]
+  report DM-cm-ha * sum [grass-height] of patches
 end
 
 to-report ALWG                                                          ;; outputs the Annual Live Weight Gain per hectare (kg/year/ha)
-  report (sum [live-weight] of cows - sum [initial-weight] of cows) / count patches with [wall = 0]
+  report (sum [live-weight] of cows - sum [initial-weight] of cows) / count patches
 end
 
 to-report ILWG                                                          ;; outputs the mean Inidividual Live Weight Gain (kg/animal)
@@ -762,7 +762,7 @@ to-report ILWG_YEAR                                                     ;; outpu
 end
 
 to-report crop-efficiency                                               ;; outputs the crop eficiency (DM consumed / DM offered)
-  report sum [DDMC] of cows / (DM-cm-ha * sum [grass-height] of patches with [wall = 0]) * 100
+  report sum [DDMC] of cows / (DM-cm-ha * sum [grass-height] of patches) * 100
   ;report sum [DDMC] of cows / ((DM-cm-ha * DM-available-for-cattle ) * sum [grass-height] of patches with [wall = 0]) * 100
 
 
@@ -798,8 +798,8 @@ to-report crop-efficiency                                               ;; outpu
 GRAPHICS-WINDOW
 387
 116
-1086
-816
+945
+675
 -1
 -1
 27.64
@@ -813,9 +813,9 @@ GRAPHICS-WINDOW
 1
 1
 0
-24
+19
 0
-24
+19
 1
 1
 1
@@ -1139,7 +1139,7 @@ MONITOR
 459
 62
 Area (ha)
-;count patches ;grassland-area, 1 patch = 1 ha\n; Other option:\n; sum [animal-units] of cows / count patches\ncount patches with [wall = 0]
+;count patches ;grassland-area, 1 patch = 1 ha\n; Other option:\n; sum [animal-units] of cows / count patches\ncount patches
 3
 1
 11
@@ -1498,9 +1498,9 @@ SLIDER
 104
 set-X-size
 set-X-size
-1
-99
-25.0
+2
+100
+20.0
 2
 1
 hm
@@ -1513,9 +1513,9 @@ SLIDER
 104
 set-Y-size
 set-Y-size
-1
-99
-25.0
+2
+100
+20.0
 2
 1
 hm
@@ -1893,7 +1893,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "plot mean [grass-height] of patches with [wall = 0]"
+"default" 1.0 0 -16777216 true "" "plot mean [grass-height] of patches"
 
 PLOT
 1420
@@ -1911,7 +1911,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 1 -16777216 true "" "histogram [grass-height] of patches with [wall = 0]"
+"default" 1.0 1 -16777216 true "" "histogram [grass-height] of patches"
 
 MONITOR
 1096
@@ -1919,7 +1919,7 @@ MONITOR
 1211
 159
 Average GH (cm)_
-mean [grass-height] of patches with [wall = 0]
+mean [grass-height] of patches
 3
 1
 11
@@ -1930,7 +1930,7 @@ MONITOR
 1626
 167
 Grass quality of patches (average)
-mean [grass-quality] of patches with [wall = 0]
+mean [grass-quality] of patches
 17
 1
 11
@@ -1941,7 +1941,7 @@ MONITOR
 1568
 435
 min grass-height of patches
-min [grass-height] of patches with [wall = 0]
+min [grass-height] of patches
 17
 1
 11
@@ -1952,7 +1952,7 @@ MONITOR
 1756
 435
 max grass-height of patches
-max [grass-height] of patches with [wall = 0]
+max [grass-height] of patches
 17
 1
 11
@@ -1965,10 +1965,10 @@ CHOOSER
 spatial-management
 spatial-management
 "open access" "rotational grazing"
-0
+1
 
 CHOOSER
-151
+154
 200
 289
 245
