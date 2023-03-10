@@ -212,20 +212,20 @@ to setup-grassland
   ]
 
   ask patches with [wall = 0 ] [
-    set grass-quality set-grass-quality
-    if (grass-quality-distribution = "uniform") [set grass-quality random-float set-grass-quality]
+    set grass-quality 1
+    if (grass-quality-distribution = "uniform") [set grass-quality random-float 1]
 
-    if (grass-quality-distribution = "normal") [set grass-quality random-normal set-grass-quality grass-quality-sd]                ;; DISTRIBUCION NORMAL SIN LIMITE SUPERIOR ####################################################################################################################
+    if (grass-quality-distribution = "normal") [set grass-quality random-normal 0.5 0.1]                ;; DISTRIBUCION NORMAL SIN LIMITE SUPERIOR ####################################################################################################################
 
-    if (grass-quality-distribution = "normal-restricted") [                                                                        ;; DISTRIBUCION NORMAL CON LIMITE SUPERIOR ####################################################################################################################
-      let b median (list 0.001 (random-normal set-grass-quality grass-quality-sd) 1)
-      set grass-quality b]
+    ;if (grass-quality-distribution = "normal-restricted") [                                                                        ;; DISTRIBUCION NORMAL CON LIMITE SUPERIOR ####################################################################################################################
+    ;  let b median (list 0.001 (random-normal 0.5 0.2) 1)
+    ;  set grass-quality b]
 
-    if (grass-quality-distribution = "exponential") [set grass-quality random-exponential set-grass-quality]                       ;; DISTRIBUCION EXPONENCIAL SIN LIMITE SUPERIOR ###################################################################################################################
+    if (grass-quality-distribution = "exponential") [set grass-quality random-exponential 0.1]                       ;; DISTRIBUCION EXPONENCIAL SIN LIMITE SUPERIOR ###################################################################################################################
 
-    if (grass-quality-distribution = "exponential-restricted") [                                                                   ;; DISTRIBUCION EXPONENCIAL CON LIMITE SUPERIOR ###################################################################################################################
-      let b median (list 0.001 (random-exponential set-grass-quality) 1)
-      set grass-quality b]
+    ;if (grass-quality-distribution = "exponential-restricted") [                                                                   ;; DISTRIBUCION EXPONENCIAL CON LIMITE SUPERIOR ###################################################################################################################
+    ;  let b median (list 0.001 (random-exponential 1) 1)
+    ;  set grass-quality b]
 
 
     set grass-height initial-grass-height * grass-quality               ;; the initial grass height is set by the observer in the interface
@@ -1870,42 +1870,12 @@ count cows
 CHOOSER
 9
 151
-145
+150
 196
 grass-quality-distribution
 grass-quality-distribution
-"homogeneus" "uniform" "normal" "normal-restricted" "exponential" "exponential-restricted"
-3
-
-SLIDER
-148
-157
-266
-190
-set-grass-quality
-set-grass-quality
+"homogeneus" "uniform" "normal" "exponential"
 0
-1
-1.0
-0.1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-269
-157
-383
-190
-grass-quality-sd
-grass-quality-sd
-0
-0.9
-0.9
-0.1
-1
-NIL
-HORIZONTAL
 
 PLOT
 1095
@@ -1990,15 +1960,15 @@ max [grass-height] of patches with [wall = 0]
 CHOOSER
 9
 199
-147
+150
 244
 spatial-management
 spatial-management
 "open access" "rotational grazing"
-1
+0
 
 CHOOSER
-151
+154
 200
 289
 245
