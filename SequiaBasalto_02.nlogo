@@ -368,6 +368,10 @@ to move                                                                 ;; once 
   ]
 
   if (spatial-management = "rotational grazing") [                      ;; REGLAS PARA EL MOVIMIENTO DE LAS VACAS EN "ROTATIONAL GRAZING" ####################################################################################################################
+
+
+
+
   if season-days >= 92 [
     ask cows
     [ifelse paddock-a = 1

@@ -368,6 +368,7 @@ to move                                                                 ;; once 
   ]
 
   if (spatial-management = "rotational grazing") [                      ;; REGLAS PARA EL MOVIMIENTO DE LAS VACAS EN "ROTATIONAL GRAZING" ####################################################################################################################
+
   if season-days >= 92 [
     ask cows
     [ifelse paddock-a = 1
@@ -1707,7 +1708,7 @@ MONITOR
 3419
 290
 Total DM per ha (kg/ha)
-;(DM-cm-ha * mean [grass-height] of patches) / DM-available-for-cattle\n(dmgr) / count patches with [wall = 0]
+;(DM-cm-ha * mean [grass-height] of patches) / DM-available-for-cattle\n(dmgr) / count patches
 3
 1
 11
@@ -1718,7 +1719,7 @@ MONITOR
 3594
 290
 Total DM G. Rate (kg/ha/day)
-;((DM-cm-ha * mean [grass-height] of patches) / DM-available-for-cattle) / 92\n(dmgr / count patches with [wall = 0]) / 92
+;((DM-cm-ha * mean [grass-height] of patches) / DM-available-for-cattle) / 92\n(dmgr / count patches) / 92
 3
 1
 11
@@ -1875,7 +1876,7 @@ CHOOSER
 grass-quality-distribution
 grass-quality-distribution
 "homogeneus" "uniform" "normal" "exponential"
-0
+1
 
 PLOT
 1095
