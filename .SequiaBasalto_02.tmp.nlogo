@@ -357,17 +357,53 @@ to grow-grass                                                           ;; each 
   ]
 end
 
-to move                                                                 ;; once the grass height of each patch is updated, if the grass height in a patch is minor than 5 cm (the minimum grass height that maintains the live weight of a cow), the cows moves to another patch
-  ask cows [
-    if grass-height < 5
-    [ifelse random-float 1 < perception
-      [uphill grass-height]
-      [move-to one-of neighbors
+to move  ;; once the grass height of each patch is updated, if the grass height in a patch is minor than 5 cm (the minimum grass height that maintains the live weight of a cow), the cows moves to another patch
+
+  if (spatial-management = "open access")[                              ;; REGLAS PARA EL MOVIMIENTO DE LAS VACAS EN "OPEN ACCESS" ####################################################################################################################
+    ask cows [
+      if grass-height < 5
+      [ifelse random-float 1 < perception
+        [uphill grass-height]
+        [move-to one-of neighbors]
       ]
     ]
   ]
 
   if (spatial-management = "rotational grazing") [                      ;; REGLAS PARA EL MOVIMIENTO DE LAS VACAS EN "ROTATIONAL GRAZING" ####################################################################################################################
+  ask cows [
+      let patches-a1 neighbors with [paddock-a = 1]
+      let target-a1 max-one-of patches-a1 [grass-height]
+      if grass-height < 5 and paddock-a = 1
+      [ifelse random-float 1 < perception and paddock-a = 1
+        [move-to target-a1]
+        [move-to one-of neighbors with [paddock-a = 1]]
+
+
+        let patches-b1 neighbors with [paddock-b = 1]
+        let target-b1 max-one-of patches-b1 [grass-height]
+        if grass-height < 5 and paddock-b = 1
+        [ifelse random-float 1 < perception and paddock-b = 1
+          [move-to target-b1]
+          [move-to one-of neighbors with [paddock-b = 1]]
+
+          let patches-c1 neighbors with [paddock-c = 1]
+          let target-c1 max-one-of patches-c1 [grass-height]
+          if grass-height < 5 and paddock-c = 1
+          [ifelse random-float 1 < perception and paddock-c = 1
+            [move-to target-c1]
+            [move-to one-of neighbors with [paddock-c = 1]]
+
+            let patches-d1 neighbors with [paddock-d = 1]
+            let target-d1 max-one-of patches-d1 [grass-height]
+            if grass-height < 5 and paddock-d = 1
+            [ifelse random-float 1 < perception and paddock-d = 1
+              [move-to target-d1]
+              [move-to one-of neighbors with [paddock-d = 1]]
+            ]
+          ]
+        ]
+      ]
+    ]
 
   if season-days >= 92 [
     ask cows
@@ -451,14 +487,16 @@ to reproduce                                                            ;; this 
 
     if pregnancy-time = gestation-period [
       hatch-cows 1 [
-        move-to one-of neighbors
+        if (spatial-management = "rotational grazing") [if paddock-a = 1 [move-to one-of patches with [paddock-a = 1]] if paddock-b = 1 [move-to one-of patches with [paddock-b = 1]] if paddock-c = 1 [move-to one-of patches with [paddock-c = 1]] if paddock-d = 1 [move-to one-of patches with [paddock-d = 1]]]
+        if  (spatial-management = "open access") [setxy random-pxcor random-pycor]
         ifelse random-float 1 < 0.5
-      [become-born-calf-female]
-      [become-born-calf-male]]
-    set pregnant? false
-    set pregnancy-time 0
-    become-cow-with-calf]
+        [become-born-calf-female]
+        [become-born-calf-male]]
+      set pregnant? false
+      set pregnancy-time 0
+      become-cow-with-calf]
   ]
+
 end
 
 to update-grass-height                                                  ;; the DDMC of all cows (total DDMC, in kg) in each patch is calculated and converted back to grass height (cm) to calculate the grass height consumed in each patch (GH-consumed)
@@ -799,8 +837,8 @@ to-report crop-efficiency                                               ;; outpu
 GRAPHICS-WINDOW
 387
 116
-945
-675
+947
+677
 -1
 -1
 27.64
@@ -984,7 +1022,7 @@ perception
 perception
 0
 1
-0.7
+0.5
 0.1
 1
 NIL
@@ -1766,7 +1804,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-0.0
+30.0
 1
 1
 years
@@ -1876,7 +1914,7 @@ CHOOSER
 grass-quality-distribution
 grass-quality-distribution
 "homogeneus" "uniform" "normal" "exponential"
-1
+0
 
 PLOT
 1095
