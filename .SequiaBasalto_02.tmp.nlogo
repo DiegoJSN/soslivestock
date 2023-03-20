@@ -185,23 +185,12 @@ to setup-globals
 end
 
 to setup-grassland
-                                                                          ;; PREPARANDO LOS PARCHES QUE ACTUARÁN COMO VALLADO ####################################################################################################################
-  if (spatial-management = "rotational grazing") [
-    ;ask patches with [ pycor = (set-y-size) / 2 or pycor = (set-y-size - 1) / 2 ] [ set pcolor white ]
-    ;ask patches with [ pxcor = (set-x-size) / 2 or pxcor = (set-x-size - 1) / 2 ] [ set pcolor white ]
+  if (spatial-management = "rotational grazing") [                          ;; DIVIDIENDO EL MUNDO EN PADDOCKS ###################################################################################################################
 
-    ;ask patches with [ pycor = 0 ] [ set pcolor white ]
-    ;ask patches with [ pycor = set-y-size - 1] [ set pcolor white ]
-
-    ;ask patches with [ pxcor = 0 ] [ set pcolor white ]
-    ;ask patches with [ pxcor = set-x-size - 1] [ set pcolor white ]
-
-                                                                          ;; DIVIDIENDO EL MUNDO EN PADDOCKS ####################################################################################################################
     ask patches with [ (pxcor < (set-x-size) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor > (set-y-size - 1) / 2 or pycor = (set-y-size) / 2)] [set paddock-a 1]
     ask patches with [ (pxcor > (set-x-size - 1) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor > (set-y-size) / 2 or pycor = (set-y-size) / 2)]  [set paddock-b 1]
     ask patches with [ (pxcor > (set-x-size) / 2 or pxcor = (set-x-size) / 2) and (pycor < (set-y-size) / 2 or pycor = (set-y-size - 1) / 2)] [set paddock-c 1]
     ask patches with [ (pxcor < (set-x-size) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor < (set-y-size) / 2 or pycor = (set-y-size - 1) / 2)] [set paddock-d 1]
-
 
   ]
 

@@ -185,7 +185,7 @@ to setup-globals
 end
 
 to setup-grassland
-  if (spatial-management = "rotational grazing") [                          ;; DIVIDIENDO EL MUNDO EN PADDOCKS ####################################################################################################################
+  if (spatial-management = "rotational grazing") [                          ;; DIVIDIENDO EL MUNDO EN PADDOCKS ###################################################################################################################
 
     ask patches with [ (pxcor < (set-x-size) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor > (set-y-size - 1) / 2 or pycor = (set-y-size) / 2)] [set paddock-a 1]
     ask patches with [ (pxcor > (set-x-size - 1) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor > (set-y-size) / 2 or pycor = (set-y-size) / 2)]  [set paddock-b 1]
