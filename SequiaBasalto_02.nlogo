@@ -162,6 +162,7 @@ to setup-globals
   set xi 132
   set grass-energy 1.8
   set DM-cm-ha 180
+  if (DM-cm-ha? = "180/92") [set DM-cm-ha 180 / 92]
   set season-coef [1 1.15 1.05 1]
   set kmax [7.4 22.2 15.6 11.1]
   set maxLWG [40 60 40 40]
@@ -925,9 +926,9 @@ NIL
 HORIZONTAL
 
 PLOT
-2790
+3630
 406
-3117
+3957
 531
 Average of grass-height (GH)
 Days
@@ -943,9 +944,9 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot grass-height-report"
 
 PLOT
-2792
+3632
 725
-3120
+3960
 945
 Live-weight (LW)
 Days
@@ -978,9 +979,9 @@ simulation-time
 11
 
 MONITOR
-2297
+3137
 681
-2410
+3250
 726
 Stoking rate (AU/ha)
 stocking-rate
@@ -989,9 +990,9 @@ stocking-rate
 11
 
 PLOT
-2410
+3250
 728
-2758
+3598
 949
 Cattle age classes population sizes
 Days
@@ -1028,9 +1029,9 @@ NIL
 HORIZONTAL
 
 MONITOR
-2480
+3320
 681
-2609
+3449
 726
 Total number of cattle
 count cows
@@ -1039,9 +1040,9 @@ count cows
 11
 
 MONITOR
-3122
+3962
 725
-3278
+4118
 770
 Average LW (kg/animal)
 mean [live-weight] of cows
@@ -1065,9 +1066,9 @@ cm
 HORIZONTAL
 
 PLOT
-2790
+3630
 138
-3176
+4016
 395
 Dry-matter (DM) and DM consumption (DDMC)
 Days
@@ -1094,9 +1095,9 @@ TEXTBOX
 1
 
 MONITOR
-3118
+3958
 406
-3244
+4084
 451
 Average GH (cm/ha)
 grass-height-report
@@ -1183,9 +1184,9 @@ Area (ha)
 11
 
 PLOT
-3367
+4207
 723
-3825
+4665
 950
 Daily individual-live-weight-gain (ILWG)
 Days
@@ -1207,9 +1208,9 @@ PENS
 "Average LWG" 1.0 0 -16777216 true "" "plot mean [live-weight-gain] of cows"
 
 PLOT
-2792
+3632
 545
-3118
+3958
 687
 Crop-efficiency (CE)
 Days
@@ -1225,9 +1226,9 @@ PENS
 "CE" 1.0 0 -16777216 true "" "plot crop-efficiency"
 
 MONITOR
-3118
+3958
 545
-3174
+4014
 590
 CE (%)
 crop-efficiency
@@ -1236,9 +1237,9 @@ crop-efficiency
 11
 
 MONITOR
-3097
+3937
 287
-3246
+4086
 332
 Total DDMC (kg)
 sum [DDMC] of cows
@@ -1247,9 +1248,9 @@ sum [DDMC] of cows
 11
 
 MONITOR
-3245
+4085
 287
-3419
+4259
 332
 Average DDMC (kg/animal)
 mean [DDMC] of cows
@@ -1290,9 +1291,9 @@ kg
 HORIZONTAL
 
 PLOT
-3242
+4082
 355
-3643
+4483
 497
 Body condition ccore (BCS)
 Days
@@ -1314,9 +1315,9 @@ PENS
 "Average BCS" 1.0 0 -16777216 true "" "plot (mean [live-weight] of cows - (((mean [live-weight] of cows) * set-MW-1-AU) / set-1-AU)) / 40"
 
 MONITOR
-3708
+4548
 488
-3839
+4679
 533
 Average BCS (points)
 ;(mean [live-weight] of cows - mean [min-weight] of cows) / 40\n(mean [live-weight] of cows - (((mean [live-weight] of cows) * set-MW-1-AU) / set-1-AU)) / 40
@@ -1325,9 +1326,9 @@ Average BCS (points)
 11
 
 MONITOR
-3645
+4485
 398
-3775
+4615
 443
 BCS of cows (points)
 ;(mean [live-weight] of cows with [cow?] - mean [min-weight] of cows with [cow?]) / 40\n(mean [live-weight] of cows with [cow?] - (((mean [live-weight] of cows with [cow?]) * set-MW-1-AU) / set-1-AU)) / 40
@@ -1336,9 +1337,9 @@ BCS of cows (points)
 11
 
 MONITOR
-3645
+4485
 445
-3775
+4615
 490
 BCS of heifers (points)
 ;(mean [live-weight] of cows with [heifer?] - mean [min-weight] of cows with [heifer?]) / 40\n(mean [live-weight] of cows with [heifer?] - (((mean [live-weight] of cows with [heifer?]) * set-MW-1-AU) / set-1-AU)) / 40
@@ -1347,9 +1348,9 @@ BCS of heifers (points)
 11
 
 PLOT
-3237
+4077
 543
-3647
+4487
 684
 Pregnancy rate (PR)
 Days
@@ -1368,9 +1369,9 @@ PENS
 "Average PR" 1.0 0 -16777216 true "" "plot mean [pregnancy-rate] of cows * 100"
 
 MONITOR
-3647
+4487
 676
-3778
+4618
 721
 Average PR (%)
 mean [pregnancy-rate] of cows * 100
@@ -1379,9 +1380,9 @@ mean [pregnancy-rate] of cows * 100
 11
 
 MONITOR
-3647
+4487
 588
-3779
+4619
 633
 PR of cows (%)
 mean [pregnancy-rate] of cows with [cow?] * 100
@@ -1390,9 +1391,9 @@ mean [pregnancy-rate] of cows with [cow?] * 100
 11
 
 MONITOR
-3647
+4487
 545
-3790
+4630
 590
 PR of cows-with-calf (%)
 mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
@@ -1401,9 +1402,9 @@ mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
 11
 
 MONITOR
-3647
+4487
 633
-3780
+4620
 678
 PR of heifers (%)
 mean [pregnancy-rate] of cows with [heifer?] * 100
@@ -1412,9 +1413,9 @@ mean [pregnancy-rate] of cows with [heifer?] * 100
 11
 
 MONITOR
-3097
+3937
 245
-3246
+4086
 290
 Total DM (kg)
 dmgr
@@ -1423,9 +1424,9 @@ dmgr
 11
 
 MONITOR
-3122
+3962
 768
-3308
+4148
 813
 Average ILWG (kg/animal/day)
 ;mean [live-weight-gain] of cows\nILWG
@@ -1434,9 +1435,9 @@ Average ILWG (kg/animal/day)
 11
 
 MONITOR
-3645
+4485
 355
-3800
+4640
 400
 BCS of cows-with-calf (points)
 ;(mean [live-weight] of cows with [cow-with-calf?] - mean [min-weight] of cows with [cow-with-calf?]) / 40\n(mean [live-weight] of cows with [cow-with-calf?] - (((mean [live-weight] of cows with [cow-with-calf?]) * set-MW-1-AU) / set-1-AU)) / 40
@@ -1445,9 +1446,9 @@ BCS of cows-with-calf (points)
 11
 
 MONITOR
-3772
+4612
 398
-3939
+4779
 443
 BCS of weaned-calf (points)
 ;(mean [live-weight] of cows with [weaned-calf?] - mean [min-weight] of cows with [weaned-calf?]) / 40\n(mean [live-weight] of cows with [weaned-calf?] - (((mean [live-weight] of cows with [weaned-calf?]) * set-MW-1-AU) / set-1-AU)) / 40
@@ -1456,9 +1457,9 @@ BCS of weaned-calf (points)
 11
 
 MONITOR
-3772
+4612
 443
-3939
+4779
 488
 BCS of steer (points)
 ;(mean [live-weight] of cows with [steer?] - mean [min-weight] of cows with [steer?]) / 40\n(mean [live-weight] of cows with [steer?] - (((mean [live-weight] of cows with [steer?]) * set-MW-1-AU) / set-1-AU)) / 40
@@ -1467,9 +1468,9 @@ BCS of steer (points)
 11
 
 MONITOR
-3798
+4638
 355
-3939
+4779
 400
 BCS of born-calf (points)
 ;(mean [live-weight] of cows with [born-calf?] - mean [min-weight] of cows with [born-calf?]) / 40\n(mean [live-weight] of cows with [born-calf?] - (((mean [live-weight] of cows with [born-calf?]) * set-MW-1-AU) / set-1-AU)) / 40
@@ -1478,9 +1479,9 @@ BCS of born-calf (points)
 11
 
 MONITOR
-3120
+3960
 856
-3312
+4152
 901
 Average LW of cows (kg/animal)
 mean [live-weight] of cows with [cow?]
@@ -1489,9 +1490,9 @@ mean [live-weight] of cows with [cow?]
 11
 
 MONITOR
-3122
+3962
 901
-3351
+4191
 946
 Average ILWG of cows (kg/animal/day)
 mean [live-weight-gain] of cows with [cow?]
@@ -1570,9 +1571,9 @@ GRAZING AREA
 1
 
 MONITOR
-2410
+3250
 681
-2476
+3316
 726
 Area (ha)
 count patches
@@ -1591,9 +1592,9 @@ X
 1
 
 SLIDER
-3079
+3919
 10
-3177
+4017
 43
 set-1-AU
 set-1-AU
@@ -1606,9 +1607,9 @@ kg
 HORIZONTAL
 
 SLIDER
-3180
+4020
 10
-3301
+4141
 43
 set-MW-1-AU
 set-MW-1-AU
@@ -1621,9 +1622,9 @@ kg
 HORIZONTAL
 
 PLOT
-2208
+3048
 728
-2409
+3249
 949
 Stocking rate
 Days
@@ -1639,9 +1640,9 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot stocking-rate"
 
 MONITOR
-2257
+3097
 347
-2465
+3305
 392
 Average ILWG (kg/animal/day)
 ;mean [live-weight-gain] of cows\nILWG
@@ -1650,9 +1651,9 @@ Average ILWG (kg/animal/day)
 11
 
 MONITOR
-2257
+3097
 400
-2515
+3355
 445
 Average LWG since the start of the SEASON
 ;mean [live-weight-gain-historyXticks-season] of cows; Average LWG SEASON\nILWG_SEASON
@@ -1661,9 +1662,9 @@ Average LWG since the start of the SEASON
 11
 
 MONITOR
-2253
+3093
 512
-2456
+3296
 557
 NIL
 max [count cows-here] of patches
@@ -1696,9 +1697,9 @@ NIL
 1
 
 MONITOR
-3120
+3960
 813
-3366
+4206
 858
 Average annual live weight gain per hectare (ALWG, kg/ha)
 ;(sum [live-weight] of cows with [steer?] - sum [initial-weight] of cows with [steer?]) / count patches; para calcular el WGH de los steers\n;(sum [live-weight] of cows - sum [initial-weight] of cows) / count patches\nALWG
@@ -1729,9 +1730,9 @@ season-days
 11
 
 MONITOR
-2253
+3093
 447
-2512
+3352
 492
 Average LWG since the start of the YEAR
 ;mean [live-weight-gain-historyXticks-year] of cows; Average LWG YEAR\nILWG_YEAR
@@ -1740,9 +1741,9 @@ Average LWG since the start of the YEAR
 11
 
 MONITOR
-3245
+4085
 245
-3419
+4259
 290
 Total DM per ha (kg/ha)
 ;(DM-cm-ha * mean [grass-height] of patches) / DM-available-for-cattle\n(dmgr) / count patches
@@ -1751,9 +1752,9 @@ Total DM per ha (kg/ha)
 11
 
 MONITOR
-3417
+4257
 245
-3594
+4434
 290
 Total DM G. Rate (kg/ha/day)
 ;((DM-cm-ha * mean [grass-height] of patches) / DM-available-for-cattle) / 92\n(dmgr / count patches) / 92
@@ -1762,9 +1763,9 @@ Total DM G. Rate (kg/ha/day)
 11
 
 MONITOR
-2518
+3358
 362
-2608
+3448
 407
 ALWG (kg/ha)
 ;(sum [live-weight] of cows with [steer?] - sum [initial-weight] of cows with [steer?]) / count patches; para calcular el WGH de los steers\n;(sum [live-weight] of cows - sum [initial-weight] of cows) / count patches\nALWG
@@ -1773,9 +1774,9 @@ ALWG (kg/ha)
 11
 
 MONITOR
-2629
+3469
 245
-2746
+3586
 290
 BCS of cows (points)
 ;(mean [live-weight] of cows with [cow?] - mean [min-weight] of cows with [cow?]) / 40\n(mean [live-weight] of cows with [cow?] - (((mean [live-weight] of cows with [cow?]) * set-MW-1-AU) / set-1-AU)) / 40
@@ -1784,9 +1785,9 @@ BCS of cows (points)
 11
 
 MONITOR
-2629
+3469
 291
-2733
+3573
 336
 PR of cows (%)
 ;mean [pregnancy-rate] of cows with [cow?] * 368 * 100\nmean [pregnancy-rate] of cows with [cow?] * 100
@@ -1803,7 +1804,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-30.0
+97.0
 1
 1
 years
@@ -1913,7 +1914,7 @@ CHOOSER
 grass-quality-distribution
 grass-quality-distribution
 "homogeneus" "uniform" "normal" "exponential"
-1
+0
 
 PLOT
 1095
@@ -2003,7 +2004,7 @@ CHOOSER
 spatial-management
 spatial-management
 "open access" "rotational grazing"
-1
+0
 
 CHOOSER
 154
@@ -2025,6 +2026,16 @@ paddock-size
 3
 1
 11
+
+CHOOSER
+11
+559
+149
+604
+DM-cm-ha?
+DM-cm-ha?
+"180" "180/92"
+0
 
 @#$#@#$#@
 ## WHAT IS IT?
