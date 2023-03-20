@@ -161,7 +161,8 @@ to setup-globals
   set ni 0.24
   set xi 132
   set grass-energy 1.8
-180
+  set DM-cm-ha 180
+  if (DM-cm-ha? = "180/92") [set DM-cm-ha 180 / 92]
   set season-coef [1 1.15 1.05 1]
   set kmax [7.4 22.2 15.6 11.1]
   set maxLWG [40 60 40 40]
@@ -202,30 +203,27 @@ to setup-grassland
     ask patches with [ (pxcor < (set-x-size) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor < (set-y-size) / 2 or pycor = (set-y-size - 1) / 2)] [set paddock-d 1]
 
 
-;    ask patches with [pcolor = white] [set wall 1]                          ;; MATERIALIZANDO EL VALLADO ####################################################################################################################
-;    ask patches with [wall = 1] [
-;      set paddock-a 0
-;      set paddock-b 0
-;      set paddock-c 0
-;      set paddock-d 0
-;    ]
   ]
 
   ask patches [
     set grass-quality 1
+                                                                           ;; DISTRIBUTIONS ############################################################################################################################
     if (grass-quality-distribution = "uniform") [set grass-quality random-float 1]
 
-    if (grass-quality-distribution = "normal") [set grass-quality random-normal 0.5 0.1]                ;; DISTRIBUCION NORMAL SIN LIMITE SUPERIOR ####################################################################################################################
+    if (grass-quality-distribution = "normal") [
+      set grass-quality random-normal 0.5 0.15
+      if grass-quality < 0 [set grass-quality 0]
+      if grass-quality > 1 [set grass-quality 1]]
 
-    ;if (grass-quality-distribution = "normal-restricted") [                                                                        ;; DISTRIBUCION NORMAL CON LIMITE SUPERIOR ####################################################################################################################
-    ;  let b median (list 0.001 (random-normal 0.5 0.2) 1)
-    ;  set grass-quality b]
 
-    if (grass-quality-distribution = "exponential") [set grass-quality random-exponential 0.1]                       ;; DISTRIBUCION EXPONENCIAL SIN LIMITE SUPERIOR ###################################################################################################################
+    if (grass-quality-distribution = "exponential_low") [
+      set grass-quality random-exponential 0.2
+      while [grass-quality > 1] [set grass-quality random-exponential 0.2]]
 
-    ;if (grass-quality-distribution = "exponential-restricted") [                                                                   ;; DISTRIBUCION EXPONENCIAL CON LIMITE SUPERIOR ###################################################################################################################
-    ;  let b median (list 0.001 (random-exponential 1) 1)
-    ;  set grass-quality b]
+
+    if (grass-quality-distribution = "exponential_high") [
+      set grass-quality 1 - random-exponential 0.2
+      while [grass-quality < 0] [set grass-quality 1 - random-exponential 0.2]]
 
 
     set grass-height initial-grass-height * grass-quality               ;; the initial grass height is set by the observer in the interface
@@ -895,10 +893,10 @@ NIL
 1
 
 SLIDER
-10
-412
-161
-445
+9
+462
+160
+495
 initial-num-cows
 initial-num-cows
 0
@@ -1013,10 +1011,10 @@ PENS
 "Total" 1.0 0 -16777216 true "" "plot count cows"
 
 SLIDER
-11
-513
-148
-546
+10
+563
+147
+596
 perception
 perception
 0
@@ -1142,10 +1140,10 @@ simulation-time / 368
 11
 
 SLIDER
-9
-327
-160
-360
+8
+377
+159
+410
 initial-num-heifers
 initial-num-heifers
 0
@@ -1157,10 +1155,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-9
-361
-160
-394
+8
+411
+159
+444
 initial-weight-heifers
 initial-weight-heifers
 100
@@ -1275,10 +1273,10 @@ NIL
 1
 
 SLIDER
-10
-445
-161
-478
+9
+495
+160
+528
 initial-weight-cows
 initial-weight-cows
 100
@@ -1500,10 +1498,10 @@ mean [live-weight-gain] of cows with [cow?]
 11
 
 SLIDER
-9
-249
-160
-282
+8
+299
+159
+332
 initial-num-steers
 initial-num-steers
 0
@@ -1515,10 +1513,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-9
-280
-160
-313
+8
+330
+159
+363
 initial-weight-steers
 initial-weight-steers
 100
@@ -1803,7 +1801,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-30.0
+0.0
 1
 1
 years
@@ -1906,14 +1904,14 @@ count cows
 11
 
 CHOOSER
-9
-151
-150
-196
+8
+201
+149
+246
 grass-quality-distribution
 grass-quality-distribution
-"homogeneus" "uniform" "normal" "exponential"
-1
+"homogeneus" "uniform" "normal" "exponential_low" "exponential_high"
+0
 
 PLOT
 1095
@@ -1996,20 +1994,20 @@ max [grass-height] of patches
 11
 
 CHOOSER
-9
-199
-150
-244
+8
+249
+149
+294
 spatial-management
 spatial-management
 "open access" "rotational grazing"
-1
+0
 
 CHOOSER
-154
-200
-289
-245
+153
+250
+288
+295
 starting-paddock
 starting-paddock
 "paddock a" "paddock b" "paddock c" "paddock d"
@@ -2025,6 +2023,16 @@ paddock-size
 3
 1
 11
+
+CHOOSER
+8
+150
+146
+195
+DM-cm-ha?
+DM-cm-ha?
+"180" "180/92"
+0
 
 @#$#@#$#@
 ## WHAT IS IT?
