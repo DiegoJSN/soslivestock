@@ -37,7 +37,7 @@ globals [
   cow-age-min                                                           ;; determines the beginning of the “cow” age class for heifers: 737 days
   cow-age-max                                                           ;; determines the life expectancy of cattle: 5520 days
   gestation-period                                                      ;; determines the gestation period of pregnant cows: 276 days
-  lactation-period                                                      ;; determines the lactating period of cows with calves: 184 days
+  lactation-period                                                      ;; determines the lactating period of cows with calves: 246 days
   weight-gain-lactation                                                 ;; affects the live weight gain of lactating animals (i.e., “born-calf” age class): 0.61 Kg/day
 
 ;; Market prices & economic balance related global variables
@@ -156,7 +156,7 @@ to setup-globals
   set cow-age-min 737
   set cow-age-max 5520
   set gestation-period 276
-  set lactation-period 184
+  set lactation-period 246
   set weight-gain-lactation 0.61
   set ni 0.24
   set xi 132
@@ -1049,7 +1049,7 @@ initial-grass-height
 initial-grass-height
 1
 22.2
-22.2
+7.0
 0.1
 1
 cm
@@ -1794,7 +1794,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-0.0
+30.0
 1
 1
 years
@@ -2026,7 +2026,7 @@ set-DM-cm-ha
 set-DM-cm-ha
 1
 180
-180.0
+2.0
 1
 1
 kg/cm/ha
