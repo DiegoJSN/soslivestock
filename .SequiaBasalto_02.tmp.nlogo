@@ -62,7 +62,7 @@ breed [cows cow]
 
 patches-own [
   grass-height                                                          ;; primary production (biomass), expressed in centimeters
-  grass-quality                                                         ;; ####################################################################################################################
+  soil-quality                                                         ;; ####################################################################################################################
   gh-individual                                                         ;; grass height consumed per cow
   r                                                                     ;; growth rate for the grass = 0.002 1/day
   GH-consumed                                                           ;; grass-height consumed from the total consumption of dry matter
@@ -161,8 +161,7 @@ to setup-globals
   set ni 0.24
   set xi 132
   set grass-energy 1.8
-  set DM-cm-ha 180
-  if (DM-cm-ha? = "180/92") [set DM-cm-ha 180 / 92]
+  set DM-cm-ha set-DM-cm-ha
   set season-coef [1 1.15 1.05 1]
   set kmax [7.4 22.2 15.6 11.1]
   set maxLWG [40 60 40 40]
@@ -195,27 +194,27 @@ to setup-grassland
   ]
 
   ask patches [
-    set grass-quality 1
+    set soil-quality 1
                                                                            ;; DISTRIBUTIONS ############################################################################################################################
-    if (grass-quality-distribution = "uniform") [set grass-quality random-float 1]
+    if (soil-quality-distribution = "uniform") [set soil-quality random-float 1]
 
-    if (grass-quality-distribution = "normal") [
-      set grass-quality random-normal 0.5 0.15
-      if grass-quality < 0 [set grass-quality 0]
-      if grass-quality > 1 [set grass-quality 1]]
-
-
-    if (grass-quality-distribution = "exponential_low") [
-      set grass-quality random-exponential 0.2
-      while [grass-quality > 1] [set grass-quality random-exponential 0.2]]
+    if (soil-quality-distribution = "normal") [
+      set soil-quality random-normal 0.5 0.15
+      if soil-quality < 0 [set soil-quality 0]
+      if soil-quality > 1 [set soil-quality 1]]
 
 
-    if (grass-quality-distribution = "exponential_high") [
-      set grass-quality 1 - random-exponential 0.2
-      while [grass-quality < 0] [set grass-quality 1 - random-exponential 0.2]]
+    if (soil-quality-distribution = "exponential_low") [
+      set soil-quality random-exponential 0.2
+      while [soil-quality > 1] [set soil-quality random-exponential 0.2]]
 
 
-    set grass-height initial-grass-height * grass-quality               ;; the initial grass height is set by the observer in the interface
+    if (soil-quality-distribution = "exponential_high") [
+      set soil-quality 1 - random-exponential 0.2
+      while [soil-quality < 0] [set soil-quality 1 - random-exponential 0.2]]
+
+
+    set grass-height initial-grass-height * soil-quality               ;; the initial grass height is set by the observer in the interface
     set GH-consumed 0
     ifelse grass-height < 2                                             ;; patches with grass height less than 2 cm are colored light green. This is based on the assumption that cows cannot eat grass less than 2 cm high
     [set pcolor 37]
@@ -225,7 +224,7 @@ to setup-grassland
 end
 
 to setup-livestock
-  if (spatial-management = "open access") [   ;; REGLAS PARA CREACION VACAS EN "OPEN ACCESS" ####################################################################################################################
+  if (spatial-management = "free grazing") [   ;; REGLAS PARA CREACION VACAS EN "FREE ACCESS" ####################################################################################################################
 
     create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min setxy random-pxcor random-pycor become-cow ]
     create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min setxy random-pxcor random-pycor become-heifer ]
@@ -326,7 +325,7 @@ to grow-grass                                                           ;; each 
     ;set grass-height (((item current-season kmax * grass-quality) / (1 + (((((item current-season kmax * grass-quality) * set-climacoef) - (initial-grass-height)) / (initial-grass-height)) * (e ^ (- r * simulation-time))))) * set-climacoef) - GH-consumed
 
     ;;OPCION 3: VARIABLE ESPECIFICA PARA EL TIEMPO USANDO "grass-height"
-    set grass-height (((item current-season kmax * grass-quality) / (1 + (((((item current-season kmax * grass-quality) * set-climacoef) - (grass-height)) / (grass-height)) * (e ^ (- r * simulation-time))))) * set-climacoef) - GH-consumed                                                                                                                                                                                ; COMENTARIO IMPORTANTE SOBRE ESTA FORMULA: se ha añadido lo siguiente: ahora, la variable "K" del denominador ahora TAMBIÉN multiplica a "climacoef". Ahora que lo pienso, así tiene más sentido... ya que la capacidad de carga (K) se verá afectada dependiendo de la variabilidad climática (antes solo se tenía en cuenta en el numerador). Ahora que recuerdo, en Dieguez-Cameroni et al. 2012, se menciona lo siguiente sobre la variable K "es una constante estacional que determina la altura máxima de la pastura, multiplicada por el coeficiente climático (coefClima) explicado anteriormente", así que parece que la modificacion nueva que he hecho tiene sentido.
+    set grass-height (((item current-season kmax * soil-quality) / (1 + (((((item current-season kmax * soil-quality) * set-climacoef) - (grass-height)) / (grass-height)) * (e ^ (- r * simulation-time))))) * set-climacoef) - GH-consumed                                                                                                                                                                                ; COMENTARIO IMPORTANTE SOBRE ESTA FORMULA: se ha añadido lo siguiente: ahora, la variable "K" del denominador ahora TAMBIÉN multiplica a "climacoef". Ahora que lo pienso, así tiene más sentido... ya que la capacidad de carga (K) se verá afectada dependiendo de la variabilidad climática (antes solo se tenía en cuenta en el numerador). Ahora que recuerdo, en Dieguez-Cameroni et al. 2012, se menciona lo siguiente sobre la variable K "es una constante estacional que determina la altura máxima de la pastura, multiplicada por el coeficiente climático (coefClima) explicado anteriormente", así que parece que la modificacion nueva que he hecho tiene sentido.
 
     ;;OPCION 4: r = 0.0004334. CON ESTE VALOR DE r CONSIGO REPLICAR LA FIGURA 2 Y CUADRO 3 DE Dieguez-Cameroni et al. 2012. ESTOY "FORZANDO" LA FORMULA PARA QUE DEN LOS NUMEROS QUE QUIERO, POR ESO LLAMO A ESTA VERSION "GH FORZADO"
     ;set grass-height (((item current-season kmax * grass-quality) / (1 + (((((item current-season kmax * grass-quality) * set-climacoef) - (grass-height)) / (grass-height)) * (e ^ (- 0.0004334 * simulation-time))))) * set-climacoef) - GH-consumed
@@ -345,7 +344,7 @@ to grow-grass                                                           ;; each 
 end
 
 to move
-  if (spatial-management = "open access")[                              ;; REGLAS PARA EL MOVIMIENTO DE LAS VACAS EN "OPEN ACCESS" ####################################################################################################################
+  if (spatial-management = "free grazing")[                              ;; REGLAS PARA EL MOVIMIENTO DE LAS VACAS EN "FREE ACCESS" ####################################################################################################################
     ask cows [
       if grass-height < 5                                               ;; once the grass height of each patch is updated, if the grass height in a patch is minor than 5 cm (the minimum grass height that maintains the live weight of a cow), the cows moves to another patch
       [ifelse random-float 1 < perception
@@ -474,7 +473,7 @@ to reproduce                                                            ;; this 
     if pregnancy-time = gestation-period [
       hatch-cows 1 [
         if (spatial-management = "rotational grazing") [if paddock-a = 1 [move-to one-of patches with [paddock-a = 1]] if paddock-b = 1 [move-to one-of patches with [paddock-b = 1]] if paddock-c = 1 [move-to one-of patches with [paddock-c = 1]] if paddock-d = 1 [move-to one-of patches with [paddock-d = 1]]]
-        if  (spatial-management = "open access") [setxy random-pxcor random-pycor]
+        if  (spatial-management = "free grazing") [setxy random-pxcor random-pycor]
         ifelse random-float 1 < 0.5
         [become-born-calf-female]
         [become-born-calf-male]]
@@ -1895,10 +1894,10 @@ count cows
 CHOOSER
 8
 201
-149
+157
 246
-grass-quality-distribution
-grass-quality-distribution
+soil-quality-distribution
+soil-quality-distribution
 "homogeneus" "uniform" "normal" "exponential_low" "exponential_high"
 0
 
@@ -1954,8 +1953,8 @@ MONITOR
 122
 1626
 167
-Grass quality of patches (average)
-mean [grass-quality] of patches
+Soil quality of patches (average)
+mean [soil-quality] of patches
 17
 1
 11
@@ -1983,20 +1982,20 @@ max [grass-height] of patches
 11
 
 CHOOSER
-8
+9
 249
-149
+160
 294
 spatial-management
 spatial-management
-"open access" "rotational grazing"
+"free grazing" "rotational grazing"
 0
 
 CHOOSER
-153
-250
-288
-295
+184
+249
+319
+294
 starting-paddock
 starting-paddock
 "paddock a" "paddock b" "paddock c" "paddock d"
@@ -2013,15 +2012,20 @@ paddock-size
 1
 11
 
-CHOOSER
-8
-150
-146
-195
-DM-cm-ha?
-DM-cm-ha?
-"180" "180/92"
-0
+SLIDER
+181
+157
+343
+190
+set-DM-cm-ha
+set-DM-cm-ha
+1
+180
+180.0
+1
+1
+kg/cm/ha
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
