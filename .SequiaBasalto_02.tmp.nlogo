@@ -226,9 +226,10 @@ end
 to setup-livestock
   if (spatial-management = "free grazing") [   ;; REGLAS PARA CREACION VACAS EN "FREE ACCESS" ####################################################################################################################
 
-    create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min setxy random-pxcor random-pycor become-cow ]
-    create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min setxy random-pxcor random-pycor become-heifer ]
-    create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min setxy random-pxcor random-pycor become-steer ]
+    create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age random (cow-age-max - cow-age-min) + cow-age-min setxy random-pxcor random-pycor become-cow ]
+    create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age random (cow-age-min - heifer-age-min) + heifer-age-min setxy random-pxcor random-pycor become-heifer ]
+    create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age random (cow-age-min - heifer-age-min) + heifer-age-min setxy random-pxcor random-pycor become-steer ]
+    create-cows initial-num-weaned-calves [set shape "cow" set live-weight initial-weight-weaned-calves set initial-weight initial-weight-weaned-calves set mortality-rate natural-mortality-rate set DDMC 0 set age random (heifer-age-min - weaned-calf-age-min) + weaned-calf-age-min setxy random-pxcor random-pycor ifelse random-float 1 < 0.5 [become-weaned-calf-female] [become-weaned-calf-male]]
   ]
 
   if (spatial-management = "rotational grazing") [   ;; REGLAS PARA CREACION VACAS EN "ROTATIONAL GRAZING" ####################################################################################################################
@@ -237,17 +238,42 @@ to setup-livestock
     if (starting-paddock = "paddock a") [create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-a = 1]] become-heifer]]
     if (starting-paddock = "paddock a") [create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-a = 1]] become-steer]]
 
+
+
+
+    if (starting-paddock = "paddock a") [create-cows initial-num-weaned-calves [set shape "cow" set live-weight initial-weight-weaned-calves set initial-weight initial-weight-weaned-calves set mortality-rate natural-mortality-rate set DDMC 0 set age random (heifer-age-min - weaned-calf-age-min) + weaned-calf-age-min ask cows [move-to one-of patches with [paddock-a = 1]] ifelse random-float 1 < 0.5 [become-weaned-calf-female] [become-weaned-calf-male]]]
+
+
+
+
     if (starting-paddock = "paddock b") [create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min ask cows [move-to one-of patches with [paddock-b = 1]] become-cow]]
     if (starting-paddock = "paddock b") [create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-b = 1]] become-heifer]]
     if (starting-paddock = "paddock b") [create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-b = 1]] become-steer]]
+
+
+    if (starting-paddock = "paddock b") [create-cows initial-num-weaned-calves [set shape "cow" set live-weight initial-weight-weaned-calves set initial-weight initial-weight-weaned-calves set mortality-rate natural-mortality-rate set DDMC 0 set age random (heifer-age-min - weaned-calf-age-min) + weaned-calf-age-min ask cows [move-to one-of patches with [paddock-b = 1]] ifelse random-float 1 < 0.5 [become-weaned-calf-female] [become-weaned-calf-male]]]
+
+
+
+
 
     if (starting-paddock = "paddock c") [create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min ask cows [move-to one-of patches with [paddock-c = 1]] become-cow]]
     if (starting-paddock = "paddock c") [create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-c = 1]] become-heifer]]
     if (starting-paddock = "paddock c") [create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-c = 1]] become-steer]]
 
+    if (starting-paddock = "paddock c") [create-cows initial-num-weaned-calves [set shape "cow" set live-weight initial-weight-weaned-calves set initial-weight initial-weight-weaned-calves set mortality-rate natural-mortality-rate set DDMC 0 set age random (heifer-age-min - weaned-calf-age-min) + weaned-calf-age-min ask cows [move-to one-of patches with [paddock-c = 1]] ifelse random-float 1 < 0.5 [become-weaned-calf-female] [become-weaned-calf-male]]]
+
+
+
+
+
     if (starting-paddock = "paddock d") [create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min ask cows [move-to one-of patches with [paddock-d = 1]] become-cow]]
     if (starting-paddock = "paddock d") [create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-d = 1]] become-heifer]]
     if (starting-paddock = "paddock d") [create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-d = 1]] become-steer]]
+    if (starting-paddock = "paddock d") [create-cows initial-num-weaned-calves [set shape "cow" set live-weight initial-weight-weaned-calves set initial-weight initial-weight-weaned-calves set mortality-rate natural-mortality-rate set DDMC 0 set age random (heifer-age-min - weaned-calf-age-min) + weaned-calf-age-min ask cows [move-to one-of patches with [paddock-d = 1]] ifelse random-float 1 < 0.5 [become-weaned-calf-female] [become-weaned-calf-male]]]
+
+
+
   ]
 
   ask cows [
@@ -881,18 +907,18 @@ NIL
 1
 
 SLIDER
-9
-462
-160
-495
+8
+303
+198
+336
 initial-num-cows
 initial-num-cows
 0
 1000
-5.0
+10.0
 1
 1
-cows
+NIL
 HORIZONTAL
 
 SLIDER
@@ -999,10 +1025,10 @@ PENS
 "Total" 1.0 0 -16777216 true "" "plot count cows"
 
 SLIDER
-10
-563
-147
-596
+9
+625
+146
+658
 perception
 perception
 0
@@ -1129,14 +1155,14 @@ simulation-time / 368
 
 SLIDER
 8
-377
-159
-410
+381
+200
+414
 initial-num-heifers
 initial-num-heifers
 0
 1000
-5.0
+10.0
 1
 1
 NIL
@@ -1144,14 +1170,14 @@ HORIZONTAL
 
 SLIDER
 8
-411
-159
-444
+415
+199
+448
 initial-weight-heifers
 initial-weight-heifers
 100
 1500
-200.0
+250.0
 1
 1
 kg
@@ -1261,15 +1287,15 @@ NIL
 1
 
 SLIDER
-9
-495
-160
-528
+8
+336
+198
+369
 initial-weight-cows
 initial-weight-cows
 100
 1500
-380.0
+340.0
 1
 1
 kg
@@ -1487,14 +1513,14 @@ mean [live-weight-gain] of cows with [cow?]
 
 SLIDER
 8
-299
-159
-332
+462
+200
+495
 initial-num-steers
 initial-num-steers
 0
 1000
-5.0
+10.0
 1
 1
 NIL
@@ -1502,14 +1528,14 @@ HORIZONTAL
 
 SLIDER
 8
-330
-159
-363
+493
+200
+526
 initial-weight-steers
 initial-weight-steers
 100
 1500
-300.0
+250.0
 1
 1
 kg
@@ -1992,10 +2018,10 @@ spatial-management
 0
 
 CHOOSER
-184
-249
-319
-294
+169
+248
+304
+293
 starting-paddock
 starting-paddock
 "paddock a" "paddock b" "paddock c" "paddock d"
@@ -2013,10 +2039,10 @@ paddock-size
 11
 
 SLIDER
-181
-157
-343
-190
+8
+149
+170
+182
 set-DM-cm-ha
 set-DM-cm-ha
 1
@@ -2025,6 +2051,36 @@ set-DM-cm-ha
 1
 1
 kg/cm/ha
+HORIZONTAL
+
+SLIDER
+9
+539
+200
+572
+initial-num-weaned-calves
+initial-num-weaned-calves
+0
+1000
+10.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+8
+574
+200
+607
+initial-weight-weaned-calves
+initial-weight-weaned-calves
+0
+200
+150.0
+1
+1
+kg
 HORIZONTAL
 
 @#$#@#$#@
