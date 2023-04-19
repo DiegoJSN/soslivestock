@@ -775,7 +775,7 @@ initial-num-cows
 initial-num-cows
 0
 1000
-10.0
+5.0
 1
 1
 NIL
@@ -1022,7 +1022,7 @@ initial-num-heifers
 initial-num-heifers
 0
 1000
-10.0
+0.0
 1
 1
 NIL
@@ -1380,7 +1380,7 @@ initial-num-steers
 initial-num-steers
 0
 1000
-10.0
+0.0
 1
 1
 NIL
@@ -1675,7 +1675,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-30.0
+0.0
 1
 1
 years
@@ -1786,7 +1786,7 @@ initial-num-weaned-calves
 initial-num-weaned-calves
 0
 1000
-10.0
+0.0
 1
 1
 NIL
