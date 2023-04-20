@@ -2455,7 +2455,7 @@ NetLogo 6.2.2
       <value value="&quot;homogeneus&quot;"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_set-DM-cm-ha" repetitions="10" runMetricsEveryStep="true">
+  <experiment name="SA_set-DM-cm-ha" repetitions="10" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="9200"/>
@@ -2687,7 +2687,7 @@ NetLogo 6.2.2
       <value value="&quot;homogeneus&quot;"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_initial-weight-cows" repetitions="10" runMetricsEveryStep="true">
+  <experiment name="SA_initial-weight-cows" repetitions="10" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="9200"/>
@@ -2767,7 +2767,7 @@ NetLogo 6.2.2
       <value value="&quot;homogeneus&quot;"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_perception" repetitions="10" runMetricsEveryStep="true">
+  <experiment name="SA_perception" repetitions="10" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="9200"/>

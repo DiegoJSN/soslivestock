@@ -2233,7 +2233,10 @@ NetLogo 6.2.2
     <timeLimit steps="9200"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
-    <metric>mean [grass-height] of patches</metric>
+    <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
+    <metric>(dmgr) / count patches ; mean kg of DM per ha</metric>
+    <metric>dmgr ; TOTAL kg of DM</metric>
+    <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
     <enumeratedValueSet variable="starting-paddock">
       <value value="&quot;paddock a&quot;"/>
@@ -2303,7 +2306,10 @@ NetLogo 6.2.2
     <timeLimit steps="9200"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
-    <metric>mean [grass-height] of patches</metric>
+    <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
+    <metric>(dmgr) / count patches ; mean kg of DM per ha</metric>
+    <metric>dmgr ; TOTAL kg of DM</metric>
+    <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
     <enumeratedValueSet variable="starting-paddock">
       <value value="&quot;paddock a&quot;"/>
@@ -2377,7 +2383,10 @@ NetLogo 6.2.2
     <timeLimit steps="9200"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
-    <metric>mean [grass-height] of patches</metric>
+    <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
+    <metric>(dmgr) / count patches ; mean kg of DM per ha</metric>
+    <metric>dmgr ; TOTAL kg of DM</metric>
+    <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
     <enumeratedValueSet variable="starting-paddock">
       <value value="&quot;paddock a&quot;"/>
@@ -2446,13 +2455,16 @@ NetLogo 6.2.2
       <value value="&quot;homogeneus&quot;"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_set-DM-cm-ha" repetitions="10" runMetricsEveryStep="true">
+  <experiment name="SA_set-DM-cm-ha" repetitions="10" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="9200"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
-    <metric>mean [grass-height] of patches</metric>
+    <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
+    <metric>(dmgr) / count patches ; mean kg of DM per ha</metric>
+    <metric>dmgr ; TOTAL kg of DM</metric>
+    <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
     <enumeratedValueSet variable="starting-paddock">
       <value value="&quot;paddock a&quot;"/>
@@ -2529,7 +2541,10 @@ NetLogo 6.2.2
     <timeLimit steps="9200"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
-    <metric>mean [grass-height] of patches</metric>
+    <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
+    <metric>(dmgr) / count patches ; mean kg of DM per ha</metric>
+    <metric>dmgr ; TOTAL kg of DM</metric>
+    <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
     <enumeratedValueSet variable="starting-paddock">
       <value value="&quot;paddock a&quot;"/>
@@ -2605,7 +2620,10 @@ NetLogo 6.2.2
     <timeLimit steps="9200"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
-    <metric>mean [grass-height] of patches</metric>
+    <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
+    <metric>(dmgr) / count patches ; mean kg of DM per ha</metric>
+    <metric>dmgr ; TOTAL kg of DM</metric>
+    <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
     <enumeratedValueSet variable="starting-paddock">
       <value value="&quot;paddock a&quot;"/>
@@ -2675,7 +2693,10 @@ NetLogo 6.2.2
     <timeLimit steps="9200"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
-    <metric>mean [grass-height] of patches</metric>
+    <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
+    <metric>(dmgr) / count patches ; mean kg of DM per ha</metric>
+    <metric>dmgr ; TOTAL kg of DM</metric>
+    <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
     <enumeratedValueSet variable="starting-paddock">
       <value value="&quot;paddock a&quot;"/>
@@ -2752,7 +2773,10 @@ NetLogo 6.2.2
     <timeLimit steps="9200"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
-    <metric>mean [grass-height] of patches</metric>
+    <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
+    <metric>(dmgr) / count patches ; mean kg of DM per ha</metric>
+    <metric>dmgr ; TOTAL kg of DM</metric>
+    <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
     <enumeratedValueSet variable="starting-paddock">
       <value value="&quot;paddock a&quot;"/>
