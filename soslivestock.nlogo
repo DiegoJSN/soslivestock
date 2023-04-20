@@ -2208,6 +2208,47 @@ NetLogo 6.2.2
     <metric>mean [live-weight] of cows</metric>
     <steppedValueSet variable="perception" first="0" step="0.2" last="1"/>
   </experiment>
+  <experiment name="SA_set-X-size" repetitions="10" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="7360"/>
+    <metric>count cows</metric>
+    <metric>mean [grass-height] of patches</metric>
+    <metric>mean [live-weight] of cows</metric>
+    <steppedValueSet variable="set-X-size" first="20" step="5" last="40"/>
+  </experiment>
+  <experiment name="SA_set-DM-cm-ha" repetitions="10" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="7360"/>
+    <metric>count cows</metric>
+    <metric>mean [grass-height] of patches</metric>
+    <metric>mean [live-weight] of cows</metric>
+    <enumeratedValueSet variable="set-DM-cm-ha">
+      <value value="2"/>
+      <value value="40"/>
+      <value value="80"/>
+      <value value="100"/>
+      <value value="140"/>
+      <value value="180"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="SA_initial-weight-cows" repetitions="10" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="7360"/>
+    <metric>count cows</metric>
+    <metric>mean [grass-height] of patches</metric>
+    <metric>mean [live-weight] of cows</metric>
+    <enumeratedValueSet variable="initial-weight-cows">
+      <value value="140"/>
+      <value value="180"/>
+      <value value="220"/>
+      <value value="260"/>
+      <value value="300"/>
+      <value value="340"/>
+    </enumeratedValueSet>
+  </experiment>
 </experiments>
 @#$#@#$#@
 @#$#@#$#@
