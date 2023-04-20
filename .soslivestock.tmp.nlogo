@@ -2176,7 +2176,7 @@ NetLogo 6.2.2
     <steppedValueSet variable="initial-num-cows" first="10" step="10" last="100"/>
     <steppedValueSet variable="perception" first="0" step="0.2" last="1"/>
   </experiment>
-  <experiment name="SA_set-climacoef" repetitions="10" runMetricsEveryStep="true">
+  <experiment name="SA_set-climacoef" repetitions="10" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="7360"/>
