@@ -2197,7 +2197,7 @@ NetLogo 6.2.2
     <metric>count cows</metric>
     <metric>mean [grass-height] of patches</metric>
     <metric>mean [live-weight] of cows</metric>
-    <steppedValueSet variable="initial-num-cows" first="10" step="10" last="100"/>
+    <steppedValueSet variable="initial-num-cows" first="10" step="20" last="100"/>
   </experiment>
   <experiment name="SA_perception" repetitions="10" runMetricsEveryStep="false">
     <setup>setup</setup>

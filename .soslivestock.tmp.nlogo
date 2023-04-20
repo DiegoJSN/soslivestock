@@ -790,7 +790,7 @@ initial-season
 initial-season
 0
 3
-0.0
+3.0
 1
 1
 NIL
@@ -2154,28 +2154,6 @@ NetLogo 6.2.2
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="SA_sliders" repetitions="3" runMetricsEveryStep="true">
-    <setup>setup</setup>
-    <go>go</go>
-    <timeLimit steps="7360"/>
-    <metric>count cows</metric>
-    <metric>mean [grass-height] of patches</metric>
-    <metric>mean [live-weight] of cows</metric>
-    <enumeratedValueSet variable="set-climacoef">
-      <value value="0.5"/>
-      <value value="1"/>
-      <value value="1.5"/>
-    </enumeratedValueSet>
-    <steppedValueSet variable="initial-grass-height" first="3" step="1" last="7"/>
-    <enumeratedValueSet variable="initial-season">
-      <value value="0"/>
-      <value value="1"/>
-      <value value="2"/>
-      <value value="3"/>
-    </enumeratedValueSet>
-    <steppedValueSet variable="initial-num-cows" first="10" step="10" last="100"/>
-    <steppedValueSet variable="perception" first="0" step="0.2" last="1"/>
-  </experiment>
   <experiment name="SA_set-climacoef" repetitions="10" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
@@ -2219,7 +2197,7 @@ NetLogo 6.2.2
     <metric>count cows</metric>
     <metric>mean [grass-height] of patches</metric>
     <metric>mean [live-weight] of cows</metric>
-    <steppedValueSet variable="initial-num-cows" first="10" step="10" last="100"/>
+    <steppedValueSet variable="initial-num-cows" first="10" step="20" last="100"/>
   </experiment>
   <experiment name="SA_perception" repetitions="10" runMetricsEveryStep="false">
     <setup>setup</setup>
