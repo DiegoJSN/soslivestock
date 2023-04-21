@@ -309,35 +309,39 @@ to move
         [uphill grass-height]
         [move-to one-of neighbors]]]]
 
+
+
   if (spatial-management = "rotational grazing") [                                  ;; cow movement rules for the rotational grazing management strategy
-  ask cows [
+
+    ask cows [
       let patches-a1 neighbors with [paddock-a = 1]
       let target-a1 max-one-of patches-a1 [grass-height]
       if grass-height < 5 and paddock-a = 1
       [ifelse random-float 1 < perception and paddock-a = 1
         [move-to target-a1]
-        [move-to one-of neighbors with [paddock-a = 1]]
+        [move-to one-of neighbors with [paddock-a = 1]]]]
 
-        let patches-b1 neighbors with [paddock-b = 1]
-        let target-b1 max-one-of patches-b1 [grass-height]
-        if grass-height < 5 and paddock-b = 1
-        [ifelse random-float 1 < perception and paddock-b = 1
-          [move-to target-b1]
-          [move-to one-of neighbors with [paddock-b = 1]]
+    ask cows [
+      let patches-b1 neighbors with [paddock-b = 1]
+      let target-b1 max-one-of patches-b1 [grass-height]
+      if grass-height < 5 and paddock-b = 1
+      [ifelse random-float 1 < perception and paddock-b = 1
+        [move-to target-b1]
+        [move-to one-of neighbors with [paddock-b = 1]]]]
 
-          let patches-c1 neighbors with [paddock-c = 1]
-          let target-c1 max-one-of patches-c1 [grass-height]
-          if grass-height < 5 and paddock-c = 1
-          [ifelse random-float 1 < perception and paddock-c = 1
-            [move-to target-c1]
-            [move-to one-of neighbors with [paddock-c = 1]]
+    ask cows [let patches-c1 neighbors with [paddock-c = 1]
+      let target-c1 max-one-of patches-c1 [grass-height]
+      if grass-height < 5 and paddock-c = 1
+      [ifelse random-float 1 < perception and paddock-c = 1
+        [move-to target-c1]
+        [move-to one-of neighbors with [paddock-c = 1]]]]
 
-            let patches-d1 neighbors with [paddock-d = 1]
-            let target-d1 max-one-of patches-d1 [grass-height]
-            if grass-height < 5 and paddock-d = 1
-            [ifelse random-float 1 < perception and paddock-d = 1
-              [move-to target-d1]
-              [move-to one-of neighbors with [paddock-d = 1]]]]]]]
+    ask cows [let patches-d1 neighbors with [paddock-d = 1]
+      let target-d1 max-one-of patches-d1 [grass-height]
+      if grass-height < 5 and paddock-d = 1
+      [ifelse random-float 1 < perception and paddock-d = 1
+        [move-to target-d1]
+        [move-to one-of neighbors with [paddock-d = 1]]]]
 
     if season-days >= 92 [
       ask cows
@@ -1739,7 +1743,7 @@ CHOOSER
 spatial-management
 spatial-management
 "free grazing" "rotational grazing"
-0
+1
 
 CHOOSER
 169
