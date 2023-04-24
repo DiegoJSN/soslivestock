@@ -188,7 +188,7 @@ to setup-grassland
     ifelse grass-height < 2                                                         ;; patches with grass height less than 2 cm are colored light green. This is based on the assumption that cows cannot eat grass less than 2 cm high
     [set pcolor 37]
     [set pcolor scale-color green grass-height 23 0]
-    set r 0.002
+    set r 0.02
   ]
 end
 
@@ -289,9 +289,8 @@ end
 
 to grow-grass                                                                       ;; each patch calculates the height of its grass following a logistic regression. Grass height is affected by season, climacoef (set by the observer in the interface) and consumption of grass by animals  (GH consumed is the grass consumed by cows on the previous tick)
   ask patches [
-    set grass-height (((item current-season kmax * soil-quality) / (1 + (((((item current-season kmax * soil-quality) * set-climacoef) - (grass-height)) / (grass-height)) * (e ^ (- r * simulation-time))))) * set-climacoef) - GH-consumed                                                                                                                                                                                ; COMENTARIO IMPORTANTE SOBRE ESTA FORMULA: se ha añadido lo siguiente: ahora, la variable "K" del denominador ahora TAMBIÉN multiplica a "climacoef". Ahora que lo pienso, así tiene más sentido... ya que la capacidad de carga (K) se verá afectada dependiendo de la variabilidad climática (antes solo se tenía en cuenta en el numerador). Ahora que recuerdo, en Dieguez-Cameroni et al. 2012, se menciona lo siguiente sobre la variable K "es una constante estacional que determina la altura máxima de la pastura, multiplicada por el coeficiente climático (coefClima) explicado anteriormente", así que parece que la modificacion nueva que he hecho tiene sentido.
-
-    if grass-height <= 0 [set grass-height 1 ^ -80 ]                                ;; to avoid negative values.
+    set grass-height (grass-height + r * grass-height * (1 - grass-height / ((item current-season kmax * soil-quality) * set-climacoef))) - GH-consumed
+    if grass-height < 0 [set grass-height 0 ]                                       ;; to avoid negative values.
 
     ifelse grass-height < 2                                                         ;; patches with grass height less than 2 cm are colored light green. This is based on the assumption that cows cannot eat grass less than 2 cm high
     [set pcolor 37]
@@ -1743,7 +1742,7 @@ CHOOSER
 spatial-management
 spatial-management
 "free grazing" "rotational grazing"
-1
+0
 
 CHOOSER
 169
