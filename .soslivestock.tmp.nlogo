@@ -1082,10 +1082,10 @@ PENS
 "Average LWG" 1.0 0 -16777216 true "" "plot mean [live-weight-gain] of cows"
 
 PLOT
-4192
-507
-4518
-649
+4286
+498
+4612
+640
 Crop-efficiency (CE)
 Days
 %
@@ -1100,10 +1100,10 @@ PENS
 "CE" 1.0 0 -16777216 true "" "plot crop-efficiency"
 
 MONITOR
-4518
-507
-4574
-552
+4612
+498
+4668
+543
 CE (%)
 crop-efficiency
 2
@@ -1182,7 +1182,7 @@ true
 PENS
 "Cow" 1.0 0 -6459832 true "" "plot (mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40"
 "Cow-with-calf" 1.0 0 -5825686 true "" "plot (mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40"
-"Average BCS" 1.0 0 -16777216 true "" "plot (mean [live-weight] of cows - set-MW-1-AU) / 4040"
+"Average BCS" 1.0 0 -16777216 true "" "plot mean ((mean [live-weight] of cows - set-MW-1-AU) / 40) + ((mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40)"
 
 MONITOR
 1072
@@ -1190,7 +1190,7 @@ MONITOR
 1203
 676
 Average BCS (points)
-;(mean [live-weight] of cows - mean [min-weight] of cows) / 40\n;(mean [live-weight] of cows - (((mean [live-weight] of cows) * set-MW-1-AU) / set-1-AU)) / 40\n\n(mean [live-weight] of cows - set-MW-1-AU) / 40
+;(mean [live-weight] of cows - mean [min-weight] of cows) / 40\n;(mean [live-weight] of cows - (((mean [live-weight] of cows) * set-MW-1-AU) / set-1-AU)) / 40\n;(mean [live-weight] of cows - set-MW-1-AU) / 40\n\n(((mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40) + ((mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40)) / 2\n\n;(mean [live-weight] of cows  with [cow? or cow-with-calf?] - set-MW-1-AU) / 40
 2
 1
 11
@@ -1578,17 +1578,6 @@ Total DM per ha (kg/ha)
 11
 
 MONITOR
-2648
-576
-2825
-621
-Total DM G. Rate (kg/ha/day)
-;((DM-cm-ha * mean [grass-height] of patches) / DM-available-for-cattle) / 92\n(dmgr / count patches) / 92
-3
-1
-11
-
-MONITOR
 4545
 248
 4635
@@ -1647,10 +1636,10 @@ soil-quality-distribution
 0
 
 PLOT
-2937
-655
-3272
-869
+4286
+750
+4621
+964
 Grass height distribution
 cm
 nº patches
@@ -1665,10 +1654,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [grass-height] of patches"
 
 MONITOR
-2938
-871
-3085
-916
+4287
+966
+4434
+1011
 min grass-height of patches
 min [grass-height] of patches
 17
@@ -1676,10 +1665,10 @@ min [grass-height] of patches
 11
 
 MONITOR
-3104
-872
-3275
-917
+4453
+967
+4624
+1012
 max grass-height of patches
 max [grass-height] of patches
 17
@@ -1726,7 +1715,7 @@ set-DM-cm-ha
 set-DM-cm-ha
 1
 180
-20.0
+180.0
 1
 1
 kg/cm/ha

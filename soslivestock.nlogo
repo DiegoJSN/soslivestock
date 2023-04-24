@@ -1182,7 +1182,7 @@ true
 PENS
 "Cow" 1.0 0 -6459832 true "" "plot (mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40"
 "Cow-with-calf" 1.0 0 -5825686 true "" "plot (mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40"
-"Average BCS" 1.0 0 -16777216 true "" "plot (mean [live-weight] of cows - set-MW-1-AU) / 4040"
+"Average BCS" 1.0 0 -16777216 true "" "plot (((mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40) + ((mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40)) / 2"
 
 MONITOR
 1072
@@ -1190,7 +1190,7 @@ MONITOR
 1203
 676
 Average BCS (points)
-;(mean [live-weight] of cows - mean [min-weight] of cows) / 40\n;(mean [live-weight] of cows - (((mean [live-weight] of cows) * set-MW-1-AU) / set-1-AU)) / 40\n\n(mean [live-weight] of cows - set-MW-1-AU) / 40
+;(mean [live-weight] of cows - mean [min-weight] of cows) / 40\n;(mean [live-weight] of cows - (((mean [live-weight] of cows) * set-MW-1-AU) / set-1-AU)) / 40\n;(mean [live-weight] of cows - set-MW-1-AU) / 40\n\n(((mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40) + ((mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40)) / 2
 2
 1
 11
