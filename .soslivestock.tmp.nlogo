@@ -800,10 +800,10 @@ NIL
 HORIZONTAL
 
 PLOT
-956
-69
-1294
-280
+1368
+79
+1706
+290
 Average of grass-height (GH)
 Days
 cm
@@ -940,10 +940,10 @@ cm
 HORIZONTAL
 
 PLOT
-1305
-68
-1691
-283
+953
+77
+1339
+292
 Dry-matter (DM) and DM consumption (DDMC)
 Days
 kg
@@ -969,10 +969,10 @@ TEXTBOX
 1
 
 MONITOR
-957
-281
-1083
-326
+1369
+291
+1495
+336
 Average GH (cm/ha)
 grass-height-report
 3
@@ -1111,10 +1111,10 @@ crop-efficiency
 11
 
 MONITOR
-1305
-325
-1454
-370
+953
+334
+1102
+379
 Total DDMC (kg)
 sum [DDMC] of cows
 3
@@ -1122,10 +1122,10 @@ sum [DDMC] of cows
 11
 
 MONITOR
-1453
-325
-1627
-370
+1101
+334
+1275
+379
 Average DDMC (kg/animal)
 mean [DDMC] of cows
 3
@@ -1167,7 +1167,7 @@ HORIZONTAL
 PLOT
 953
 395
-1368
+1340
 589
 Body condition ccore (BCS)
 Days
@@ -1182,7 +1182,7 @@ true
 PENS
 "Cow" 1.0 0 -6459832 true "" "plot (mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40"
 "Cow-with-calf" 1.0 0 -5825686 true "" "plot (mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40"
-"Average BCS" 1.0 0 -16777216 true "" "plot mean ((mean [live-weight] of cows - set-MW-1-AU) / 40) + ((mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40)"
+"Average BCS" 1.0 0 -16777216 true "" "plot (((mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40) + ((mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40)) / 2"
 
 MONITOR
 1072
@@ -1190,7 +1190,7 @@ MONITOR
 1203
 676
 Average BCS (points)
-;(mean [live-weight] of cows - mean [min-weight] of cows) / 40\n;(mean [live-weight] of cows - (((mean [live-weight] of cows) * set-MW-1-AU) / set-1-AU)) / 40\n;(mean [live-weight] of cows - set-MW-1-AU) / 40\n\n(((mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40) + ((mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40)) / 2\n\n;(mean [live-weight] of cows  with [cow? or cow-with-calf?] - set-MW-1-AU) / 40
+;(mean [live-weight] of cows - mean [min-weight] of cows) / 40\n;(mean [live-weight] of cows - (((mean [live-weight] of cows) * set-MW-1-AU) / set-1-AU)) / 40\n;(mean [live-weight] of cows - set-MW-1-AU) / 40\n\n(((mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40) + ((mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40)) / 2
 2
 1
 11
@@ -1207,9 +1207,9 @@ BCS of cows (points)
 11
 
 PLOT
-1422
+1375
 395
-1832
+1785
 588
 Pregnancy rate (PR)
 Days
@@ -1228,20 +1228,20 @@ PENS
 "Average PR" 1.0 0 -16777216 true "" "plot mean [pregnancy-rate] of cows * 100"
 
 MONITOR
-1563
+1516
 633
-1694
+1647
 678
 Average PR (%)
-mean [pregnancy-rate] of cows * 100
+;mean [pregnancy-rate] of cows with [cow? or cow-with-calf? or heifer?]* 100\n\n;mean [pregnancy-rate] of cows * 100\n\n(((mean [pregnancy-rate] of cows with [cow?] - set-MW-1-AU) / 40) + ((mean [pregnancy-rate] of cows with [cow-with-calf?] - set-MW-1-AU) / 40) + ((mean [pregnancy-rate] of cows with [heifer?] - set-MW-1-AU) / 40) ) / 3
 2
 1
 11
 
 MONITOR
-1423
+1376
 588
-1555
+1508
 633
 PR of cows (%)
 mean [pregnancy-rate] of cows with [cow?] * 100
@@ -1250,9 +1250,9 @@ mean [pregnancy-rate] of cows with [cow?] * 100
 11
 
 MONITOR
-1554
+1507
 588
-1697
+1650
 633
 PR of cows-with-calf (%)
 mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
@@ -1261,9 +1261,9 @@ mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
 11
 
 MONITOR
-1697
+1650
 588
-1834
+1787
 633
 PR of heifers (%)
 mean [pregnancy-rate] of cows with [heifer?] * 100
@@ -1272,10 +1272,10 @@ mean [pregnancy-rate] of cows with [heifer?] * 100
 11
 
 MONITOR
-1305
-283
-1454
-328
+953
+292
+1102
+337
 Total DM (kg)
 dmgr
 3
@@ -1567,10 +1567,10 @@ Average LWG since the start of the YEAR
 11
 
 MONITOR
-1453
-283
-1627
-328
+1101
+292
+1275
+337
 Total DM per ha (kg/ha)
 ;(DM-cm-ha * mean [grass-height] of patches) / DM-available-for-cattle\n(dmgr) / count patches
 3
@@ -1619,7 +1619,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-25.0
+0.0
 1
 1
 years
