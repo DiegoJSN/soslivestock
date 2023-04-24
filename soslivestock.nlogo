@@ -800,10 +800,10 @@ NIL
 HORIZONTAL
 
 PLOT
-957
-388
-1295
-599
+956
+69
+1294
+280
 Average of grass-height (GH)
 Days
 cm
@@ -916,7 +916,7 @@ count cows
 MONITOR
 1273
 741
-1429
+1459
 786
 Average LW (kg/animal)
 mean [live-weight] of cows
@@ -940,10 +940,10 @@ cm
 HORIZONTAL
 
 PLOT
-957
+1305
 68
-1343
-325
+1691
+283
 Dry-matter (DM) and DM consumption (DDMC)
 Days
 kg
@@ -969,10 +969,10 @@ TEXTBOX
 1
 
 MONITOR
-1056
-601
-1182
-646
+957
+281
+1083
+326
 Average GH (cm/ha)
 grass-height-report
 3
@@ -1058,10 +1058,10 @@ Area (ha)
 11
 
 PLOT
-1520
-735
-1978
-962
+1573
+734
+2031
+961
 Daily individual-live-weight-gain (ILWG)
 Days
 kg
@@ -1082,10 +1082,10 @@ PENS
 "Average LWG" 1.0 0 -16777216 true "" "plot mean [live-weight-gain] of cows"
 
 PLOT
-4192
-507
-4518
-649
+4286
+498
+4612
+640
 Crop-efficiency (CE)
 Days
 %
@@ -1100,10 +1100,10 @@ PENS
 "CE" 1.0 0 -16777216 true "" "plot crop-efficiency"
 
 MONITOR
-4518
-507
-4574
-552
+4612
+498
+4668
+543
 CE (%)
 crop-efficiency
 2
@@ -1111,10 +1111,10 @@ crop-efficiency
 11
 
 MONITOR
-1263
-165
-1412
-210
+1305
+325
+1454
+370
 Total DDMC (kg)
 sum [DDMC] of cows
 3
@@ -1122,10 +1122,10 @@ sum [DDMC] of cows
 11
 
 MONITOR
-1411
-165
-1585
-210
+1453
+325
+1627
+370
 Average DDMC (kg/animal)
 mean [DDMC] of cows
 3
@@ -1165,10 +1165,10 @@ kg
 HORIZONTAL
 
 PLOT
-4642
-317
-5043
-459
+953
+395
+1368
+589
 Body condition ccore (BCS)
 Days
 points
@@ -1185,10 +1185,10 @@ PENS
 "Average BCS" 1.0 0 -16777216 true "" "plot (mean [live-weight] of cows - set-MW-1-AU) / 4040"
 
 MONITOR
-5045
-406
-5176
-451
+1072
+631
+1203
+676
 Average BCS (points)
 ;(mean [live-weight] of cows - mean [min-weight] of cows) / 40\n;(mean [live-weight] of cows - (((mean [live-weight] of cows) * set-MW-1-AU) / set-1-AU)) / 40\n\n(mean [live-weight] of cows - set-MW-1-AU) / 40
 2
@@ -1196,10 +1196,10 @@ Average BCS (points)
 11
 
 MONITOR
-5045
-360
-5175
-405
+1010
+588
+1140
+633
 BCS of cows (points)
 ;(mean [live-weight] of cows with [cow?] - mean [min-weight] of cows with [cow?]) / 40\n;(mean [live-weight] of cows with [cow?] - (((mean [live-weight] of cows with [cow?]) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40
 2
@@ -1207,10 +1207,10 @@ BCS of cows (points)
 11
 
 PLOT
-4637
-505
-5047
-646
+1422
+395
+1832
+588
 Pregnancy rate (PR)
 Days
 %
@@ -1228,10 +1228,10 @@ PENS
 "Average PR" 1.0 0 -16777216 true "" "plot mean [pregnancy-rate] of cows * 100"
 
 MONITOR
-5047
-638
-5178
-683
+1563
+633
+1694
+678
 Average PR (%)
 mean [pregnancy-rate] of cows * 100
 2
@@ -1239,10 +1239,10 @@ mean [pregnancy-rate] of cows * 100
 11
 
 MONITOR
-5047
-550
-5179
-595
+1423
+588
+1555
+633
 PR of cows (%)
 mean [pregnancy-rate] of cows with [cow?] * 100
 2
@@ -1250,10 +1250,10 @@ mean [pregnancy-rate] of cows with [cow?] * 100
 11
 
 MONITOR
-5047
-507
-5190
-552
+1554
+588
+1697
+633
 PR of cows-with-calf (%)
 mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
 2
@@ -1261,10 +1261,10 @@ mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
 11
 
 MONITOR
-5047
-595
-5180
-640
+1697
+588
+1834
+633
 PR of heifers (%)
 mean [pregnancy-rate] of cows with [heifer?] * 100
 2
@@ -1272,10 +1272,10 @@ mean [pregnancy-rate] of cows with [heifer?] * 100
 11
 
 MONITOR
-1263
-123
-1412
-168
+1305
+283
+1454
+328
 Total DM (kg)
 dmgr
 3
@@ -1294,10 +1294,10 @@ Average ILWG (kg/animal/day)
 11
 
 MONITOR
-5045
-317
-5200
-362
+1139
+588
+1294
+633
 BCS of cows-with-calf (points)
 ;(mean [live-weight] of cows with [cow-with-calf?] - mean [min-weight] of cows with [cow-with-calf?]) / 40\n;(mean [live-weight] of cows with [cow-with-calf?] - (((mean [live-weight] of cows with [cow-with-calf?]) * set-MW-1-AU) / set-1-AU)) / 40\n\n(mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40
 2
@@ -1307,7 +1307,7 @@ BCS of cows-with-calf (points)
 MONITOR
 1271
 872
-1463
+1502
 917
 Average LW of cows (kg/animal)
 mean [live-weight] of cows with [cow?]
@@ -1525,7 +1525,7 @@ NIL
 MONITOR
 1271
 829
-1517
+1573
 874
 Average annual live weight gain per hectare (ALWG, kg/ha)
 ;(sum [live-weight] of cows with [steer?] - sum [initial-weight] of cows with [steer?]) / count patches; para calcular el WGH de los steers\n;(sum [live-weight] of cows - sum [initial-weight] of cows) / count patches\nALWG
@@ -1567,23 +1567,12 @@ Average LWG since the start of the YEAR
 11
 
 MONITOR
-1411
-123
-1585
-168
+1453
+283
+1627
+328
 Total DM per ha (kg/ha)
 ;(DM-cm-ha * mean [grass-height] of patches) / DM-available-for-cattle\n(dmgr) / count patches
-3
-1
-11
-
-MONITOR
-1583
-123
-1760
-168
-Total DM G. Rate (kg/ha/day)
-;((DM-cm-ha * mean [grass-height] of patches) / DM-available-for-cattle) / 92\n(dmgr / count patches) / 92
 3
 1
 11
@@ -1647,10 +1636,10 @@ soil-quality-distribution
 0
 
 PLOT
-1294
-387
-1629
-601
+4286
+750
+4621
+964
 Grass height distribution
 cm
 nº patches
@@ -1665,10 +1654,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [grass-height] of patches"
 
 MONITOR
-1295
-603
-1442
-648
+4287
+966
+4434
+1011
 min grass-height of patches
 min [grass-height] of patches
 17
@@ -1676,10 +1665,10 @@ min [grass-height] of patches
 11
 
 MONITOR
-1461
-604
-1632
-649
+4453
+967
+4624
+1012
 max grass-height of patches
 max [grass-height] of patches
 17
