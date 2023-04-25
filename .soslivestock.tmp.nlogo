@@ -266,17 +266,6 @@ to go
     if (climacoef-distribution = "exponential_low") and (season-days = 0 or season-days = 1) [set climacoef random-exponential 0.5 while [climacoef > 1.5] [set climacoef random-exponential 0.5]]
     if (climacoef-distribution = "exponential_high") and (season-days = 0 or season-days = 1) [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]]
 
-
-
-
-
-
-
-
-
-
-
-
   if current-season = 0 [if season-days >= winter-length [set current-season 1 set season-days 0]] ;; the season change and duration are determined in this lines
   if current-season = 1 [if season-days >= spring-length [set current-season 2 set season-days 0]]
   if current-season = 2 [if season-days >= summer-length [set current-season 3 set season-days 0]]
@@ -810,17 +799,17 @@ initial-num-cows
 initial-num-cows
 0
 1000
-0.0
+5.0
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-100
-284
-202
-317
+89
+278
+191
+311
 initial-season
 initial-season
 0
@@ -1924,10 +1913,10 @@ LIVESTOCK NUMBERS
 1
 
 CHOOSER
-208
-281
-336
-326
+207
+272
+335
+317
 climacoef-distribution
 climacoef-distribution
 "homogeneus" "uniform" "normal" "exponential_low" "exponential_high"
