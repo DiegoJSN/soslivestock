@@ -1073,7 +1073,7 @@ PENS
 "Heifer" 1.0 0 -2064490 true "" "plot mean [live-weight-gain] of cows with [heifer?]"
 "Steer" 1.0 0 -2674135 true "" "plot mean [live-weight-gain] of cows with [steer?]"
 "Cow" 1.0 0 -6459832 true "" "plot mean [live-weight-gain] of cows with [cow?]"
-"Cow-with-calf" 1.0 0 -7500403 true "" "plot mean [live-weight-gain] of cows with [cow-with-calf?]"
+"Cow-with-calf" 1.0 0 -5825686 true "" "plot mean [live-weight-gain] of cows with [cow-with-calf?]"
 "Average LWG" 1.0 0 -16777216 true "" "plot mean [live-weight-gain] of cows"
 
 PLOT

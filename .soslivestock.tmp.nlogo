@@ -153,12 +153,10 @@ end
 
 to setup-grassland
   if (spatial-management = "rotational grazing") [                                  ;; this section of code is used to set up the paddocks for the rotational grazing management strategy.
-
     ask patches with [ (pxcor < (set-x-size) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor > (set-y-size - 1) / 2 or pycor = (set-y-size) / 2)] [set paddock-a 1]
     ask patches with [ (pxcor > (set-x-size - 1) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor > (set-y-size) / 2 or pycor = (set-y-size) / 2)]  [set paddock-b 1]
     ask patches with [ (pxcor > (set-x-size) / 2 or pxcor = (set-x-size) / 2) and (pycor < (set-y-size) / 2 or pycor = (set-y-size - 1) / 2)] [set paddock-c 1]
     ask patches with [ (pxcor < (set-x-size) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor < (set-y-size) / 2 or pycor = (set-y-size - 1) / 2)] [set paddock-d 1]
-
   ]
 
   ask patches [
@@ -171,16 +169,13 @@ to setup-grassland
       if soil-quality < 0 [set soil-quality 0]
       if soil-quality > 1 [set soil-quality 1]]
 
-
     if (soil-quality-distribution = "exponential_low") [
       set soil-quality random-exponential 0.2
       while [soil-quality > 1] [set soil-quality random-exponential 0.2]]
 
-
     if (soil-quality-distribution = "exponential_high") [
       set soil-quality 1 - random-exponential 0.2
       while [soil-quality < 0] [set soil-quality 1 - random-exponential 0.2]]
-
 
     set grass-height initial-grass-height * soil-quality                            ;; the initial grass height is set by the observer in the interface
     set GH-consumed 0
@@ -193,7 +188,6 @@ end
 
 to setup-livestock
   if (spatial-management = "free grazing") [                                        ;; livestock setup for the free grazing management strategy
-
     create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age random (cow-age-max - cow-age-min) + cow-age-min setxy random-pxcor random-pycor become-cow ]
     create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age random (cow-age-min - heifer-age-min) + heifer-age-min setxy random-pxcor random-pycor become-heifer ]
     create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age random (cow-age-min - heifer-age-min) + heifer-age-min setxy random-pxcor random-pycor become-steer ]
@@ -201,7 +195,6 @@ to setup-livestock
   ]
 
   if (spatial-management = "rotational grazing") [                                  ;; livestock setup for the rotational grazing management strategy
-
     if (starting-paddock = "paddock a") [create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min ask cows [move-to one-of patches with [paddock-a = 1]] become-cow]]
     if (starting-paddock = "paddock a") [create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-a = 1]] become-heifer]]
     if (starting-paddock = "paddock a") [create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-a = 1]] become-steer]]
@@ -329,10 +322,7 @@ to move
         [uphill grass-height]
         [move-to one-of neighbors]]]]
 
-
-
   if (spatial-management = "rotational grazing") [                                  ;; cow movement rules for the rotational grazing management strategy
-
     ask cows [
       let patches-a1 neighbors with [paddock-a = 1]
       let target-a1 max-one-of patches-a1 [grass-height]
@@ -340,7 +330,6 @@ to move
       [ifelse random-float 1 < perception and paddock-a = 1
         [move-to target-a1]
         [move-to one-of neighbors with [paddock-a = 1]]]]
-
     ask cows [
       let patches-b1 neighbors with [paddock-b = 1]
       let target-b1 max-one-of patches-b1 [grass-height]
@@ -348,15 +337,15 @@ to move
       [ifelse random-float 1 < perception and paddock-b = 1
         [move-to target-b1]
         [move-to one-of neighbors with [paddock-b = 1]]]]
-
-    ask cows [let patches-c1 neighbors with [paddock-c = 1]
+    ask cows [
+      let patches-c1 neighbors with [paddock-c = 1]
       let target-c1 max-one-of patches-c1 [grass-height]
       if grass-height < 5 and paddock-c = 1
       [ifelse random-float 1 < perception and paddock-c = 1
         [move-to target-c1]
         [move-to one-of neighbors with [paddock-c = 1]]]]
-
-    ask cows [let patches-d1 neighbors with [paddock-d = 1]
+    ask cows [
+      let patches-d1 neighbors with [paddock-d = 1]
       let target-d1 max-one-of patches-d1 [grass-height]
       if grass-height < 5 and paddock-d = 1
       [ifelse random-float 1 < perception and paddock-d = 1
