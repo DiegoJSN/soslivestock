@@ -281,7 +281,7 @@ end
 to grow-grass                                                           ;; each patch calculates the height of its grass following a logistic regression. Grass height is affected by season, climacoef (set by the observer in the interface) and consumption of grass by animals  (GH consumed is the grass consumed by cows on the previous tick)
   ask patches [
     ;;;OPCION 1: NO TIENE UNA VARIABLE ESPECIFICA PARA EL TIEMPO
-    ;set grass-height (grass-height + r * grass-height * (1 - grass-height / (item current-season kmax * set-climacoef))) - GH-consumed
+    set grass-height (grass-height + r * grass-height * (1 - grass-height / (item current-season kmax * set-climacoef))) - GH-consumed
 
     ;;;OPCION 1.1: NO TIENE UNA VARIABLE ESPECIFICA PARA EL TIEMPO. ES UNA FORMULA INVENTADA POR MI... POR ESO LE LLAMO "GH INVENT"
     ;set grass-height (grass-height + r * simulation-time * (1 - grass-height / (item current-season kmax * set-climacoef))) - GH-consumed
@@ -290,7 +290,7 @@ to grow-grass                                                           ;; each 
     ;set grass-height ((item current-season kmax / (1 + ((((item current-season kmax * set-climacoef) - (initial-grass-height)) / (initial-grass-height)) * (e ^ (- r * simulation-time))))) * set-climacoef) - GH-consumed
 
     ;;OPCION 3: VARIABLE ESPECIFICA PARA EL TIEMPO USANDO "grass-height"
-    set grass-height ((item current-season kmax / (1 + ((((item current-season kmax * set-climacoef) - (grass-height)) / (grass-height)) * (e ^ (- r * simulation-time))))) * set-climacoef) - GH-consumed                                                                                                                                                                                ; COMENTARIO IMPORTANTE SOBRE ESTA FORMULA: se ha añadido lo siguiente: ahora, la variable "K" del denominador ahora TAMBIÉN multiplica a "climacoef". Ahora que lo pienso, así tiene más sentido... ya que la capacidad de carga (K) se verá afectada dependiendo de la variabilidad climática (antes solo se tenía en cuenta en el numerador). Ahora que recuerdo, en Dieguez-Cameroni et al. 2012, se menciona lo siguiente sobre la variable K "es una constante estacional que determina la altura máxima de la pastura, multiplicada por el coeficiente climático (coefClima) explicado anteriormente", así que parece que la modificacion nueva que he hecho tiene sentido.
+    ;set grass-height ((item current-season kmax / (1 + ((((item current-season kmax * set-climacoef) - (grass-height)) / (grass-height)) * (e ^ (- r * simulation-time))))) * set-climacoef) - GH-consumed                                                                                                                                                                                ; COMENTARIO IMPORTANTE SOBRE ESTA FORMULA: se ha añadido lo siguiente: ahora, la variable "K" del denominador ahora TAMBIÉN multiplica a "climacoef". Ahora que lo pienso, así tiene más sentido... ya que la capacidad de carga (K) se verá afectada dependiendo de la variabilidad climática (antes solo se tenía en cuenta en el numerador). Ahora que recuerdo, en Dieguez-Cameroni et al. 2012, se menciona lo siguiente sobre la variable K "es una constante estacional que determina la altura máxima de la pastura, multiplicada por el coeficiente climático (coefClima) explicado anteriormente", así que parece que la modificacion nueva que he hecho tiene sentido.
 
     ;;OPCION 4: r = 0.0004334. CON ESTE VALOR DE r CONSIGO REPLICAR LA FIGURA 2 Y CUADRO 3 DE Dieguez-Cameroni et al. 2012. ESTOY "FORZANDO" LA FORMULA PARA QUE DEN LOS NUMEROS QUE QUIERO, POR ESO LLAMO A ESTA VERSION "GH FORZADO"
     ;set grass-height ((item current-season kmax / (1 + ((((item current-season kmax * set-climacoef) - (grass-height)) / (grass-height)) * (e ^ (- 0.0004334 * simulation-time))))) * set-climacoef) - GH-consumed
@@ -739,7 +739,7 @@ initial-season
 initial-season
 0
 3
-1.0
+0.0
 1
 1
 NIL
@@ -944,7 +944,7 @@ set-climaCoef
 set-climaCoef
 0.1
 1.5
-1.5
+1.0
 0.1
 1
 NIL
