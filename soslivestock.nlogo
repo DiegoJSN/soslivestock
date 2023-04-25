@@ -14,6 +14,7 @@ globals [
   current-season                                                                    ;; define the season in which the simulation begins: 0 = winter, 1 = spring, 2 = summer, 3 = fall
   current-season-name                                                               ;; translates the numbers "0, 1, 2, 3" to "winter, spring, summer, fall"
   season-coef                                                                       ;; affects the live weight gain of animals in relation with the grass quality according to the season: winter = 1, spring = 1.15, summer = 1.05, fall = 1
+  climacoef                                                                         ;; NEW ########################################################################################################################
 
 ;; Time related global variables
   days-per-tick                                                                     ;; variable to simulate time
@@ -21,6 +22,7 @@ globals [
   simulation-time                                                                   ;; variable to keep track of the days of the simulation
   season-days                                                                       ;; variable to keep track of the days that have passed since the start of the season (values from 1 to 92)
   year-days                                                                         ;; variable to keep track of the days that have passed since the start of a year (values from 1 to 368)
+  season-length                                                                     ;; NEW ########################################################################################################################
 
 ;; Grass related global variables
   kmax                                                                              ;; maximum carrying capacity (maximum grass height), it varies according to the season: winter= 7.4 cm, spring= 22.2 cm, summer= 15.6 cm, fall= 11.1 cm
@@ -38,8 +40,6 @@ globals [
   gestation-period                                                                  ;; determines the gestation period of pregnant cows: 276 days
   lactation-period                                                                  ;; determines the lactating period of cows with calves: 246 days
   weight-gain-lactation                                                             ;; affects the live weight gain of lactating animals (i.e., “born-calf” age class): 0.61 Kg/day
-
-
   ]
 
 breed [cows cow]
@@ -144,9 +144,8 @@ to setup-globals
   set ni 0.24
   set xi 132
   set grass-energy 1.8
-  set DM-cm-ha set-DM-cm-ha
   set season-coef [1 1.15 1.05 1]
-  set kmax [7.4 22.2 15.6 11.1]
+  ;set kmax [7.4 22.2 15.6 11.1]
   set maxLWG [40 60 40 40]
   set current-season initial-season                                                 ;; the initial season is set by the observer in the interface
 
@@ -237,30 +236,48 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to go
-    if season-days >= 92 [set number-of-season number-of-season + 1                 ;; the season change and duration is determined in this line
-    ifelse current-season = 0
-    [set current-season 1]
-    [ifelse current-season = 1
-      [set current-season 2]
-      [ifelse current-season = 2
-        [set current-season 3]
-        [set current-season 0]
-        ]
-    ]
-  ]
+  set DM-cm-ha set-DM-cm-ha
+
+  if current-season = 0 [set climacoef winter-climacoef set kmax 7.4 set season-length winter-length
+    if (winter-climacoef-distribution = "uniform") [set climacoef random-float 1.5]
+    if (winter-climacoef-distribution = "normal") [set climacoef random-normal 1 0.15 if climacoef < 0 [set climacoef 0.1] if climacoef > 1.5 [set climacoef 1.5]]
+    if (winter-climacoef-distribution = "exponential_low") [set climacoef random-exponential 0.5 while [climacoef > 1.5] [set climacoef random-exponential 0.5]]
+    if (winter-climacoef-distribution = "exponential_high") [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]]
+
+  if current-season = 1 [set climacoef spring-climacoef set kmax 22.2 set season-length spring-length
+    if (spring-climacoef-distribution = "uniform") [set climacoef random-float 1.5]
+    if (spring-climacoef-distribution = "normal") [set climacoef random-normal 1 0.15 if climacoef < 0 [set climacoef 0.1] if climacoef > 1.5 [set climacoef 1.5]]
+    if (spring-climacoef-distribution = "exponential_low") [set climacoef random-exponential 0.2 while [climacoef > 1.5] [set climacoef random-exponential 0.2]]
+    if (spring-climacoef-distribution = "exponential_high") [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]]
+
+  if current-season = 2 [set climacoef summer-climacoef set kmax 15.6 set season-length summer-length
+    if (summer-climacoef-distribution = "uniform") [set climacoef random-float 1.5]
+    if (summer-climacoef-distribution = "normal") [set climacoef random-normal 1 0.15 if climacoef < 0 [set climacoef 0.1] if climacoef > 1.5 [set climacoef 1.5]]
+    if (summer-climacoef-distribution = "exponential_low") [set climacoef random-exponential 0.5 while [climacoef > 1.5] [set climacoef random-exponential 0.5]]
+    if (summer-climacoef-distribution = "exponential_high") [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]]
+
+  if current-season = 3 [set climacoef fall-climacoef set kmax 11.1 set season-length fall-length
+    if (fall-climacoef-distribution = "uniform") [set climacoef random-float 1.5]
+    if (fall-climacoef-distribution = "normal") [set climacoef random-normal 1 0.15 if climacoef < 0 [set climacoef 0.1] if climacoef > 1.5 [set climacoef 1.5]]
+    if (fall-climacoef-distribution = "exponential_low") [set climacoef random-exponential 0.5 while [climacoef > 1.5] [set climacoef random-exponential 0.5]]
+    if (fall-climacoef-distribution = "exponential_high") [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]]
+
+  if current-season = 0 [if season-days >= winter-length [set current-season 1 set season-days 0]] ;; the season change and duration are determined in this lines
+  if current-season = 1 [if season-days >= spring-length [set current-season 2 set season-days 0]]
+  if current-season = 2 [if season-days >= summer-length [set current-season 3 set season-days 0]]
+  if current-season = 3 [if season-days >= fall-length [set current-season 0 set season-days 0]]
 
   set simulation-time simulation-time + days-per-tick
-
   set season-days season-days + days-per-tick
-  if season-days >= 93 [set season-days 1]                                          ;; This restart is important to make sure that the "live-weight-gain-history-season" variable works, which is used in the "ILWG_SEASON" report
-
   set year-days year-days + days-per-tick
+
+  ;if season-days >= 93 [set season-days 1]                                          ;; This restart is important to make sure that the "live-weight-gain-history-season" variable works, which is used in the "ILWG_SEASON" report
   if year-days >= 369 [set year-days 1]                                             ;; This restart is important to make sure that the "live-weight-gain-history-year" variable works, which is used in the "ILWG_YEAR" report
 
   ask cows [                                                                        ;; in this line, the average live weight gain of the cows during the season (from day 1 to day 92 and in between) is calculated
     set live-weight-gain-history-season fput live-weight-gain live-weight-gain-history-season
     if season-days > 0 [set live-weight-gain-historyXticks-season mean (sublist live-weight-gain-history-season 0 season-days)]
-    if season-days = 92 [set live-weight-gain-history-season []]
+    if season-days = season-length [set live-weight-gain-history-season []]
   ]
 
   ask cows [                                                                        ;; in this line, the average live weight gain of the cows during the year (from day 1 to day 368 and in between) is calculated
@@ -289,8 +306,8 @@ end
 
 to grow-grass                                                                       ;; each patch calculates the height of its grass following a logistic regression. Grass height is affected by season, climacoef (set by the observer in the interface) and consumption of grass by animals  (GH consumed is the grass consumed by cows on the previous tick)
   ask patches [
-    set grass-height (grass-height + r * grass-height * (1 - grass-height / ((item current-season kmax * soil-quality) * set-climacoef))) - GH-consumed
-    if grass-height < 0 [set grass-height 0 ]                                       ;; to avoid negative values.
+    set grass-height (grass-height + r * grass-height * (1 - grass-height / ((kmax * soil-quality) * climacoef))) - GH-consumed
+    if grass-height < 0 [set grass-height 0.1]                                     ;; to avoid negative values
 
     ifelse grass-height < 2                                                         ;; patches with grass height less than 2 cm are colored light green. This is based on the assumption that cows cannot eat grass less than 2 cm high
     [set pcolor 37]
@@ -342,7 +359,7 @@ to move
         [move-to target-d1]
         [move-to one-of neighbors with [paddock-d = 1]]]]
 
-    if season-days >= 92 [
+    if season-days >= season-length [
       ask cows
       [ifelse paddock-a = 1
         [let next-paddock one-of patches with [paddock-b = 1] move-to next-paddock]
@@ -368,7 +385,7 @@ ask cows [
    ifelse born-calf? = true
     [set live-weight-gain weight-gain-lactation]
     [ifelse grass-height >= 2                                                       ;; cows cannot eat grass less than 2 cm high
-      [set live-weight-gain ( item current-season maxLWG - ( xi * e ^ ( - ni * gh-individual ) ) ) / ( 92 * item current-season season-coef )]
+      [set live-weight-gain ( item current-season maxLWG - ( xi * e ^ ( - ni * gh-individual ) ) ) / ( season-length * item current-season season-coef )]
       [set live-weight-gain live-weight * -0.005]]
 
     set live-weight live-weight + live-weight-gain
@@ -770,10 +787,10 @@ NIL
 1
 
 SLIDER
-8
-303
-198
-336
+11
+711
+201
+744
 initial-num-cows
 initial-num-cows
 0
@@ -785,10 +802,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-266
-112
-383
-145
+95
+248
+269
+281
 initial-season
 initial-season
 0
@@ -800,10 +817,10 @@ NIL
 HORIZONTAL
 
 PLOT
-1368
-79
-1706
-290
+1372
+165
+1710
+376
 Average of grass-height (GH)
 Days
 cm
@@ -888,10 +905,10 @@ PENS
 "Total" 1.0 0 -16777216 true "" "plot count cows"
 
 SLIDER
-9
-625
-146
-658
+12
+1033
+149
+1066
 perception
 perception
 0
@@ -925,10 +942,10 @@ mean [live-weight] of cows
 11
 
 SLIDER
-8
-111
-149
-144
+203
+83
+354
+116
 initial-grass-height
 initial-grass-height
 1
@@ -940,10 +957,10 @@ cm
 HORIZONTAL
 
 PLOT
-953
-77
-1339
-292
+957
+163
+1343
+378
 Dry-matter (DM) and DM consumption (DDMC)
 Days
 kg
@@ -959,40 +976,25 @@ PENS
 "Total DDMC" 1.0 0 -2674135 true "" "plot sum [DDMC] of cows"
 
 TEXTBOX
-317
-50
-381
-106
+13
+238
+83
+294
 0 = winter\n1 = spring\n2 = summer\n3 = fall
 11
 0.0
 1
 
 MONITOR
-1369
-291
-1495
-336
+1373
+377
+1499
+422
 Average GH (cm/ha)
 grass-height-report
 3
 1
 11
-
-SLIDER
-155
-112
-262
-145
-set-climaCoef
-set-climaCoef
-0.1
-1.5
-1.0
-0.1
-1
-NIL
-HORIZONTAL
 
 MONITOR
 464
@@ -1017,10 +1019,10 @@ simulation-time / 368
 11
 
 SLIDER
-8
-381
-200
-414
+11
+789
+203
+822
 initial-num-heifers
 initial-num-heifers
 0
@@ -1032,10 +1034,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-8
-415
-199
-448
+11
+823
+202
+856
 initial-weight-heifers
 initial-weight-heifers
 100
@@ -1111,10 +1113,10 @@ crop-efficiency
 11
 
 MONITOR
-953
-334
-1102
-379
+957
+420
+1106
+465
 Total DDMC (kg)
 sum [DDMC] of cows
 3
@@ -1122,10 +1124,10 @@ sum [DDMC] of cows
 11
 
 MONITOR
-1101
-334
-1275
-379
+1105
+420
+1279
+465
 Average DDMC (kg/animal)
 mean [DDMC] of cows
 3
@@ -1150,10 +1152,10 @@ NIL
 1
 
 SLIDER
-8
-336
-198
-369
+11
+744
+201
+777
 initial-weight-cows
 initial-weight-cows
 100
@@ -1165,10 +1167,10 @@ kg
 HORIZONTAL
 
 PLOT
-953
-395
-1340
-589
+957
+481
+1344
+675
 Body condition ccore (BCS)
 Days
 points
@@ -1184,10 +1186,10 @@ PENS
 "Cow-with-calf" 1.0 0 -5825686 true "" "plot (mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40"
 
 MONITOR
-1010
-588
-1140
-633
+1014
+674
+1144
+719
 BCS of cows (points)
 ;(mean [live-weight] of cows with [cow?] - mean [min-weight] of cows with [cow?]) / 40\n;(mean [live-weight] of cows with [cow?] - (((mean [live-weight] of cows with [cow?]) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40
 2
@@ -1195,10 +1197,10 @@ BCS of cows (points)
 11
 
 PLOT
-1375
-395
-1785
-588
+1379
+481
+1789
+674
 Pregnancy rate (PR)
 Days
 %
@@ -1215,10 +1217,10 @@ PENS
 "Cow-with-calf" 1.0 0 -5825686 true "" "plot mean [pregnancy-rate] of cows with [cow-with-calf?] * 100"
 
 MONITOR
-1376
-588
-1508
-633
+1380
+674
+1512
+719
 PR of cows (%)
 mean [pregnancy-rate] of cows with [cow?] * 100
 2
@@ -1226,10 +1228,10 @@ mean [pregnancy-rate] of cows with [cow?] * 100
 11
 
 MONITOR
-1507
-588
-1650
-633
+1511
+674
+1654
+719
 PR of cows-with-calf (%)
 mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
 2
@@ -1237,10 +1239,10 @@ mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
 11
 
 MONITOR
-1650
-588
-1787
-633
+1654
+674
+1791
+719
 PR of heifers (%)
 mean [pregnancy-rate] of cows with [heifer?] * 100
 2
@@ -1248,10 +1250,10 @@ mean [pregnancy-rate] of cows with [heifer?] * 100
 11
 
 MONITOR
-953
-292
-1102
-337
+957
+378
+1106
+423
 Total DM (kg)
 dmgr
 3
@@ -1270,10 +1272,10 @@ Average ILWG (kg/animal/day)
 11
 
 MONITOR
-1139
-588
-1294
-633
+1143
+674
+1298
+719
 BCS of cows-with-calf (points)
 ;(mean [live-weight] of cows with [cow-with-calf?] - mean [min-weight] of cows with [cow-with-calf?]) / 40\n;(mean [live-weight] of cows with [cow-with-calf?] - (((mean [live-weight] of cows with [cow-with-calf?]) * set-MW-1-AU) / set-1-AU)) / 40\n\n(mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40
 2
@@ -1303,10 +1305,10 @@ mean [live-weight-gain] of cows with [cow?]
 11
 
 SLIDER
-8
-462
-200
-495
+11
+870
+203
+903
 initial-num-steers
 initial-num-steers
 0
@@ -1318,10 +1320,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-8
-493
-200
-526
+11
+901
+203
+934
 initial-weight-steers
 initial-weight-steers
 100
@@ -1334,9 +1336,9 @@ HORIZONTAL
 
 SLIDER
 7
-71
+80
 144
-104
+113
 set-X-size
 set-X-size
 2
@@ -1348,10 +1350,10 @@ hm
 HORIZONTAL
 
 SLIDER
-175
-71
-303
-104
+7
+119
+143
+152
 set-Y-size
 set-Y-size
 2
@@ -1363,10 +1365,10 @@ hm
 HORIZONTAL
 
 TEXTBOX
-120
-51
-270
-79
+11
+61
+102
+81
 GRAZING AREA
 12
 0.0
@@ -1382,16 +1384,6 @@ count patches
 17
 1
 11
-
-TEXTBOX
-154
-78
-179
-97
-X
-15
-0.0
-1
 
 SLIDER
 4520
@@ -1543,10 +1535,10 @@ Average LWG since the start of the YEAR
 11
 
 MONITOR
-1101
-292
-1275
-337
+1105
+378
+1279
+423
 Total DM per ha (kg/ha)
 ;(DM-cm-ha * mean [grass-height] of patches) / DM-available-for-cattle\n(dmgr) / count patches
 3
@@ -1602,10 +1594,10 @@ years
 HORIZONTAL
 
 CHOOSER
-8
-201
+203
 157
-246
+354
+202
 soil-quality-distribution
 soil-quality-distribution
 "homogeneus" "uniform" "normal" "exponential_low" "exponential_high"
@@ -1652,20 +1644,20 @@ max [grass-height] of patches
 11
 
 CHOOSER
-9
-249
-160
-294
+10
+606
+128
+651
 spatial-management
 spatial-management
 "free grazing" "rotational grazing"
 0
 
 CHOOSER
-169
-248
-304
-293
+132
+607
+231
+652
 starting-paddock
 starting-paddock
 "paddock a" "paddock b" "paddock c" "paddock d"
@@ -1683,10 +1675,10 @@ paddock-size
 11
 
 SLIDER
-8
-149
-170
-182
+202
+119
+354
+152
 set-DM-cm-ha
 set-DM-cm-ha
 1
@@ -1698,10 +1690,10 @@ kg/cm/ha
 HORIZONTAL
 
 SLIDER
-9
-539
-200
-572
+12
+947
+203
+980
 initial-num-weaned-calves
 initial-num-weaned-calves
 0
@@ -1713,10 +1705,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-8
-574
-200
-607
+11
+982
+203
+1015
 initial-weight-weaned-calves
 initial-weight-weaned-calves
 0
@@ -1726,6 +1718,235 @@ initial-weight-weaned-calves
 1
 kg
 HORIZONTAL
+
+SLIDER
+4
+303
+177
+336
+winter-length
+winter-length
+0
+368 - spring-length - summer-length - fall-length
+92.0
+1
+1
+days
+HORIZONTAL
+
+SLIDER
+208
+301
+378
+334
+spring-length
+spring-length
+0
+368 - winter-length - summer-length - fall-length
+92.0
+1
+1
+days
+HORIZONTAL
+
+SLIDER
+7
+434
+174
+467
+summer-length
+summer-length
+0
+368 - spring-length - winter-length - fall-length
+92.0
+1
+1
+days
+HORIZONTAL
+
+SLIDER
+207
+434
+380
+467
+fall-length
+fall-length
+0
+368 - spring-length - winter-length - summer-length
+92.0
+1
+1
+days
+HORIZONTAL
+
+SLIDER
+5
+338
+177
+371
+winter-climacoef
+winter-climacoef
+0.1
+1.5
+1.0
+0.1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+208
+337
+378
+370
+spring-climacoef
+spring-climacoef
+0.1
+1.5
+1.0
+0.1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+7
+469
+174
+502
+summer-climacoef
+summer-climacoef
+0.1
+1.5
+1.0
+0.1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+207
+469
+380
+502
+fall-climacoef
+fall-climacoef
+0.1
+1.5
+1.0
+0.1
+1
+NIL
+HORIZONTAL
+
+CHOOSER
+6
+373
+178
+418
+winter-climacoef-distribution
+winter-climacoef-distribution
+"homogeneus" "uniform" "normal" "exponential_low" "exponential_high"
+0
+
+CHOOSER
+7
+504
+173
+549
+summer-climacoef-distribution
+summer-climacoef-distribution
+"homogeneus" "uniform" "normal" "exponential_low" "exponential_high"
+0
+
+CHOOSER
+208
+374
+379
+419
+spring-climacoef-distribution
+spring-climacoef-distribution
+"homogeneus" "uniform" "normal" "exponential_low" "exponential_high"
+0
+
+CHOOSER
+207
+505
+380
+550
+fall-climacoef-distribution
+fall-climacoef-distribution
+"homogeneus" "uniform" "normal" "exponential_low" "exponential_high"
+0
+
+TEXTBOX
+12
+220
+162
+238
+SEASONS AND CLIMATE
+12
+0.0
+1
+
+TEXTBOX
+203
+63
+377
+93
+GRASS AND SOIL QUALITY
+12
+0.0
+1
+
+MONITOR
+1310
+64
+1374
+109
+NIL
+climacoef
+17
+1
+11
+
+PLOT
+1371
+25
+1571
+145
+climacoef
+NIL
+NIL
+0.0
+10.0
+0.0
+1.5
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plot climacoef"
+
+TEXTBOX
+12
+580
+240
+610
+RESOURCE MANAGEMENT STRATEGIES
+12
+0.0
+1
+
+TEXTBOX
+14
+686
+164
+704
+LIVESTOCK NUMBERS
+12
+0.0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
