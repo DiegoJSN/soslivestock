@@ -238,29 +238,44 @@ end
 to go
   set DM-cm-ha set-DM-cm-ha
 
-  if current-season = 0 [set climacoef winter-climacoef set kmax 7.4 set season-length winter-length
-    if (winter-climacoef-distribution = "uniform") [set climacoef random-float 1.5]
-    if (winter-climacoef-distribution = "normal") [set climacoef random-normal 1 0.15 if climacoef < 0 [set climacoef 0.1] if climacoef > 1.5 [set climacoef 1.5]]
-    if (winter-climacoef-distribution = "exponential_low") [set climacoef random-exponential 0.5 while [climacoef > 1.5] [set climacoef random-exponential 0.5]]
-    if (winter-climacoef-distribution = "exponential_high") [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]]
+  if current-season = 0 [set kmax 7.4 set season-length winter-length
+    if (climacoef-distribution = "homogeneus") and (season-days = 0 or season-days = 1) [set climacoef winter-climacoef-homogeneus]
+    if (climacoef-distribution = "uniform") and (season-days = 0 or season-days = 1) [set climacoef random-float 1.5]
+    if (climacoef-distribution = "normal") and (season-days = 0 or season-days = 1) [set climacoef random-normal 1 0.15 if climacoef < 0 [set climacoef 0.1] if climacoef > 1.5 [set climacoef 1.5]]
+    if (climacoef-distribution = "exponential_low") and (season-days = 0 or season-days = 1) [set climacoef random-exponential 0.5 while [climacoef > 1.5] [set climacoef random-exponential 0.5]]
+    if (climacoef-distribution = "exponential_high") and (season-days = 0 or season-days = 1) [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]]
 
-  if current-season = 1 [set climacoef spring-climacoef set kmax 22.2 set season-length spring-length
-    if (spring-climacoef-distribution = "uniform") [set climacoef random-float 1.5]
-    if (spring-climacoef-distribution = "normal") [set climacoef random-normal 1 0.15 if climacoef < 0 [set climacoef 0.1] if climacoef > 1.5 [set climacoef 1.5]]
-    if (spring-climacoef-distribution = "exponential_low") [set climacoef random-exponential 0.2 while [climacoef > 1.5] [set climacoef random-exponential 0.2]]
-    if (spring-climacoef-distribution = "exponential_high") [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]]
+  if current-season = 1 [set kmax 22.2 set season-length spring-length
+    if (climacoef-distribution = "homogeneus") and (season-days = 0 or season-days = 1) [set climacoef spring-climacoef-homogeneus]
+    if (climacoef-distribution = "uniform") and (season-days = 0 or season-days = 1) [set climacoef random-float 1.5]
+    if (climacoef-distribution = "normal") and (season-days = 0 or season-days = 1) [set climacoef random-normal 1 0.15 if climacoef < 0 [set climacoef 0.1] if climacoef > 1.5 [set climacoef 1.5]]
+    if (climacoef-distribution = "exponential_low") and (season-days = 0 or season-days = 1) [set climacoef random-exponential 0.2 while [climacoef > 1.5] [set climacoef random-exponential 0.2]]
+    if (climacoef-distribution = "exponential_high") and (season-days = 0 or season-days = 1) [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]]
 
-  if current-season = 2 [set climacoef summer-climacoef set kmax 15.6 set season-length summer-length
-    if (summer-climacoef-distribution = "uniform") [set climacoef random-float 1.5]
-    if (summer-climacoef-distribution = "normal") [set climacoef random-normal 1 0.15 if climacoef < 0 [set climacoef 0.1] if climacoef > 1.5 [set climacoef 1.5]]
-    if (summer-climacoef-distribution = "exponential_low") [set climacoef random-exponential 0.5 while [climacoef > 1.5] [set climacoef random-exponential 0.5]]
-    if (summer-climacoef-distribution = "exponential_high") [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]]
+  if current-season = 2 [set kmax 15.6 set season-length summer-length
+    if (climacoef-distribution = "homogeneus") and (season-days = 0 or season-days = 1) [set climacoef summer-climacoef-homogeneus]
+    if (climacoef-distribution = "uniform") and (season-days = 0 or season-days = 1) [set climacoef random-float 1.5]
+    if (climacoef-distribution = "normal") and (season-days = 0 or season-days = 1) [set climacoef random-normal 1 0.15 if climacoef < 0 [set climacoef 0.1] if climacoef > 1.5 [set climacoef 1.5]]
+    if (climacoef-distribution = "exponential_low") and (season-days = 0 or season-days = 1) [set climacoef random-exponential 0.5 while [climacoef > 1.5] [set climacoef random-exponential 0.5]]
+    if (climacoef-distribution = "exponential_high") and (season-days = 0 or season-days = 1) [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]]
 
-  if current-season = 3 [set climacoef fall-climacoef set kmax 11.1 set season-length fall-length
-    if (fall-climacoef-distribution = "uniform") [set climacoef random-float 1.5]
-    if (fall-climacoef-distribution = "normal") [set climacoef random-normal 1 0.15 if climacoef < 0 [set climacoef 0.1] if climacoef > 1.5 [set climacoef 1.5]]
-    if (fall-climacoef-distribution = "exponential_low") [set climacoef random-exponential 0.5 while [climacoef > 1.5] [set climacoef random-exponential 0.5]]
-    if (fall-climacoef-distribution = "exponential_high") [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]]
+  if current-season = 3 [set kmax 11.1 set season-length fall-length
+    if (climacoef-distribution = "homogeneus") and (season-days = 0 or season-days = 1) [set climacoef fall-climacoef-homogeneus]
+    if (climacoef-distribution = "uniform") and (season-days = 0 or season-days = 1) [set climacoef random-float 1.5]
+    if (climacoef-distribution = "normal") and (season-days = 0 or season-days = 1) [set climacoef random-normal 1 0.15 if climacoef < 0 [set climacoef 0.1] if climacoef > 1.5 [set climacoef 1.5]]
+    if (climacoef-distribution = "exponential_low") and (season-days = 0 or season-days = 1) [set climacoef random-exponential 0.5 while [climacoef > 1.5] [set climacoef random-exponential 0.5]]
+    if (climacoef-distribution = "exponential_high") and (season-days = 0 or season-days = 1) [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]]
+
+
+
+
+
+
+
+
+
+
+
 
   if current-season = 0 [if season-days >= winter-length [set current-season 1 set season-days 0]] ;; the season change and duration are determined in this lines
   if current-season = 1 [if season-days >= spring-length [set current-season 2 set season-days 0]]
@@ -787,10 +802,10 @@ NIL
 1
 
 SLIDER
-11
-711
-201
-744
+10
+665
+200
+698
 initial-num-cows
 initial-num-cows
 0
@@ -802,10 +817,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-95
-248
-269
-281
+89
+278
+191
+311
 initial-season
 initial-season
 0
@@ -905,10 +920,10 @@ PENS
 "Total" 1.0 0 -16777216 true "" "plot count cows"
 
 SLIDER
-12
-1033
-149
-1066
+11
+987
+148
+1020
 perception
 perception
 0
@@ -942,10 +957,10 @@ mean [live-weight] of cows
 11
 
 SLIDER
-203
-83
-354
-116
+204
+109
+355
+142
 initial-grass-height
 initial-grass-height
 1
@@ -977,9 +992,9 @@ PENS
 
 TEXTBOX
 13
-238
+268
 83
-294
+324
 0 = winter\n1 = spring\n2 = summer\n3 = fall
 11
 0.0
@@ -1019,10 +1034,10 @@ simulation-time / 368
 11
 
 SLIDER
-11
-789
-203
-822
+10
+743
+202
+776
 initial-num-heifers
 initial-num-heifers
 0
@@ -1034,10 +1049,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-11
-823
-202
-856
+10
+777
+201
+810
 initial-weight-heifers
 initial-weight-heifers
 100
@@ -1152,10 +1167,10 @@ NIL
 1
 
 SLIDER
-11
-744
-201
-777
+10
+698
+200
+731
 initial-weight-cows
 initial-weight-cows
 100
@@ -1305,10 +1320,10 @@ mean [live-weight-gain] of cows with [cow?]
 11
 
 SLIDER
-11
-870
-203
-903
+10
+824
+202
+857
 initial-num-steers
 initial-num-steers
 0
@@ -1320,10 +1335,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-11
-901
-203
-934
+10
+855
+202
+888
 initial-weight-steers
 initial-weight-steers
 100
@@ -1335,10 +1350,10 @@ kg
 HORIZONTAL
 
 SLIDER
-7
-80
-144
-113
+8
+106
+145
+139
 set-X-size
 set-X-size
 2
@@ -1350,10 +1365,10 @@ hm
 HORIZONTAL
 
 SLIDER
-7
-119
-143
-152
+8
+145
+144
+178
 set-Y-size
 set-Y-size
 2
@@ -1365,10 +1380,10 @@ hm
 HORIZONTAL
 
 TEXTBOX
-11
-61
-102
-81
+12
+87
+103
+107
 GRAZING AREA
 12
 0.0
@@ -1594,10 +1609,10 @@ years
 HORIZONTAL
 
 CHOOSER
-203
-157
-354
-202
+204
+183
+355
+228
 soil-quality-distribution
 soil-quality-distribution
 "homogeneus" "uniform" "normal" "exponential_low" "exponential_high"
@@ -1644,20 +1659,20 @@ max [grass-height] of patches
 11
 
 CHOOSER
-10
-606
-128
-651
+9
+560
+127
+605
 spatial-management
 spatial-management
 "free grazing" "rotational grazing"
 0
 
 CHOOSER
-132
-607
-231
-652
+131
+561
+230
+606
 starting-paddock
 starting-paddock
 "paddock a" "paddock b" "paddock c" "paddock d"
@@ -1675,25 +1690,25 @@ paddock-size
 11
 
 SLIDER
-202
-119
-354
-152
+203
+145
+355
+178
 set-DM-cm-ha
 set-DM-cm-ha
 1
 180
-20.0
+180.0
 1
 1
 kg/cm/ha
 HORIZONTAL
 
 SLIDER
-12
-947
-203
-980
+11
+901
+202
+934
 initial-num-weaned-calves
 initial-num-weaned-calves
 0
@@ -1705,10 +1720,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-11
-982
-203
-1015
+10
+936
+202
+969
 initial-weight-weaned-calves
 initial-weight-weaned-calves
 0
@@ -1721,9 +1736,9 @@ HORIZONTAL
 
 SLIDER
 4
-303
-177
-336
+337
+194
+370
 winter-length
 winter-length
 0
@@ -1736,9 +1751,9 @@ HORIZONTAL
 
 SLIDER
 208
-301
-378
-334
+335
+388
+368
 spring-length
 spring-length
 0
@@ -1750,10 +1765,10 @@ days
 HORIZONTAL
 
 SLIDER
-7
-434
-174
-467
+5
+432
+195
+465
 summer-length
 summer-length
 0
@@ -1765,10 +1780,10 @@ days
 HORIZONTAL
 
 SLIDER
-207
-434
-380
-467
+205
+432
+388
+465
 fall-length
 fall-length
 0
@@ -1780,27 +1795,12 @@ days
 HORIZONTAL
 
 SLIDER
-5
-338
-177
-371
-winter-climacoef
-winter-climacoef
-0.1
-1.5
-1.0
-0.1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-208
-337
-378
+4
 370
-spring-climacoef
-spring-climacoef
+194
+403
+winter-climacoef-homogeneus
+winter-climacoef-homogeneus
 0.1
 1.5
 1.0
@@ -1810,90 +1810,65 @@ NIL
 HORIZONTAL
 
 SLIDER
-7
-469
-174
-502
-summer-climacoef
-summer-climacoef
-0.1
-1.5
-1.0
-0.1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-207
-469
-380
-502
-fall-climacoef
-fall-climacoef
-0.1
-1.5
-1.0
-0.1
-1
-NIL
-HORIZONTAL
-
-CHOOSER
-6
-373
-178
-418
-winter-climacoef-distribution
-winter-climacoef-distribution
-"homogeneus" "uniform" "normal" "exponential_low" "exponential_high"
-0
-
-CHOOSER
-7
-504
-173
-549
-summer-climacoef-distribution
-summer-climacoef-distribution
-"homogeneus" "uniform" "normal" "exponential_low" "exponential_high"
-0
-
-CHOOSER
 208
-374
-379
-419
-spring-climacoef-distribution
-spring-climacoef-distribution
-"homogeneus" "uniform" "normal" "exponential_low" "exponential_high"
-0
+368
+388
+401
+spring-climacoef-homogeneus
+spring-climacoef-homogeneus
+0.1
+1.5
+1.0
+0.1
+1
+NIL
+HORIZONTAL
 
-CHOOSER
-207
-505
-380
-550
-fall-climacoef-distribution
-fall-climacoef-distribution
-"homogeneus" "uniform" "normal" "exponential_low" "exponential_high"
-0
+SLIDER
+4
+465
+195
+498
+summer-climacoef-homogeneus
+summer-climacoef-homogeneus
+0.1
+1.5
+1.0
+0.1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+205
+465
+388
+498
+fall-climacoef-homogeneus
+fall-climacoef-homogeneus
+0.1
+1.5
+1.0
+0.1
+1
+NIL
+HORIZONTAL
 
 TEXTBOX
 12
-220
+250
 162
-238
+268
 SEASONS AND CLIMATE
 12
 0.0
 1
 
 TEXTBOX
-203
-63
-377
-93
+204
+89
+378
+119
 GRASS AND SOIL QUALITY
 12
 0.0
@@ -1906,15 +1881,15 @@ MONITOR
 109
 NIL
 climacoef
-17
+2
 1
 11
 
 PLOT
 1371
-25
-1571
-145
+10
+1709
+146
 climacoef
 NIL
 NIL
@@ -1929,23 +1904,50 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot climacoef"
 
 TEXTBOX
-12
-580
-240
-610
+11
+534
+239
+564
 RESOURCE MANAGEMENT STRATEGIES
 12
 0.0
 1
 
 TEXTBOX
-14
-686
-164
-704
+13
+640
+163
+658
 LIVESTOCK NUMBERS
 12
 0.0
+1
+
+CHOOSER
+207
+272
+335
+317
+climacoef-distribution
+climacoef-distribution
+"homogeneus" "uniform" "normal" "exponential_low" "exponential_high"
+0
+
+BUTTON
+66
+50
+161
+83
+Go (1 year)
+go\nif year-days = 368 [stop]
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
 1
 
 @#$#@#$#@
