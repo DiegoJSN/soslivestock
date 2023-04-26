@@ -702,7 +702,7 @@ to-report ILWG_YEAR                                                             
 end
 
 to-report crop-efficiency                                                            ;; outputs the crop eficiency (DM consumed / DM offered)
-  report sum [DDMC] of cows / (DM-cm-ha * sum [grass-height] of patches) * 100
+  report sum [DDMC] of cows / (DM-cm-ha * mean [grass-height] of patches) * 100
  end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -746,10 +746,10 @@ ticks
 30.0
 
 BUTTON
-7
-12
-62
-45
+34
+11
+89
+44
 Setup
 Setup
 NIL
@@ -763,9 +763,9 @@ NIL
 1
 
 BUTTON
-132
+94
 12
-187
+149
 45
 Go
 Go
@@ -810,10 +810,10 @@ NIL
 HORIZONTAL
 
 PLOT
-1372
-165
-1710
-376
+1351
+166
+1689
+377
 Average of grass-height (GH)
 Days
 cm
@@ -979,10 +979,10 @@ TEXTBOX
 1
 
 MONITOR
-1373
-377
-1499
-422
+1352
+378
+1478
+423
 Average GH (cm/ha)
 grass-height-report
 3
@@ -1077,10 +1077,10 @@ PENS
 "Average LWG" 1.0 0 -16777216 true "" "plot mean [live-weight-gain] of cows"
 
 PLOT
-4286
-498
-4612
-640
+1698
+166
+2024
+377
 Crop-efficiency (CE)
 Days
 %
@@ -1095,10 +1095,10 @@ PENS
 "CE" 1.0 0 -16777216 true "" "plot crop-efficiency"
 
 MONITOR
-4612
-498
-4668
-543
+1700
+378
+1756
+423
 CE (%)
 crop-efficiency
 2
@@ -1128,10 +1128,10 @@ mean [DDMC] of cows
 11
 
 BUTTON
-66
-12
-128
-45
+7
+51
+69
+84
 Go (1 day)
 go
 NIL
@@ -1580,7 +1580,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-25.0
+0.0
 1
 1
 years
@@ -1853,10 +1853,10 @@ GRASS AND SOIL QUALITY
 1
 
 MONITOR
-1310
-64
-1374
-109
+1289
+65
+1353
+110
 NIL
 climacoef
 2
@@ -1864,10 +1864,10 @@ climacoef
 11
 
 PLOT
-1371
-10
-1709
-146
+1350
+11
+1688
+147
 climacoef
 NIL
 NIL
@@ -1912,12 +1912,29 @@ climacoef-distribution
 0
 
 BUTTON
-66
-50
-161
-83
+168
+51
+256
+84
 Go (1 year)
 go\nif year-days = 368 [stop]
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+76
+50
+162
+83
+Go (1 season)
+go\nif current-season = 0 [if season-days >= winter-length [stop]]\nif current-season = 1 [if season-days >= spring-length [stop]]\nif current-season = 2 [if season-days >= summer-length [stop]]\nif current-season = 3 [if season-days >= fall-length [stop]]
 T
 1
 T
