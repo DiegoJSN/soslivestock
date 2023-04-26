@@ -2391,7 +2391,7 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_initial-grass-height" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="SA_initial-grass-height" repetitions="100" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="18400"/>
@@ -2490,7 +2490,7 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_set-DM-cm-ha" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="SA_set-DM-cm-ha" repetitions="100" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="18400"/>
@@ -2600,7 +2600,7 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_soil-quality-distribution" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="SA_soil-quality-distribution" repetitions="100" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="18400"/>
@@ -2705,7 +2705,7 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_initial-season" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="SA_initial-season" repetitions="100" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="18400"/>
@@ -2809,7 +2809,7 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_climacoef_distribution" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="SA_climacoef_distribution" repetitions="100" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="18400"/>
@@ -2914,7 +2914,7 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_climacoef_0.5" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="SA_climacoef_0.5" repetitions="100" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="18400"/>
@@ -3015,7 +3015,7 @@ NetLogo 6.2.2
       <value value="0.5"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_climacoef_1" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="SA_climacoef_1" repetitions="100" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="18400"/>
@@ -3116,7 +3116,7 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_climacoef_1.5" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="SA_climacoef_1.5" repetitions="100" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="18400"/>
@@ -3217,7 +3217,7 @@ NetLogo 6.2.2
       <value value="1.5"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_spatial_management" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="SA_spatial_management" repetitions="100" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="18400"/>
@@ -3319,7 +3319,7 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_initial-num-cows" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="SA_initial-num-cows" repetitions="100" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="18400"/>
@@ -3386,7 +3386,7 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="winter-length">
       <value value="92"/>
     </enumeratedValueSet>
-    <steppedValueSet variable="initial-num-cows" first="10" step="20" last="100"/>
+    <steppedValueSet variable="initial-num-cows" first="10" step="20" last="200"/>
     <enumeratedValueSet variable="set-MW-1-AU">
       <value value="220"/>
     </enumeratedValueSet>
@@ -3418,7 +3418,7 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_initial-weight-cows" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="SA_initial-weight-cows" repetitions="100" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="18400"/>
@@ -3517,7 +3517,7 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_perception" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="SA_perception" repetitions="100" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="18400"/>
@@ -3616,7 +3616,7 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_climacoef_0.3" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="SA_climacoef_0.3" repetitions="100" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="18400"/>
@@ -3717,7 +3717,7 @@ NetLogo 6.2.2
       <value value="0.3"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_climacoef_0.7" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="SA_climacoef_0.7" repetitions="100" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="18400"/>
@@ -3818,7 +3818,7 @@ NetLogo 6.2.2
       <value value="0.7"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_climacoef_1.2" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="SA_climacoef_1.2" repetitions="100" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="18400"/>

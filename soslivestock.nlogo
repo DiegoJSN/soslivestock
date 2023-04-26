@@ -3386,7 +3386,7 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="winter-length">
       <value value="92"/>
     </enumeratedValueSet>
-    <steppedValueSet variable="initial-num-cows" first="10" step="20" last="100"/>
+    <steppedValueSet variable="initial-num-cows" first="10" step="20" last="200"/>
     <enumeratedValueSet variable="set-MW-1-AU">
       <value value="220"/>
     </enumeratedValueSet>
@@ -3590,7 +3590,7 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="set-MW-1-AU">
       <value value="220"/>
     </enumeratedValueSet>
-    <steppedValueSet variable="perception" first="0" step="0.2" last="1"/>
+    <steppedValueSet variable="perception" first="0" step="0.1" last="1"/>
     <enumeratedValueSet variable="fall-climacoef-homogeneus">
       <value value="1"/>
     </enumeratedValueSet>
