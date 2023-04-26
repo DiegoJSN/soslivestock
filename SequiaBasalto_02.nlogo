@@ -621,7 +621,9 @@ to-report ILWG_YEAR                                                     ;; outpu
 end
 
 to-report crop-efficiency                                               ;; outputs the crop eficiency (DM consumed / DM offered)
-  report sum [DDMC] of cows / (DM-cm-ha * sum [grass-height] of patches) * 100
+  report sum [DDMC] of cows / (DM-cm-ha * mean [grass-height] of patches) * 100
+
+  ;report sum [DDMC] of cows / (DM-cm-ha * sum [grass-height] of patches) * 100
   ;report sum [DDMC] of cows / ((DM-cm-ha * DM-available-for-cattle ) * sum [grass-height] of patches) * 100
 
 
@@ -658,7 +660,7 @@ GRAPHICS-WINDOW
 386
 68
 594
-177
+277
 -1
 -1
 20.0
@@ -674,7 +676,7 @@ GRAPHICS-WINDOW
 0
 9
 0
-4
+9
 1
 1
 1
@@ -739,7 +741,7 @@ initial-season
 initial-season
 0
 3
-0.0
+3.0
 1
 1
 NIL
@@ -879,7 +881,7 @@ initial-grass-height
 initial-grass-height
 1
 22.2
-7.0
+5.0
 0.1
 1
 cm
@@ -1114,7 +1116,7 @@ initial-weight-cows
 initial-weight-cows
 100
 1500
-340.0
+380.0
 1
 1
 kg
@@ -1339,7 +1341,7 @@ initial-num-steers
 initial-num-steers
 0
 1000
-0.0
+60.0
 1
 1
 NIL
@@ -1354,7 +1356,7 @@ initial-weight-steers
 initial-weight-steers
 100
 1500
-300.0
+380.0
 1
 1
 kg
@@ -1384,7 +1386,7 @@ set-Y-size
 set-Y-size
 1
 100
-5.0
+10.0
 1
 1
 hm
@@ -1661,6 +1663,23 @@ ILWG_SEASON_DIV
 13
 1
 11
+
+BUTTON
+704
+121
+813
+154
+Go (1 season)
+go\nif season-days = 92 [stop]
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -2342,6 +2361,60 @@ NetLogo 6.2.2
       <value value="0.5"/>
       <value value="1"/>
       <value value="1.5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="Fig6_v2" repetitions="10" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="92"/>
+    <metric>count cows</metric>
+    <metric>stocking-rate</metric>
+    <metric>crop-efficiency</metric>
+    <enumeratedValueSet variable="initial-num-heifers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-Y-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-X-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-1-AU">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-cows">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-MW-1-AU">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="perception">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-grass-height">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="management-strategy">
+      <value value="&quot;reactive&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="STOP-SIMULATION-AT">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <steppedValueSet variable="initial-num-steers" first="0" step="2" last="150"/>
+    <enumeratedValueSet variable="initial-weight-steers">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-season">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-heifers">
+      <value value="200"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-cows">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-climaCoef">
+      <value value="1"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
