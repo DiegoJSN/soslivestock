@@ -4020,7 +4020,7 @@ NetLogo 6.2.2
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="92"/>
-    <metric>set-climaCoef</metric>
+    <metric>climaCoef</metric>
     <metric>season-report</metric>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
@@ -4122,7 +4122,7 @@ NetLogo 6.2.2
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="92"/>
-    <metric>set-climaCoef</metric>
+    <metric>climaCoef</metric>
     <metric>season-report</metric>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
@@ -4224,7 +4224,7 @@ NetLogo 6.2.2
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="92"/>
-    <metric>set-climaCoef</metric>
+    <metric>climaCoef</metric>
     <metric>season-report</metric>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>

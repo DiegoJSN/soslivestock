@@ -720,8 +720,8 @@ to-report crop-efficiency                                                       
 GRAPHICS-WINDOW
 387
 116
-1052
-344
+943
+673
 -1
 -1
 54.8
@@ -735,9 +735,9 @@ GRAPHICS-WINDOW
 1
 1
 0
-11
+9
 0
-3
+9
 1
 1
 1
@@ -787,7 +787,7 @@ initial-num-cows
 initial-num-cows
 0
 1000
-0.0
+10.0
 1
 1
 NIL
@@ -1335,7 +1335,7 @@ set-X-size
 set-X-size
 2
 100
-12.0
+10.0
 2
 1
 hm
@@ -1350,7 +1350,7 @@ set-Y-size
 set-Y-size
 2
 100
-4.0
+10.0
 2
 1
 hm
@@ -4020,7 +4020,7 @@ NetLogo 6.2.2
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="92"/>
-    <metric>set-climaCoef</metric>
+    <metric>climaCoef</metric>
     <metric>season-report</metric>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
@@ -4604,7 +4604,7 @@ NetLogo 6.2.2
       <value value="1.5"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="Fig6" repetitions="1" runMetricsEveryStep="true">
+  <experiment name="Fig6" repetitions="10" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="368"/>
@@ -4629,7 +4629,7 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="spatial-management">
       <value value="&quot;free grazing&quot;"/>
     </enumeratedValueSet>
-    <steppedValueSet variable="initial-num-steers" first="0" step="1" last="100"/>
+    <steppedValueSet variable="initial-num-steers" first="0" step="2" last="100"/>
     <enumeratedValueSet variable="initial-weight-steers">
       <value value="300"/>
     </enumeratedValueSet>
