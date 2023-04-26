@@ -2302,7 +2302,7 @@ NetLogo 6.2.2
     <metric>dmgr ; TOTAL kg of DM</metric>
     <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
-    <metric>crop-eficiency</metric>
+    <metric>crop-efficiency</metric>
     <metric>mean [DDMC] of cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
@@ -2401,7 +2401,7 @@ NetLogo 6.2.2
     <metric>dmgr ; TOTAL kg of DM</metric>
     <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
-    <metric>crop-eficiency</metric>
+    <metric>crop-efficiency</metric>
     <metric>mean [DDMC] of cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
@@ -2500,7 +2500,7 @@ NetLogo 6.2.2
     <metric>dmgr ; TOTAL kg of DM</metric>
     <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
-    <metric>crop-eficiency</metric>
+    <metric>crop-efficiency</metric>
     <metric>mean [DDMC] of cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
@@ -2610,7 +2610,7 @@ NetLogo 6.2.2
     <metric>dmgr ; TOTAL kg of DM</metric>
     <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
-    <metric>crop-eficiency</metric>
+    <metric>crop-efficiency</metric>
     <metric>mean [DDMC] of cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
@@ -2715,7 +2715,7 @@ NetLogo 6.2.2
     <metric>dmgr ; TOTAL kg of DM</metric>
     <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
-    <metric>crop-eficiency</metric>
+    <metric>crop-efficiency</metric>
     <metric>mean [DDMC] of cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
@@ -2819,7 +2819,7 @@ NetLogo 6.2.2
     <metric>dmgr ; TOTAL kg of DM</metric>
     <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
-    <metric>crop-eficiency</metric>
+    <metric>crop-efficiency</metric>
     <metric>mean [DDMC] of cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
@@ -2924,7 +2924,7 @@ NetLogo 6.2.2
     <metric>dmgr ; TOTAL kg of DM</metric>
     <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
-    <metric>crop-eficiency</metric>
+    <metric>crop-efficiency</metric>
     <metric>mean [DDMC] of cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
@@ -3025,7 +3025,7 @@ NetLogo 6.2.2
     <metric>dmgr ; TOTAL kg of DM</metric>
     <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
-    <metric>crop-eficiency</metric>
+    <metric>crop-efficiency</metric>
     <metric>mean [DDMC] of cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
@@ -3126,7 +3126,7 @@ NetLogo 6.2.2
     <metric>dmgr ; TOTAL kg of DM</metric>
     <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
-    <metric>crop-eficiency</metric>
+    <metric>crop-efficiency</metric>
     <metric>mean [DDMC] of cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
@@ -3227,7 +3227,7 @@ NetLogo 6.2.2
     <metric>dmgr ; TOTAL kg of DM</metric>
     <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
-    <metric>crop-eficiency</metric>
+    <metric>crop-efficiency</metric>
     <metric>mean [DDMC] of cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
@@ -3329,7 +3329,7 @@ NetLogo 6.2.2
     <metric>dmgr ; TOTAL kg of DM</metric>
     <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
-    <metric>crop-eficiency</metric>
+    <metric>crop-efficiency</metric>
     <metric>mean [DDMC] of cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
@@ -3428,7 +3428,7 @@ NetLogo 6.2.2
     <metric>dmgr ; TOTAL kg of DM</metric>
     <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
-    <metric>crop-eficiency</metric>
+    <metric>crop-efficiency</metric>
     <metric>mean [DDMC] of cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
@@ -3527,7 +3527,7 @@ NetLogo 6.2.2
     <metric>dmgr ; TOTAL kg of DM</metric>
     <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
-    <metric>crop-eficiency</metric>
+    <metric>crop-efficiency</metric>
     <metric>mean [DDMC] of cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
@@ -3626,7 +3626,7 @@ NetLogo 6.2.2
     <metric>dmgr ; TOTAL kg of DM</metric>
     <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
-    <metric>crop-eficiency</metric>
+    <metric>crop-efficiency</metric>
     <metric>mean [DDMC] of cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
@@ -3727,7 +3727,7 @@ NetLogo 6.2.2
     <metric>dmgr ; TOTAL kg of DM</metric>
     <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
-    <metric>crop-eficiency</metric>
+    <metric>crop-efficiency</metric>
     <metric>mean [DDMC] of cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
@@ -3828,7 +3828,7 @@ NetLogo 6.2.2
     <metric>dmgr ; TOTAL kg of DM</metric>
     <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
-    <metric>crop-eficiency</metric>
+    <metric>crop-efficiency</metric>
     <metric>mean [DDMC] of cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
