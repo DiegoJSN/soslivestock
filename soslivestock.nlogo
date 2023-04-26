@@ -2987,7 +2987,7 @@ NetLogo 6.2.2
       <value value="0.5"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_climacoef_1" repetitions="10" runMetricsEveryStep="true">
+  <experiment name="SA_climacoef_1" repetitions="10" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="9200"/>
@@ -3386,7 +3386,7 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_initial-weight-cows" repetitions="10" runMetricsEveryStep="true">
+  <experiment name="SA_initial-weight-cows" repetitions="10" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="9200"/>
