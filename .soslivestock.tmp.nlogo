@@ -2291,10 +2291,10 @@ NetLogo 6.2.2
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="SA_set-X-size" repetitions="100" runMetricsEveryStep="false">
+  <experiment name="SA_set-X-size" repetitions="80" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <timeLimit steps="18400"/>
+    <timeLimit steps="11040"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
     <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
@@ -2378,7 +2378,7 @@ NetLogo 6.2.2
       <value value="7"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="STOP-SIMULATION-AT">
-      <value value="50"/>
+      <value value="30"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-heifers">
       <value value="250"/>
@@ -2390,10 +2390,10 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_initial-grass-height" repetitions="100" runMetricsEveryStep="false">
+  <experiment name="SA_initial-grass-height" repetitions="80" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <timeLimit steps="18400"/>
+    <timeLimit steps="11040"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
     <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
@@ -2477,7 +2477,7 @@ NetLogo 6.2.2
     </enumeratedValueSet>
     <steppedValueSet variable="initial-grass-height" first="1" step="1" last="7"/>
     <enumeratedValueSet variable="STOP-SIMULATION-AT">
-      <value value="50"/>
+      <value value="30"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-heifers">
       <value value="250"/>
@@ -2489,10 +2489,10 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_set-DM-cm-ha" repetitions="100" runMetricsEveryStep="false">
+  <experiment name="SA_set-DM-cm-ha" repetitions="80" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <timeLimit steps="18400"/>
+    <timeLimit steps="11040"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
     <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
@@ -2587,7 +2587,7 @@ NetLogo 6.2.2
       <value value="7"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="STOP-SIMULATION-AT">
-      <value value="50"/>
+      <value value="30"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-heifers">
       <value value="250"/>
@@ -2599,10 +2599,10 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_soil-quality-distribution" repetitions="100" runMetricsEveryStep="false">
+  <experiment name="SA_soil-quality-distribution" repetitions="80" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <timeLimit steps="18400"/>
+    <timeLimit steps="11040"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
     <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
@@ -2692,7 +2692,7 @@ NetLogo 6.2.2
       <value value="7"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="STOP-SIMULATION-AT">
-      <value value="50"/>
+      <value value="30"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-heifers">
       <value value="250"/>
@@ -2704,10 +2704,10 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_initial-season" repetitions="100" runMetricsEveryStep="false">
+  <experiment name="SA_initial-season" repetitions="80" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <timeLimit steps="18400"/>
+    <timeLimit steps="11040"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
     <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
@@ -2796,7 +2796,7 @@ NetLogo 6.2.2
       <value value="7"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="STOP-SIMULATION-AT">
-      <value value="50"/>
+      <value value="30"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-heifers">
       <value value="250"/>
@@ -2808,10 +2808,10 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_climacoef_distribution" repetitions="100" runMetricsEveryStep="false">
+  <experiment name="SA_climacoef_distribution" repetitions="80" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <timeLimit steps="18400"/>
+    <timeLimit steps="11040"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
     <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
@@ -2897,7 +2897,7 @@ NetLogo 6.2.2
       <value value="7"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="STOP-SIMULATION-AT">
-      <value value="50"/>
+      <value value="30"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-heifers">
       <value value="250"/>
@@ -2913,10 +2913,10 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_climacoef_0.5" repetitions="100" runMetricsEveryStep="false">
+  <experiment name="SA_climacoef_0.5" repetitions="80" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <timeLimit steps="18400"/>
+    <timeLimit steps="11040"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
     <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
@@ -3002,7 +3002,7 @@ NetLogo 6.2.2
       <value value="7"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="STOP-SIMULATION-AT">
-      <value value="50"/>
+      <value value="30"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-heifers">
       <value value="250"/>
@@ -3014,10 +3014,10 @@ NetLogo 6.2.2
       <value value="0.5"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_climacoef_1" repetitions="100" runMetricsEveryStep="false">
+  <experiment name="SA_climacoef_1" repetitions="80" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <timeLimit steps="18400"/>
+    <timeLimit steps="11040"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
     <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
@@ -3103,7 +3103,7 @@ NetLogo 6.2.2
       <value value="7"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="STOP-SIMULATION-AT">
-      <value value="50"/>
+      <value value="30"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-heifers">
       <value value="250"/>
@@ -3115,10 +3115,10 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_climacoef_1.5" repetitions="100" runMetricsEveryStep="false">
+  <experiment name="SA_climacoef_1.5" repetitions="80" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <timeLimit steps="18400"/>
+    <timeLimit steps="11040"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
     <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
@@ -3204,7 +3204,7 @@ NetLogo 6.2.2
       <value value="7"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="STOP-SIMULATION-AT">
-      <value value="50"/>
+      <value value="30"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-heifers">
       <value value="250"/>
@@ -3216,10 +3216,10 @@ NetLogo 6.2.2
       <value value="1.5"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_spatial_management" repetitions="100" runMetricsEveryStep="false">
+  <experiment name="SA_spatial_management" repetitions="80" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <timeLimit steps="18400"/>
+    <timeLimit steps="11040"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
     <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
@@ -3306,7 +3306,7 @@ NetLogo 6.2.2
       <value value="7"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="STOP-SIMULATION-AT">
-      <value value="50"/>
+      <value value="30"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-heifers">
       <value value="250"/>
@@ -3318,10 +3318,10 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_initial-num-cows" repetitions="100" runMetricsEveryStep="false">
+  <experiment name="SA_initial-num-cows" repetitions="80" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <timeLimit steps="18400"/>
+    <timeLimit steps="11040"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
     <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
@@ -3329,7 +3329,7 @@ NetLogo 6.2.2
     <metric>dmgr ; TOTAL kg of DM</metric>
     <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
-    <metric>crop-eficiency</metric>
+    <metric>crop-efficiency</metric>
     <metric>mean [DDMC] of cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
@@ -3405,7 +3405,7 @@ NetLogo 6.2.2
       <value value="7"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="STOP-SIMULATION-AT">
-      <value value="50"/>
+      <value value="30"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-heifers">
       <value value="250"/>
@@ -3417,10 +3417,10 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_initial-weight-cows" repetitions="100" runMetricsEveryStep="false">
+  <experiment name="SA_initial-weight-cows" repetitions="80" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <timeLimit steps="18400"/>
+    <timeLimit steps="11040"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
     <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
@@ -3428,7 +3428,7 @@ NetLogo 6.2.2
     <metric>dmgr ; TOTAL kg of DM</metric>
     <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
-    <metric>crop-eficiency</metric>
+    <metric>crop-efficiency</metric>
     <metric>mean [DDMC] of cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
@@ -3504,7 +3504,7 @@ NetLogo 6.2.2
       <value value="7"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="STOP-SIMULATION-AT">
-      <value value="50"/>
+      <value value="30"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-heifers">
       <value value="250"/>
@@ -3516,10 +3516,10 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="SA_perception" repetitions="100" runMetricsEveryStep="false">
+  <experiment name="SA_perception" repetitions="80" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <timeLimit steps="18400"/>
+    <timeLimit steps="11040"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
     <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
@@ -3527,7 +3527,7 @@ NetLogo 6.2.2
     <metric>dmgr ; TOTAL kg of DM</metric>
     <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
-    <metric>crop-eficiency</metric>
+    <metric>crop-efficiency</metric>
     <metric>mean [DDMC] of cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
@@ -3603,7 +3603,7 @@ NetLogo 6.2.2
       <value value="7"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="STOP-SIMULATION-AT">
-      <value value="50"/>
+      <value value="30"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-heifers">
       <value value="250"/>
@@ -3618,7 +3618,7 @@ NetLogo 6.2.2
   <experiment name="SA_climacoef_0.3" repetitions="100" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <timeLimit steps="18400"/>
+    <timeLimit steps="11040"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
     <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
@@ -3626,7 +3626,7 @@ NetLogo 6.2.2
     <metric>dmgr ; TOTAL kg of DM</metric>
     <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
-    <metric>crop-eficiency</metric>
+    <metric>crop-efficiency</metric>
     <metric>mean [DDMC] of cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
@@ -3704,7 +3704,7 @@ NetLogo 6.2.2
       <value value="7"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="STOP-SIMULATION-AT">
-      <value value="50"/>
+      <value value="30"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-heifers">
       <value value="250"/>
@@ -3719,7 +3719,7 @@ NetLogo 6.2.2
   <experiment name="SA_climacoef_0.7" repetitions="100" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <timeLimit steps="18400"/>
+    <timeLimit steps="11040"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
     <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
@@ -3727,7 +3727,7 @@ NetLogo 6.2.2
     <metric>dmgr ; TOTAL kg of DM</metric>
     <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
-    <metric>crop-eficiency</metric>
+    <metric>crop-efficiency</metric>
     <metric>mean [DDMC] of cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
@@ -3805,7 +3805,7 @@ NetLogo 6.2.2
       <value value="7"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="STOP-SIMULATION-AT">
-      <value value="50"/>
+      <value value="30"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-heifers">
       <value value="250"/>
@@ -3820,7 +3820,7 @@ NetLogo 6.2.2
   <experiment name="SA_climacoef_1.2" repetitions="100" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <timeLimit steps="18400"/>
+    <timeLimit steps="11040"/>
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
     <metric>mean [grass-height] of patches ; mean cm of grass-height per ha</metric>
@@ -3828,7 +3828,7 @@ NetLogo 6.2.2
     <metric>dmgr ; TOTAL kg of DM</metric>
     <metric>sum [DDMC] of cows ; TOTAL consumption of DM</metric>
     <metric>mean [live-weight] of cows</metric>
-    <metric>crop-eficiency</metric>
+    <metric>crop-efficiency</metric>
     <metric>mean [DDMC] of cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
@@ -3906,7 +3906,7 @@ NetLogo 6.2.2
       <value value="7"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="STOP-SIMULATION-AT">
-      <value value="50"/>
+      <value value="30"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-heifers">
       <value value="250"/>
