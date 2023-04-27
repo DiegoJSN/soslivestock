@@ -5147,7 +5147,7 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="PR_soil-quality-distribution * climacoef-distribution * spatial-management" repetitions="50" runMetricsEveryStep="true">
+  <experiment name="PR_soil-quality-distribution_climacoef-distribution_spatial-management" repetitions="50" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="7360"/>
@@ -5173,6 +5173,7 @@ NetLogo 6.2.2
     </enumeratedValueSet>
     <enumeratedValueSet variable="spatial-management">
       <value value="&quot;free grazing&quot;"/>
+      <value value="&quot;rotational grazing&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-num-steers">
       <value value="0"/>
