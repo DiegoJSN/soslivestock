@@ -3,7 +3,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; The original model was built in CORMAS, for more information about the original model see Dieguez-Cameroni et al. (2012, 2014)
-;; Some aspects of the model related with the growth of livestock and the transition through different age classes are based on Robins et al. (2015)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Declaration of agents and variables
@@ -11,12 +10,10 @@
 
 globals [
 ;; Climate related global variables
-  ;climacoef-historic                                                   ;; external (real world) data, historic climacoef values. Climacoef relates the primary production in a season with the average for that season due to climate variations
+  climacoef                                                             ;; climacoef relates the primary production in a season with the average for that season due to climate variations
   current-season                                                        ;; define the season in which the simulation begins: 0 = winter, 1 = spring, 2 = summer, 3 = fall
   current-season-name                                                   ;; translates the numbers "0, 1, 2, 3" to "winter, spring, summer, fall"
   season-coef                                                           ;; affects the live weight gain of animals in relation with the grass quality according to the season: winter = 1, spring = 1.15, summer = 1.05, fall = 1
-  climacoef
-  historic-climacoef
 
 ;; Time related global variables
   days-per-tick                                                         ;; variable to simulate time
@@ -39,25 +36,8 @@ globals [
   cow-age-min                                                           ;; determines the beginning of the “cow” age class for heifers: 737 days
   cow-age-max                                                           ;; determines the life expectancy of cattle: 5520 days
   gestation-period                                                      ;; determines the gestation period of pregnant cows: 276 days
-  lactation-period                                                      ;; determines the lactating period of cows with calves: 184 days
+  lactation-period                                                      ;; determines the lactating period of cows with calves: 246 days
   weight-gain-lactation                                                 ;; affects the live weight gain of lactating animals (i.e., “born-calf” age class): 0.61 Kg/day
-
-;; Market prices & economic balance related global variables
-  ;exploitation-costs                                                   ;; external (real world) data, historic costs for maintaining the plot ($/ha).
-  ;grazing-prices                                                       ;; external (real world) data, historic costs for renting an external plot ($/head/season sent it to the external plot).
-  ;supplement-prices                                                    ;; external (real world) data, historic costs for feeding the animals with food supplements (grains, $/head/season).
-  ;born-calves-prices                                                   ;; external (real world) data, historic prices for selling born calves ($/Kg).
-  ;weaned-calves-prices                                                 ;; external (real world) data, historic prices for selling weaned calves ($/Kg).
-  ;steers-prices                                                        ;; external (real world) data, historic prices for selling born steers ($/Kg).
-  ;heifers-prices                                                       ;; external (real world) data, historic prices for selling heifers ($/Kg).
-  ;cows-prices                                                          ;; external (real world) data, historic prices for selling empty cows ($/Kg).
-  ;pregnant-cows-prices                                                 ;; external (real world) data, historic prices for selling pregnant cows ($/Kg).
-  ;lactating-cows-prices                                                ;; external (real world) data, historic prices for selling lactating cows ($/Kg).
-  ;sheep-prices                                                         ;; external (real world) data, historic prices for selling sheep-meat ($/Kg).
-  ;wool-prices                                                          ;; external (real world) data, historic prices for selling wool ($/Kg).
-  ;exploitation-net-incomes
-  ;exploitation-balance
-  ;initial-balance
   ]
 
 breed [cows cow]
@@ -65,7 +45,7 @@ breed [cows cow]
 patches-own [
   grass-height                                                          ;; primary production (biomass), expressed in centimeters
   gh-individual                                                         ;; grass height consumed per cow
-  r                                                                     ;; growth rate for the grass = 0.002 1/day
+  r                                                                     ;; growth rate for the grass = 0.02 1/day
   GH-consumed                                                           ;; grass-height consumed from the total consumption of dry matter
   DM-kg-ha                                                              ;; primary production (biomass), expressed in kg of Dry Matter (DM)
    ]
@@ -112,30 +92,7 @@ to setup
   setup-globals
   setup-grassland
   setup-livestock
-  use-new-seed
   reset-ticks
-end
-
-to use-new-seed
-  let my-seed new-seed                                                  ;; generate a new seed
-  output-print word "Seed: " my-seed                                    ;; print it out
-  random-seed my-seed                                                   ;; use the generated seed
-end
-
-to setup_seed
-  ca
-  resize-world 0 (set-x-size - 1)  0 (set-y-size - 1)
-  setup-globals
-  setup-grassland
-  setup-livestock
-  seed-1070152876
-  reset-ticks
-end
-
-to seed-1070152876
-  let my-seed 1070152876
-  output-print word "Seed: " my-seed
-  random-seed my-seed
 end
 
 to setup-globals
@@ -148,7 +105,7 @@ to setup-globals
   set cow-age-min 737
   set cow-age-max 5520
   set gestation-period 276
-  set lactation-period 184
+  set lactation-period 246
   set weight-gain-lactation 0.61
   set ni 0.24
   set xi 132
@@ -159,21 +116,6 @@ to setup-globals
   set maxLWG [40 60 40 40]
   set current-season initial-season                                     ;; the initial season is set by the observer in the interface
 
-  ;; External (real world) historic data (for de decisional model)
-  set historic-climacoef [0.48 0.3 0.72 0.12 0.71 0.65 1.1]
-  ;set historic-climacoef [1.53 1.31 1.23	1.48 1.29	0.87 0.96	1.26 1.17	0.71 0.86	1.44 1.34	0.86 1.06 1.19 0.72	0.80 0.93	0.98 0.87	1.17 1.02	0.83 0.09	1.32 0.87	1.08 1.42	0.75 1.00	0.65 0.50	1.19 1.07	0.62 0.77 1.05 1.18 1.05]
-  ;set exploitation-costs [5.76 5.76	5.76 5.76	6.25 6.25	6.25 6.25	6.80 6.80	6.80 6.80 5.50 5.50	5.50 5.50	6.63 6.63	6.63 6.63	8.53 8.53	8.53 8.53	11.03	11.03	11.03	11.03	12.50	12.50	12.50	12.50	15.88	15.88	15.88	15.88	16.15	16.15	16.15	16.15]
-  ;set grazing-prices [4	10 16	8	9	19 20	12 12	22 22	9	8	19 19	13 21	20 21	17 18	13 19	20 34	10 22	16 7 21	20 24	26 12	19 24	20 15	36 36]
-  ;set supplement-prices [0.09	0.09 0.09	0.09 0.09	0.09 0.09	0.09 0.09	0.09 0.09	0.09 0.08	0.08 0.1 0.1 0.11	0.13 0.1 0.09	0.09 0.1 0.1 0.1 0.1 0.12 0.13 0.13 0.14 0.15 0.15 0.16	0.19 0.21	0.23 0.15	0.15 0.15	0.15 0.15]
-  ;set born-calves-prices [0.74 0.8 0.84	0.88 0.87	0.71 0.69	0.7	0.66 0.63	0.66 0.76	0.74 0.8 0.86	0.83 0.86	0.98 0.99	0.99 1.02	1.02 0.94	0.98 0.91	1.06 1.13	1.17 1.26	1.3	1.36 1.33	1.31 1.74	1.2	0.94 1.03	1.03 1.03 1.03]
-  ;set weaned-calves-prices [0.83 0.81	0.88 0.9 0.89	0.76 0.81	0.72 0.73	0.69 0.71	0.73 0.77	0.84 0.87	0.93 0.88	0.95 1 1.05	1.05 1.05	1.01 0.98	0.95 1.17 1.09 1.2 1.3 1.27	1.38 1.35	1.36 1.67	1.21 0.92	1.04 1.04	1.04 1.04]
-  ;set steers-prices [0.68	0.72 0.76	0.8	0.79 0.65	0.63 0.64	0.6	0.57 0.6 0.69	0.67 0.73	0.78 0.75	0.79 0.89	0.9	0.9	0.93 0.93	0.86 0.89	0.82 0.97 1.02 1.06	1.15 1.18	1.23 1.21	1.19 1.59	1.09 0.85	0.94 0.94	0.94 0.94]
-  ;set heifers-prices [0.63 0.63	0.68 0.71	0.69 0.6 0.6 0.56	0.53 0.45	0.49 0.48	0.53 0.58	0.64 0.67	0.59 0.7 0.73	0.72 0.75	0.75 0.66	0.69 0.65	0.81 0.83	0.82 0.94	0.92 1.05	0.97 0.98	1.17 0.87	0.62 0.72	0.72 0.72	0.72]
-  ;set cows-prices [0.45	0.48 0.49	0.57 0.49	0.51 0.51	0.44 0.45	0.4	0.37 0.43	0.48 0.49	0.47 0.59	0.51 0.57	0.62 0.6 0.55	0.55 0.56	0.63 0.46	0.7	0.65 0.74	0.78 0.74	0.89 0.79	0.94 1.17	0.67 0.52	0.5	0.5	0.5	0.5]
-  ;set pregnant-cows-prices [0.45 0.48	0.49 0.57	0.49 0.51	0.51 0.44	0.45 0.4 0.37 0.43 0.48 0.49 0.47 0.59 0.51	0.57 0.62	0.6	0.55 0.55	0.56 0.63	0.46 0.7 0.65	0.74 0.78	0.74 0.89	0.79 0.94	1.17 0.67	0.52 0.5 0.5	0.5	0.5]
-  ;set lactating-cows-prices [0.51	0.52 0.54	0.55 0.53	0.45 0.47	0.42 0.42	0.39 0.42	0.42 0.45	0.55 0.61	0.63 0.57	0.64 0.7 0.68	0.67 0.67	0.78 0.65	0.58 0.85	0.77 0.77	0.81 0.83	0.91 0.89	0.92 1.1 0.81	0.52 0.64	0.64 0.64	0.64]
-  ;set sheep-prices [0.47 0.52	0.47 0.48	0.51 0.49	0.54 0.46	0.49 0.49	0.56 0.51	0.59 0.76	0.92 0.81	0.82 0.96	1.05 0.84	0.81 0.77	0.68 0.59	0.45 0.46	0.56 0.57	0.48 0.64	0.8	0.92 0.94	0.88 0.98	0.98 0.98	0.98 0.98	0.98]
-  ;set wool-prices [5.6 5.81	5.65 5.76	6.18 5.81	5.86 7.08	9.52 9.31	11.83	13.01	13.79	8.65 12.37 12.43 12.69 12.53 11.59 10.64 10.43 10.01 9.85	8.52 8.26	9	9	9.15 11.1 12.78	14.27 15.4 17.36 17.75 16.07 8.17	8.17 8.17	8.17 8.17]
 end
 
 to setup-grassland
@@ -194,29 +136,10 @@ to setup-livestock
     set initial-weight initial-weight-cows
     set mortality-rate natural-mortality-rate
     set DDMC 0
-    set age cow-age-min
+    ;set age cow-age-min
+    set age random (cow-age-max - cow-age-min) + cow-age-min
     setxy random-pxcor random-pycor
     become-cow ]
-
-  create-cows initial-num-heifers [
-    set shape "cow"
-    set live-weight initial-weight-heifers                              ;; the initial weight is set by the observer in the interface
-    set initial-weight initial-weight-heifers
-    set mortality-rate natural-mortality-rate
-    set DDMC 0
-    set age heifer-age-min
-    setxy random-pxcor random-pycor
-    become-heifer ]
-
-  create-cows initial-num-steers [
-    set shape "cow"
-    set live-weight initial-weight-steers                               ;; the initial weight is set by the observer in the interface
-    set initial-weight initial-weight-steers
-    set mortality-rate natural-mortality-rate
-    set DDMC 0
-    set age heifer-age-min
-    setxy random-pxcor random-pycor
-    become-steer ]
 
     ask cows [
     set live-weight-gain-history-season []
@@ -232,10 +155,9 @@ to setup-livestock
 
 to go
 
-  if (climacoef-value? = "set-climacoef") [set climacoef set-climacoef]
-  if (climacoef-value? = "historic-climacoef") [set climacoef item (simulation-time / 92) historic-climacoef]
+  set climacoef set-climacoef                                           ;; the climacoef is set by the observer in the interface
 
-  if season-days >= 92 [set number-of-season number-of-season + 1     ;; the season change and duration is determined in this line
+  if season-days >= 92 [set number-of-season number-of-season + 1       ;; the season change and duration is determined in this line
     ifelse current-season = 0
     [set current-season 1]
     [ifelse current-season = 1
@@ -267,7 +189,7 @@ to go
     if year-days = 368 [set live-weight-gain-history-year []]
   ]
 
-  if simulation-time / 368 = STOP-SIMULATION-AT [stop]                        ;; the observer can decide whether the simulation should run indefinitely (STOP-SIMULATION-AT 0 days) or after X days
+  if simulation-time / 368 = STOP-SIMULATION-AT [stop]                  ;; the observer can decide whether the simulation should run indefinitely (STOP-SIMULATION-AT 0 years) or after X years
 
   grow-grass
   move
@@ -285,10 +207,9 @@ end
 ;; BIOPHYSICAL SUBMODEL (GRASS AND LIVESTOCK)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to grow-grass                                                           ;; each patch calculates the height of its grass following a logistic regression. Grass height is affected by season, climacoef (set by the observer in the interface) and consumption of grass by animals  (GH consumed is the grass consumed by cows on the previous tick)
+to grow-grass                                                           ;; each patch calculates the height of its grass following a logistic regression. Grass height is affected by season, climacoef (set by the observer in the interface) and consumption of grass by animals (GH consumed is the grass consumed by cows on the previous tick)
   ask patches [
     set grass-height (grass-height + r * grass-height * (1 - grass-height / (item current-season kmax * climacoef))) - GH-consumed
-
     if grass-height < 0 [set grass-height 0 ]
 
     ifelse grass-height < 2                                             ;; patches with grass height less than 2 cm are colored light green. This is based on the assumption that cows cannot eat grass less than 2 cm high
@@ -328,7 +249,7 @@ ask cows [
     set live-weight live-weight + live-weight-gain
     if live-weight < 0 [set live-weight 0]
 
-    set animal-units live-weight / set-1-AU
+    set animal-units live-weight / 380
   ]
 end
 
@@ -411,13 +332,8 @@ to become-born-calf
   set age 0
   set initial-weight 40
   set live-weight initial-weight
-  ;set animal-units 0.2
-  set animal-units live-weight / set-1-AU
-  ;set min-weight 0
-  ;set min-weight 220                                                          ;; ####################################################################################################
-  ;set min-weight set-MW-1-AU * 0.2
+  set animal-units live-weight / 380
   set size 0.3
-  ;set size animal-units
   set natural-mortality-rate 0.000054
   set except-mort-rate 0
   set category-coef 1
@@ -436,13 +352,9 @@ to become-weaned-calf
   set cow? false
   set cow-with-calf? false
   set color orange
-  ;set animal-units 0.5
-  set animal-units live-weight / set-1-AU
+  set animal-units live-weight / 380
   set min-weight 60
-  ;set min-weight 220                                                          ;; ####################################################################################################
-  ;set min-weight set-MW-1-AU * 0.5
   set size 0.5
-  ;set size animal-units
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.23
   set category-coef 1
@@ -460,13 +372,9 @@ to become-heifer
   set steer? false
   set cow? false
   set color pink
-  ;set animal-units 0.7
-  set animal-units live-weight / set-1-AU
+  set animal-units live-weight / 380
   set min-weight 100
-  ;set min-weight 220                                                          ;; ####################################################################################################
-  ;set min-weight set-MW-1-AU * 0.7
   set size 0.7
-  ;set size animal-units
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.23
   set category-coef 1
@@ -485,13 +393,9 @@ to become-steer
   set cow? false
   set cow-with-calf? false
   set color red
-  ;set animal-units 0.7
-  set animal-units live-weight / set-1-AU
+  set animal-units live-weight / 380
   set min-weight 100
-  ;set min-weight 220                                                          ;; ####################################################################################################
-  ;set min-weight set-MW-1-AU * 0.7
   set size 0.7
-  ;set size animal-units
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.23
   set category-coef 1
@@ -510,13 +414,9 @@ to become-cow
   set cow? true
   set cow-with-calf? false
   set color brown
-  ;set animal-units 1
-  set animal-units live-weight / set-1-AU
+  set animal-units live-weight / 380
   set min-weight 180
-  ;set min-weight 220                                                          ;; ####################################################################################################
-  ;set min-weight set-MW-1-AU
   set size 1
-  ;set size animal-units
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.15
   set category-coef 1
@@ -535,13 +435,9 @@ to become-cow-with-calf
   set cow? false
   set cow-with-calf? true
   set color magenta
-  ;set animal-units 1
-  set animal-units live-weight / set-1-AU
+  set animal-units live-weight / 380
   set min-weight 180
-  ;set min-weight 220                                                          ;; ####################################################################################################
-  ;set min-weight set-MW-1-AU
   set size 1.1
-  ;set size animal-units
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.3
   set category-coef 1.1
@@ -553,34 +449,11 @@ to become-cow-with-calf
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; DECISIONAL SUBMODEL (FARMER)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-to sell-males
-
-end
-
-to extraordinary-sales
-
-end
-
-to sacrifice-animals
-end
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; This section of the code contains the reporters that collect the model outputs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to-report stocking-rate                                                 ;; outputs the relation between the number of livestock (in terms of animal units) and the grassland area (num. of patches)
+to-report stocking-rate                                                 ;; outputs the relation between the number of livestock (in terms of animal units) and the grassland area (num. of patches. 1 patch = 1 ha)
   report sum [animal-units] of cows / count patches
-end
-
-to-report stocking-rate_ADULTCOWS                                                 ;; outputs the relation between the number of livestock (in terms of animal units) and the grassland area (num. of patches)
-  report (sum [animal-units] of cows with [cow?] / count patches) + (sum [animal-units] of cows with [cow-with-calf?] / count patches)
-end
-
-to-report ILWG_ADULTCOWS
-  report ((sum [live-weight-gain] of cows with [cow?]) + (sum [live-weight-gain] of cows with [cow-with-calf?])) / ((count cows with [cow-with-calf?]) + (count cows with [cow?]))
 end
 
 to-report grass-height-report                                           ;; outputs the mean grass-height of the grassland
@@ -607,62 +480,28 @@ to-report ILWG_SEASON                                                   ;; outpu
   report mean [live-weight-gain-historyXticks-season] of cows
 end
 
-to-report ILWG_SEASON_DIV                                                  ;; ORIGINAL AUTORES ####################################################################################################
-  report ((mean [live-weight] of cows - mean [initial-weight] of cows) / 2) / 92
-end
-
-to-report ILWG_SEASON_NODIV                                                 ;; SIN DIVIDIR ENTRE 2 ####################################################################################################
-  report ((mean [live-weight] of cows - mean [initial-weight] of cows)) / 92
-end
-
 to-report ILWG_YEAR                                                     ;; outputs the mean IWLG throughout the year
   report mean [live-weight-gain-historyXticks-year] of cows
 end
 
 to-report crop-efficiency                                               ;; outputs the crop eficiency (DM consumed / DM offered)
   report sum [DDMC] of cows / (DM-cm-ha * mean [grass-height] of patches) * 100
-
-  ;report sum [DDMC] of cows / (DM-cm-ha * sum [grass-height] of patches) * 100
-  ;report sum [DDMC] of cows / ((DM-cm-ha * DM-available-for-cattle ) * sum [grass-height] of patches) * 100
-
-
- ;let totDDMC sum [DDMC] of cows ; totDDMC = DM consumed
- ;report (totDDMC / (DM-cm-ha * sum [grass-height] of patches)) * 100 ; (DM-cm-ha * sum [grass-height] of patches) = DM offered
-
- ;; OTRA ALTERNATIVA PARA CALCULAR EL CROP-EFFICIENCY;;
-  ;let totDDMC DM-cm-ha * sum [GH-consumed] of patches ; El "DM consumed" se puede calcular de otra manera: sumamos los cm de hierba que han perdido los patches como consecuencia de la alimentación de los animales. Como GH-consumed está en cm, lo multiplicamos por el DM-cm-ha para obtener la DM consumed (que se expresa en Kg/ha)
-  ;report totDDMC / (DM-cm-ha * sum [grass-height] of patches)
  end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; References
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; Dieguez-Cameroni, F.J., et al. 2014. Virtual experiments using a participatory model to explore interactions between climatic variability
-;; and management decisions in extensive systems in the basaltic region of Uruguay. Agricultural Systems 130: 89–104.
-
-;; Dieguez-Cameroni, F., Bommel, P., Corral, J., Bartaburu, D., Pereira, M., Montes, E., Duarte, E., Morales-Grosskopf, H. 2012. Modelización
-;; de una explotación ganadera extensiva criadora en basalto. Agrociencia Uruguay 16(2): 120-130.
-
-;; Robins, R., Bogen, S., Francis, A., Westhoek, A., Kanarek, A., Lenhart, S., Eda, S. 2015. Agent-based model for Johne’s disease dynamics
-;; in a dairy herd. Veterinary Research 46: 68.
-
-
-
-;OTRA INFO DE INTERES
-; Para exportar los resultados de un plot, escribir en el "Command center" de la pestaña "Interfaz" lo siguiente:
-; export-plot plotname filename ; por ejemplo 1: export-plot "Seasonal Accumulation DM per ha" "dm_winter.csv"
-;                                     ejemplo 2: export-plot "Average of grass-height (GH)" "gh_winter.csv"
-;                                     ejemplo 3: export-plot "Daily live-weight-gain (LWG)" "047_05_winter.csv"
+;; Dieguez-Cameroni, F.J., et al. 2014. Virtual experiments using a participatory model to explore interactions between climatic variability and management decisions in extensive systems in the basaltic region of Uruguay. Agricultural Systems 130: 89–104.
+;; Dieguez-Cameroni, F., Bommel, P., Corral, J., Bartaburu, D., Pereira, M., Montes, E., Duarte, E., Morales-Grosskopf, H. 2012. Modelización de una explotación ganadera extensiva criadora en basalto. Agrociencia Uruguay 16(2): 120-130.
 @#$#@#$#@
 GRAPHICS-WINDOW
-386
-68
-594
-277
+435
+61
+981
+608
 -1
 -1
-20.0
+53.8
 1
 10
 1
@@ -683,10 +522,10 @@ ticks
 30.0
 
 BUTTON
-187
-69
-251
-102
+7
+10
+71
+43
 Setup
 Setup
 NIL
@@ -700,10 +539,10 @@ NIL
 1
 
 BUTTON
-324
-69
-379
-102
+174
+11
+250
+44
 Go
 Go
 T
@@ -717,25 +556,25 @@ NIL
 1
 
 SLIDER
-10
-412
-161
-445
+11
+276
+166
+309
 initial-num-cows
 initial-num-cows
 0
 1000
-30.0
+50.0
 1
 1
 cows
 HORIZONTAL
 
 SLIDER
-265
-196
-382
-229
+201
+132
+337
+165
 initial-season
 initial-season
 0
@@ -747,10 +586,10 @@ NIL
 HORIZONTAL
 
 PLOT
-854
-285
-1181
-410
+993
+249
+1389
+482
 Average of grass-height (GH)
 Days
 cm
@@ -765,10 +604,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot grass-height-report"
 
 PLOT
-856
-604
-1184
-824
+993
+554
+1405
+787
 Live-weight (LW)
 Days
 kg
@@ -789,10 +628,10 @@ PENS
 "Average LW" 1.0 0 -16777216 true "" "plot mean [live-weight] of cows"
 
 MONITOR
-566
-18
-644
-63
+660
+10
+732
+55
 Time (days)
 simulation-time
 2
@@ -800,10 +639,10 @@ simulation-time
 11
 
 MONITOR
-387
-556
-500
-601
+736
+10
+849
+55
 Stoking rate (AU/ha)
 stocking-rate
 4
@@ -811,10 +650,10 @@ stocking-rate
 11
 
 PLOT
-504
-604
-852
-825
+636
+613
+984
+834
 Cattle age classes population sizes
 Days
 Heads
@@ -834,73 +673,37 @@ PENS
 "Cow-with-calf" 1.0 0 -5825686 true "" "plot count cows with [cow-with-calf?]"
 "Total" 1.0 0 -16777216 true "" "plot count cows"
 
-SLIDER
-10
-615
-147
-648
-perception
-perception
-0
-1
-1.0
-0.1
-1
-NIL
-HORIZONTAL
-
 MONITOR
-573
-556
-702
-601
+854
+10
+979
+55
 Total number of cattle
 count cows
 7
 1
 11
 
-MONITOR
-1185
-604
-1341
-649
-Average LW (kg/animal)
-mean [live-weight] of cows
-3
-1
-11
-
 SLIDER
-7
-195
-148
-228
+12
+202
+154
+235
 initial-grass-height
 initial-grass-height
 1
 22.2
-7.0
+7.4
 0.1
 1
 cm
 HORIZONTAL
 
-CHOOSER
-9
-753
-157
-798
-management-strategy
-management-strategy
-"reactive" "proactive"
-0
-
 PLOT
-854
-17
-1240
-274
+991
+10
+1387
+243
 Dry-matter (DM) and DM consumption (DDMC)
 Days
 kg
@@ -916,46 +719,46 @@ PENS
 "Total DDMC" 1.0 0 -2674135 true "" "plot sum [DDMC] of cows"
 
 TEXTBOX
-319
-230
-383
-286
+348
+136
+412
+194
 0 = winter\n1 = spring\n2 = summer\n3 = fall
 11
 0.0
 1
 
 MONITOR
-1181
-285
-1307
-330
-Average GH (cm/ha)
+1389
+249
+1535
+294
+Average GH (cm)
 grass-height-report
-3
+2
 1
 11
 
 SLIDER
-154
-196
-261
-229
+201
+168
+337
+201
 set-climaCoef
 set-climaCoef
 0.1
 1.5
-1.5
+1.0
 0.1
 1
 NIL
 HORIZONTAL
 
 MONITOR
-385
-18
-472
-63
+503
+10
+578
+55
 Season
 season-report
 17
@@ -963,137 +766,43 @@ season-report
 11
 
 MONITOR
-479
-18
-561
-63
+581
+10
+657
+55
 Time (years)
 simulation-time / 368
 3
 1
 11
 
-SLIDER
-9
-327
-160
-360
-initial-num-heifers
-initial-num-heifers
-0
-1000
-0.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-9
-361
-160
-394
-initial-weight-heifers
-initial-weight-heifers
-100
-1500
-200.0
-1
-1
-kg
-HORIZONTAL
-
 MONITOR
-307
-18
-380
-63
+433
+10
+500
+55
 Area (ha)
-count patches ;grassland-area, 1 patch = 1 ha\n; Other option:\n; sum [animal-units] of cows / count patches
+count patches
 7
 1
 11
 
-PLOT
-1430
-601
-1888
-828
-Daily individual-live-weight-gain (ILWG)
-Days
-kg
-0.0
-92.0
-0.0
-0.0
-true
-true
-"" ""
-PENS
-"Born-calf" 1.0 0 -13791810 true "" "plot mean [live-weight-gain] of cows with [born-calf?]"
-"Weaned-calf" 1.0 0 -955883 true "" "plot mean [live-weight-gain] of cows with [weaned-calf?]"
-"Heifer" 1.0 0 -2064490 true "" "plot mean [live-weight-gain] of cows with [heifer?]"
-"Steer" 1.0 0 -2674135 true "" "plot mean [live-weight-gain] of cows with [steer?]"
-"Cow" 1.0 0 -6459832 true "" "plot mean [live-weight-gain] of cows with [cow?]"
-"Cow-with-calf" 1.0 0 -5825686 true "" "plot mean [live-weight-gain] of cows with [cow-with-calf?]"
-"Average LWG" 1.0 0 -16777216 true "" "plot mean [live-weight-gain] of cows"
-
-PLOT
-855
-423
-1181
-565
-Crop-efficiency (CE)
-Days
-%
-0.0
-92.0
-0.0
-60.0
-true
-false
-"" ""
-PENS
-"CE" 1.0 0 -16777216 true "" "plot crop-efficiency"
-
 MONITOR
-1182
-424
-1238
-469
-CE (%)
-crop-efficiency
+1387
+53
+1533
+98
+Total DDMC (kg)
+sum [DDMC] of cows
 2
 1
 11
 
-MONITOR
-1159
-126
-1308
-171
-Total DDMC (kg)
-sum [DDMC] of cows
-3
-1
-11
-
-MONITOR
-1307
-126
-1481
-171
-Average DDMC (kg/animal)
-mean [DDMC] of cows
-3
-1
-11
-
 BUTTON
-255
-69
-321
-102
+75
+10
+170
+43
 Go (1 day)
 go
 NIL
@@ -1108,9 +817,9 @@ NIL
 
 SLIDER
 10
-445
-161
-478
+312
+166
+345
 initial-weight-cows
 initial-weight-cows
 100
@@ -1121,251 +830,55 @@ initial-weight-cows
 kg
 HORIZONTAL
 
-PLOT
-1306
-233
-1707
-375
-Body condition ccore (BCS)
-Days
-points
-0.0
-92.0
-0.0
-5.0
-true
-true
-"" ""
-PENS
-"Born-calf" 1.0 0 -13791810 true "" "plot (mean [live-weight] of cows with [born-calf?] - set-MW-1-AU) / 40"
-"Weaned-calf" 1.0 0 -955883 true "" "plot (mean [live-weight] of cows with [weaned-calf?] - set-MW-1-AU) / 40"
-"Heifer" 1.0 0 -2064490 true "" "plot (mean [live-weight] of cows with [heifer?] - set-MW-1-AU) / 40"
-"Steer" 1.0 0 -2674135 true "" "plot (mean [live-weight] of cows with [steer?] - set-MW-1-AU) / 40"
-"Cow" 1.0 0 -6459832 true "" "plot (mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40"
-"Cow-with-calf" 1.0 0 -5825686 true "" "plot (mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40"
-"Average BCS" 1.0 0 -16777216 true "" "plot (mean [live-weight] of cows - set-MW-1-AU) / 40"
-
 MONITOR
-1772
-367
-1903
-412
-Average BCS (points)
-;(mean [live-weight] of cows - mean [min-weight] of cows) / 40\n;(mean [live-weight] of cows - (((mean [live-weight] of cows) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows - set-MW-1-AU) / 40
+1406
+643
+1660
+688
+Body Condition Score (BCS) of adult cows (points)
+(mean [live-weight] of cows with [cow?] - 220) / 40
 2
 1
 11
 
 MONITOR
-1707
-278
-1837
-323
-BCS of cows (points)
-;(mean [live-weight] of cows with [cow?] - mean [min-weight] of cows with [cow?]) / 40\n;(mean [live-weight] of cows with [cow?] - (((mean [live-weight] of cows with [cow?]) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40
-2
-1
-11
-
-MONITOR
-1707
-323
-1837
-368
-BCS of heifers (points)
-;(mean [live-weight] of cows with [heifer?] - mean [min-weight] of cows with [heifer?]) / 40\n;(mean [live-weight] of cows with [heifer?] - (((mean [live-weight] of cows with [heifer?]) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows with [heifer?] - set-MW-1-AU) / 40
-2
-1
-11
-
-PLOT
-1300
-422
-1710
-563
-Pregnancy rate (PR)
-Days
-%
-0.0
-92.0
-0.0
-1.0E-4
-true
-true
-"" ""
-PENS
-"Heifer" 1.0 0 -2064490 true "" "plot mean [pregnancy-rate] of cows with [heifer?] * 100"
-"Cow" 1.0 0 -6459832 true "" "plot mean [pregnancy-rate] of cows with [cow?] * 100"
-"Cow-with-calf" 1.0 0 -5825686 true "" "plot mean [pregnancy-rate] of cows with [cow-with-calf?] * 100"
-"Average PR" 1.0 0 -16777216 true "" "plot mean [pregnancy-rate] of cows * 100"
-
-MONITOR
-1710
-556
-1841
-601
-Average PR (%)
-mean [pregnancy-rate] of cows * 100
-2
-1
-11
-
-MONITOR
-1710
-467
-1842
-512
-PR of cows (%)
+1406
+690
+1660
+735
+Pregnancy Rate (PR) of adult cows (%)
 mean [pregnancy-rate] of cows with [cow?] * 100
 2
 1
 11
 
 MONITOR
-1710
-423
-1853
-468
-PR of cows-with-calf (%)
-mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
-2
-1
-11
-
-MONITOR
-1710
-511
-1843
-556
-PR of heifers (%)
-mean [pregnancy-rate] of cows with [heifer?] * 100
-2
-1
-11
-
-MONITOR
-1159
-82
-1308
-127
+1387
+10
+1533
+55
 Total DM (kg)
 dmgr
-3
-1
-11
-
-MONITOR
-1185
-648
-1371
-693
-Average ILWG (kg/animal/day)
-;mean [live-weight-gain] of cows\nILWG
-3
-1
-11
-
-MONITOR
-1707
-233
-1862
-278
-BCS of cows-with-calf (points)
-;(mean [live-weight] of cows with [cow-with-calf?] - mean [min-weight] of cows with [cow-with-calf?]) / 40\n;(mean [live-weight] of cows with [cow-with-calf?] - (((mean [live-weight] of cows with [cow-with-calf?]) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40
 2
 1
 11
 
 MONITOR
-1836
-277
-2003
-322
-BCS of weaned-calf (points)
-;(mean [live-weight] of cows with [weaned-calf?] - mean [min-weight] of cows with [weaned-calf?]) / 40\n;(mean [live-weight] of cows with [weaned-calf?] - (((mean [live-weight] of cows with [weaned-calf?]) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows with [weaned-calf?] - set-MW-1-AU) / 40
+1172
+508
+1405
+553
+Average LW Gain (LWG) of cattle (kg/animal)
+mean [live-weight-gain] of cows
 2
-1
-11
-
-MONITOR
-1836
-322
-2003
-367
-BCS of steer (points)
-;(mean [live-weight] of cows with [steer?] - mean [min-weight] of cows with [steer?]) / 40\n;(mean [live-weight] of cows with [steer?] - (((mean [live-weight] of cows with [steer?]) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows with [steer?] - set-MW-1-AU) / 40
-2
-1
-11
-
-MONITOR
-1862
-233
-2003
-278
-BCS of born-calf (points)
-;(mean [live-weight] of cows with [born-calf?] - mean [min-weight] of cows with [born-calf?]) / 40\n;(mean [live-weight] of cows with [born-calf?] - (((mean [live-weight] of cows with [born-calf?]) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows with [born-calf?] - set-MW-1-AU) / 40
-2
-1
-11
-
-MONITOR
-1184
-735
-1376
-780
-Average LW of cows (kg/animal)
-mean [live-weight] of cows with [cow?]
-3
-1
-11
-
-MONITOR
-1185
-780
-1414
-825
-Average ILWG of cows (kg/animal/day)
-mean [live-weight-gain] of cows with [cow?]
-3
 1
 11
 
 SLIDER
-9
-249
-160
-282
-initial-num-steers
-initial-num-steers
-0
-1000
-0.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-9
-280
-160
-313
-initial-weight-steers
-initial-weight-steers
-100
-1500
-380.0
-1
-1
-kg
-HORIZONTAL
-
-SLIDER
-5
-30
-142
-63
+12
+130
+154
+163
 set-X-size
 set-X-size
 1
@@ -1377,10 +890,10 @@ hm
 HORIZONTAL
 
 SLIDER
-173
-30
-301
-63
+12
+165
+154
+198
 set-Y-size
 set-Y-size
 1
@@ -1392,71 +905,20 @@ hm
 HORIZONTAL
 
 TEXTBOX
-118
-10
-268
-38
-GRAZING AREA
+13
+110
+183
+140
+GRAZING AREA AND GRASS
 12
 0.0
 1
 
-MONITOR
-504
-555
-570
-600
-Area (ha)
-count patches
-17
-1
-11
-
-TEXTBOX
-152
-37
-177
-56
-X
-15
-0.0
-1
-
-SLIDER
-157
-110
-255
-143
-set-1-AU
-set-1-AU
-1
-1500
-380.0
-1
-1
-kg
-HORIZONTAL
-
-SLIDER
-258
-110
-379
-143
-set-MW-1-AU
-set-MW-1-AU
-1
-1500
-220.0
-1
-1
-kg
-HORIZONTAL
-
 PLOT
-299
-604
-500
-825
+435
+613
+636
+834
 Stocking rate
 Days
 AU/ha
@@ -1470,204 +932,26 @@ false
 PENS
 "default" 1.0 0 -16777216 true "" "plot stocking-rate"
 
-MONITOR
-172
-328
-380
-373
-Average ILWG (kg/animal/day)
-;mean [live-weight-gain] of cows\nILWG
-13
-1
-11
-
-MONITOR
-172
-380
-430
-425
-Average LWG since the start of the SEASON
-;mean [live-weight-gain-historyXticks-season] of cows; Average LWG SEASON\nILWG_SEASON
-13
-1
-11
-
-MONITOR
-171
-495
-374
-540
-NIL
-max [count cows-here] of patches
-17
-1
-11
-
-OUTPUT
-651
-17
-851
-62
-12
-
-BUTTON
-692
-72
-847
-105
-setup_seed-1070152876 
-setup_seed
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-MONITOR
-1184
-692
-1430
-737
-Average annual live weight gain per hectare (ALWG, kg/ha)
-;(sum [live-weight] of cows with [steer?] - sum [initial-weight] of cows with [steer?]) / count patches; para calcular el WGH de los steers\n;(sum [live-weight] of cows - sum [initial-weight] of cows) / count patches\nALWG
-3
-1
-11
-
-MONITOR
-594
-160
-678
-205
-NIL
-year-days
-17
-1
-11
-
-MONITOR
-595
-111
-678
-156
-NIL
-season-days
-17
-1
-11
-
-MONITOR
-171
-429
-430
-474
-Average LWG since the start of the YEAR
-;mean [live-weight-gain-historyXticks-year] of cows; Average LWG YEAR\nILWG_YEAR
-13
-1
-11
-
-MONITOR
-1307
-82
-1481
-127
-Total DM per ha (kg/ha)
-;(DM-cm-ha * mean [grass-height] of patches) / DM-available-for-cattle\n(dmgr) / count patches
-3
-1
-11
-
-MONITOR
-1480
-82
-1657
-127
-Total DM G. Rate (kg/ha/day)
-;((DM-cm-ha * mean [grass-height] of patches) / DM-available-for-cattle) / 92\n(dmgr / count patches) / 92
-3
-1
-11
-
-MONITOR
-431
-278
-521
-323
-ALWG (kg/ha)
-;(sum [live-weight] of cows with [steer?] - sum [initial-weight] of cows with [steer?]) / count patches; para calcular el WGH de los steers\n;(sum [live-weight] of cows - sum [initial-weight] of cows) / count patches\nALWG
-3
-1
-11
-
-MONITOR
-594
-208
-711
-253
-BCS of cows (points)
-;(mean [live-weight] of cows with [cow?] - mean [min-weight] of cows with [cow?]) / 40\n(mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40
-2
-1
-11
-
-MONITOR
-594
-254
-698
-299
-PR of cows (%)
-;mean [pregnancy-rate] of cows with [cow?] * 368 * 100\nmean [pregnancy-rate] of cows with [cow?] * 100
-2
-1
-11
-
 SLIDER
-4
-68
-176
-101
+256
+11
+428
+44
 STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-10.0
+0.0
 1
 1
 years
 HORIZONTAL
 
-MONITOR
-438
-334
-593
-379
-NIL
-ILWG_SEASON_NODIV
-13
-1
-11
-
-MONITOR
-605
-334
-728
-379
-NIL
-ILWG_SEASON_DIV
-13
-1
-11
-
 BUTTON
-704
-121
-813
-154
+75
+44
+170
+77
 Go (1 season)
 go\nif season-days = 92 [stop]
 T
@@ -1681,109 +965,90 @@ NIL
 1
 
 MONITOR
-712
-208
-873
-253
-BCS of cows-with-calf (points)
-;(mean [live-weight] of cows with [cow-with-calf?] - mean [min-weight] of cows with [cow-with-calf?]) / 40\n;(mean [live-weight] of cows with [cow-with-calf?] - (((mean [live-weight] of cows with [cow-with-calf?]) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40
+1387
+96
+1533
+141
+Crop Efficiency (%)
+crop-efficiency
 2
 1
 11
 
 MONITOR
-713
-254
-849
-299
-PR of cows-with-calf (%)
-mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
+992
+508
+1171
+553
+Average LW of cattle (kg/animal)
+mean [live-weight] of cows
 2
 1
 11
 
 MONITOR
-497
-457
-561
-502
-NIL
-climacoef
-17
+1533
+10
+1687
+55
+Total DM per ha (kg/ha)
+dmgr / count patches
+2
 1
 11
 
-PLOT
-561
-397
-761
-547
-climacoef
-NIL
-NIL
+MONITOR
+1533
+54
+1687
+99
+Average DDMC (kg/animal)
+mean [DDMC] of cows
+2
+1
+11
+
+MONITOR
+1406
+554
+1660
+599
+Average LW of adult cows (kg/animal)
+mean [live-weight] of cows with [cow?]
+2
+1
+11
+
+MONITOR
+1406
+598
+1660
+643
+Average LWG of adult cows (kg/animal)
+mean [live-weight-gain] of cows with [cow?]
+2
+1
+11
+
+TEXTBOX
+202
+113
+352
+131
+SEASONS AND CLIMATE
+12
 0.0
-92.0
+1
+
+TEXTBOX
+12
+257
+162
+275
+LIVESTOCK NUMBERS
+12
 0.0
-1.5
-true
-false
-"" ""
-PENS
-"default" 1.0 0 -16777216 true "" "plot climacoef"
-
-MONITOR
-595
-66
-683
-111
-season-number
-simulation-time / 92
-0
 1
-11
-
-CHOOSER
-156
-147
-274
-192
-climacoef-value?
-climacoef-value?
-"set-climacoef" "historic-climacoef"
-0
-
-MONITOR
-299
-825
-511
-870
-Stocking rate ADULT COWS (AU/ha)
-stocking-rate_ADULTCOWS ; cows with [cow?] and cows with [cow-with-calf?]
-4
-1
-11
-
-MONITOR
-1062
-830
-1177
-875
-NIL
-ILWG_ADULTCOWS
-3
-1
-11
-
-MONITOR
-1185
-829
-1469
-874
-Average ILWG of cows-with-calf (kg/animal/day)
-mean [live-weight-gain] of cows with [cow-with-calf?]
-3
-1
-11
 
 @#$#@#$#@
 ## WHAT IS IT?
