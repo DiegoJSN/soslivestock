@@ -15,6 +15,8 @@ globals [
   current-season                                                        ;; define the season in which the simulation begins: 0 = winter, 1 = spring, 2 = summer, 3 = fall
   current-season-name                                                   ;; translates the numbers "0, 1, 2, 3" to "winter, spring, summer, fall"
   season-coef                                                           ;; affects the live weight gain of animals in relation with the grass quality according to the season: winter = 1, spring = 1.15, summer = 1.05, fall = 1
+  climacoef
+  historic-climacoef
 
 ;; Time related global variables
   days-per-tick                                                         ;; variable to simulate time
@@ -158,7 +160,8 @@ to setup-globals
   set current-season initial-season                                     ;; the initial season is set by the observer in the interface
 
   ;; External (real world) historic data (for de decisional model)
-  ;set climacoef-historic [1.53 1.31 1.23	1.48 1.29	0.87 0.96	1.26 1.17	0.71 0.86	1.44 1.34	0.86 1.06 1.19 0.72	0.80 0.93	0.98 0.87	1.17 1.02	0.83 0.09	1.32 0.87	1.08 1.42	0.75 1.00	0.65 0.50	1.19 1.07	0.62 0.77 1.05 1.18 1.05]
+  set historic-climacoef [0.48 0.3 0.72 0.12 0.71 0.65 1.1]
+  ;set historic-climacoef [1.53 1.31 1.23	1.48 1.29	0.87 0.96	1.26 1.17	0.71 0.86	1.44 1.34	0.86 1.06 1.19 0.72	0.80 0.93	0.98 0.87	1.17 1.02	0.83 0.09	1.32 0.87	1.08 1.42	0.75 1.00	0.65 0.50	1.19 1.07	0.62 0.77 1.05 1.18 1.05]
   ;set exploitation-costs [5.76 5.76	5.76 5.76	6.25 6.25	6.25 6.25	6.80 6.80	6.80 6.80 5.50 5.50	5.50 5.50	6.63 6.63	6.63 6.63	8.53 8.53	8.53 8.53	11.03	11.03	11.03	11.03	12.50	12.50	12.50	12.50	15.88	15.88	15.88	15.88	16.15	16.15	16.15	16.15]
   ;set grazing-prices [4	10 16	8	9	19 20	12 12	22 22	9	8	19 19	13 21	20 21	17 18	13 19	20 34	10 22	16 7 21	20 24	26 12	19 24	20 15	36 36]
   ;set supplement-prices [0.09	0.09 0.09	0.09 0.09	0.09 0.09	0.09 0.09	0.09 0.09	0.09 0.08	0.08 0.1 0.1 0.11	0.13 0.1 0.09	0.09 0.1 0.1 0.1 0.1 0.12 0.13 0.13 0.14 0.15 0.15 0.16	0.19 0.21	0.23 0.15	0.15 0.15	0.15 0.15]
@@ -228,7 +231,11 @@ to setup-livestock
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to go
-    if season-days >= 92 [set number-of-season number-of-season + 1     ;; the season change and duration is determined in this line
+
+  if (climacoef-value? = "set-climacoef") [set climacoef set-climacoef]
+  if (climacoef-value? = "historic-climacoef") [set climacoef item (simulation-time / 92) historic-climacoef]
+
+  if season-days >= 92 [set number-of-season number-of-season + 1     ;; the season change and duration is determined in this line
     ifelse current-season = 0
     [set current-season 1]
     [ifelse current-season = 1
@@ -280,24 +287,8 @@ end
 
 to grow-grass                                                           ;; each patch calculates the height of its grass following a logistic regression. Grass height is affected by season, climacoef (set by the observer in the interface) and consumption of grass by animals  (GH consumed is the grass consumed by cows on the previous tick)
   ask patches [
-    ;;;OPCION 1: NO TIENE UNA VARIABLE ESPECIFICA PARA EL TIEMPO
-    set grass-height (grass-height + r * grass-height * (1 - grass-height / (item current-season kmax * set-climacoef))) - GH-consumed
+    set grass-height (grass-height + r * grass-height * (1 - grass-height / (item current-season kmax * climacoef))) - GH-consumed
 
-    ;;;OPCION 1.1: NO TIENE UNA VARIABLE ESPECIFICA PARA EL TIEMPO. ES UNA FORMULA INVENTADA POR MI... POR ESO LE LLAMO "GH INVENT"
-    ;set grass-height (grass-height + r * simulation-time * (1 - grass-height / (item current-season kmax * set-climacoef))) - GH-consumed
-
-    ;,OPCION 2: VARIABLE ESPECIFICA PARA EL TIEMPO USANDO "initial-grass-height"
-    ;set grass-height ((item current-season kmax / (1 + ((((item current-season kmax * set-climacoef) - (initial-grass-height)) / (initial-grass-height)) * (e ^ (- r * simulation-time))))) * set-climacoef) - GH-consumed
-
-    ;;OPCION 3: VARIABLE ESPECIFICA PARA EL TIEMPO USANDO "grass-height"
-    ;set grass-height ((item current-season kmax / (1 + ((((item current-season kmax * set-climacoef) - (grass-height)) / (grass-height)) * (e ^ (- r * simulation-time))))) * set-climacoef) - GH-consumed                                                                                                                                                                                ; COMENTARIO IMPORTANTE SOBRE ESTA FORMULA: se ha añadido lo siguiente: ahora, la variable "K" del denominador ahora TAMBIÉN multiplica a "climacoef". Ahora que lo pienso, así tiene más sentido... ya que la capacidad de carga (K) se verá afectada dependiendo de la variabilidad climática (antes solo se tenía en cuenta en el numerador). Ahora que recuerdo, en Dieguez-Cameroni et al. 2012, se menciona lo siguiente sobre la variable K "es una constante estacional que determina la altura máxima de la pastura, multiplicada por el coeficiente climático (coefClima) explicado anteriormente", así que parece que la modificacion nueva que he hecho tiene sentido.
-
-    ;;OPCION 4: r = 0.0004334. CON ESTE VALOR DE r CONSIGO REPLICAR LA FIGURA 2 Y CUADRO 3 DE Dieguez-Cameroni et al. 2012. ESTOY "FORZANDO" LA FORMULA PARA QUE DEN LOS NUMEROS QUE QUIERO, POR ESO LLAMO A ESTA VERSION "GH FORZADO"
-    ;set grass-height ((item current-season kmax / (1 + ((((item current-season kmax * set-climacoef) - (grass-height)) / (grass-height)) * (e ^ (- 0.0004334 * simulation-time))))) * set-climacoef) - GH-consumed
-
-
-    ;if grass-height <= 0 [set grass-height 0.001] ; to avoid negative values.
-    ;if grass-height <= 0 [set grass-height 1 ^ -80 ] ; to avoid negative values.
     if grass-height < 0 [set grass-height 0 ]
 
     ifelse grass-height < 2                                             ;; patches with grass height less than 2 cm are colored light green. This is based on the assumption that cows cannot eat grass less than 2 cm high
@@ -347,7 +338,7 @@ ask cows [
     ifelse born-calf? = true
        [set DDMC 0]
        [ifelse grass-height >= 2
-         [set DDMC ((0.107 * metabolic-body-size * (- 0.0132 *  gh-individual + 1.1513) + (0.141 * metabolic-body-size * live-weight-gain) ) / grass-energy) * category-coef]
+         [set DDMC ((0.107 * metabolic-body-size * (- 0.0132 *  gh-individual + 1.5132) + (0.141 * metabolic-body-size * live-weight-gain) ) / grass-energy) * category-coef]
          [set DDMC 0]]
     if DDMC < 0 [set DDMC 0]
   ]
@@ -584,6 +575,14 @@ to-report stocking-rate                                                 ;; outpu
   report sum [animal-units] of cows / count patches
 end
 
+to-report stocking-rate_ADULTCOWS                                                 ;; outputs the relation between the number of livestock (in terms of animal units) and the grassland area (num. of patches)
+  report (sum [animal-units] of cows with [cow?] / count patches) + (sum [animal-units] of cows with [cow-with-calf?] / count patches)
+end
+
+to-report ILWG_ADULTCOWS
+  report ((sum [live-weight-gain] of cows with [cow?]) + (sum [live-weight-gain] of cows with [cow-with-calf?])) / ((count cows with [cow-with-calf?]) + (count cows with [cow?]))
+end
+
 to-report grass-height-report                                           ;; outputs the mean grass-height of the grassland
   report mean [grass-height] of patches
 end
@@ -659,8 +658,8 @@ to-report crop-efficiency                                               ;; outpu
 GRAPHICS-WINDOW
 386
 68
-594
-277
+894
+477
 -1
 -1
 20.0
@@ -674,9 +673,9 @@ GRAPHICS-WINDOW
 1
 1
 0
-9
+24
 0
-9
+19
 1
 1
 1
@@ -718,25 +717,25 @@ NIL
 1
 
 SLIDER
-7
-365
-158
-398
+10
+412
+161
+445
 initial-num-cows
 initial-num-cows
 0
 1000
-0.0
+300.0
 1
 1
 cows
 HORIZONTAL
 
 SLIDER
-262
-149
-379
-182
+265
+196
+382
+229
 initial-season
 initial-season
 0
@@ -873,10 +872,10 @@ mean [live-weight] of cows
 11
 
 SLIDER
-4
+7
+195
 148
-145
-181
+228
 initial-grass-height
 initial-grass-height
 1
@@ -917,10 +916,10 @@ PENS
 "Total DDMC" 1.0 0 -2674135 true "" "plot sum [DDMC] of cows"
 
 TEXTBOX
-316
-183
-380
-239
+319
+230
+383
+286
 0 = winter\n1 = spring\n2 = summer\n3 = fall
 11
 0.0
@@ -938,10 +937,10 @@ grass-height-report
 11
 
 SLIDER
-151
-149
-258
-182
+154
+196
+261
+229
 set-climaCoef
 set-climaCoef
 0.1
@@ -975,10 +974,10 @@ simulation-time / 368
 11
 
 SLIDER
-6
-280
-157
-313
+9
+327
+160
+360
 initial-num-heifers
 initial-num-heifers
 0
@@ -990,10 +989,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-6
-314
-157
-347
+9
+361
+160
+394
 initial-weight-heifers
 initial-weight-heifers
 100
@@ -1108,10 +1107,10 @@ NIL
 1
 
 SLIDER
-7
-398
-158
-431
+10
+445
+161
+478
 initial-weight-cows
 initial-weight-cows
 100
@@ -1333,25 +1332,25 @@ mean [live-weight-gain] of cows with [cow?]
 11
 
 SLIDER
-6
-202
-157
-235
+9
+249
+160
+282
 initial-num-steers
 initial-num-steers
 0
 1000
-60.0
+0.0
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-6
-233
-157
-266
+9
+280
+160
+313
 initial-weight-steers
 initial-weight-steers
 100
@@ -1371,7 +1370,7 @@ set-X-size
 set-X-size
 1
 100
-10.0
+25.0
 1
 1
 hm
@@ -1386,7 +1385,7 @@ set-Y-size
 set-Y-size
 1
 100
-10.0
+20.0
 1
 1
 hm
@@ -1470,12 +1469,13 @@ false
 "" ""
 PENS
 "default" 1.0 0 -16777216 true "" "plot stocking-rate"
+"pen-1" 1.0 0 -7500403 true "" "plot stocking-rate_ADULTCOWS   "
 
 MONITOR
-169
-281
-377
-326
+172
+328
+380
+373
 Average ILWG (kg/animal/day)
 ;mean [live-weight-gain] of cows\nILWG
 13
@@ -1483,10 +1483,10 @@ Average ILWG (kg/animal/day)
 11
 
 MONITOR
-169
-333
-427
-378
+172
+380
+430
+425
 Average LWG since the start of the SEASON
 ;mean [live-weight-gain-historyXticks-season] of cows; Average LWG SEASON\nILWG_SEASON
 13
@@ -1494,10 +1494,10 @@ Average LWG since the start of the SEASON
 11
 
 MONITOR
-168
-448
-371
-493
+171
+495
+374
+540
 NIL
 max [count cows-here] of patches
 17
@@ -1540,10 +1540,10 @@ Average annual live weight gain per hectare (ALWG, kg/ha)
 11
 
 MONITOR
-598
-117
-682
-162
+594
+160
+678
+205
 NIL
 year-days
 17
@@ -1551,10 +1551,10 @@ year-days
 11
 
 MONITOR
-599
-68
-682
-113
+595
+111
+678
+156
 NIL
 season-days
 17
@@ -1562,10 +1562,10 @@ season-days
 11
 
 MONITOR
-168
-382
-427
-427
+171
+429
+430
+474
 Average LWG since the start of the YEAR
 ;mean [live-weight-gain-historyXticks-year] of cows; Average LWG YEAR\nILWG_YEAR
 13
@@ -1606,10 +1606,10 @@ ALWG (kg/ha)
 11
 
 MONITOR
-600
-207
-717
-252
+594
+208
+711
+253
 BCS of cows (points)
 ;(mean [live-weight] of cows with [cow?] - mean [min-weight] of cows with [cow?]) / 40\n(mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40
 2
@@ -1617,10 +1617,10 @@ BCS of cows (points)
 11
 
 MONITOR
-600
-253
-704
-298
+594
+254
+698
+299
 PR of cows (%)
 ;mean [pregnancy-rate] of cows with [cow?] * 368 * 100\nmean [pregnancy-rate] of cows with [cow?] * 100
 2
@@ -1636,7 +1636,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 7360
-0.0
+644.0
 1
 1
 days
@@ -1680,6 +1680,111 @@ NIL
 NIL
 NIL
 1
+
+MONITOR
+712
+208
+873
+253
+BCS of cows-with-calf (points)
+;(mean [live-weight] of cows with [cow-with-calf?] - mean [min-weight] of cows with [cow-with-calf?]) / 40\n;(mean [live-weight] of cows with [cow-with-calf?] - (((mean [live-weight] of cows with [cow-with-calf?]) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40
+2
+1
+11
+
+MONITOR
+713
+254
+849
+299
+PR of cows-with-calf (%)
+mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
+2
+1
+11
+
+MONITOR
+497
+457
+561
+502
+NIL
+climacoef
+17
+1
+11
+
+PLOT
+561
+397
+761
+547
+climacoef
+NIL
+NIL
+0.0
+92.0
+0.0
+1.5
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plot climacoef"
+
+MONITOR
+595
+66
+683
+111
+season-number
+simulation-time / 92
+0
+1
+11
+
+CHOOSER
+156
+147
+274
+192
+climacoef-value?
+climacoef-value?
+"set-climacoef" "historic-climacoef"
+1
+
+MONITOR
+299
+825
+511
+870
+Stocking rate ADULT COWS (AU/ha)
+stocking-rate_ADULTCOWS ; cows with [cow?] and cows with [cow-with-calf?]
+4
+1
+11
+
+MONITOR
+1062
+830
+1177
+875
+NIL
+ILWG_ADULTCOWS
+3
+1
+11
+
+MONITOR
+1185
+829
+1469
+874
+Average ILWG of cows-with-calf (kg/animal/day)
+mean [live-weight-gain] of cows with [cow-with-calf?]
+3
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -2098,7 +2203,7 @@ NetLogo 6.2.2
     <metric>mean [live-weight] of cows</metric>
     <steppedValueSet variable="perception" first="0" step="0.1" last="1"/>
   </experiment>
-  <experiment name="Fig5" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="Fig5" repetitions="20" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="368"/>
@@ -2143,9 +2248,9 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="initial-weight-cows">
       <value value="380"/>
     </enumeratedValueSet>
-    <steppedValueSet variable="set-climaCoef" first="0.5" step="0.25" last="1.5"/>
+    <steppedValueSet variable="set-climaCoef" first="0.5" step="0.5" last="1.5"/>
   </experiment>
-  <experiment name="Fig4" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="Fig4" repetitions="50" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="92"/>
@@ -2154,7 +2259,6 @@ NetLogo 6.2.2
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
     <metric>ILWG_SEASON</metric>
-    <metric>ILWG_SEASON_DIV</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
     </enumeratedValueSet>
@@ -2205,7 +2309,7 @@ NetLogo 6.2.2
       <value value="1.5"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="Fig6" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="Fig6" repetitions="50" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="368"/>
@@ -2405,6 +2509,72 @@ NetLogo 6.2.2
       <value value="380"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-season">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-heifers">
+      <value value="200"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-cows">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-climaCoef">
+      <value value="1"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="Fig8" repetitions="10" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="644"/>
+    <metric>grass-height-report</metric>
+    <metric>season-report</metric>
+    <metric>climacoef</metric>
+    <metric>ILWG ; all cows</metric>
+    <metric>ILWG_ADULTCOWS; ILWG only adult cows (cows and cows-with-calf)</metric>
+    <metric>stocking-rate</metric>
+    <metric>stocking-rate_ADULTCOWS ; cows with [cow?] and cows with [cow-with-calf?]</metric>
+    <metric>count cows</metric>
+    <metric>count cows with [cow?] + count cows with [cow-with-calf?]</metric>
+    <enumeratedValueSet variable="initial-num-heifers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-Y-size">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-X-size">
+      <value value="25"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-1-AU">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-cows">
+      <value value="300"/>
+      <value value="500"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-MW-1-AU">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="perception">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-grass-height">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="climacoef-value?">
+      <value value="&quot;historic-climacoef&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="management-strategy">
+      <value value="&quot;reactive&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="STOP-SIMULATION-AT">
+      <value value="644"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-season">
+      <value value="3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-steers">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-steers">
       <value value="0"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-heifers">
