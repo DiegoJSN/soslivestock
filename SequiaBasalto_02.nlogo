@@ -267,7 +267,7 @@ to go
     if year-days = 368 [set live-weight-gain-history-year []]
   ]
 
-  if simulation-time = STOP-SIMULATION-AT [stop]                        ;; the observer can decide whether the simulation should run indefinitely (STOP-SIMULATION-AT 0 days) or after X days
+  if simulation-time / 368 = STOP-SIMULATION-AT [stop]                        ;; the observer can decide whether the simulation should run indefinitely (STOP-SIMULATION-AT 0 days) or after X days
 
   grow-grass
   move
@@ -658,8 +658,8 @@ to-report crop-efficiency                                               ;; outpu
 GRAPHICS-WINDOW
 386
 68
-894
-477
+594
+277
 -1
 -1
 20.0
@@ -673,9 +673,9 @@ GRAPHICS-WINDOW
 1
 1
 0
-24
+9
 0
-19
+9
 1
 1
 1
@@ -725,7 +725,7 @@ initial-num-cows
 initial-num-cows
 0
 1000
-300.0
+30.0
 1
 1
 cows
@@ -740,7 +740,7 @@ initial-season
 initial-season
 0
 3
-3.0
+0.0
 1
 1
 NIL
@@ -880,7 +880,7 @@ initial-grass-height
 initial-grass-height
 1
 22.2
-5.0
+7.0
 0.1
 1
 cm
@@ -945,7 +945,7 @@ set-climaCoef
 set-climaCoef
 0.1
 1.5
-1.0
+1.5
 0.1
 1
 NIL
@@ -1370,7 +1370,7 @@ set-X-size
 set-X-size
 1
 100
-25.0
+10.0
 1
 1
 hm
@@ -1385,7 +1385,7 @@ set-Y-size
 set-Y-size
 1
 100
-20.0
+10.0
 1
 1
 hm
@@ -1469,7 +1469,6 @@ false
 "" ""
 PENS
 "default" 1.0 0 -16777216 true "" "plot stocking-rate"
-"pen-1" 1.0 0 -7500403 true "" "plot stocking-rate_ADULTCOWS   "
 
 MONITOR
 172
@@ -1630,16 +1629,16 @@ PR of cows (%)
 SLIDER
 4
 68
-183
+176
 101
 STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
-7360
-644.0
+100
+10.0
 1
 1
-days
+years
 HORIZONTAL
 
 MONITOR
@@ -1751,7 +1750,7 @@ CHOOSER
 climacoef-value?
 climacoef-value?
 "set-climacoef" "historic-climacoef"
-1
+0
 
 MONITOR
 299
@@ -2133,27 +2132,6 @@ NetLogo 6.2.2
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="SA_sliders" repetitions="3" runMetricsEveryStep="true">
-    <setup>setup</setup>
-    <go>go</go>
-    <metric>count cows</metric>
-    <metric>mean [grass-height] of patches</metric>
-    <metric>mean [live-weight] of cows</metric>
-    <enumeratedValueSet variable="climacoef">
-      <value value="0.5"/>
-      <value value="1"/>
-      <value value="1.5"/>
-    </enumeratedValueSet>
-    <steppedValueSet variable="initial-grass-height" first="3" step="1" last="7"/>
-    <enumeratedValueSet variable="initial-season">
-      <value value="0"/>
-      <value value="1"/>
-      <value value="2"/>
-      <value value="3"/>
-    </enumeratedValueSet>
-    <steppedValueSet variable="initial-num-cows" first="1" step="1" last="14"/>
-    <steppedValueSet variable="perception" first="0" step="0.1" last="1"/>
-  </experiment>
   <experiment name="SA_climacoef" repetitions="10" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
@@ -2309,54 +2287,6 @@ NetLogo 6.2.2
       <value value="1.5"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="Fig6" repetitions="50" runMetricsEveryStep="false">
-    <setup>setup</setup>
-    <go>go</go>
-    <timeLimit steps="368"/>
-    <metric>count cows</metric>
-    <metric>stocking-rate</metric>
-    <metric>crop-efficiency</metric>
-    <enumeratedValueSet variable="initial-num-heifers">
-      <value value="0"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="set-Y-size">
-      <value value="5"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="set-X-size">
-      <value value="10"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="set-1-AU">
-      <value value="380"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-num-cows">
-      <value value="0"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="set-MW-1-AU">
-      <value value="220"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="perception">
-      <value value="1"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-steers">
-      <value value="300"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-heifers">
-      <value value="200"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-grass-height">
-      <value value="7"/>
-    </enumeratedValueSet>
-    <steppedValueSet variable="initial-num-steers" first="0" step="2" last="100"/>
-    <enumeratedValueSet variable="initial-season">
-      <value value="0"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-cows">
-      <value value="380"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="set-climaCoef">
-      <value value="1"/>
-    </enumeratedValueSet>
-  </experiment>
   <experiment name="Fig2" repetitions="1" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
@@ -2467,7 +2397,7 @@ NetLogo 6.2.2
       <value value="1.5"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="Fig6_v2" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="Fig6" repetitions="10" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="92"/>
