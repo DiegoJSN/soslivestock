@@ -1053,7 +1053,7 @@ LIVESTOCK NUMBERS
 MONITOR
 1665
 554
-1912
+1945
 599
 Average LW of adult cows-with-calf (kg/animal)
 mean [live-weight] of cows with [cow-with-calf?]
@@ -1064,7 +1064,7 @@ mean [live-weight] of cows with [cow-with-calf?]
 MONITOR
 1665
 600
-1913
+1973
 645
 Average LWG of adult cows-with-calf (kg/animal)
 mean [live-weight-gain] of cows with [cow-with-calf?]
@@ -1075,7 +1075,7 @@ mean [live-weight-gain] of cows with [cow-with-calf?]
 MONITOR
 1665
 645
-1913
+2012
 690
 BCS of adult cows-with-calf (points)
 (mean [live-weight] of cows with [cow-with-calf?] - 220) / 40
@@ -1084,11 +1084,11 @@ BCS of adult cows-with-calf (points)
 11
 
 MONITOR
-1665
-691
-1913
-736
-PR of adult cows-with-calf (%)
+1734
+717
+2075
+762
+NIL
 mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
 2
 1
