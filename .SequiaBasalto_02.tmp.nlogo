@@ -301,7 +301,7 @@ end
 
 to move                                                                 ;; once the grass height of each patch is updated, cows move to the patch with fewer cows and the highest grass height
   ask cows [
-    let empty-patches patches with [not any? cows-here with [cow? or cow-with-calf? or steer? or heifer? or weaned-calf?]]
+
     let target max-one-of empty-patches [grass-height]
     if target != nobody and [grass-height] of target > grass-height [move-to target]
      ]
