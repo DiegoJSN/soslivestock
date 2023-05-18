@@ -222,7 +222,8 @@ end
 
 to move                                                                 ;; once the grass height of each patch is updated, cows move to the patch with fewer cows and the highest grass height
   ask cows [
-    let empty-patches patches with [not any? cows-here]
+    ;let empty-patches patches with [not any? cows-here]
+    ;let empty-patches patches with [not any? cows-here with [cow? or cow-with-calf? or steer? or heifer? or weaned-calf?]]
     let target max-one-of empty-patches [grass-height]
     if target != nobody and [grass-height] of target > grass-height [move-to target]
      ]
@@ -291,7 +292,7 @@ end
 
 to reproduce                                                            ;; this procedure dictates the rules for which each of the reproductive age classes (i.e., heifer, cow, cow-with-calf) can become pregnant, as well as the gestation period of animals
   ask cows [
-    if (heifer? = true) or (cow? = true) or (cow-with-calf? = true) [set pregnancy-rate (1 / (1 + coefA * e ^ (- coefB * live-weight))) ]
+    if (heifer? = true) or (cow? = true) or (cow-with-calf? = true) [set pregnancy-rate (1 / (1 + coefA * e ^ (- coefB * live-weight))) / 368]
     if random-float 1 < pregnancy-rate [set pregnant? true]
     if pregnant? = true [
       set pregnancy-time pregnancy-time + days-per-tick
@@ -746,7 +747,7 @@ SLIDER
 201
 set-climaCoef
 set-climaCoef
-0.1
+0.5
 1.5
 1.0
 0.1
@@ -905,11 +906,11 @@ hm
 HORIZONTAL
 
 TEXTBOX
-13
-110
-183
-140
-GRAZING AREA AND GRASS
+15
+95
+185
+125
+GRAZING AREA AND \nINITIAL GRASS HEIGHT
 12
 0.0
 1
@@ -948,10 +949,10 @@ years
 HORIZONTAL
 
 BUTTON
-75
-44
-170
-77
+8
+46
+119
+79
 Go (1 season)
 go\nif season-days = 92 [stop]
 T
@@ -1093,6 +1094,23 @@ mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
 2
 1
 11
+
+BUTTON
+124
+46
+251
+79
+Go (1 year)
+go\nif year-days = 368 [stop]
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
