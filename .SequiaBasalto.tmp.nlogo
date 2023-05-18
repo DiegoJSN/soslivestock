@@ -291,7 +291,7 @@ end
 
 to reproduce                                                            ;; this procedure dictates the rules for which each of the reproductive age classes (i.e., heifer, cow, cow-with-calf) can become pregnant, as well as the gestation period of animals
   ask cows [
-    if (heifer? = true) or (cow? = true) or (cow-with-calf? = true) [set pregnancy-rate (1 / (1 + coefA * e ^ (- coefB * live-weight)))]
+    if (heifer? = true) or (cow? = true) or (cow-with-calf? = true) [set pregnancy-rate (1 / (1 + coefA * e ^ (- coefB * live-weight))) ]
     if random-float 1 < pregnancy-rate [set pregnant? true]
     if pregnant? = true [
       set pregnancy-time pregnancy-time + days-per-tick
@@ -1053,7 +1053,7 @@ LIVESTOCK NUMBERS
 MONITOR
 1665
 554
-1945
+1912
 599
 Average LW of adult cows-with-calf (kg/animal)
 mean [live-weight] of cows with [cow-with-calf?]
@@ -1064,7 +1064,7 @@ mean [live-weight] of cows with [cow-with-calf?]
 MONITOR
 1665
 600
-1973
+1913
 645
 Average LWG of adult cows-with-calf (kg/animal)
 mean [live-weight-gain] of cows with [cow-with-calf?]
@@ -1075,7 +1075,7 @@ mean [live-weight-gain] of cows with [cow-with-calf?]
 MONITOR
 1665
 645
-2012
+1913
 690
 BCS of adult cows-with-calf (points)
 (mean [live-weight] of cows with [cow-with-calf?] - 220) / 40
@@ -1084,11 +1084,11 @@ BCS of adult cows-with-calf (points)
 11
 
 MONITOR
-1734
-717
-2075
-762
-NIL
+1665
+691
+1913
+736
+PR of adult cows-with-calf (%)
 mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
 2
 1

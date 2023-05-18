@@ -291,7 +291,7 @@ end
 
 to reproduce                                                            ;; this procedure dictates the rules for which each of the reproductive age classes (i.e., heifer, cow, cow-with-calf) can become pregnant, as well as the gestation period of animals
   ask cows [
-    if (heifer? = true) or (cow? = true) or (cow-with-calf? = true) [set pregnancy-rate (1 / (1 + coefA * e ^ (- coefB * live-weight)))]
+    if (heifer? = true) or (cow? = true) or (cow-with-calf? = true) [set pregnancy-rate (1 / (1 + coefA * e ^ (- coefB * live-weight))) / 368]
     if random-float 1 < pregnancy-rate [set pregnant? true]
     if pregnant? = true [
       set pregnancy-time pregnancy-time + days-per-tick
