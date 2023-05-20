@@ -280,7 +280,7 @@ ask cows [
   ]
 end
 
-to reproduce                                                            ;; this procedure dictates the rules for which each of the reproductive age classes (i.e., heifer, cow, cow-with-calf) can become pregnant, as well as the gestation period of animals
+to reproduce                                                           ;; this procedure dictates the rules for which each of the reproductive age classes (i.e., heifer, cow, cow-with-calf) can become pregnant, as well as the gestation period of animals
   ask cows [
     if (heifer? = true) or (cow? = true) or (cow-with-calf? = true) [set pregnancy-rate (1 / (1 + coefA * e ^ (- coefB * live-weight))) / 368]
     if random-float 1 < pregnancy-rate [set pregnant? true]
@@ -488,11 +488,11 @@ to-report crop-efficiency                                               ;; outpu
 GRAPHICS-WINDOW
 435
 61
-981
-608
+984
+611
 -1
 -1
-41.5
+54.1
 1
 10
 1
