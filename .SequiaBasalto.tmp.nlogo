@@ -1,5 +1,5 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;; ADAPTATION OF SEQUIA-BASALTO MODEL TO NETLOGO ;;;;;;;;;;;;;;;;;
+;;;;;;;;;; REPLICATION OF SEQUIA-BASALTO MODEL TO NETLOGO ;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; The original model was built in CORMAS, for more information about the original model see Dieguez-Cameroni et al. (2012, 2014)
@@ -11,7 +11,7 @@
 globals [
 ;; Climate related global variables
   climacoef                                                             ;; climacoef relates the primary production in a season with the average for that season due to climate variations
-  current-season                                                        ;; define the season in which the simulation begins: 0 = winter, 1 = spring, 2 = summer, 3 = fall
+  current-season                                                        ;; defines the season in which the simulation begins: 0 = winter, 1 = spring, 2 = summer, 3 = fall
   current-season-name                                                   ;; translates the numbers "0, 1, 2, 3" to "winter, spring, summer, fall"
   season-coef                                                           ;; affects the live weight gain of animals in relation with the grass quality according to the season: winter = 1, spring = 1.15, summer = 1.05, fall = 1
 
@@ -23,7 +23,7 @@ globals [
   year-days                                                             ;; variable to keep track of the days that have passed since the start of a year (values from 1 to 368)
 
 ;; Grass related global variables
-  kmax                                                                  ;; maximum carrying capacity (maximum grass height), it varies according to the season: winter= 7.4 cm, spring= 22.2 cm, summer= 15.6 cm, fall= 11.1 cm
+  kmax                                                                  ;; maximum carrying capacity (i.e., maximum grass height), it varies according to the season: winter= 7.4 cm, spring= 22.2 cm, summer= 15.6 cm, fall= 11.1 cm
   DM-cm-ha                                                              ;; variable used to calculate the grass-height consumed from the dry matter consumed: 180 Kg of DM/cm/ha
   grass-energy                                                          ;; metabolizable energy per Kg of dry matter: 1.8 Mcal/Kg of DM
 
@@ -44,9 +44,9 @@ breed [cows cow]
 
 patches-own [
   grass-height                                                          ;; primary production (biomass), expressed in centimeters
-  gh-individual                                                         ;; grass height consumed per cow
+  gh-individual                                                         ;; grass height consumed per cow (in cm)
   r                                                                     ;; growth rate for the grass = 0.02 1/day
-  GH-consumed                                                           ;; grass-height consumed from the total consumption of dry matter
+  GH-consumed                                                           ;; grass-height consumed by all cows
   DM-kg-ha                                                              ;; primary production (biomass), expressed in kg of Dry Matter (DM)
    ]
 
@@ -65,21 +65,21 @@ cows-own [
   min-weight                                                            ;; defines the critical weight which below the animal can die by forage crisis
   live-weight                                                           ;; variable that defines the state of the animals in terms of live weight
   live-weight-gain                                                      ;; defines the increment of weight.
-  live-weight-gain-history-season
+  live-weight-gain-history-season                                       ;; variable to store the live weight gain during 92 days (a season)
   live-weight-gain-historyXticks-season                                 ;; live weight gain since start of season
-  live-weight-gain-history-year
+  live-weight-gain-history-year                                         ;; variable to store the live weight gain during 368 days (a year)
   live-weight-gain-historyXticks-year                                   ;; live weight gain since start of year
   DM-kg-cow                                                             ;; biomass available (not consumed!) for one cow
-  DDMC                                                                  ;; Daily Dry Matter Consumption. Is the biomass consumed by one cow
+  DDMC                                                                  ;; Daily Dry Matter Consumption. Is the biomass consumed by one cow (in kg)
   metabolic-body-size                                                   ;; Metabolic Body Size (MBS) = LW^(3/4)
   mortality-rate                                                        ;; mortality rate can be natural or exceptional
   natural-mortality-rate                                                ;; annual natural mortality = 2%
   except-mort-rate                                                      ;; exceptional mortality rates increases to 15% in cows, 30% in pregnant cows, and 23% in the rest of age classes when animal LW falls below the minimum weight
-  pregnancy-rate                                                        ;; probability that a heifer/cow/cow-with-calf will become pregnant
+  pregnancy-rate                                                        ;; probability for a heifer/cow/cow-with-calf to become pregnant
   coefA                                                                 ;; constant used to calculate the pregnancy rate. Cow= 20000, cow-with-calf= 12000, heifer= 4000.
   coefB                                                                 ;; constant used to calculate the pregnancy rate. Cow= 0.0285, cow-with-calf= 0.0265, heifer= 0.029.
-  pregnancy-time                                                        ;; determines the gestation period of pregnant cows.
-  lactating-time                                                        ;; determines the lactating period of cows with calves.
+  pregnancy-time                                                        ;; variable to keep track of which day of pregnancy the cow is in (from 0 to 276)
+  lactating-time                                                        ;; variable to keep track of which day of the lactation period the cow is in (from 0 to 246)
    ]
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -136,12 +136,11 @@ to setup-livestock
     set initial-weight initial-weight-cows
     set mortality-rate natural-mortality-rate
     set DDMC 0
-    ;set age cow-age-min
     set age random (cow-age-max - cow-age-min) + cow-age-min
     setxy random-pxcor random-pycor
     become-cow ]
 
-    ask cows [
+    ask cows [                                                          ;; setup of the variables used to output the average live weight gained during a season (see report "ILWG_SEASON" and "Average SEASONAL ILWG" monitor) or during a year (see report "ILWG_YEAR" and "Average YEARLY ILWG" monitor)
     set live-weight-gain-history-season []
     set live-weight-gain-historyXticks-season []
     set live-weight-gain-history-year []
@@ -154,7 +153,6 @@ to setup-livestock
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to go
-
   set climacoef set-climacoef                                           ;; the climacoef is set by the observer in the interface
 
   if season-days >= 92 [set number-of-season number-of-season + 1       ;; the season change and duration is determined in this line
@@ -164,18 +162,15 @@ to go
       [set current-season 2]
       [ifelse current-season = 2
         [set current-season 3]
-        [set current-season 0]
-        ]
-    ]
-  ]
+        [set current-season 0]]]]
 
   set simulation-time simulation-time + days-per-tick
 
   set season-days season-days + days-per-tick
-  if season-days >= 93 [set season-days 1]                              ;; this restart important to make sure that the "live-weight-gain-history-season" variable works, which is used in the "ILWG_SEASON" report
+  if season-days >= 93 [set season-days 1]                              ;; this reset is important to make sure that the "live-weight-gain-history-season" variable works, which is used in the "ILWG_SEASON" report
 
   set year-days year-days + days-per-tick
-  if year-days >= 369 [set year-days 1]                                 ;; this restart important to make sure that the "live-weight-gain-history-year" variable works, which is used in the "ILWG_YEAR" report
+  if year-days >= 369 [set year-days 1]                                 ;; this reset is important to make sure that the "live-weight-gain-history-year" variable works, which is used in the "ILWG_YEAR" report
 
   ask cows [                                                            ;; in this line, the average live weight gain of the cows during the season (from day 1 to day 92 and in between) is calculated
     set live-weight-gain-history-season fput live-weight-gain live-weight-gain-history-season
@@ -203,11 +198,7 @@ to go
   tick
 end
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; BIOPHYSICAL SUBMODEL (GRASS AND LIVESTOCK)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-to grow-grass                                                           ;; each patch calculates the height of its grass following a logistic regression. Grass height is affected by season, climacoef (set by the observer in the interface) and consumption of grass by animals (GH consumed is the grass consumed by cows on the previous tick)
+to grow-grass                                                           ;; each patch calculates the height of its grass following a logistic regression. Grass height is affected by season, climacoef (set by the observer in the interface) and consumption of grass by animals (GH-consumed is the grass consumed by cows during the previous day)
   ask patches [
     set grass-height (grass-height + r * grass-height * (1 - grass-height / (item current-season kmax * climacoef))) - GH-consumed
     if grass-height < 0 [set grass-height 0 ]
@@ -222,8 +213,7 @@ end
 
 to move                                                                 ;; once the grass height of each patch is updated, cows move to the patch with fewer cows and the highest grass height
   ask cows [
-    ;let empty-patches patches with [not any? cows-here]
-    ;let empty-patches patches with [not any? cows-here with [cow? or cow-with-calf? or steer? or heifer? or weaned-calf?]]
+    let empty-patches patches with [not any? cows-here with [cow? or cow-with-calf? or steer? or heifer? or weaned-calf?]]
     let target max-one-of empty-patches [grass-height]
     if target != nobody and [grass-height] of target > grass-height [move-to target]
      ]
@@ -250,11 +240,11 @@ ask cows [
     set live-weight live-weight + live-weight-gain
     if live-weight < 0 [set live-weight 0]
 
-    set animal-units live-weight / 380
+    set animal-units live-weight / 380                                  ;; updating the AU of each cow used to calculate the total Stocking Rate (SR) of the system
   ]
 end
 
-to DM-consumption                                                       ;; the DDMC consumed by each cow (in kg) is calculated in this procedure
+to DM-consumption                                                       ;; the DDMC (DM consumed by each cow, in kg) is calculated in this procedure
 ask cows [
   set metabolic-body-size live-weight ^ (3 / 4)
     ifelse born-calf? = true
@@ -278,7 +268,7 @@ ask cows [
   if age = weaned-calf-age-min [become-weaned-calf]
 
   if age = heifer-age-min [
-    ifelse random-float 1 < 0.5
+    ifelse random-float 1 < 0.5                                        ;; cattle determine their sex at the end of the "weaned calf" stage. 50% probability of becoming male (steer) or female (heifer)
       [become-heifer]
       [become-steer]]
 
@@ -298,7 +288,7 @@ to reproduce                                                            ;; this 
       set pregnancy-time pregnancy-time + days-per-tick
       set except-mort-rate 0.3]
 
-    if pregnancy-time = gestation-period [
+    if pregnancy-time = gestation-period [                             ;; when the gestation period ends (276 days), a new agent (born-calf) is introduced into the system.
       hatch-cows 1 [
         setxy random-pxcor random-pycor
         become-born-calf]
@@ -308,7 +298,7 @@ to reproduce                                                            ;; this 
   ]
 end
 
-to update-grass-height                                                  ;; the DDMC of all cows (total DDMC, in kg) in each patch is calculated and converted back to grass height (cm) to calculate the grass height consumed in each patch (GH-consumed)
+to update-grass-height                                                 ;; the DDMC of all cows (total DDMC, in kg) in each patch is calculated and converted back to grass height (cm) to calculate the grass height consumed in each patch (GH-consumed)
 ask patches [
     set GH-consumed 0
     ask cows-here [
@@ -469,7 +459,7 @@ end
   report DM-cm-ha * sum [grass-height] of patches
 end
 
-to-report ALWG                                                          ;; outputs the Annual Live Weight Gain per hectare (kg/year/ha)
+to-report ALWG                                                          ;; outputs the Annual Live Weight Gain per hectare (kg/year/ha) [Disabled in the interface, but can be added by the user using a monitor]
   report (sum [live-weight] of cows - sum [initial-weight] of cows) / count patches
 end
 
@@ -502,7 +492,7 @@ GRAPHICS-WINDOW
 608
 -1
 -1
-53.8
+41.5
 1
 10
 1
@@ -832,10 +822,10 @@ kg
 HORIZONTAL
 
 MONITOR
-1406
-643
-1660
-688
+1405
+696
+1659
+741
 Body Condition Score (BCS) of adult cows (points)
 (mean [live-weight] of cows with [cow?] - 220) / 40
 2
@@ -843,10 +833,10 @@ Body Condition Score (BCS) of adult cows (points)
 11
 
 MONITOR
-1406
-690
-1660
-735
+1405
+743
+1659
+788
 Pregnancy Rate (PR) of adult cows (%)
 mean [pregnancy-rate] of cows with [cow?] * 100
 2
@@ -865,11 +855,11 @@ dmgr
 11
 
 MONITOR
-1172
-508
-1405
-553
-Average LW Gain (LWG) of cattle (kg/animal)
+992
+510
+1306
+555
+Average DAILY Individual LW Gain (ILWG) of cattle (kg/animal)
 mean [live-weight-gain] of cows
 2
 1
@@ -942,7 +932,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-0.0
+10.0
 1
 1
 years
@@ -977,11 +967,11 @@ crop-efficiency
 11
 
 MONITOR
-992
-508
-1171
-553
-Average LW of cattle (kg/animal)
+1405
+562
+1659
+607
+Average Live Weight (LW) of cattle (kg/animal)
 mean [live-weight] of cows
 2
 1
@@ -1010,10 +1000,10 @@ mean [DDMC] of cows
 11
 
 MONITOR
-1406
-554
-1660
-599
+1405
+607
+1659
+652
 Average LW of adult cows (kg/animal)
 mean [live-weight] of cows with [cow?]
 2
@@ -1021,10 +1011,10 @@ mean [live-weight] of cows with [cow?]
 11
 
 MONITOR
-1406
-598
-1660
-643
+1405
+651
+1659
+696
 Average LWG of adult cows (kg/animal)
 mean [live-weight-gain] of cows with [cow?]
 2
@@ -1052,10 +1042,10 @@ LIVESTOCK NUMBERS
 1
 
 MONITOR
-1665
-554
-1912
-599
+1664
+607
+1911
+652
 Average LW of adult cows-with-calf (kg/animal)
 mean [live-weight] of cows with [cow-with-calf?]
 2
@@ -1063,10 +1053,10 @@ mean [live-weight] of cows with [cow-with-calf?]
 11
 
 MONITOR
-1665
-600
-1913
-645
+1664
+653
+1912
+698
 Average LWG of adult cows-with-calf (kg/animal)
 mean [live-weight-gain] of cows with [cow-with-calf?]
 2
@@ -1074,10 +1064,10 @@ mean [live-weight-gain] of cows with [cow-with-calf?]
 11
 
 MONITOR
-1665
-645
-1913
-690
+1664
+698
+1912
+743
 BCS of adult cows-with-calf (points)
 (mean [live-weight] of cows with [cow-with-calf?] - 220) / 40
 2
@@ -1085,10 +1075,10 @@ BCS of adult cows-with-calf (points)
 11
 
 MONITOR
-1665
-691
-1913
-736
+1664
+744
+1912
+789
 PR of adult cows-with-calf (%)
 mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
 2
@@ -1111,6 +1101,28 @@ NIL
 NIL
 NIL
 1
+
+MONITOR
+1306
+510
+1501
+555
+Average SEASONAL ILWG (kg/animal)
+ILWG_SEASON
+2
+1
+11
+
+MONITOR
+1501
+510
+1705
+555
+Average YEARLY ILWG (kg/animal)
+ILWG_YEAR
+2
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -1459,56 +1471,7 @@ NetLogo 6.2.2
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="SA_climacoef" repetitions="10" runMetricsEveryStep="false">
-    <setup>setup</setup>
-    <go>go</go>
-    <metric>count cows</metric>
-    <metric>mean [grass-height] of patches</metric>
-    <metric>mean [live-weight] of cows</metric>
-    <enumeratedValueSet variable="climacoef">
-      <value value="0.5"/>
-      <value value="1"/>
-      <value value="1.5"/>
-    </enumeratedValueSet>
-  </experiment>
-  <experiment name="SA_initial-grass-height" repetitions="10" runMetricsEveryStep="false">
-    <setup>setup</setup>
-    <go>go</go>
-    <metric>count cows</metric>
-    <metric>mean [grass-height] of patches</metric>
-    <metric>mean [live-weight] of cows</metric>
-    <steppedValueSet variable="initial-grass-height" first="3" step="1" last="7"/>
-  </experiment>
-  <experiment name="SA_initial-season" repetitions="10" runMetricsEveryStep="false">
-    <setup>setup</setup>
-    <go>go</go>
-    <metric>count cows</metric>
-    <metric>mean [grass-height] of patches</metric>
-    <metric>mean [live-weight] of cows</metric>
-    <enumeratedValueSet variable="initial-season">
-      <value value="0"/>
-      <value value="1"/>
-      <value value="2"/>
-      <value value="3"/>
-    </enumeratedValueSet>
-  </experiment>
-  <experiment name="SA_initial-num-cows" repetitions="10" runMetricsEveryStep="false">
-    <setup>setup</setup>
-    <go>go</go>
-    <metric>count cows</metric>
-    <metric>mean [grass-height] of patches</metric>
-    <metric>mean [live-weight] of cows</metric>
-    <steppedValueSet variable="initial-num-cows" first="1" step="1" last="14"/>
-  </experiment>
-  <experiment name="SA_perception" repetitions="10" runMetricsEveryStep="false">
-    <setup>setup</setup>
-    <go>go</go>
-    <metric>count cows</metric>
-    <metric>mean [grass-height] of patches</metric>
-    <metric>mean [live-weight] of cows</metric>
-    <steppedValueSet variable="perception" first="0" step="0.1" last="1"/>
-  </experiment>
-  <experiment name="Fig5" repetitions="20" runMetricsEveryStep="false">
+  <experiment name="Fig5_ODD" repetitions="20" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="368"/>
@@ -1555,7 +1518,7 @@ NetLogo 6.2.2
     </enumeratedValueSet>
     <steppedValueSet variable="set-climaCoef" first="0.5" step="0.5" last="1.5"/>
   </experiment>
-  <experiment name="Fig4" repetitions="50" runMetricsEveryStep="false">
+  <experiment name="Fig4_ODD" repetitions="50" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="92"/>
@@ -1614,7 +1577,7 @@ NetLogo 6.2.2
       <value value="1.5"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="Fig2" repetitions="1" runMetricsEveryStep="true">
+  <experiment name="Fig3_ODD" repetitions="1" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="92"/>
@@ -1667,7 +1630,7 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="Fig3" repetitions="1" runMetricsEveryStep="false">
+  <experiment name="Fig3_2" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="92"/>
@@ -1724,7 +1687,7 @@ NetLogo 6.2.2
       <value value="1.5"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="Fig6" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="Fig6_ODD" repetitions="10" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="92"/>
@@ -1778,7 +1741,7 @@ NetLogo 6.2.2
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="Fig8" repetitions="10" runMetricsEveryStep="true">
+  <experiment name="Fig8_ODD" repetitions="10" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="644"/>
