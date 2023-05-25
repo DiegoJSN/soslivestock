@@ -1485,42 +1485,21 @@ NetLogo 6.2.2
     <metric>stocking-rate</metric>
     <metric>ALWG</metric>
     <metric>ILWG_YEAR</metric>
-    <enumeratedValueSet variable="initial-num-heifers">
-      <value value="0"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="set-Y-size">
       <value value="5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="set-X-size">
       <value value="10"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="set-1-AU">
-      <value value="380"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-num-cows">
-      <value value="0"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="set-MW-1-AU">
-      <value value="220"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="perception">
-      <value value="1"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-steers">
-      <value value="300"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-heifers">
-      <value value="200"/>
-    </enumeratedValueSet>
+    <steppedValueSet variable="initial-num-cows" first="0" step="2" last="100"/>
     <enumeratedValueSet variable="initial-grass-height">
       <value value="7"/>
     </enumeratedValueSet>
-    <steppedValueSet variable="initial-num-steers" first="0" step="2" last="100"/>
     <enumeratedValueSet variable="initial-season">
       <value value="0"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-cows">
-      <value value="380"/>
+      <value value="300"/>
     </enumeratedValueSet>
     <steppedValueSet variable="set-climaCoef" first="0.5" step="0.5" last="1.5"/>
   </experiment>
@@ -1533,40 +1512,19 @@ NetLogo 6.2.2
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
     <metric>ILWG_SEASON</metric>
-    <enumeratedValueSet variable="initial-num-heifers">
-      <value value="0"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="set-Y-size">
       <value value="5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="set-X-size">
       <value value="10"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="set-1-AU">
-      <value value="380"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="initial-num-cows">
-      <value value="0"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="set-MW-1-AU">
-      <value value="220"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="perception">
-      <value value="1"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-steers">
-      <value value="300"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-heifers">
-      <value value="200"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-grass-height">
-      <value value="7"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-num-steers">
       <value value="30"/>
       <value value="45"/>
       <value value="60"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-grass-height">
+      <value value="7"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-season">
       <value value="3"/>
@@ -1575,7 +1533,7 @@ NetLogo 6.2.2
       <value value="2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-cows">
-      <value value="380"/>
+      <value value="300"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="set-climaCoef">
       <value value="0.5"/>
@@ -1590,38 +1548,17 @@ NetLogo 6.2.2
     <metric>simulation-time</metric>
     <metric>season-report</metric>
     <metric>dmgr / count patches ;DM/ha</metric>
-    <enumeratedValueSet variable="initial-num-heifers">
-      <value value="0"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="set-Y-size">
       <value value="5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="set-X-size">
       <value value="10"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="set-1-AU">
-      <value value="380"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="initial-num-cows">
       <value value="0"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="set-MW-1-AU">
-      <value value="220"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="perception">
-      <value value="1"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-steers">
-      <value value="300"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-heifers">
-      <value value="200"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="initial-grass-height">
       <value value="3"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-num-steers">
-      <value value="0"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-season">
       <value value="0"/>
@@ -1644,39 +1581,18 @@ NetLogo 6.2.2
     <metric>set-climaCoef</metric>
     <metric>season-report</metric>
     <metric>dmgr / count patches ;DM/ha</metric>
-    <enumeratedValueSet variable="initial-num-heifers">
-      <value value="0"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="set-Y-size">
       <value value="5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="set-X-size">
       <value value="10"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="set-1-AU">
-      <value value="380"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="initial-num-cows">
       <value value="0"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="set-MW-1-AU">
-      <value value="220"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="perception">
-      <value value="1"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-steers">
-      <value value="300"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-heifers">
-      <value value="200"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-grass-height">
       <value value="3"/>
       <value value="7"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-num-steers">
-      <value value="0"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-season">
       <value value="0"/>
@@ -1700,45 +1616,21 @@ NetLogo 6.2.2
     <metric>count cows</metric>
     <metric>stocking-rate</metric>
     <metric>crop-efficiency</metric>
-    <enumeratedValueSet variable="initial-num-heifers">
-      <value value="0"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="set-Y-size">
       <value value="10"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="set-X-size">
       <value value="10"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="set-1-AU">
-      <value value="380"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-num-cows">
-      <value value="0"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="set-MW-1-AU">
-      <value value="220"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="perception">
-      <value value="1"/>
-    </enumeratedValueSet>
+    <steppedValueSet variable="initial-num-cows" first="0" step="2" last="150"/>
     <enumeratedValueSet variable="initial-grass-height">
       <value value="5"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="management-strategy">
-      <value value="&quot;reactive&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="STOP-SIMULATION-AT">
       <value value="0"/>
     </enumeratedValueSet>
-    <steppedValueSet variable="initial-num-steers" first="0" step="2" last="150"/>
-    <enumeratedValueSet variable="initial-weight-steers">
-      <value value="380"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="initial-season">
       <value value="0"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-heifers">
-      <value value="200"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-cows">
       <value value="380"/>
@@ -1754,33 +1646,18 @@ NetLogo 6.2.2
     <metric>grass-height-report</metric>
     <metric>season-report</metric>
     <metric>climacoef</metric>
-    <metric>ILWG ; all cows</metric>
-    <metric>ILWG_ADULTCOWS; ILWG only adult cows (cows and cows-with-calf)</metric>
+    <metric>ILWG</metric>
     <metric>stocking-rate</metric>
-    <metric>stocking-rate_ADULTCOWS ; cows with [cow?] and cows with [cow-with-calf?]</metric>
     <metric>count cows</metric>
-    <metric>count cows with [cow?] + count cows with [cow-with-calf?]</metric>
-    <enumeratedValueSet variable="initial-num-heifers">
-      <value value="0"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="set-Y-size">
       <value value="20"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="set-X-size">
       <value value="25"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="set-1-AU">
-      <value value="380"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="initial-num-cows">
       <value value="300"/>
       <value value="500"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="set-MW-1-AU">
-      <value value="220"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="perception">
-      <value value="1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-grass-height">
       <value value="5"/>
@@ -1788,29 +1665,14 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="climacoef-value?">
       <value value="&quot;historic-climacoef&quot;"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="management-strategy">
-      <value value="&quot;reactive&quot;"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="STOP-SIMULATION-AT">
       <value value="644"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-season">
       <value value="3"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-steers">
-      <value value="380"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-num-steers">
-      <value value="0"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-heifers">
-      <value value="200"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-cows">
       <value value="380"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="set-climaCoef">
-      <value value="1"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
