@@ -187,13 +187,13 @@ to go
   if simulation-time / 368 = STOP-SIMULATION-AT [stop]                  ;; the observer can decide whether the simulation should run indefinitely (STOP-SIMULATION-AT 0 years) or after X years
 
   grow-grass
-  move
   kgDM/cow
   LWG
   DM-consumption
   grow-livestock
   reproduce
   update-grass-height
+  move
 
   tick
 end
@@ -211,15 +211,7 @@ to grow-grass                                                           ;; each 
   ]
 end
 
-to move                                                                 ;; once the grass height of each patch is updated, cows move to the patch with fewer cows and the highest grass height
-  ask cows [
-    let empty-patches patches with [not any? cows-here with [cow? or cow-with-calf? or steer? or heifer? or weaned-calf?]]
-    let target max-one-of empty-patches [grass-height]
-    if target != nobody and [grass-height] of target > grass-height [move-to target]
-     ]
-end
-
-to kgDM/cow                                                             ;; after the cows have moved to a new patch, each cow calculates the amount of Kg of DM it will receive.
+to kgDM/cow                                                             ;; each cow calculates the amount of Kg of DM it will receive.
   ask cows [set DM-kg-cow 0]
 
   ask patches [
@@ -307,6 +299,14 @@ ask patches [
   ]
 end
 
+to move                                                                 ;; once the grass height of each patch is updated, cows move to the patch with fewer cows and the highest grass height
+  ask cows [
+    let empty-patches patches with [not any? cows-here with [cow? or cow-with-calf? or steer? or heifer? or weaned-calf?]]
+    let target max-one-of empty-patches [grass-height]
+    if target != nobody and [grass-height] of target > grass-height [move-to target]
+     ]
+end
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; This section of the code sets up the parameters that define each of the age classes
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -342,7 +342,7 @@ to become-weaned-calf
   set steer? false
   set cow? false
   set cow-with-calf? false
-
+  set pregnant? false
   set color orange
   set animal-units live-weight / 380
   set min-weight 60
@@ -363,6 +363,8 @@ to become-heifer
   set heifer? true
   set steer? false
   set cow? false
+  set cow-with-calf? false
+  set pregnant? false
   set color pink
   set animal-units live-weight / 380
   set min-weight 100
@@ -384,6 +386,7 @@ to become-steer
   set steer? true
   set cow? false
   set cow-with-calf? false
+  set pregnant? false
   set color red
   set animal-units live-weight / 380
   set min-weight 100
@@ -405,6 +408,7 @@ to become-cow
   set steer? false
   set cow? true
   set cow-with-calf? false
+  set pregnant? false
   set color brown
   set animal-units live-weight / 380
   set min-weight 180
@@ -426,6 +430,7 @@ to become-cow-with-calf
   set steer? false
   set cow? false
   set cow-with-calf? true
+  set pregnant? false
   set color magenta
   set animal-units live-weight / 380
   set min-weight 180
