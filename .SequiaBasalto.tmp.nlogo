@@ -342,6 +342,7 @@ to become-weaned-calf
   set steer? false
   set cow? false
   set cow-with-calf? false
+
   set color orange
   set animal-units live-weight / 380
   set min-weight 60
@@ -475,7 +476,7 @@ to-report ILWG_YEAR                                                     ;; outpu
   report mean [live-weight-gain-historyXticks-year] of cows
 end
 
-to-report crop-efficiency                                               ;; outputs the crop eficiency (DM consumed / DM offered)
+to-report crop-efficiency                                               ;; outputs the crop efficiency (DM consumed / DM offered)
   report sum [DDMC] of cows / (DM-cm-ha * mean [grass-height] of patches) * 100
  end
 

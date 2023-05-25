@@ -342,6 +342,7 @@ to become-weaned-calf
   set steer? false
   set cow? false
   set cow-with-calf? false
+  set pregnant? false
   set color orange
   set animal-units live-weight / 380
   set min-weight 60
@@ -362,6 +363,8 @@ to become-heifer
   set heifer? true
   set steer? false
   set cow? false
+  set cow-with-calf? false
+  set pregnant? false
   set color pink
   set animal-units live-weight / 380
   set min-weight 100
@@ -383,6 +386,7 @@ to become-steer
   set steer? true
   set cow? false
   set cow-with-calf? false
+  set pregnant? false
   set color red
   set animal-units live-weight / 380
   set min-weight 100
@@ -404,6 +408,7 @@ to become-cow
   set steer? false
   set cow? true
   set cow-with-calf? false
+  set pregnant? false
   set color brown
   set animal-units live-weight / 380
   set min-weight 180
@@ -425,6 +430,7 @@ to become-cow-with-calf
   set steer? false
   set cow? false
   set cow-with-calf? true
+  set pregnant? false
   set color magenta
   set animal-units live-weight / 380
   set min-weight 180
@@ -475,7 +481,7 @@ to-report ILWG_YEAR                                                     ;; outpu
   report mean [live-weight-gain-historyXticks-year] of cows
 end
 
-to-report crop-efficiency                                               ;; outputs the crop eficiency (DM consumed / DM offered)
+to-report crop-efficiency                                               ;; outputs the crop efficiency (DM consumed / DM offered)
   report sum [DDMC] of cows / (DM-cm-ha * mean [grass-height] of patches) * 100
  end
 
