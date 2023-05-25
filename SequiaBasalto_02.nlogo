@@ -270,13 +270,13 @@ to go
   if simulation-time / 368 = STOP-SIMULATION-AT [stop]                        ;; the observer can decide whether the simulation should run indefinitely (STOP-SIMULATION-AT 0 days) or after X days
 
   grow-grass
-  move
   kgDM/cow
   LWG
   DM-consumption
   grow-livestock
   reproduce
   update-grass-height
+  move
 
   tick
 end
@@ -299,15 +299,7 @@ to grow-grass                                                           ;; each 
   ]
 end
 
-to move                                                                 ;; once the grass height of each patch is updated, cows move to the patch with fewer cows and the highest grass height
-  ask cows [
-    let empty-patches patches with [not any? cows-here with [cow? or cow-with-calf? or steer? or heifer? or weaned-calf?]]
-    let target max-one-of empty-patches [grass-height]
-    if target != nobody and [grass-height] of target > grass-height [move-to target]
-     ]
-end
-
-to kgDM/cow                                                             ;; after the cows have moved to a new patch, each cow calculates the amount of Kg of DM it will receive.
+to kgDM/cow                                                             ;; each cow calculates the amount of Kg of DM it will receive.
   ask cows [set DM-kg-cow 0]
 
   ask patches [
@@ -393,6 +385,14 @@ ask patches [
       let totDDMC sum [DDMC] of cows-here
       set GH-consumed totDDMC / DM-cm-ha]
   ]
+end
+
+to move                                                                 ;; once the grass height of each patch is updated, cows move to the patch with fewer cows and the highest grass height
+  ask cows [
+    let empty-patches patches with [not any? cows-here with [cow? or cow-with-calf? or steer? or heifer? or weaned-calf?]]
+    let target max-one-of empty-patches [grass-height]
+    if target != nobody and [grass-height] of target > grass-height [move-to target]
+     ]
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2399,9 +2399,6 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="initial-grass-height">
       <value value="5"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="management-strategy">
-      <value value="&quot;reactive&quot;"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="STOP-SIMULATION-AT">
       <value value="0"/>
     </enumeratedValueSet>
@@ -2462,9 +2459,6 @@ NetLogo 6.2.2
     </enumeratedValueSet>
     <enumeratedValueSet variable="climacoef-value?">
       <value value="&quot;historic-climacoef&quot;"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="management-strategy">
-      <value value="&quot;reactive&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="STOP-SIMULATION-AT">
       <value value="644"/>

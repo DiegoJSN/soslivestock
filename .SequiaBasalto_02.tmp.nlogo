@@ -270,7 +270,7 @@ to go
   if simulation-time / 368 = STOP-SIMULATION-AT [stop]                        ;; the observer can decide whether the simulation should run indefinitely (STOP-SIMULATION-AT 0 days) or after X days
 
   grow-grass
-  move
+
   kgDM/cow
   LWG
   DM-consumption
@@ -866,16 +866,6 @@ initial-grass-height
 1
 cm
 HORIZONTAL
-
-CHOOSER
-9
-753
-157
-798
-management-strategy
-management-strategy
-"reactive" "proactive"
-0
 
 PLOT
 854
