@@ -301,7 +301,7 @@ end
 
 to move                                                                 ;; once the grass height of each patch is updated, cows move to the patch with fewer cows and the highest grass height
   ask cows [
-
+    let empty-patches patches with [not any? cows-here with [cow? or cow-with-calf? or steer? or heifer? or weaned-calf?]]
     let target max-one-of empty-patches [grass-height]
     if target != nobody and [grass-height] of target > grass-height [move-to target]
      ]
@@ -411,13 +411,8 @@ to become-born-calf
   set age 0
   set initial-weight 40
   set live-weight initial-weight
-  ;set animal-units 0.2
-  set animal-units live-weight / set-1-AU
-  ;set min-weight 0
-  ;set min-weight 220                                                          ;; ####################################################################################################
-  ;set min-weight set-MW-1-AU * 0.2
+  set animal-units live-weight / 380
   set size 0.3
-  ;set size animal-units
   set natural-mortality-rate 0.000054
   set except-mort-rate 0
   set category-coef 1
@@ -435,14 +430,11 @@ to become-weaned-calf
   set steer? false
   set cow? false
   set cow-with-calf? false
+  set pregnant? false
   set color orange
-  ;set animal-units 0.5
-  set animal-units live-weight / set-1-AU
+  set animal-units live-weight / 380
   set min-weight 60
-  ;set min-weight 220                                                          ;; ####################################################################################################
-  ;set min-weight set-MW-1-AU * 0.5
   set size 0.5
-  ;set size animal-units
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.23
   set category-coef 1
@@ -459,14 +451,12 @@ to become-heifer
   set heifer? true
   set steer? false
   set cow? false
+  set cow-with-calf? false
+  set pregnant? false
   set color pink
-  ;set animal-units 0.7
-  set animal-units live-weight / set-1-AU
+  set animal-units live-weight / 380
   set min-weight 100
-  ;set min-weight 220                                                          ;; ####################################################################################################
-  ;set min-weight set-MW-1-AU * 0.7
   set size 0.7
-  ;set size animal-units
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.23
   set category-coef 1
@@ -484,14 +474,11 @@ to become-steer
   set steer? true
   set cow? false
   set cow-with-calf? false
+  set pregnant? false
   set color red
-  ;set animal-units 0.7
-  set animal-units live-weight / set-1-AU
+  set animal-units live-weight / 380
   set min-weight 100
-  ;set min-weight 220                                                          ;; ####################################################################################################
-  ;set min-weight set-MW-1-AU * 0.7
   set size 0.7
-  ;set size animal-units
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.23
   set category-coef 1
@@ -509,14 +496,11 @@ to become-cow
   set steer? false
   set cow? true
   set cow-with-calf? false
+  set pregnant? false
   set color brown
-  ;set animal-units 1
-  set animal-units live-weight / set-1-AU
+  set animal-units live-weight / 380
   set min-weight 180
-  ;set min-weight 220                                                          ;; ####################################################################################################
-  ;set min-weight set-MW-1-AU
   set size 1
-  ;set size animal-units
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.15
   set category-coef 1
@@ -534,14 +518,11 @@ to become-cow-with-calf
   set steer? false
   set cow? false
   set cow-with-calf? true
+  set pregnant? false
   set color magenta
-  ;set animal-units 1
-  set animal-units live-weight / set-1-AU
+  set animal-units live-weight / 380
   set min-weight 180
-  ;set min-weight 220                                                          ;; ####################################################################################################
-  ;set min-weight set-MW-1-AU
   set size 1.1
-  ;set size animal-units
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.3
   set category-coef 1.1
@@ -619,7 +600,7 @@ to-report ILWG_YEAR                                                     ;; outpu
   report mean [live-weight-gain-historyXticks-year] of cows
 end
 
-to-report crop-efficiency                                               ;; outputs the crop eficiency (DM consumed / DM offered)
+to-report crop-efficiency                                               ;; outputs the crop efficiency (DM consumed / DM offered)
   report sum [DDMC] of cows / (DM-cm-ha * mean [grass-height] of patches) * 100
 
   ;report sum [DDMC] of cows / (DM-cm-ha * sum [grass-height] of patches) * 100
@@ -725,7 +706,7 @@ initial-num-cows
 initial-num-cows
 0
 1000
-30.0
+50.0
 1
 1
 cows
@@ -880,7 +861,7 @@ initial-grass-height
 initial-grass-height
 1
 22.2
-7.0
+7.4
 0.1
 1
 cm
@@ -945,7 +926,7 @@ set-climaCoef
 set-climaCoef
 0.1
 1.5
-1.5
+1.0
 0.1
 1
 NIL
