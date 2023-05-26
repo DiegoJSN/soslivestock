@@ -571,7 +571,7 @@ initial-num-cows
 initial-num-cows
 0
 1000
-50.0
+0.0
 1
 1
 cows
@@ -700,7 +700,7 @@ initial-grass-height
 initial-grass-height
 1
 22.2
-7.4
+5.0
 0.1
 1
 cm
@@ -1149,22 +1149,22 @@ initial-num-steers
 initial-num-steers
 0
 1000
-0.0
+22.0
 1
 1
 steers
 HORIZONTAL
 
 SLIDER
-208
-313
-365
-346
+210
+311
+367
+344
 initial-weight-steers
 initial-weight-steers
 100
 1500
-300.0
+380.0
 1
 1
 kg
@@ -1531,15 +1531,21 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="set-X-size">
       <value value="10"/>
     </enumeratedValueSet>
-    <steppedValueSet variable="initial-num-cows" first="0" step="2" last="100"/>
+    <enumeratedValueSet variable="initial-num-cows">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-steers">
+      <value value="300"/>
+    </enumeratedValueSet>
     <enumeratedValueSet variable="initial-grass-height">
       <value value="7"/>
     </enumeratedValueSet>
+    <steppedValueSet variable="initial-num-steers" first="0" step="2" last="100"/>
     <enumeratedValueSet variable="initial-season">
       <value value="0"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-cows">
-      <value value="300"/>
+      <value value="380"/>
     </enumeratedValueSet>
     <steppedValueSet variable="set-climaCoef" first="0.5" step="0.5" last="1.5"/>
   </experiment>
@@ -1559,12 +1565,18 @@ NetLogo 6.2.2
       <value value="10"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-num-cows">
-      <value value="30"/>
-      <value value="45"/>
-      <value value="60"/>
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-steers">
+      <value value="300"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-grass-height">
       <value value="7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-steers">
+      <value value="30"/>
+      <value value="45"/>
+      <value value="60"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-season">
       <value value="3"/>
@@ -1573,7 +1585,7 @@ NetLogo 6.2.2
       <value value="2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-cows">
-      <value value="300"/>
+      <value value="380"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="set-climaCoef">
       <value value="0.5"/>
@@ -1597,8 +1609,14 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="initial-num-cows">
       <value value="0"/>
     </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-steers">
+      <value value="300"/>
+    </enumeratedValueSet>
     <enumeratedValueSet variable="initial-grass-height">
       <value value="3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-steers">
+      <value value="0"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-season">
       <value value="0"/>
@@ -1607,46 +1625,10 @@ NetLogo 6.2.2
       <value value="3"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-cows">
-      <value value="340"/>
+      <value value="380"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="set-climaCoef">
       <value value="1"/>
-    </enumeratedValueSet>
-  </experiment>
-  <experiment name="Fig3_2" repetitions="1" runMetricsEveryStep="false">
-    <setup>setup</setup>
-    <go>go</go>
-    <timeLimit steps="92"/>
-    <metric>initial-grass-height</metric>
-    <metric>set-climaCoef</metric>
-    <metric>season-report</metric>
-    <metric>dmgr / count patches ;DM/ha</metric>
-    <enumeratedValueSet variable="set-Y-size">
-      <value value="5"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="set-X-size">
-      <value value="10"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-num-cows">
-      <value value="0"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-grass-height">
-      <value value="3"/>
-      <value value="7"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-season">
-      <value value="0"/>
-      <value value="1"/>
-      <value value="2"/>
-      <value value="3"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-weight-cows">
-      <value value="340"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="set-climaCoef">
-      <value value="0.5"/>
-      <value value="1"/>
-      <value value="1.5"/>
     </enumeratedValueSet>
   </experiment>
   <experiment name="Fig6_ODD" repetitions="10" runMetricsEveryStep="false">
@@ -1662,12 +1644,15 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="set-X-size">
       <value value="10"/>
     </enumeratedValueSet>
-    <steppedValueSet variable="initial-num-cows" first="0" step="2" last="150"/>
+    <enumeratedValueSet variable="initial-num-cows">
+      <value value="0"/>
+    </enumeratedValueSet>
     <enumeratedValueSet variable="initial-grass-height">
       <value value="5"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="STOP-SIMULATION-AT">
-      <value value="0"/>
+    <steppedValueSet variable="initial-num-steers" first="0" step="2" last="150"/>
+    <enumeratedValueSet variable="initial-weight-steers">
+      <value value="380"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-season">
       <value value="0"/>
@@ -1705,14 +1690,20 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="climacoef-value?">
       <value value="&quot;historic-climacoef&quot;"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="STOP-SIMULATION-AT">
-      <value value="644"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="initial-season">
       <value value="3"/>
     </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-steers">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-steers">
+      <value value="0"/>
+    </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-cows">
       <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-climaCoef">
+      <value value="1"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
