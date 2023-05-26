@@ -1133,39 +1133,39 @@ ILWG_YEAR
 @#$#@#$#@
 ## WHAT IS IT?
 
-(a general understanding of what the model is trying to show or explain)
+This is a replication of the SequiaBasalto model, originally built in Cormas by Dieguez Cameroni et al. (2012, 2014, Bommel et al. 2014 and Morales et al. 2015). The model aimed to test various adaptations of livestock producers to the drought phenomenon provoked by climate change. For that purpose, it simulates the behavior of one livestock farm in the Basaltic Region of Uruguay. The model incorporates the price of livestock, fodder and paddocks, as well as the growth of grass as a function of climate and seasons (environmental submodel), the life cycle of animals feeding on the pasture (livestock submodel), and the different strategies used by farmers to manage their livestock (management submodel). The purpose of the model is to analyze to what degree the common management practices used by farmers (i.e., proactive and reactive) to cope with seasonal and interannual climate variations allow to maintain a sustainable livestock production without depleting the natural resources (i.e., pasture). 
+
+Here, we replicate the environmental and livestock submodel using NetLogo.
 
 ## HOW IT WORKS
 
-(what rules the agents use to create the overall behavior of the model)
+One year is 368 days. Seasons change every 92 days. Each day begins with the growth of grass as a function of climate and season. This is followed by updating the live weight of cows according to the grass height of their patch, and grass consumption, which is determined based on the updated live weight. After consumption, cows grow and reproduce, and a new grass height is calculated. Cows then move to the patch with less cows and with the highest grass height. This updated grass height value will be the initial grass height for the next day.
 
 ## HOW TO USE IT
 
-(how to use the model, including a description of each of the items in the Interface tab)
+Users can use the sliders at the interface to determine: 1) the size of the grazing area (from 1 to 10000 ha); 2) the initial GH (from 1 to 22.2 cm); 3) the initial season (0 = Winter, 1 = Spring, 2 = Summer, and 3 = Fall); 4) the climate coefficient (1.5 = “high production”, 1 = “normal production”, 0.5 = “low production”); 5) the initial number of cows (from 0 to 1000); and 6) the initial LW of cows (from 100 to 1500 kg).
 
-## THINGS TO NOTICE
+## THINGS TO TRY AND NOTICE
 
-(suggested things for the user to notice while running the model)
+- Changing the initial grass height: the initial grass height at the beginning of the season affects the dry matter (DM) production at the end of the season.
 
-## THINGS TO TRY
+- Changing the initial number of cows and their weights: for the same grazing area, the stocking rate (SR) depends on the number of animals and their weight. For example, in a 100 ha area, 50 animals weighing 380 kg correspond to a SR of 0.5 AU/ha, but 100 animals weighing 190 kg also correspond to a SR of 0.5 AU/ha.
 
-(suggested things for the user to try to do (move sliders, switches, etc.) with the model)
+- Change the climate coefficient (climacoef): an increase in climacoef increases the amount of resource and therefore the number and live weight of cows and the SR, and vice versa.
 
-## EXTENDING THE MODEL
+- Once the system is in equilibrium, the same SR is always achieved for the same climacoef, regardless of the size of the grazing area.
 
-(suggested things to add or change in the Code tab to make the model more complicated, detailed, accurate, etc.)
-
-## NETLOGO FEATURES
-
-(interesting or unusual features of NetLogo that the model uses, particularly in the Code tab; or where workarounds were needed for missing features)
-
-## RELATED MODELS
-
-(models in the NetLogo Models Library and elsewhere which are of related interest)
+- Pregnancy Rate (PR) increases/decreases with Live Weight (LW)
 
 ## CREDITS AND REFERENCES
 
-(a reference to the model's URL on the web if it has one, as well as any other necessary credits, citations, and links)
+Dieguez Cameroni, F.J., Terra, R., Tabarez, S., Bommel, P., Corral, J., Bartaburu, D., Pereira, M., Montes, E., Duarte, E., Morales Grosskopf, H., 2014. Virtual experiments using a participatory model to explore interactions between climatic variability and management decisions in extensive systems in the basaltic region of Uruguay. Agricultural Systems. 130, 89– 104. http://dx.doi.org/10.1016/j.agsy.2014.07.002
+
+Dieguez Cameroni, F.J., Bommel, P., Corral, J., Bartaburu, D., Pereira, M., Montes, E., Duarte, E., Morales Grosskopf, H., 2012. Modelización de una explotación ganadera extensiva criadora en basalto. Agrociencia Uruguay. 16(2), 120-130.
+
+Bommel, P., Dieguez Cameroni, F.J., Bartaburu, D., Duarte, E., Montes, E., Pereira, M., Corral, J., Lucena, C., Morales, H., 2014. A Further Step Towards Participatory Modelling. Fostering Stakeholder Involvement in Designing Models by Using Executable UML. Journal of Artificial Societies and Social Simulation 17 (1) 6. http://jasss.soc.surrey.ac.uk/17/1/6.html
+
+Morales Grosskopf, H., Tourrand, J. F., Bartaburu, D., Dieguez Cameroni, F.J., Bommel, P., Corral, J., Montes, E., Pereira, M., Duarte, E., De Hegedus, P., 2015. Use of simulations to enhance knowledge integration and livestock producers’ adaptation to variability in the climate in northern Uruguay. The Rangeland Journal, 37(4), 425-432. https://doi.org/10.1071/RJ14063
 @#$#@#$#@
 default
 true
