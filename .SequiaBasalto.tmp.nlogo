@@ -140,6 +140,16 @@ to setup-livestock
     setxy random-pxcor random-pycor
     become-cow ]
 
+  create-cows initial-num-steers [
+    set shape "cow"
+    set live-weight initial-weight-steers                               ;; the initial weight is set by the observer in the interface
+    set initial-weight initial-weight-steers
+    set mortality-rate natural-mortality-rate
+    set DDMC 0
+    set age random (cow-age-max - heifer-age-min) + heifer-age-min
+    setxy random-pxcor random-pycor
+    become-steer ]
+
     ask cows [                                                          ;; setup of the variables used to output the average live weight gained during a season (see report "ILWG_SEASON" and "Average SEASONAL ILWG" monitor) or during a year (see report "ILWG_YEAR" and "Average YEARLY ILWG" monitor)
     set live-weight-gain-history-season []
     set live-weight-gain-historyXticks-season []
@@ -1130,6 +1140,36 @@ ILWG_YEAR
 1
 11
 
+SLIDER
+210
+276
+367
+309
+initial-num-steers
+initial-num-steers
+0
+1000
+0.0
+1
+1
+steers
+HORIZONTAL
+
+SLIDER
+208
+313
+365
+346
+initial-weight-steers
+initial-weight-steers
+100
+1500
+300.0
+1
+1
+kg
+HORIZONTAL
+
 @#$#@#$#@
 ## WHAT IS IT?
 
@@ -1145,13 +1185,17 @@ One year is 368 days. Seasons change every 92 days. Each day begins with the gro
 
 Users can use the sliders at the interface to determine: 1) the size of the grazing area (from 1 to 10000 ha); 2) the initial GH (from 1 to 22.2 cm); 3) the initial season (0 = Winter, 1 = Spring, 2 = Summer, and 3 = Fall); 4) the climate coefficient (1.5 = “high production”, 1 = “normal production”, 0.5 = “low production”); 5) the initial number of cows (from 0 to 1000); and 6) the initial LW of cows (from 100 to 1500 kg).
 
-## THINGS TO NOTICE
+## THINGS TO TRY AND NOTICE
 
-(suggested things for the user to notice while running the model)
+- Changing the initial grass height: the initial grass height at the beginning of the season affects the dry matter (DM) production at the end of the season.
 
-## THINGS TO TRY
+- Changing the initial number of cows and their weights: for the same grazing area, the stocking rate (SR) depends on the number of animals and their weight. For example, in a 100 ha area, 50 animals weighing 380 kg correspond to a SR of 0.5 AU/ha, but 100 animals weighing 190 kg also correspond to a SR of 0.5 AU/ha.
 
+- Change the climate coefficient (climacoef): an increase in climacoef increases the amount of resource and therefore the number and live weight of cows and the SR, and vice versa.
 
+- Once the system is in equilibrium, the same SR is always achieved for the same climacoef, regardless of the size of the grazing area.
+
+- Pregnancy Rate (PR) increases/decreases with Live Weight (LW)
 
 ## CREDITS AND REFERENCES
 

@@ -140,6 +140,16 @@ to setup-livestock
     setxy random-pxcor random-pycor
     become-cow ]
 
+  create-cows initial-num-steers [
+    set shape "cow"
+    set live-weight initial-weight-steers                               ;; the initial weight is set by the observer in the interface
+    set initial-weight initial-weight-steers
+    set mortality-rate natural-mortality-rate
+    set DDMC 0
+    set age random (cow-age-max - heifer-age-min) + heifer-age-min
+    setxy random-pxcor random-pycor
+    become-steer ]
+
     ask cows [                                                          ;; setup of the variables used to output the average live weight gained during a season (see report "ILWG_SEASON" and "Average SEASONAL ILWG" monitor) or during a year (see report "ILWG_YEAR" and "Average YEARLY ILWG" monitor)
     set live-weight-gain-history-season []
     set live-weight-gain-historyXticks-season []
@@ -1129,6 +1139,36 @@ ILWG_YEAR
 2
 1
 11
+
+SLIDER
+210
+276
+367
+309
+initial-num-steers
+initial-num-steers
+0
+1000
+0.0
+1
+1
+steers
+HORIZONTAL
+
+SLIDER
+210
+311
+367
+344
+initial-weight-steers
+initial-weight-steers
+100
+1500
+300.0
+1
+1
+kg
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
