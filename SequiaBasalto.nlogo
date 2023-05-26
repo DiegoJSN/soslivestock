@@ -1183,7 +1183,7 @@ One year is 368 days. Seasons change every 92 days. Each day begins with the gro
 
 ## HOW TO USE IT
 
-Users can use the sliders at the interface to determine: 1) the size of the grazing area (from 1 to 10000 ha); 2) the initial GH (from 1 to 22.2 cm); 3) the initial season (0 = Winter, 1 = Spring, 2 = Summer, and 3 = Fall); 4) the climate coefficient (1.5 = “high production”, 1 = “normal production”, 0.5 = “low production”); 5) the initial number of cows (from 0 to 1000); and 6) the initial LW of cows (from 100 to 1500 kg).
+Users can use the sliders at the interface to determine: 1) the size of the grazing area (from 1 to 10000 ha); 2) the initial GH (from 1 to 22.2 cm); 3) the initial season (0 = Winter, 1 = Spring, 2 = Summer, and 3 = Fall); 4) the climate coefficient (1.5 = “high production”, 1 = “normal production”, 0.5 = “low production”); 5) the initial number of cows (from 0 to 1000); 6) the initial LW of cows (from 100 to 1500 kg); 7) the initial number of steers (from 0 to 1000); and 8) the initial LW of steers (from 100 to 1500 kg).
 
 ## THINGS TO TRY AND NOTICE
 
