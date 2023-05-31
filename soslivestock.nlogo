@@ -51,32 +51,32 @@ globals [
   weight-gain-lactation                                                             ;; affects the live weight gain of lactating animals (i.e., “born-calf” age class): 0.61 Kg/day
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Market prices & economic balance global variables                                ;; NEW ########################################################################################################################
+;; Market prices & economic balance global variables
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  supplement-prices                                                                 ;; NEW ########################################################################################################################;; costs for feeding the animals with food supplements (grains, USD/head/season).
-  born-calf-prices                                                                  ;; NEW ########################################################################################################################;; market prices per kg for born calves (USD/Kg).
-  weaned-calf-prices                                                                ;; NEW ########################################################################################################################;; market prices per kg for weaned calves (USD/Kg).
-  steer-prices                                                                      ;; NEW ########################################################################################################################;; market prices per kg for steers (USD/Kg).
-  heifer-prices                                                                     ;; NEW ########################################################################################################################;; market prices per kg for empty heifers (USD/Kg).
-  cow-prices                                                                        ;; NEW ########################################################################################################################;; market prices per kg for empty cows (USD/Kg).
-  cow-with-calf-prices                                                              ;; NEW ########################################################################################################################;; market prices per kg for lactating cows (USD/Kg).
-  pregnant-prices                                                                   ;; NEW ########################################################################################################################;; market prices per kg for pregnant cows (USD/Kg).
+  supplement-prices                                                                 ;; costs for feeding the animals with food supplements (grains, USD/head/season).
+  born-calf-prices                                                                  ;; market prices per kg for born calves (USD/Kg).
+  weaned-calf-prices                                                                ;; market prices per kg for weaned calves (USD/Kg).
+  steer-prices                                                                      ;; market prices per kg for steers (USD/Kg).
+  heifer-prices                                                                     ;; market prices per kg for empty heifers (USD/Kg).
+  cow-prices                                                                        ;; market prices per kg for empty cows (USD/Kg).
+  cow-with-calf-prices                                                              ;; market prices per kg for lactating cows (USD/Kg).
+  pregnant-prices                                                                   ;; market prices per kg for pregnant cows (USD/Kg).
 
-  OS-males-weaned-calf                                                              ;; NEW ########################################################################################################################;; income from the sale of male weaned calves during ordinary sales.
-  OS-males-steer                                                                    ;; NEW ########################################################################################################################;; income from the sale of steers during ordinary sales.
-  OS-empty-old-cow                                                                  ;; NEW ########################################################################################################################;; income from the sale of empty old cows during ordinary sales.
-  OS-EN-empty-old-cow                                                               ;; NEW ########################################################################################################################;; income from the sale of empty old cows during ordinary sales for the environmental-oriented farmer when the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
-  OS-empty-heiferLW                                                                 ;; NEW ########################################################################################################################;; income from the sale of empty heifers during ordinary sales.
-  OS-EN-empty-heiferLW                                                              ;; NEW ########################################################################################################################;; income from the sale of empty heifers during ordinary sales for the environmental-oriented farmer when the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
-  OS-empty-cowLW                                                                    ;; NEW ########################################################################################################################;; income from the sale of empty cows during ordinary sales.
-  OS-EN-empty-cowLW                                                                 ;; NEW ########################################################################################################################;; income from the sale of empty cows during ordinary sales for the environmental-oriented farmer when the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
+  OS-males-weaned-calf                                                              ;; income from the sale of male weaned calves during ordinary sales.
+  OS-males-steer                                                                    ;; income from the sale of steers during ordinary sales.
+  OS-empty-old-cow                                                                  ;; income from the sale of empty old cows during ordinary sales.
+  OS-EN-empty-old-cow                                                               ;; income from the sale of empty old cows during ordinary sales for the environmental-oriented farmer when the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
+  OS-empty-heiferLW                                                                 ;; income from the sale of empty heifers during ordinary sales.
+  OS-EN-empty-heiferLW                                                              ;; income from the sale of empty heifers during ordinary sales for the environmental-oriented farmer when the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
+  OS-empty-cowLW                                                                    ;; income from the sale of empty cows during ordinary sales.
+  OS-EN-empty-cowLW                                                                 ;; income from the sale of empty cows during ordinary sales for the environmental-oriented farmer when the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
 
-  ordinary-sales-income                                                             ;; NEW ########################################################################################################################;; total income from ordinary sales
-  extraordinary-sales-income                                                        ;; NEW ########################################################################################################################;; total income from extraordinary sales
+  ordinary-sales-income                                                             ;; total income from ordinary sales
+  extraordinary-sales-income                                                        ;; total income from extraordinary sales
 
-  cost                                                                              ;; NEW ########################################################################################################################;; regular costs resulting from the various management activities.
-  income                                                                            ;; NEW ########################################################################################################################;; total income (ordinary + extraordinary sales)
-  balance                                                                           ;; NEW ########################################################################################################################;; balance (income - cost)
+  cost                                                                              ;; regular costs resulting from the various management activities.
+  income                                                                            ;; total income (ordinary + extraordinary sales)
+  balance                                                                           ;; balance (income - cost)
 ]
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -135,9 +135,9 @@ cows-own [
   pregnancy-time                                                                    ;; variable to keep track of which day of pregnancy the cow is in (from 0 to 276)
   lactating-time                                                                    ;; variable to keep track of which day of the lactation period the cow is in (from 0 to 246)
 
-  price                                                                             ;; NEW ########################################################################################################################;; market prices per kg for one animal (USD/kg)
-  sale?                                                                             ;; NEW ########################################################################################################################;; boolean variable that determines whether the animal is selected for sale (and subsequently removed from the system)
-  value                                                                             ;; NEW ########################################################################################################################;; live weight price for one animal (market prices per kg * live weight of the animal) (USD)
+  price                                                                             ;; market prices per kg for one animal (USD/kg)
+  sale?                                                                             ;; boolean variable that determines whether the animal is selected for sale (and subsequently removed from the system)
+  value                                                                             ;; live weight price for one animal (market prices per kg * live weight of the animal) (USD)
 ]
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -198,18 +198,18 @@ to setup-globals
   set current-season initial-season                                                 ;; the initial season is set by the observer in the interface
   set historic-climacoef [0.48 0.3 0.72 0.12 0.71 0.65 1.1]                         ;; historic climacoef values. One value = 1 season (for example, 7 values = 7 seasons, the simulation will stop after season 7). Replace these values with historical values. For the model to use "historic-climacoef" values, the observer must select the "historic-climacoef" option within the "climacoef-distribution" chooser in the interface.
 
-  set supplement-prices [0.113 0.121 0.123 0.115]                                   ;; NEW ########################################################################################################################
-  set born-calf-prices [0.94 1 0.97 0.961]                                          ;; NEW ########################################################################################################################
-  set weaned-calf-prices [0.98 1.02 1 0.982]                                        ;; NEW ########################################################################################################################
-  set steer-prices [0.856 0.917 0.881 0.873]                                        ;; NEW ########################################################################################################################
-  set heifer-prices [0.701 0.733 0.727 0.696]                                       ;; NEW ########################################################################################################################
-  set cow-prices [0.561 0.611 0.573 0.581]                                          ;; NEW ########################################################################################################################
-  set pregnant-prices [0.561 0.611 0.573 0.581]                                     ;; NEW ########################################################################################################################
-  set cow-with-calf-prices [0.61 0.664 0.665 0.617]                                 ;; NEW ########################################################################################################################
+  set supplement-prices [0.113 0.121 0.123 0.115]
+  set born-calf-prices [0.94 1 0.97 0.961]
+  set weaned-calf-prices [0.98 1.02 1 0.982]
+  set steer-prices [0.856 0.917 0.881 0.873]
+  set heifer-prices [0.701 0.733 0.727 0.696]
+  set cow-prices [0.561 0.611 0.573 0.581]
+  set pregnant-prices [0.561 0.611 0.573 0.581]
+  set cow-with-calf-prices [0.61 0.664 0.665 0.617]
 
-  set cost 0                                                                        ;; NEW ########################################################################################################################
-  set income 0                                                                      ;; NEW ########################################################################################################################
-  set balance 0                                                                     ;; NEW ########################################################################################################################
+  set cost 0
+  set income 0
+  set balance 0
 
 
 end
@@ -301,8 +301,8 @@ to become-born-calf-female
   set heifer? false
   set steer? false
   set cow? false
-  set cow-with-calf? false                                                                                      ;; NEW #####################################################################################################################
-  set pregnant? false                                                                                           ;; NEW #####################################################################################################################
+  set cow-with-calf? false
+  set pregnant? false
   set color cyan
   set age 0
   set initial-weight 40
@@ -318,9 +318,9 @@ to become-born-calf-female
   set pregnancy-time 0
   set lactating-time 0
 
-  set price item current-season born-calf-prices                                                                ;; NEW ########################################################################################################################
-  set sale? false                                                                                               ;; NEW ########################################################################################################################
-  set value price * live-weight                                                                                 ;; NEW ########################################################################################################################
+  set price item current-season born-calf-prices
+  set sale? false
+  set value price * live-weight
 end
 
 to become-born-calf-male
@@ -333,8 +333,8 @@ to become-born-calf-male
   set heifer? false
   set steer? false
   set cow? false
-  set cow-with-calf? false                                                                                      ;; NEW #####################################################################################################################
-  set pregnant? false                                                                                           ;; NEW #####################################################################################################################
+  set cow-with-calf? false
+  set pregnant? false
   set color sky
   set age 0
   set initial-weight 40
@@ -350,9 +350,9 @@ to become-born-calf-male
   set pregnancy-time 0
   set lactating-time 0
 
-  set price item current-season born-calf-prices                                                                ;; NEW ########################################################################################################################
-  set sale? false                                                                                               ;; NEW ########################################################################################################################
-  set value price * live-weight                                                                                 ;; NEW ########################################################################################################################
+  set price item current-season born-calf-prices
+  set sale? false
+  set value price * live-weight
 end
 
 to become-weaned-calf-female
@@ -365,8 +365,8 @@ to become-weaned-calf-female
   set heifer? false
   set steer? false
   set cow? false
-  set cow-with-calf? false                                                                                      ;; NEW #####################################################################################################################
-  set pregnant? false                                                                                           ;; NEW #####################################################################################################################
+  set cow-with-calf? false
+  set pregnant? false
   set color yellow - 2
   set animal-units live-weight / set-1-AU
   set min-weight 60
@@ -380,9 +380,9 @@ to become-weaned-calf-female
   set pregnancy-time 0
   set lactating-time 0
 
-  set price item current-season weaned-calf-prices                                                              ;; NEW ########################################################################################################################
-  set sale? false                                                                                               ;; NEW ########################################################################################################################
-  set value price * live-weight                                                                                 ;; NEW ########################################################################################################################
+  set price item current-season weaned-calf-prices
+  set sale? false
+  set value price * live-weight
 end
 
 to become-weaned-calf-male
@@ -395,8 +395,8 @@ to become-weaned-calf-male
   set heifer? false
   set steer? false
   set cow? false
-  set cow-with-calf? false                                                                                      ;; NEW #####################################################################################################################
-  set pregnant? false                                                                                           ;; NEW #####################################################################################################################
+  set cow-with-calf? false
+  set pregnant? false
   set color orange
   set animal-units live-weight / set-1-AU
   set min-weight 60
@@ -410,9 +410,9 @@ to become-weaned-calf-male
   set pregnancy-time 0
   set lactating-time 0
 
-  set price item current-season weaned-calf-prices                                                              ;; NEW ########################################################################################################################
-  set sale? false                                                                                               ;; NEW ########################################################################################################################
-  set value price * live-weight                                                                                 ;; NEW ########################################################################################################################
+  set price item current-season weaned-calf-prices
+  set sale? false
+  set value price * live-weight
 end
 
 to become-heifer
@@ -425,8 +425,8 @@ to become-heifer
   set heifer? true
   set steer? false
   set cow? false
-  set cow-with-calf? false                                                                                      ;; NEW #####################################################################################################################
-  set pregnant? false                                                                                           ;; NEW #####################################################################################################################
+  set cow-with-calf? false
+  set pregnant? false
   set color pink
   set animal-units live-weight / set-1-AU
   set min-weight 100
@@ -440,9 +440,9 @@ to become-heifer
   set pregnancy-time 0
   set lactating-time 0
 
-  ifelse pregnant? = true [set price item current-season pregnant-prices] [set price item current-season heifer-prices]      ;; NEW ########################################################################################################################
-  set sale? false                                                                                                            ;; NEW ########################################################################################################################
-  set value price * live-weight                                                                                              ;; NEW ########################################################################################################################
+  ifelse pregnant? = true [set price item current-season pregnant-prices] [set price item current-season heifer-prices]
+  set sale? false
+  set value price * live-weight
 end
 
 to become-steer
@@ -455,8 +455,8 @@ to become-steer
   set heifer? false
   set steer? true
   set cow? false
-  set cow-with-calf? false                                                                                      ;; NEW #####################################################################################################################
-  set pregnant? false                                                                                           ;; NEW #####################################################################################################################
+  set cow-with-calf? false
+  set pregnant? false
   set color red
   set animal-units live-weight / set-1-AU
   set min-weight 100
@@ -470,9 +470,9 @@ to become-steer
   set pregnancy-time 0
   set lactating-time 0
 
-  set price item current-season steer-prices                                                                    ;; NEW ########################################################################################################################
-  set sale? false                                                                                               ;; NEW ########################################################################################################################
-  set value price * live-weight                                                                                 ;; NEW ########################################################################################################################
+  set price item current-season steer-prices
+  set sale? false
+  set value price * live-weight
 end
 
 to become-cow
@@ -485,8 +485,8 @@ to become-cow
   set heifer? false
   set steer? false
   set cow? true
-  set cow-with-calf? false                                                                                      ;; NEW #####################################################################################################################
-  set pregnant? false                                                                                           ;; NEW #####################################################################################################################
+  set cow-with-calf? false
+  set pregnant? false
   set color brown
   set animal-units live-weight / set-1-AU
   set min-weight 180
@@ -500,9 +500,9 @@ to become-cow
   set pregnancy-time 0
   set lactating-time 0
 
-  ifelse pregnant? = true  [set price item current-season pregnant-prices] [set price item current-season cow-prices]                     ;; NEW ########################################################################################################################
-  set sale? false                                                                                                                         ;; NEW ########################################################################################################################
-  set value price * live-weight                                                                                                           ;; NEW ########################################################################################################################
+  ifelse pregnant? = true  [set price item current-season pregnant-prices] [set price item current-season cow-prices]
+  set sale? false
+  set value price * live-weight
 end
 
 to become-cow-with-calf
@@ -515,8 +515,8 @@ to become-cow-with-calf
   set heifer? false
   set steer? false
   set cow? false
-  set cow-with-calf? true                                                                                       ;; NEW #####################################################################################################################
-  set pregnant? false                                                                                           ;; NEW #####################################################################################################################
+  set cow-with-calf? true
+  set pregnant? false
   set color magenta
   set animal-units live-weight / set-1-AU
   set min-weight 180
@@ -530,9 +530,9 @@ to become-cow-with-calf
   set pregnancy-time 0
   set lactating-time 0
 
-  ifelse pregnant? = true  [set price item current-season pregnant-prices] [set price item current-season cow-with-calf-prices]           ;; NEW ########################################################################################################################
-  set sale? false                                                                                                                         ;; NEW ########################################################################################################################
-  set value price * live-weight                                                                                                           ;; NEW ########################################################################################################################
+  ifelse pregnant? = true  [set price item current-season pregnant-prices] [set price item current-season cow-with-calf-prices]
+  set sale? false
+  set value price * live-weight
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -619,25 +619,25 @@ to go
   reproduce
   update-grass-height
 
-  update-prices                                                                      ;; NEW ########################################################################################################################
+  update-prices
 
-  if (farmer-profile = "traditional") [                                              ;; NEW ########################################################################################################################
-    sell-males                                                                       ;; NEW ########################################################################################################################
-  ]                                                                                  ;; NEW ########################################################################################################################
-  if (farmer-profile = "market") [                                                   ;; NEW ########################################################################################################################
-    sell-males                                                                       ;; NEW ########################################################################################################################
-    sell-empty-old-cows                                                              ;; NEW ########################################################################################################################
-    sell-empty-heifers-cowsLW                                                        ;; NEW ########################################################################################################################
-  ]                                                                                  ;; NEW ########################################################################################################################
-  if (farmer-profile = "environmental") [                                            ;; NEW ########################################################################################################################
-    sell-males                                                                       ;; NEW ########################################################################################################################
-    sell-empty-old-cows                                                              ;; NEW ########################################################################################################################
-    sell-empty-heifers-cowsLW                                                        ;; NEW ########################################################################################################################
-    sell-old-cows-environmental                                                      ;; NEW ########################################################################################################################
-    sell-empty-heifers-cowsLW-environmental                                          ;; NEW ########################################################################################################################
-  ]                                                                                  ;; NEW ########################################################################################################################
+  if (farmer-profile = "traditional") [
+    sell-males
+  ]
+  if (farmer-profile = "market") [
+    sell-males
+    sell-empty-old-cows
+    sell-empty-heifers-cowsLW
+  ]
+  if (farmer-profile = "environmental") [
+    sell-males
+    sell-empty-old-cows
+    sell-empty-heifers-cowsLW
+    sell-old-cows-environmental
+    sell-empty-heifers-cowsLW-environmental
+  ]
 
-  farm-balance                                                                       ;; NEW ########################################################################################################################
+  farm-balance
 
   tick
 end
@@ -810,15 +810,15 @@ end
 ;; Cattle prices
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to update-prices                                                                                                ;; NEW ########################################################################################################################
+to update-prices
   ask cows [
-    if born-calf? = true [set price item current-season born-calf-prices set value price * live-weight]         ;; NEW ########################################################################################################################
-    if weaned-calf? = true [set price item current-season weaned-calf-prices set value price * live-weight]     ;; NEW ########################################################################################################################
-    if steer? = true [set price item current-season steer-prices set value price * live-weight]                 ;; NEW ########################################################################################################################
-    if heifer? = true [set price item current-season heifer-prices set value price * live-weight]               ;; NEW ########################################################################################################################
-    if cow? = true [set price item current-season cow-prices set value price * live-weight]                     ;; NEW ########################################################################################################################
-    if cow-with-calf? = true [set price item current-season cow-with-calf-prices set value price * live-weight] ;; NEW ########################################################################################################################
-    if pregnant? = true [set price item current-season pregnant-prices set value price * live-weight]           ;; NEW ########################################################################################################################
+    if born-calf? = true [set price item current-season born-calf-prices set value price * live-weight]
+    if weaned-calf? = true [set price item current-season weaned-calf-prices set value price * live-weight]
+    if steer? = true [set price item current-season steer-prices set value price * live-weight]
+    if heifer? = true [set price item current-season heifer-prices set value price * live-weight]
+    if cow? = true [set price item current-season cow-prices set value price * live-weight]
+    if cow-with-calf? = true [set price item current-season cow-with-calf-prices set value price * live-weight]
+    if pregnant? = true [set price item current-season pregnant-prices set value price * live-weight]
   ]
 end
 
@@ -826,79 +826,79 @@ end
 ;; Cattle sales: ordinary sales                                                                                 ;; Ordinary cattle sales are held on the first day of fall.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to sell-males                                                                                                   ;; NEW ########################################################################################################################;; Ordinary sale of weaned male calves and steers, determined by the maximum number of males the farmer wishes to keep in the system ("keep-n-steers" slider in the interface)
-  if current-season = 3 and (season-days = 1) [                                                                 ;; NEW ########################################################################################################################
-    if any? cows with [weaned-calf-male?] [                                                                     ;; NEW ########################################################################################################################
-      if count cows with [weaned-calf-male?] > keep-n-steers [                                                  ;; NEW ########################################################################################################################
-        ask n-of (count cows with [weaned-calf-male?] - keep-n-steers) cows with [weaned-calf-male?] [          ;; NEW ########################################################################################################################
-          set sale? true                                                                                        ;; NEW ########################################################################################################################
-          set OS-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]]]                   ;; NEW ########################################################################################################################
+to sell-males                                                                                                   ;; Ordinary sale of weaned male calves and steers, determined by the maximum number of males the farmer wishes to keep in the system ("keep-n-steers" slider in the interface)
+  if current-season = 3 and (season-days = 1) [
+    if any? cows with [weaned-calf-male?] [
+      if count cows with [weaned-calf-male?] > keep-n-steers [
+        ask n-of (count cows with [weaned-calf-male?] - keep-n-steers) cows with [weaned-calf-male?] [
+          set sale? true
+          set OS-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]]]
 
-  if current-season = 3 and (season-days = 1) [                                                                 ;; NEW ########################################################################################################################
-    if any? cows with [steer?] [                                                                                ;; NEW ########################################################################################################################
+  if current-season = 3 and (season-days = 1) [
+    if any? cows with [steer?] [
       if count cows with [steer?] > keep-n-steers [
-        ask n-of (count cows with [steer?] - keep-n-steers) cows with [steer?] [                                ;; NEW ########################################################################################################################
-          set sale? true                                                                                        ;; NEW ########################################################################################################################
-          set OS-males-steer sum [value] of cows with [steer? and sale?]]]]]                                    ;; NEW ########################################################################################################################
+        ask n-of (count cows with [steer?] - keep-n-steers) cows with [steer?] [
+          set sale? true
+          set OS-males-steer sum [value] of cows with [steer? and sale?]]]]]
 
-  ask cows with [sale?] [die]                                                                                   ;; NEW ########################################################################################################################
+  ask cows with [sale?] [die]
 end
 
-to sell-empty-old-cows                                                                                          ;; NEW ########################################################################################################################;; Ordinary sale of old empty cows. The age at which a cow is considered old is determined by the "age-sell-old-cow" slider in the interface. The number of old empty cows sold is determined by the maximum number of livestock the farmer wishes to keep in the system ("keep-n-cattle" slider in the interface). This is an early attempt to represent the maximum number of animals a farmer can manage.
-  if current-season = 3 and (season-days = 1) [                                                                 ;; NEW ########################################################################################################################
-    if any? cows with [cow?] [                                                                                  ;; NEW ########################################################################################################################
-      if count cows > keep-n-cattle [                                                                             ;; NEW ########################################################################################################################
-        while [any? cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] and count cows with [sale? = false] > keep-n-cattle] [   ;; NEW ########################################################################################################################
-          ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [age] [                                           ;; NEW ########################################################################################################################
-            set sale? true                                                                                      ;; NEW ########################################################################################################################
-            set OS-empty-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale?]]]]]]                               ;; NEW ########################################################################################################################
+to sell-empty-old-cows                                                                                          ;; Ordinary sale of old empty cows. The age at which a cow is considered old is determined by the "age-sell-old-cow" slider in the interface. The number of old empty cows sold is determined by the maximum number of livestock the farmer wishes to keep in the system ("keep-n-cattle" slider in the interface). This is an early attempt to represent the maximum number of animals a farmer can manage.
+  if current-season = 3 and (season-days = 1) [
+    if any? cows with [cow?] [
+      if count cows > keep-n-cattle [
+        while [any? cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] and count cows with [sale? = false] > keep-n-cattle] [
+          ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [age] [
+            set sale? true
+            set OS-empty-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale?]]]]]]
 
   ask cows with [sale?] [die]
  end
 
-to sell-empty-heifers-cowsLW                                                                                    ;; NEW ########################################################################################################################;; Ordinary sale of empty heifers and cows with the lowest live weight. The number of empty heifers and cows sold is determined by the maximum number of livestock the farmer wishes to keep in the system ("keep-n-cattle" slider in the interface).
-  if current-season = 3 and (season-days = 1) [                                                                 ;; NEW ########################################################################################################################
-    if any? cows with [heifer? or cow?] [                                                                       ;; NEW ########################################################################################################################
-      if count cows > keep-n-cattle [                                                                             ;; NEW ########################################################################################################################
-        while [any? cows with [cow? or heifer? and pregnant? = false and sale? = false] and count cows with [sale? = false] > keep-n-cattle] [           ;; NEW ########################################################################################################################
-          ask min-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight] [                                           ;; NEW ########################################################################################################################
-            set sale? true                                                                                      ;; NEW ########################################################################################################################
-            set OS-empty-heiferLW sum [value] of cows with [heifer? and sale?]                                  ;; NEW ########################################################################################################################
-            set OS-empty-cowLW sum [value] of cows with [cow? and sale?]]]]]]                                   ;; NEW ########################################################################################################################
+to sell-empty-heifers-cowsLW                                                                                    ;; Ordinary sale of empty heifers and cows with the lowest live weight. The number of empty heifers and cows sold is determined by the maximum number of livestock the farmer wishes to keep in the system ("keep-n-cattle" slider in the interface).
+  if current-season = 3 and (season-days = 1) [
+    if any? cows with [heifer? or cow?] [
+      if count cows > keep-n-cattle [
+        while [any? cows with [cow? or heifer? and pregnant? = false and sale? = false] and count cows with [sale? = false] > keep-n-cattle] [
+          ask min-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight] [
+            set sale? true
+            set OS-empty-heiferLW sum [value] of cows with [heifer? and sale?]
+            set OS-empty-cowLW sum [value] of cows with [cow? and sale?]]]]]]
 
-   ask cows with [sale?] [die]                                                                                  ;; NEW ########################################################################################################################
+   ask cows with [sale?] [die]
 end
 
-to sell-old-cows-environmental                                                                                  ;; NEW ########################################################################################################################;; If the enviromental-oriented farmer profile is selected, a second sale of old empty cows can happen if the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
-  if current-season = 3 and (season-days = 1) [                                                                 ;; NEW ########################################################################################################################
-    if any? cows with [cow?] [                                                                                  ;; NEW ########################################################################################################################
-      if sum [animal-units] of cows / count patches > env-farmer-SR [                                           ;; NEW ########################################################################################################################
-        while [any? cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] and sum [animal-units] of cows with [sale? = false] / count patches > env-farmer-SR] [      ;; NEW ########################################################################################################################
-          ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [age] [                                                                                ;; NEW ########################################################################################################################
-            set sale? true                                                                                      ;; NEW ########################################################################################################################
-            set OS-EN-empty-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = 0 or pregnant? = false and sale?]]]]]]                                                ;; NEW ########################################################################################################################
+to sell-old-cows-environmental                                                                                  ;; If the enviromental-oriented farmer profile is selected, a second sale of old empty cows can happen if the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
+  if current-season = 3 and (season-days = 1) [
+    if any? cows with [cow?] [
+      if sum [animal-units] of cows / count patches > env-farmer-SR [
+        while [any? cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] and sum [animal-units] of cows with [sale? = false] / count patches > env-farmer-SR] [
+          ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [age] [
+            set sale? true
+            set OS-EN-empty-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = 0 or pregnant? = false and sale?]]]]]]
 
-  ask cows with [sale?] [die]                                                                                   ;; NEW ########################################################################################################################
+  ask cows with [sale?] [die]
  end
 
-to sell-empty-heifers-cowsLW-environmental                                                                      ;; NEW ########################################################################################################################;; If the enviromental-oriented farmer profile is selected, a second sale of empty heifers and cows with the lowest weight can happen if the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
-  if current-season = 3 and (season-days = 1) [                                                                 ;; NEW ########################################################################################################################
-    if any? cows with [heifer? or cow?] [                                                                       ;; NEW ########################################################################################################################
-      if sum [animal-units] of cows / count patches > env-farmer-SR [                                           ;; NEW ########################################################################################################################
-        while [any? cows with [cow? or heifer? and pregnant? = false and sale? = false] and sum [animal-units] of cows with [sale? = false] / count patches > env-farmer-SR] [           ;; NEW ########################################################################################################################
-          ask min-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight] [    ;; NEW ########################################################################################################################
-            set sale? true                                                                                      ;; NEW ########################################################################################################################
-            set OS-EN-empty-heiferLW sum [value] of cows with [heifer? and sale?]                               ;; NEW ########################################################################################################################
-            set OS-EN-empty-cowLW sum [value] of cows with [cow? and sale?]]]]]]                                ;; NEW ########################################################################################################################
+to sell-empty-heifers-cowsLW-environmental                                                                      ;; If the enviromental-oriented farmer profile is selected, a second sale of empty heifers and cows with the lowest weight can happen if the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
+  if current-season = 3 and (season-days = 1) [
+    if any? cows with [heifer? or cow?] [
+      if sum [animal-units] of cows / count patches > env-farmer-SR [
+        while [any? cows with [cow? or heifer? and pregnant? = false and sale? = false] and sum [animal-units] of cows with [sale? = false] / count patches > env-farmer-SR] [
+          ask min-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight] [
+            set sale? true
+            set OS-EN-empty-heiferLW sum [value] of cows with [heifer? and sale?]
+            set OS-EN-empty-cowLW sum [value] of cows with [cow? and sale?]]]]]]
 
-   ask cows with [sale?] [die]                                                                                  ;; NEW ########################################################################################################################
+   ask cows with [sale?] [die]
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Cattle sales: extraordinary sales
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to extraordinary-sales                                                                                          ;; NEW ########################################################################################################################
+to extraordinary-sales
 
 end
 
@@ -906,13 +906,13 @@ end
 ;; Farm balance
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to farm-balance                                                                                                 ;; NEW ########################################################################################################################
-  set ordinary-sales-income OS-males-weaned-calf + OS-males-steer + OS-empty-old-cow + OS-EN-empty-old-cow + OS-empty-heiferLW + OS-EN-empty-heiferLW + OS-empty-cowLW + OS-EN-empty-cowLW                             ;; NEW ########################################################################################################################
+to farm-balance
+  set ordinary-sales-income OS-males-weaned-calf + OS-males-steer + OS-empty-old-cow + OS-EN-empty-old-cow + OS-empty-heiferLW + OS-EN-empty-heiferLW + OS-empty-cowLW + OS-EN-empty-cowLW
 
-  set income ordinary-sales-income + extraordinary-sales-income                                                 ;; NEW ########################################################################################################################
-  set balance income - cost                                                                                     ;; NEW ########################################################################################################################
+  set income ordinary-sales-income + extraordinary-sales-income
+  set balance income - cost
 
-  if year-days = 1 [set OS-males-weaned-calf 0 set OS-males-steer 0 set OS-empty-old-cow 0 set OS-EN-empty-old-cow 0 set OS-empty-heiferLW 0 set OS-EN-empty-heiferLW 0 set OS-empty-cowLW 0 set OS-EN-empty-cowLW 0]  ;; NEW ########################################################################################################################;; Reset ordinary-sales-income to 0                                                              ;; NEW ########################################################################################################################
+  if year-days = 1 [set OS-males-weaned-calf 0 set OS-males-steer 0 set OS-empty-old-cow 0 set OS-EN-empty-old-cow 0 set OS-empty-heiferLW 0 set OS-EN-empty-heiferLW 0 set OS-empty-cowLW 0 set OS-EN-empty-cowLW 0]                                                          ;; NEW ########################################################################################################################
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
