@@ -5831,7 +5831,9 @@ NetLogo 6.2.2
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="92"/>
-    <metric>count turtles</metric>
+    <metric>count cows</metric>
+    <metric>stocking-rate</metric>
+    <metric>crop-efficiency</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
     </enumeratedValueSet>
@@ -5940,12 +5942,11 @@ NetLogo 6.2.2
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="644"/>
-    <metric>grass-height-report</metric>
     <metric>season-report</metric>
     <metric>climacoef</metric>
+    <metric>grass-height-report</metric>
     <metric>ILWG</metric>
     <metric>stocking-rate</metric>
-    <metric>count cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
     </enumeratedValueSet>
