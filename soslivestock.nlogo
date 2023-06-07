@@ -925,7 +925,7 @@ to farm-balance
   set income ordinary-sales-income + extraordinary-sales-income
   set balance income - cost
 
-  if year-days = 1 [set OS-males-weaned-calf 0 set OS-males-steer 0 set OS-empty-old-cow 0 set OS-EN-empty-old-cow 0 set OS-empty-heiferLW 0 set OS-EN-empty-heiferLW 0 set OS-empty-cowLW 0 set OS-EN-empty-cowLW 0]                                                          ;; NEW ########################################################################################################################
+  ;if year-days = 1 [set OS-males-weaned-calf 0 set OS-males-steer 0 set OS-empty-old-cow 0 set OS-EN-empty-old-cow 0 set OS-empty-heiferLW 0 set OS-EN-empty-heiferLW 0 set OS-empty-cowLW 0 set OS-EN-empty-cowLW 0]                                                          ;; NEW ########################################################################################################################
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1055,7 +1055,7 @@ initial-num-cows
 initial-num-cows
 0
 1000
-15.0
+45.0
 1
 1
 NIL
@@ -1573,7 +1573,7 @@ initial-num-steers
 initial-num-steers
 0
 1000
-15.0
+5.0
 1
 1
 NIL
@@ -2334,7 +2334,7 @@ env-farmer-SR
 env-farmer-SR
 0
 2
-0.5
+1.0
 0.01
 1
 AU/ha
@@ -6046,6 +6046,124 @@ NetLogo 6.2.2
     </enumeratedValueSet>
     <enumeratedValueSet variable="climacoef-distribution">
       <value value="&quot;historic-climacoef&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-n-steers">
+      <value value="5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="SA_Ordinary-sales_ENV-SR" repetitions="40" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="3680"/>
+    <metric>balance</metric>
+    <metric>count cows</metric>
+    <metric>mean [live-weight] of cows</metric>
+    <metric>sum [live-weight] of cows</metric>
+    <metric>stocking-rate</metric>
+    <enumeratedValueSet variable="initial-num-heifers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-weaned-calves">
+      <value value="150"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-X-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-1-AU">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-test-climacoef">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spatial-management">
+      <value value="&quot;free grazing&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-n-cattle">
+      <value value="45"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="farmer-profile">
+      <value value="&quot;traditional&quot;"/>
+      <value value="&quot;market&quot;"/>
+      <value value="&quot;environmental&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-steers">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-season">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-steers">
+      <value value="300"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-cows">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="age-sell-old-cow">
+      <value value="7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="soil-quality-distribution">
+      <value value="&quot;homogeneus&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="starting-paddock">
+      <value value="&quot;paddock a&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-Y-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-weaned-calves">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-cows">
+      <value value="45"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-MW-1-AU">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="perception">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="env-farmer-SR">
+      <value value="0.5"/>
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-DM-cm-ha">
+      <value value="180"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-grass-height">
+      <value value="7.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="STOP-SIMULATION-AT">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-heifers">
+      <value value="200"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="climacoef-distribution">
+      <value value="&quot;homogeneus&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="summer-climacoef-homogeneus">
       <value value="1"/>
