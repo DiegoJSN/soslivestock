@@ -66,11 +66,10 @@ globals [
   OS-males-weaned-calf                                                              ;; income from the sale of male weaned calves during ordinary sales.
   OS-males-steer                                                                    ;; income from the sale of steers during ordinary sales.
   OS-empty-old-cow                                                                  ;; income from the sale of empty old cows during ordinary sales.
-  OS-EN-empty-old-cow                                                               ;; income from the sale of empty old cows during ordinary sales for the environmental-oriented farmer when the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
-  OS-empty-heiferLW                                                                 ;; income from the sale of empty heifers during ordinary sales.
-  OS-EN-empty-heiferLW                                                              ;; income from the sale of empty heifers during ordinary sales for the environmental-oriented farmer when the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
-  OS-empty-cowLW                                                                    ;; income from the sale of empty cows during ordinary sales.
-  OS-EN-empty-cowLW                                                                 ;; income from the sale of empty cows during ordinary sales for the environmental-oriented farmer when the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
+  OS-NCATTLE-empty-heiferLW                                                         ;; income from the sale of empty heifers during ordinary sales.
+  OS-SR-empty-heiferLW                                                              ;; income from the sale of empty heifers during ordinary sales for the environmental-oriented farmer when the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
+  OS-NCATTLE-empty-cowLW                                                            ;; income from the sale of empty cows during ordinary sales.
+  OS-SR-empty-cowLW                                                                 ;; income from the sale of empty cows during ordinary sales for the environmental-oriented farmer when the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
 
   ordinary-sales-income                                                             ;; total income from ordinary sales
   extraordinary-sales-income                                                        ;; total income from extraordinary sales
@@ -640,14 +639,17 @@ to go
   if (farmer-profile = "market") [
     sell-males
     sell-empty-old-cows
-    sell-empty-heifers-cowsLW
+
+    sell-empty-heifers-cowsLW_keep-n-cattle
   ]
   if (farmer-profile = "environmental") [
     sell-males
     sell-empty-old-cows
-    sell-empty-heifers-cowsLW
-    sell-old-cows-environmental
-    sell-empty-heifers-cowsLW-environmental
+
+    sell-empty-heifers-cowsLW_keep-n-cattle
+
+    sell-empty-heifers-cowsLW_env-farmer-SR
+
   ]
 
   farm-balance
@@ -857,52 +859,41 @@ to sell-males                                                                   
   ask cows with [sale?] [die]
 end
 
-to sell-empty-old-cows                                                                                          ;; Ordinary sale of old empty cows. The age at which a cow is considered old is determined by the "age-sell-old-cow" slider in the interface. The number of old empty cows sold is determined by the maximum number of livestock the farmer wishes to keep in the system ("keep-n-cattle" slider in the interface). This is an early attempt to represent the maximum number of animals a farmer can manage.
+
+to sell-empty-old-cows                                                                                          ;; Ordinary sale of old empty cows. The age at which a cow is considered old is determined by the "age-sell-old-cow" slider in the interface.
   if current-season = 3 and (season-days = 1) [
     if any? cows with [cow?] [
-      if count cows > keep-n-cattle [
-        while [any? cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] and count cows with [sale? = false] > keep-n-cattle] [
-          ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [age] [
+          ask cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [
             set sale? true
-            set OS-empty-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale?]]]]]]
+            set OS-empty-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale?]]]] ;; DEBES AÑADIR UNA VARIABLE NUEVA PARA ESTO
 
   ask cows with [sale?] [die]
  end
 
-to sell-empty-heifers-cowsLW                                                                                    ;; Ordinary sale of empty heifers and cows with the lowest live weight. The number of empty heifers and cows sold is determined by the maximum number of livestock the farmer wishes to keep in the system ("keep-n-cattle" slider in the interface).
+
+to sell-empty-heifers-cowsLW_keep-n-cattle                                                                      ;; Ordinary sale of empty heifers and cows with the lowest live weight. The number of empty heifers and cows sold is determined by the maximum number of livestock the farmer wishes to keep in the system ("keep-n-cattle" slider in the interface). This is an early attempt to represent the maximum number of animals a farmer can manage.
   if current-season = 3 and (season-days = 1) [
     if any? cows with [heifer? or cow?] [
       if count cows > keep-n-cattle [
         while [any? cows with [cow? or heifer? and pregnant? = false and sale? = false] and count cows with [sale? = false] > keep-n-cattle] [
           ask min-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight] [
             set sale? true
-            set OS-empty-heiferLW sum [value] of cows with [heifer? and sale?]
-            set OS-empty-cowLW sum [value] of cows with [cow? and sale?]]]]]]
+            set OS-NCATTLE-empty-heiferLW sum [value] of cows with [heifer? and sale?]
+            set OS-NCATTLE-empty-cowLW sum [value] of cows with [cow? and sale?]]]]]]
 
    ask cows with [sale?] [die]
 end
 
-to sell-old-cows-environmental                                                                                  ;; If the enviromental-oriented farmer profile is selected, a second sale of old empty cows can happen if the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
-  if current-season = 3 and (season-days = 1) [
-    if any? cows with [cow?] [
-      if sum [animal-units] of cows / count patches > env-farmer-SR [
-        while [any? cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] and sum [animal-units] of cows with [sale? = false] / count patches > env-farmer-SR] [
-          ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [age] [
-            set sale? true
-            set OS-EN-empty-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = 0 or pregnant? = false and sale?]]]]]]
 
-  ask cows with [sale?] [die]
- end
-
-to sell-empty-heifers-cowsLW-environmental                                                                      ;; If the enviromental-oriented farmer profile is selected, a second sale of empty heifers and cows with the lowest weight can happen if the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
+to sell-empty-heifers-cowsLW_env-farmer-SR                                                                      ;; If the enviromental-oriented farmer profile is selected, a second sale of empty heifers and cows with the lowest weight can happen if the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
   if current-season = 3 and (season-days = 1) [
     if any? cows with [heifer? or cow?] [
       if sum [animal-units] of cows / count patches > env-farmer-SR [
         while [any? cows with [cow? or heifer? and pregnant? = false and sale? = false] and sum [animal-units] of cows with [sale? = false] / count patches > env-farmer-SR] [
           ask min-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight] [
             set sale? true
-            set OS-EN-empty-heiferLW sum [value] of cows with [heifer? and sale?]
-            set OS-EN-empty-cowLW sum [value] of cows with [cow? and sale?]]]]]]
+            set OS-SR-empty-heiferLW sum [value] of cows with [heifer? and sale?]
+            set OS-SR-empty-cowLW sum [value] of cows with [cow? and sale?]]]]]]
 
    ask cows with [sale?] [die]
 end
@@ -920,12 +911,12 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to farm-balance
-  set ordinary-sales-income OS-males-weaned-calf + OS-males-steer + OS-empty-old-cow + OS-EN-empty-old-cow + OS-empty-heiferLW + OS-EN-empty-heiferLW + OS-empty-cowLW + OS-EN-empty-cowLW
+  set ordinary-sales-income OS-males-weaned-calf + OS-males-steer + OS-empty-old-cow + OS-NCATTLE-empty-heiferLW + OS-NCATTLE-empty-cowLW + OS-SR-empty-heiferLW + OS-SR-empty-cowLW
 
   set income ordinary-sales-income + extraordinary-sales-income
   set balance income - cost
 
-  ;if year-days = 1 [set OS-males-weaned-calf 0 set OS-males-steer 0 set OS-empty-old-cow 0 set OS-EN-empty-old-cow 0 set OS-empty-heiferLW 0 set OS-EN-empty-heiferLW 0 set OS-empty-cowLW 0 set OS-EN-empty-cowLW 0]                                                          ;; NEW ########################################################################################################################
+  ;if year-days = 1 [set OS-males-weaned-calf 0 set OS-males-steer 0 set OS-empty-old-cow 0 set OS-NCATTLE-empty-heiferLW 0 set OS-NCATTLE-empty-cowLW 0 set OS-SR-empty-heiferLW 0 set OS-SR-empty-cowLW 0]
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2323,7 +2314,7 @@ CHOOSER
 farmer-profile
 farmer-profile
 "none" "traditional" "market" "environmental"
-3
+0
 
 SLIDER
 223
@@ -2334,7 +2325,7 @@ env-farmer-SR
 env-farmer-SR
 0
 2
-1.0
+0.5
 0.01
 1
 AU/ha
@@ -2364,6 +2355,35 @@ set-test-climacoef
 1
 NIL
 HORIZONTAL
+
+MONITOR
+1086
+969
+1264
+1014
+meat production (kg/ha)
+sum [live-weight] of cows / count patches
+3
+1
+11
+
+PLOT
+1086
+1015
+1591
+1165
+meat production 
+days
+kg/ha
+0.0
+92.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plot sum [live-weight] of cows / count patches"
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -6146,6 +6166,238 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="env-farmer-SR">
       <value value="0.5"/>
       <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-DM-cm-ha">
+      <value value="180"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-grass-height">
+      <value value="7.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="STOP-SIMULATION-AT">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-heifers">
+      <value value="200"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="climacoef-distribution">
+      <value value="&quot;homogeneus&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-n-steers">
+      <value value="5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="SA_Ordinary-sales_ENV-SR-1" repetitions="200" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="3680"/>
+    <metric>balance</metric>
+    <metric>count cows</metric>
+    <metric>mean [live-weight] of cows</metric>
+    <metric>sum [live-weight] of cows</metric>
+    <metric>stocking-rate</metric>
+    <enumeratedValueSet variable="initial-num-heifers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-weaned-calves">
+      <value value="150"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-X-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-1-AU">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-test-climacoef">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spatial-management">
+      <value value="&quot;free grazing&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-n-cattle">
+      <value value="45"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="farmer-profile">
+      <value value="&quot;market&quot;"/>
+      <value value="&quot;environmental&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-steers">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-season">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-steers">
+      <value value="300"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-cows">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="age-sell-old-cow">
+      <value value="7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="soil-quality-distribution">
+      <value value="&quot;homogeneus&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="starting-paddock">
+      <value value="&quot;paddock a&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-Y-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-weaned-calves">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-cows">
+      <value value="45"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-MW-1-AU">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="perception">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="env-farmer-SR">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-DM-cm-ha">
+      <value value="180"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-grass-height">
+      <value value="7.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="STOP-SIMULATION-AT">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-heifers">
+      <value value="200"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="climacoef-distribution">
+      <value value="&quot;homogeneus&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-n-steers">
+      <value value="5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="SA_Ordinary-sales_ENV-SR-0.5" repetitions="200" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="3680"/>
+    <metric>balance</metric>
+    <metric>count cows</metric>
+    <metric>mean [live-weight] of cows</metric>
+    <metric>sum [live-weight] of cows</metric>
+    <metric>stocking-rate</metric>
+    <enumeratedValueSet variable="initial-num-heifers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-weaned-calves">
+      <value value="150"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-X-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-1-AU">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-test-climacoef">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spatial-management">
+      <value value="&quot;free grazing&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-n-cattle">
+      <value value="45"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="farmer-profile">
+      <value value="&quot;market&quot;"/>
+      <value value="&quot;environmental&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-steers">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-season">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-steers">
+      <value value="300"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-cows">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="age-sell-old-cow">
+      <value value="7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="soil-quality-distribution">
+      <value value="&quot;homogeneus&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="starting-paddock">
+      <value value="&quot;paddock a&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-Y-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-weaned-calves">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-cows">
+      <value value="45"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-MW-1-AU">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="perception">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="env-farmer-SR">
+      <value value="0.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="set-DM-cm-ha">
       <value value="180"/>
