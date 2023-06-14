@@ -956,15 +956,15 @@ end
 to sell-males                                                                        ;;## ORDINARY SALES MODULE ;; Ordinary sale of weaned male calves and steers, determined by the maximum number of males the farmer wishes to keep in the system ("keep-n-steers" slider in the interface)
   if current-season = 3 and (season-days = 1) [
     if any? cows with [weaned-calf-male?] [
-      if count cows with [weaned-calf-male?] > keep-n-steers [
-        ask n-of (count cows with [weaned-calf-male?] - keep-n-steers) cows with [weaned-calf-male?] [
+      if count cows with [weaned-calf-male?] > keep-MAX-n-steers [
+        ask n-of (count cows with [weaned-calf-male?] - keep-MAX-n-steers) cows with [weaned-calf-male?] [
           set sale? true
           set OS-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]]]
 
   if current-season = 3 and (season-days = 1) [
     if any? cows with [steer?] [
-      if count cows with [steer?] > keep-n-steers [
-        ask n-of (count cows with [steer?] - keep-n-steers) cows with [steer?] [
+      if count cows with [steer?] > keep-MAX-n-steers [
+        ask n-of (count cows with [steer?] - keep-MAX-n-steers) cows with [steer?] [
           set sale? true
           set OS-males-steer sum [value] of cows with [steer? and sale?]]]]]
 
@@ -989,10 +989,10 @@ to sell-empty-old-cows                                                          
 to sell-empty-heifers-cowsLW_keep-n-cattle                                           ;;## ORDINARY SALES MODULE ;; Ordinary sale of empty heifers and cows with the lowest live weight. The number of empty heifers and cows sold is determined by the maximum number of livestock the farmer wishes to keep in the system ("keep-n-cattle" slider in the interface). This is an early attempt to represent the maximum number of animals a farmer can manage.
   if current-season = 3 and (season-days = 1) [
     if any? cows with [heifer? or cow?] [
-      if count cows > keep-n-cattle [
+      if count cows > keep-MAX-n-cattle [
 
-        ;while [any? cows with [cow? or heifer? and pregnant? = false and sale? = false] and count cows with [sale? = false] > keep-n-cattle] [      ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-        while [any? cows with [cow? or heifer? and sale? = false] and count cows with [sale? = false] > keep-n-cattle] [
+        ;while [any? cows with [cow? or heifer? and pregnant? = false and sale? = false] and count cows with [sale? = false] > keep-MAX-n-cattle] [      ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+        while [any? cows with [cow? or heifer? and sale? = false] and count cows with [sale? = false] > keep-MAX-n-cattle] [
 
           ;ask min-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight] [                                        ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
           ask min-n-of 1 cows with [cow? or heifer? and sale? = false] [live-weight] [
@@ -2344,8 +2344,8 @@ SLIDER
 837
 373
 870
-keep-n-steers
-keep-n-steers
+keep-MAX-n-steers
+keep-MAX-n-steers
 0
 100
 5.0
@@ -2406,8 +2406,8 @@ SLIDER
 798
 374
 831
-keep-n-cattle
-keep-n-cattle
+keep-MAX-n-cattle
+keep-MAX-n-cattle
 0
 500
 45.0
