@@ -54,29 +54,29 @@ globals [
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Market prices & economic balance global variables
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  supplement-prices                                                                 ;; costs for feeding the animals with food supplements (grains, USD/head/season).
-  born-calf-prices                                                                  ;; market prices per kg for born calves (USD/Kg).
-  weaned-calf-prices                                                                ;; market prices per kg for weaned calves (USD/Kg).
-  steer-prices                                                                      ;; market prices per kg for steers (USD/Kg).
-  heifer-prices                                                                     ;; market prices per kg for empty heifers (USD/Kg).
-  cow-prices                                                                        ;; market prices per kg for empty cows (USD/Kg).
-  cow-with-calf-prices                                                              ;; market prices per kg for lactating cows (USD/Kg).
-  pregnant-prices                                                                   ;; market prices per kg for pregnant cows (USD/Kg).
+  supplement-prices                                                                 ;;## ORDINARY SALES MODULE ;; costs for feeding the animals with food supplements (grains, USD/head/season).
+  born-calf-prices                                                                  ;;## ORDINARY SALES MODULE ;; market prices per kg for born calves (USD/Kg).
+  weaned-calf-prices                                                                ;;## ORDINARY SALES MODULE ;; market prices per kg for weaned calves (USD/Kg).
+  steer-prices                                                                      ;;## ORDINARY SALES MODULE ;; market prices per kg for steers (USD/Kg).
+  heifer-prices                                                                     ;;## ORDINARY SALES MODULE ;; market prices per kg for empty heifers (USD/Kg).
+  cow-prices                                                                        ;;## ORDINARY SALES MODULE ;; market prices per kg for empty cows (USD/Kg).
+  cow-with-calf-prices                                                              ;;## ORDINARY SALES MODULE ;; market prices per kg for lactating cows (USD/Kg).
+  pregnant-prices                                                                   ;;## ORDINARY SALES MODULE ;; market prices per kg for pregnant cows (USD/Kg).
 
-  OS-males-weaned-calf                                                              ;; income from the sale of male weaned calves during ordinary sales.
-  OS-males-steer                                                                    ;; income from the sale of steers during ordinary sales.
-  OS-empty-old-cow                                                                  ;; income from the sale of empty old cows during ordinary sales.
-  OS-NCATTLE-empty-heiferLW                                                         ;; income from the sale of empty heifers during ordinary sales.
-  OS-SR-empty-heiferLW                                                              ;; income from the sale of empty heifers during ordinary sales for the environmental-oriented farmer when the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
-  OS-NCATTLE-empty-cowLW                                                            ;; income from the sale of empty cows during ordinary sales.
-  OS-SR-empty-cowLW                                                                 ;; income from the sale of empty cows during ordinary sales for the environmental-oriented farmer when the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
+  OS-males-weaned-calf                                                              ;;## ORDINARY SALES MODULE ;; income from the sale of male weaned calves during ordinary sales.
+  OS-males-steer                                                                    ;;## ORDINARY SALES MODULE ;; income from the sale of steers during ordinary sales.
+  OS-empty-old-cow                                                                  ;;## ORDINARY SALES MODULE ;; income from the sale of empty old cows during ordinary sales.
+  OS-NCATTLE-empty-heiferLW                                                         ;;## ORDINARY SALES MODULE ;; income from the sale of empty heifers during ordinary sales.
+  OS-SR-empty-heiferLW                                                              ;;## ORDINARY SALES MODULE ;; income from the sale of empty heifers during ordinary sales for the environmental-oriented farmer when the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
+  OS-NCATTLE-empty-cowLW                                                            ;;## ORDINARY SALES MODULE ;; income from the sale of empty cows during ordinary sales.
+  OS-SR-empty-cowLW                                                                 ;;## ORDINARY SALES MODULE ;; income from the sale of empty cows during ordinary sales for the environmental-oriented farmer when the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
 
-  ordinary-sales-income                                                             ;; total income from ordinary sales
-  extraordinary-sales-income                                                        ;; total income from extraordinary sales
+  ordinary-sales-income                                                             ;;## ORDINARY SALES MODULE ;; total income from ordinary sales
+  extraordinary-sales-income                                                        ;;## ORDINARY SALES MODULE ;; total income from extraordinary sales
 
-  cost                                                                              ;; regular costs resulting from the various management activities.
-  income                                                                            ;; total income (ordinary + extraordinary sales)
-  balance                                                                           ;; balance (income - cost)
+  cost                                                                              ;;## ORDINARY SALES MODULE ;; regular costs resulting from the various management activities.
+  income                                                                            ;;## ORDINARY SALES MODULE ;; total income (ordinary + extraordinary sales)
+  balance                                                                           ;;## ORDINARY SALES MODULE ;; balance (income - cost)
 ]
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -110,6 +110,7 @@ cows-own [
   weaned-calf-male?                                                                 ;; boolean variable that determines the "weaned-calf-male" age class of the livestock life cycle
   heifer?                                                                           ;; boolean variable that determines the "heifer" age class of the livestock life cycle
   steer?                                                                            ;; boolean variable that determines the "steer" age class of the livestock life cycle
+  adult-cow?                                                                        ;; boolean variable that determines the "adult-cow" age class of the livestock life cycle (includes both "cow" and "cow-with-calf")
   cow?                                                                              ;; boolean variable that determines the "cow" age class of the livestock life cycle
   cow-with-calf?                                                                    ;; boolean variable that determines the "cow-withcalf" age class of the livestock life cycle
   pregnant?                                                                         ;; boolean variable that determines the "pregnant" age class of the livestock life cycle
@@ -135,9 +136,12 @@ cows-own [
   pregnancy-time                                                                    ;; variable to keep track of which day of pregnancy the cow is in (from 0 to 276)
   lactating-time                                                                    ;; variable to keep track of which day of the lactation period the cow is in (from 0 to 246)
 
-  price                                                                             ;; market prices per kg for one animal (USD/kg)
-  sale?                                                                             ;; boolean variable that determines whether the animal is selected for sale (and subsequently removed from the system)
-  value                                                                             ;; live weight price for one animal (market prices per kg * live weight of the animal) (USD)
+  price                                                                             ;;## ORDINARY SALES MODULE ;; market prices per kg for one animal (USD/kg)
+  sale?                                                                             ;;## ORDINARY SALES MODULE ;; boolean variable that determines whether the animal is selected for sale (and subsequently removed from the system)
+  value                                                                             ;;## ORDINARY SALES MODULE ;; live weight price for one animal (market prices per kg * live weight of the animal) (USD)
+
+  parent                                                                            ;;## EARLY/NATURAL WEANING MODULE
+  child                                                                             ;;## EARLY/NATURAL WEANING MODULE
 ]
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -198,18 +202,18 @@ to setup-globals
   set current-season initial-season                                                 ;; the initial season is set by the observer in the interface
   set historic-climacoef [0.48 0.3 0.72 0.12 0.71 0.65 1.1]                         ;; historic climacoef values. One value = 1 season (for example, 7 values = 7 seasons, the simulation will stop after season 7). Replace these values with historical values. For the model to use "historic-climacoef" values, the observer must select the "historic-climacoef" option within the "climacoef-distribution" chooser in the interface.
 
-  set supplement-prices [0.113 0.121 0.123 0.115]
-  set born-calf-prices [0.94 1 0.97 0.961]
-  set weaned-calf-prices [0.98 1.02 1 0.982]
-  set steer-prices [0.856 0.917 0.881 0.873]
-  set heifer-prices [0.701 0.733 0.727 0.696]
-  set cow-prices [0.561 0.611 0.573 0.581]
-  set pregnant-prices [0.561 0.611 0.573 0.581]
-  set cow-with-calf-prices [0.61 0.664 0.665 0.617]
+  set supplement-prices [0.113 0.121 0.123 0.115]                                   ;;## ORDINARY SALES MODULE
+  set born-calf-prices [0.94 1 0.97 0.961]                                          ;;## ORDINARY SALES MODULE
+  set weaned-calf-prices [0.98 1.02 1 0.982]                                        ;;## ORDINARY SALES MODULE
+  set steer-prices [0.856 0.917 0.881 0.873]                                        ;;## ORDINARY SALES MODULE
+  set heifer-prices [0.701 0.733 0.727 0.696]                                       ;;## ORDINARY SALES MODULE
+  set cow-prices [0.561 0.611 0.573 0.581]                                          ;;## ORDINARY SALES MODULE
+  set pregnant-prices [0.561 0.611 0.573 0.581]                                     ;;## ORDINARY SALES MODULE
+  set cow-with-calf-prices [0.61 0.664 0.665 0.617]                                 ;;## ORDINARY SALES MODULE
 
-  set cost 0
-  set income 0
-  set balance 0
+  set cost 0                                                                        ;;## ORDINARY SALES MODULE
+  set income 0                                                                      ;;## ORDINARY SALES MODULE
+  set balance 0                                                                     ;;## ORDINARY SALES MODULE
 
 
 end
@@ -300,6 +304,7 @@ to become-born-calf-female
   set weaned-calf-male? false
   set heifer? false
   set steer? false
+  set adult-cow? false
   set cow? false
   set cow-with-calf? false
   set pregnant? false
@@ -318,9 +323,9 @@ to become-born-calf-female
   set pregnancy-time 0
   set lactating-time 0
 
-  set price item current-season born-calf-prices
-  set sale? false
-  set value price * live-weight
+  set price item current-season born-calf-prices                                    ;;## ORDINARY SALES MODULE
+  set sale? false                                                                   ;;## ORDINARY SALES MODULE
+  set value price * live-weight                                                     ;;## ORDINARY SALES MODULE
 end
 
 to become-born-calf-male
@@ -332,6 +337,7 @@ to become-born-calf-male
   set weaned-calf-male? false
   set heifer? false
   set steer? false
+  set adult-cow? false
   set cow? false
   set cow-with-calf? false
   set pregnant? false
@@ -350,9 +356,9 @@ to become-born-calf-male
   set pregnancy-time 0
   set lactating-time 0
 
-  set price item current-season born-calf-prices
-  set sale? false
-  set value price * live-weight
+  set price item current-season born-calf-prices                                    ;;## ORDINARY SALES MODULE
+  set sale? false                                                                   ;;## ORDINARY SALES MODULE
+  set value price * live-weight                                                     ;;## ORDINARY SALES MODULE
 end
 
 to become-weaned-calf-female
@@ -364,6 +370,7 @@ to become-weaned-calf-female
   set weaned-calf-male? false
   set heifer? false
   set steer? false
+  set adult-cow? false
   set cow? false
   set cow-with-calf? false
   set pregnant? false
@@ -380,9 +387,9 @@ to become-weaned-calf-female
   set pregnancy-time 0
   set lactating-time 0
 
-  set price item current-season weaned-calf-prices
-  set sale? false
-  set value price * live-weight
+  set price item current-season weaned-calf-prices                                  ;;## ORDINARY SALES MODULE
+  set sale? false                                                                   ;;## ORDINARY SALES MODULE
+  set value price * live-weight                                                     ;;## ORDINARY SALES MODULE
 end
 
 to become-weaned-calf-male
@@ -394,6 +401,7 @@ to become-weaned-calf-male
   set weaned-calf-male? true
   set heifer? false
   set steer? false
+  set adult-cow? false
   set cow? false
   set cow-with-calf? false
   set pregnant? false
@@ -410,9 +418,9 @@ to become-weaned-calf-male
   set pregnancy-time 0
   set lactating-time 0
 
-  set price item current-season weaned-calf-prices
-  set sale? false
-  set value price * live-weight
+  set price item current-season weaned-calf-prices                                  ;;## ORDINARY SALES MODULE
+  set sale? false                                                                   ;;## ORDINARY SALES MODULE
+  set value price * live-weight                                                     ;;## ORDINARY SALES MODULE
 end
 
 to become-heifer
@@ -424,6 +432,7 @@ to become-heifer
   set weaned-calf-male? false
   set heifer? true
   set steer? false
+  set adult-cow? false
   set cow? false
   set cow-with-calf? false
   set pregnant? false
@@ -440,9 +449,9 @@ to become-heifer
   set pregnancy-time 0
   set lactating-time 0
 
-  ifelse pregnant? = true [set price item current-season pregnant-prices] [set price item current-season heifer-prices]
-  set sale? false
-  set value price * live-weight
+  ifelse pregnant? = true [set price item current-season pregnant-prices] [set price item current-season heifer-prices]                 ;;## ORDINARY SALES MODULE
+  set sale? false                                                                                                                       ;;## ORDINARY SALES MODULE
+  set value price * live-weight                                                                                                         ;;## ORDINARY SALES MODULE
 end
 
 to become-steer
@@ -454,6 +463,7 @@ to become-steer
   set weaned-calf-male? false
   set heifer? false
   set steer? true
+  set adult-cow? false
   set cow? false
   set cow-with-calf? false
   set pregnant? false
@@ -470,9 +480,9 @@ to become-steer
   set pregnancy-time 0
   set lactating-time 0
 
-  set price item current-season steer-prices
-  set sale? false
-  set value price * live-weight
+  set price item current-season steer-prices                                        ;;## ORDINARY SALES MODULE
+  set sale? false                                                                   ;;## ORDINARY SALES MODULE
+  set value price * live-weight                                                     ;;## ORDINARY SALES MODULE
 end
 
 to become-cow
@@ -484,6 +494,7 @@ to become-cow
   set weaned-calf-male? false
   set heifer? false
   set steer? false
+  set adult-cow? true
   set cow? true
   set cow-with-calf? false
   set pregnant? false
@@ -500,9 +511,9 @@ to become-cow
   set pregnancy-time 0
   set lactating-time 0
 
-  ifelse pregnant? = true  [set price item current-season pregnant-prices] [set price item current-season cow-prices]
-  set sale? false
-  set value price * live-weight
+  ifelse pregnant? = true  [set price item current-season pregnant-prices] [set price item current-season cow-prices]                   ;;## ORDINARY SALES MODULE
+  set sale? false                                                                                                                       ;;## ORDINARY SALES MODULE
+  set value price * live-weight                                                                                                         ;;## ORDINARY SALES MODULE
 end
 
 to become-cow-with-calf
@@ -514,6 +525,7 @@ to become-cow-with-calf
   set weaned-calf-male? false
   set heifer? false
   set steer? false
+  set adult-cow? true
   set cow? false
   set cow-with-calf? true
   set pregnant? false
@@ -530,9 +542,9 @@ to become-cow-with-calf
   set pregnancy-time 0
   set lactating-time 0
 
-  ifelse pregnant? = true  [set price item current-season pregnant-prices] [set price item current-season cow-with-calf-prices]
-  set sale? false
-  set value price * live-weight
+  ifelse pregnant? = true  [set price item current-season pregnant-prices] [set price item current-season cow-with-calf-prices]         ;;## ORDINARY SALES MODULE
+  set sale? false                                                                                                                       ;;## ORDINARY SALES MODULE
+  set value price * live-weight                                                                                                         ;;## ORDINARY SALES MODULE
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -627,32 +639,64 @@ to go
   kgDM/cow
   LWG
   DM-consumption
-  grow-livestock
-  reproduce
-  update-grass-height
 
-  update-prices
 
-  if (farmer-profile = "traditional") [
-    sell-males
+
+  if (farmer-profile = "none") [
+    grow-livestock-natural-weaning                                                   ;;## EARLY/NATURAL WEANING MODULE
+  ]
+    if (farmer-profile = "traditional") [
+    grow-livestock-natural-weaning                                                   ;;## EARLY/NATURAL WEANING MODULE
+  ]
+    if (farmer-profile = "environmental") [
+    grow-livestock-natural-weaning                                                   ;;## EARLY/NATURAL WEANING MODULE
   ]
   if (farmer-profile = "market") [
-    sell-males
-    sell-empty-old-cows
+    grow-livestock-early-weaning                                                     ;;## EARLY/NATURAL WEANING MODULE
+  ]
 
-    sell-empty-heifers-cowsLW_keep-n-cattle
+
+
+  if (farmer-profile = "none") [
+    uncontrolled-breeding                                                            ;;## CONTROLLED/NATURAL BREEDING MODULE
+  ]
+  if (farmer-profile = "traditional") [
+    uncontrolled-breeding                                                            ;;## CONTROLLED/NATURAL BREEDING MODULE
+  ]
+  if (farmer-profile = "market") [
+    controlled-breeding                                                              ;;## CONTROLLED/NATURAL BREEDING MODULE
   ]
   if (farmer-profile = "environmental") [
-    sell-males
-    sell-empty-old-cows
-
-    sell-empty-heifers-cowsLW_keep-n-cattle
-
-    sell-empty-heifers-cowsLW_env-farmer-SR
-
+    controlled-breeding                                                              ;;## CONTROLLED/NATURAL BREEDING MODULE
   ]
 
-  farm-balance
+
+
+  update-grass-height
+
+
+
+  update-prices                                                                      ;;## ORDINARY SALES MODULE
+
+  if (farmer-profile = "traditional") [
+    sell-males                                                                       ;;## ORDINARY SALES MODULE
+  ]
+  if (farmer-profile = "market") [
+    sell-males                                                                       ;;## ORDINARY SALES MODULE
+    sell-empty-old-cows                                                              ;;## ORDINARY SALES MODULE
+
+    sell-empty-heifers-cowsLW_keep-n-cattle                                          ;;## ORDINARY SALES MODULE
+  ]
+  if (farmer-profile = "environmental") [                                            ;;## ORDINARY SALES MODULE
+    sell-males                                                                       ;;## ORDINARY SALES MODULE
+    sell-empty-old-cows                                                              ;;## ORDINARY SALES MODULE
+
+    sell-empty-heifers-cowsLW_keep-n-cattle                                          ;;## ORDINARY SALES MODULE
+
+    sell-empty-heifers-cowsLW_env-farmer-SR                                          ;;## ORDINARY SALES MODULE
+  ]
+
+  farm-balance                                                                       ;;## ORDINARY SALES MODULE
 
   tick
 end
@@ -768,7 +812,8 @@ ask cows [
   ]
 end
 
-to grow-livestock                                                                    ;; this procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactating time of animals
+
+to grow-livestock-natural-weaning                                                    ;;## EARLY/NATURAL WEANING MODULE ;; this procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactation period of animals in a NATURAL weaning scenario.
 ask cows [
     set age age + days-per-tick
     if age > cow-age-max [die]
@@ -777,8 +822,11 @@ ask cows [
     [set mortality-rate natural-mortality-rate]
     if random-float 1 < mortality-rate [die]
 
-    if (born-calf-female? = true) and (age = weaned-calf-age-min) [become-weaned-calf-female]
-    if (born-calf-male? = true) and (age = weaned-calf-age-min) [become-weaned-calf-male]
+    ask cows with [born-calf-female? and not any? my-links ] [ become-weaned-calf-female ]                                 ;; if the link with the mother (an agent with a "cow-with-calf?" state) is lost (this happens when the mother dies, or when the mother switches from a "cow-with-calf?" state to a "cow?" state), the calf weans prematurely.
+    ask cows with [born-calf-male? and not any? my-links ] [ become-weaned-calf-male ]
+
+    if (born-calf-female? = true) and (age = weaned-calf-age-min) [become-weaned-calf-female ask my-out-links [die]]       ;; when the lactating calf moves on to the next age group (weaned-calf), the link (dependency) with its parent is terminated
+    if (born-calf-male? = true) and (age = weaned-calf-age-min) [become-weaned-calf-male ask my-out-links [die]]
     if (weaned-calf-female? = true) and (age = heifer-age-min) [become-heifer]
     if (weaned-calf-male? = true) and (age = heifer-age-min) [become-steer]
     if (heifer? = true) and (age >= cow-age-min) and (live-weight >= 280 ) [become-cow]
@@ -787,9 +835,37 @@ ask cows [
   ]
 end
 
-to reproduce                                                                         ;; this procedure dictates the rules for which each of the reproductive age classes (i.e., heifer, cow, cow-with-calf) can become pregnant, as well as the gestation period of animals
+
+to grow-livestock-early-weaning                                                      ;;## EARLY/NATURAL WEANING MODULE ;; this procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactation period of animals in a EARLY weaning scenario.
+ask cows [
+    set age age + days-per-tick
+    if age > cow-age-max [die]
+    ifelse live-weight < min-weight
+    [set mortality-rate except-mort-rate]
+    [set mortality-rate natural-mortality-rate]
+    if random-float 1 < mortality-rate [die]
+
+    if (cow-with-calf? = true and live-weight < early-weaning-threshold) [become-cow ask my-out-links [die]]               ;; if the mother (an agent with a "cow-with-calf?" state) is below a certain weight, it will switch to the "cow?" state and will kill the link with its child (an agent with a "born-calf" state). This weight is determined by the "early-weaning-threshold" slider in the interface.
+
+    ask cows with [born-calf-female? and not any? my-links ] [ become-weaned-calf-female ]                                 ;; if the link with the mother (an agent with a "cow-with-calf?" state) is lost (this happens when the mother dies, or when the mother switches from a "cow-with-calf?" state to a "cow?" state), the calf weans prematurely.
+    ask cows with [born-calf-male? and not any? my-links ] [ become-weaned-calf-male ]
+
+    if (born-calf-female? = true) and (age = weaned-calf-age-min) [become-weaned-calf-female ask my-out-links [die]]       ;; when the lactating calf moves on to the next age group (weaned-calf), the link (dependency) with its parent is terminated
+    if (born-calf-male? = true) and (age = weaned-calf-age-min) [become-weaned-calf-male ask my-out-links [die]]
+    if (weaned-calf-female? = true) and (age = heifer-age-min) [become-heifer]
+    if (weaned-calf-male? = true) and (age = heifer-age-min) [become-steer]
+    if (heifer? = true) and (age >= cow-age-min) and (live-weight >= 280 ) [become-cow]
+    if cow-with-calf? = true [set lactating-time lactating-time + days-per-tick]
+    if lactating-time = lactation-period [become-cow]
+  ]
+end
+
+
+to uncontrolled-breeding                                                             ;;## CONTROLLED/NATURAL BREEDING MODULE ;; this procedure dictates the rules for which each of the reproductive age classes (i.e., heifer, cow, cow-with-calf) can become pregnant in an UNCONTROLLED breeding scenario, as well as the gestation period of animals
   ask cows [
-    if (heifer? = true) or (cow? = true) or (cow-with-calf? = true) [set pregnancy-rate (1 / (1 + coefA * e ^ (- coefB * live-weight))) / 368]
+    if (heifer? = true) or (cow? = true) or (cow-with-calf? = true) [set pregnancy-rate (1 / (1 + coefA * e ^ (- coefB * live-weight)))]
+    ;if (heifer? = true) or (cow? = true) or (cow-with-calf? = true) [set pregnancy-rate (1 / (1 + coefA * e ^ (- coefB * live-weight))) / 368]  ;; alternative version, in which the PR is divided by 368.
+
     if random-float 1 < pregnancy-rate [set pregnant? true]
     if pregnant? = true [
       set pregnancy-time pregnancy-time + days-per-tick
@@ -797,6 +873,11 @@ to reproduce                                                                    
 
     if pregnancy-time = gestation-period [                                           ;; when the gestation period ends (276 days), a new agent (born-calf) is introduced into the system.
       hatch-cows 1 [
+        let new-child nobody
+        set new-child self
+        set parent myself
+        set child nobody
+        create-link-with myself                                                      ;; this new agent is linked with its parent agent
         if (spatial-management = "rotational grazing") [if paddock-a = 1 [move-to one-of patches with [paddock-a = 1]] if paddock-b = 1 [move-to one-of patches with [paddock-b = 1]] if paddock-c = 1 [move-to one-of patches with [paddock-c = 1]] if paddock-d = 1 [move-to one-of patches with [paddock-d = 1]]]
         if  (spatial-management = "free grazing") [setxy random-pxcor random-pycor]
         ifelse random-float 1 < 0.5                                                  ;; 50% chance of being born as a male or female calf
@@ -808,6 +889,36 @@ to reproduce                                                                    
   ]
 end
 
+
+to controlled-breeding                                                               ;;## CONTROLLED/NATURAL BREEDING MODULE ;; this procedure dictates the rules for which each of the reproductive age classes (i.e., heifer, cow, cow-with-calf) can become pregnant in an CONTROLLED breeding scenario, as well as the gestation period of animals
+  ask cows [
+    if (heifer? = true) or (cow? = true) or (cow-with-calf? = true) [set pregnancy-rate (1 / (1 + coefA * e ^ (- coefB * live-weight)))]
+    ;if (heifer? = true) or (cow? = true) or (cow-with-calf? = true) [set pregnancy-rate (1 / (1 + coefA * e ^ (- coefB * live-weight))) / 368] ;; alternative version, in which the PR is divided by 368.
+
+    if current-season = 2 [if random-float 1 < pregnancy-rate [set pregnant? true]]  ;; the reproductive age classes can only become pregnant during the summer in a controlled breeding scenario.
+    if pregnant? = true [
+      set pregnancy-time pregnancy-time + days-per-tick
+      set except-mort-rate 0.3]
+
+    if pregnancy-time = gestation-period [                                           ;; when the gestation period ends (276 days), a new agent (born-calf) is introduced into the system.
+      hatch-cows 1 [
+        let new-child nobody
+        set new-child self
+        set parent myself
+        set child nobody
+        create-link-with myself                                                      ;; this new agent is linked with its parent agent
+        if (spatial-management = "rotational grazing") [if paddock-a = 1 [move-to one-of patches with [paddock-a = 1]] if paddock-b = 1 [move-to one-of patches with [paddock-b = 1]] if paddock-c = 1 [move-to one-of patches with [paddock-c = 1]] if paddock-d = 1 [move-to one-of patches with [paddock-d = 1]]]
+        if  (spatial-management = "free grazing") [setxy random-pxcor random-pycor]
+        ifelse random-float 1 < 0.5                                                  ;; 50% chance of being born as a male or female calf
+        [become-born-calf-female]
+        [become-born-calf-male]]
+      set pregnant? false
+      set pregnancy-time 0
+      become-cow-with-calf]
+  ]
+end
+
+
 to update-grass-height                                                               ;; the DDMC of all cows (total DDMC, in kg) in each patch is calculated and converted back to grass height (cm) to calculate the grass height consumed in each patch (GH-consumed)
 ask patches [
     set GH-consumed 0
@@ -817,6 +928,7 @@ ask patches [
   ]
 end
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ECONOMIC SUBMODEL PROCEDURES: Cattle prices, cattle sales (ordinary and extraordinary sales) and farm balance
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -825,7 +937,7 @@ end
 ;; Cattle prices
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to update-prices
+to update-prices                                                                     ;;## ORDINARY SALES MODULE
   ask cows [
     if born-calf? = true [set price item current-season born-calf-prices set value price * live-weight]
     if weaned-calf? = true [set price item current-season weaned-calf-prices set value price * live-weight]
@@ -838,10 +950,10 @@ to update-prices
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Cattle sales: ordinary sales                                                                                 ;; Ordinary cattle sales are held on the first day of fall.
+;; Cattle sales: ordinary sales                                                      ;; Ordinary cattle sales are held on the first day of fall.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to sell-males                                                                                                   ;; Ordinary sale of weaned male calves and steers, determined by the maximum number of males the farmer wishes to keep in the system ("keep-n-steers" slider in the interface)
+to sell-males                                                                        ;;## ORDINARY SALES MODULE ;; Ordinary sale of weaned male calves and steers, determined by the maximum number of males the farmer wishes to keep in the system ("keep-n-steers" slider in the interface)
   if current-season = 3 and (season-days = 1) [
     if any? cows with [weaned-calf-male?] [
       if count cows with [weaned-calf-male?] > keep-n-steers [
@@ -860,23 +972,31 @@ to sell-males                                                                   
 end
 
 
-to sell-empty-old-cows                                                                                          ;; Ordinary sale of old empty cows. The age at which a cow is considered old is determined by the "age-sell-old-cow" slider in the interface.
+to sell-empty-old-cows                                                               ;;## ORDINARY SALES MODULE ;; Ordinary sale of old empty cows. The age at which a cow is considered old is determined by the "age-sell-old-cow" slider in the interface.
   if current-season = 3 and (season-days = 1) [
     if any? cows with [cow?] [
-          ask cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [
+
+      ;ask cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+      ask cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [
+
             set sale? true
-            set OS-empty-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale?]]]] ;; DEBES AÑADIR UNA VARIABLE NUEVA PARA ESTO
+            set OS-empty-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]]
 
   ask cows with [sale?] [die]
  end
 
 
-to sell-empty-heifers-cowsLW_keep-n-cattle                                                                      ;; Ordinary sale of empty heifers and cows with the lowest live weight. The number of empty heifers and cows sold is determined by the maximum number of livestock the farmer wishes to keep in the system ("keep-n-cattle" slider in the interface). This is an early attempt to represent the maximum number of animals a farmer can manage.
+to sell-empty-heifers-cowsLW_keep-n-cattle                                           ;;## ORDINARY SALES MODULE ;; Ordinary sale of empty heifers and cows with the lowest live weight. The number of empty heifers and cows sold is determined by the maximum number of livestock the farmer wishes to keep in the system ("keep-n-cattle" slider in the interface). This is an early attempt to represent the maximum number of animals a farmer can manage.
   if current-season = 3 and (season-days = 1) [
     if any? cows with [heifer? or cow?] [
       if count cows > keep-n-cattle [
-        while [any? cows with [cow? or heifer? and pregnant? = false and sale? = false] and count cows with [sale? = false] > keep-n-cattle] [
-          ask min-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight] [
+
+        ;while [any? cows with [cow? or heifer? and pregnant? = false and sale? = false] and count cows with [sale? = false] > keep-n-cattle] [      ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+        while [any? cows with [cow? or heifer? and sale? = false] and count cows with [sale? = false] > keep-n-cattle] [
+
+          ;ask min-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight] [                                        ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+          ask min-n-of 1 cows with [cow? or heifer? and sale? = false] [live-weight] [
+
             set sale? true
             set OS-NCATTLE-empty-heiferLW sum [value] of cows with [heifer? and sale?]
             set OS-NCATTLE-empty-cowLW sum [value] of cows with [cow? and sale?]]]]]]
@@ -885,12 +1005,17 @@ to sell-empty-heifers-cowsLW_keep-n-cattle                                      
 end
 
 
-to sell-empty-heifers-cowsLW_env-farmer-SR                                                                      ;; If the enviromental-oriented farmer profile is selected, a second sale of empty heifers and cows with the lowest weight can happen if the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
+to sell-empty-heifers-cowsLW_env-farmer-SR                                           ;;## ORDINARY SALES MODULE ;; If the enviromental-oriented farmer profile is selected, a second sale of empty heifers and cows with the lowest weight can happen if the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
   if current-season = 3 and (season-days = 1) [
     if any? cows with [heifer? or cow?] [
+
       if sum [animal-units] of cows / count patches > env-farmer-SR [
-        while [any? cows with [cow? or heifer? and pregnant? = false and sale? = false] and sum [animal-units] of cows with [sale? = false] / count patches > env-farmer-SR] [
-          ask min-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight] [
+        ;while [any? cows with [cow? or heifer? and pregnant? = false and sale? = false] and sum [animal-units] of cows with [sale? = false] / count patches > env-farmer-SR] [         ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+        while [any? cows with [cow? or heifer? and sale? = false] and sum [animal-units] of cows with [sale? = false] / count patches > env-farmer-SR] [
+
+          ;ask min-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight] [                                                                           ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+          ask min-n-of 1 cows with [cow? or heifer? and sale? = false] [live-weight] [
+
             set sale? true
             set OS-SR-empty-heiferLW sum [value] of cows with [heifer? and sale?]
             set OS-SR-empty-cowLW sum [value] of cows with [cow? and sale?]]]]]]
@@ -910,7 +1035,7 @@ end
 ;; Farm balance
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to farm-balance
+to farm-balance                                                                      ;;## ORDINARY SALES MODULE
   set ordinary-sales-income OS-males-weaned-calf + OS-males-steer + OS-empty-old-cow + OS-NCATTLE-empty-heiferLW + OS-NCATTLE-empty-cowLW + OS-SR-empty-heiferLW + OS-SR-empty-cowLW
 
   set income ordinary-sales-income + extraordinary-sales-income
@@ -2384,6 +2509,21 @@ false
 "" ""
 PENS
 "default" 1.0 0 -16777216 true "" "plot sum [live-weight] of cows / count patches"
+
+SLIDER
+221
+876
+403
+909
+early-weaning-threshold
+early-weaning-threshold
+180
+300
+200.0
+1
+1
+kg
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
