@@ -698,6 +698,8 @@ to go
 
   farm-balance                                                                       ;;## ORDINARY SALES MODULE
 
+  ;ask cows with [pregnant?] [set color pink + 2 set size 1.1]
+
   tick
 end
 
@@ -895,7 +897,7 @@ to controlled-breeding                                                          
     if (heifer? = true) or (cow? = true) or (cow-with-calf? = true) [set pregnancy-rate (1 / (1 + coefA * e ^ (- coefB * live-weight)))]
     ;if (heifer? = true) or (cow? = true) or (cow-with-calf? = true) [set pregnancy-rate (1 / (1 + coefA * e ^ (- coefB * live-weight))) / 368] ;; alternative version, in which the PR is divided by 368.
 
-    if current-season = 2 [if random-float 1 < pregnancy-rate [set pregnant? true]]  ;; the reproductive age classes can only become pregnant during the summer in a controlled breeding scenario.
+    if current-season = controlled-breeding-season [if random-float 1 < pregnancy-rate [set pregnant? true]]  ;; in a controlled breeding scenario, reproductive age classes can only get pregnant during the season selected by the "controlled-breeding-season" slider in the interface. By default, the breeding season is summer.
     if pregnant? = true [
       set pregnancy-time pregnancy-time + days-per-tick
       set except-mort-rate 0.3]
@@ -964,7 +966,7 @@ to sell-males                                                                   
   if current-season = 3 and (season-days = 1) [
     if any? cows with [steer?] [
       if count cows with [steer?] > keep-MAX-n-steers [
-        ask n-of (count cows with [steer?] - keep-n-steers) cows with [steer?] [
+        ask n-of (count cows with [steer?] - keep-MAX-n-steers) cows with [steer?] [
           set sale? true
           set OS-males-steer sum [value] of cows with [steer? and sale?]]]]]
 
@@ -2439,7 +2441,7 @@ CHOOSER
 farmer-profile
 farmer-profile
 "none" "traditional" "market" "environmental"
-0
+2
 
 SLIDER
 223
@@ -2523,6 +2525,21 @@ early-weaning-threshold
 1
 1
 kg
+HORIZONTAL
+
+SLIDER
+221
+911
+404
+944
+controlled-breeding-season
+controlled-breeding-season
+0
+3
+2.0
+1
+1
+NIL
 HORIZONTAL
 
 @#$#@#$#@
