@@ -827,13 +827,13 @@ ask cows [
     ask cows with [born-calf-female? and not any? my-links ] [ become-weaned-calf-female ]                                 ;; if the link with the mother (an agent with a "cow-with-calf?" state) is lost (this happens when the mother dies, or when the mother switches from a "cow-with-calf?" state to a "cow?" state), the calf weans prematurely.
     ask cows with [born-calf-male? and not any? my-links ] [ become-weaned-calf-male ]
 
-    if (born-calf-female? = true) and (age = weaned-calf-age-min) [become-weaned-calf-female ask my-out-links [die]]       ;; when the lactating calf moves on to the next age group (weaned-calf), the link (dependency) with its parent is terminated
-    if (born-calf-male? = true) and (age = weaned-calf-age-min) [become-weaned-calf-male ask my-out-links [die]]
-    if (weaned-calf-female? = true) and (age = heifer-age-min) [become-heifer]
-    if (weaned-calf-male? = true) and (age = heifer-age-min) [become-steer]
+    if (born-calf-female? = true) and (age >= weaned-calf-age-min) [become-weaned-calf-female ask my-out-links [die]]       ;; when the lactating calf moves on to the next age group (weaned-calf), the link (dependency) with its parent is terminated
+    if (born-calf-male? = true) and (age >= weaned-calf-age-min) [become-weaned-calf-male ask my-out-links [die]]
+    if (weaned-calf-female? = true) and (age >= heifer-age-min) [become-heifer]
+    if (weaned-calf-male? = true) and (age >= heifer-age-min) [become-steer]
     if (heifer? = true) and (age >= cow-age-min) and (live-weight >= 280 ) [become-cow]
     if cow-with-calf? = true [set lactating-time lactating-time + days-per-tick]
-    if lactating-time = lactation-period [become-cow]
+    if lactating-time >= lactation-period [become-cow]
   ]
 end
 
@@ -852,13 +852,13 @@ ask cows [
     ask cows with [born-calf-female? and not any? my-links ] [ become-weaned-calf-female ]                                 ;; if the link with the mother (an agent with a "cow-with-calf?" state) is lost (this happens when the mother dies, or when the mother switches from a "cow-with-calf?" state to a "cow?" state), the calf weans prematurely.
     ask cows with [born-calf-male? and not any? my-links ] [ become-weaned-calf-male ]
 
-    if (born-calf-female? = true) and (age = weaned-calf-age-min) [become-weaned-calf-female ask my-out-links [die]]       ;; when the lactating calf moves on to the next age group (weaned-calf), the link (dependency) with its parent is terminated
-    if (born-calf-male? = true) and (age = weaned-calf-age-min) [become-weaned-calf-male ask my-out-links [die]]
-    if (weaned-calf-female? = true) and (age = heifer-age-min) [become-heifer]
-    if (weaned-calf-male? = true) and (age = heifer-age-min) [become-steer]
+    if (born-calf-female? = true) and (age >= weaned-calf-age-min) [become-weaned-calf-female ask my-out-links [die]]       ;; when the lactating calf moves on to the next age group (weaned-calf), the link (dependency) with its parent is terminated
+    if (born-calf-male? = true) and (age >= weaned-calf-age-min) [become-weaned-calf-male ask my-out-links [die]]
+    if (weaned-calf-female? = true) and (age >= heifer-age-min) [become-heifer]
+    if (weaned-calf-male? = true) and (age >= heifer-age-min) [become-steer]
     if (heifer? = true) and (age >= cow-age-min) and (live-weight >= 280 ) [become-cow]
     if cow-with-calf? = true [set lactating-time lactating-time + days-per-tick]
-    if lactating-time = lactation-period [become-cow]
+    if lactating-time >= lactation-period [become-cow]
   ]
 end
 
