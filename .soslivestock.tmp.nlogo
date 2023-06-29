@@ -1029,27 +1029,6 @@ to sell-empty-old-cows                                                          
 
 
 
-to sell-empty-heifers-cowsLW_keep-n-cattle_ORIGINAL                                           ;;## ORDINARY SALES MODULE ;; Ordinary sale of empty heifers and cows with the lowest live weight. The number of empty heifers and cows sold is determined by the maximum number of livestock the farmer wishes to keep in the system ("keep-n-cattle" slider in the interface). This is an early attempt to represent the maximum number of animals a farmer can manage.
-  if current-season = 3 and (season-days = 1) [
-    if any? cows with [heifer? or cow?] [
-      if count cows > keep-MAX-n-cattle [
-
-        ;while [any? cows with [cow? or heifer? and pregnant? = false and sale? = false] and count cows with [sale? = false] > keep-MAX-n-cattle] [      ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-        while [any? cows with [cow? or heifer? and sale? = false] and count cows with [sale? = false] > keep-MAX-n-cattle] [
-
-          ;ask min-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight] [                                        ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-          ask min-n-of 1 cows with [cow? or heifer? and sale? = false] [live-weight] [
-
-            set sale? true
-            set OS-NCATTLE-empty-heiferLW sum [value] of cows with [heifer? and sale?]
-            set OS-NCATTLE-empty-cowLW sum [value] of cows with [cow? and sale?]]]]]]
-
-   ask cows with [sale?] [die]
-end
-
-
-
-
 
 
 to sell-empty-heifers-cowsLW_keep-n-cattle                                           ;;## ORDINARY SALES MODULE ;; Ordinary sale of empty heifers and cows with the lowest live weight. The number of empty heifers and cows sold is determined by the maximum number of livestock the farmer wishes to keep in the system ("keep-n-cattle" slider in the interface). This is an early attempt to represent the maximum number of animals a farmer can manage.
@@ -1060,7 +1039,7 @@ to sell-empty-heifers-cowsLW_keep-n-cattle                                      
         ;while [any? cows with [cow? or heifer? and pregnant? = false and sale? = false] and count cows with [sale? = false] > keep-MAX-n-cattle] [      ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
         while [any? cows with [cow? or heifer? and sale? = false] and count cows with [sale? = false] > keep-MAX-n-cattle] [
 
-          if (ordinary-sale-of-cows-with = "highest live weight") [                                                                                      ;;
+          if (ordinary-sale-of-cows-with = "highest live weight") [                                                                                      ;; farmers can choose to sell heifers and cows with the lowest or highest live weight during ordinary sales.
             ;ask max-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight]                                            ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
             ask max-n-of 1 cows with [cow? or heifer? and sale? = false] [live-weight]
             [
@@ -2633,7 +2612,7 @@ CHOOSER
 ordinary-sale-of-cows-with
 ordinary-sale-of-cows-with
 "highest live weight" "lowest live weight"
-0
+1
 
 MONITOR
 995
