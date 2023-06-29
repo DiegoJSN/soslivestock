@@ -722,15 +722,14 @@ to go
   ]
   if (farmer-profile = "market") [
     sell-males                                                                       ;;## ORDINARY SALES MODULE
-    sell-empty-old-cows                                                              ;;## ORDINARY SALES MODULE
+    sell-old-cows                                                                    ;;## ORDINARY SALES MODULE
+    sell-heifers-cows                                                                ;;## ORDINARY SALES MODULE
 
-    sell-empty-heifers-cowsLW_keep-n-cattle                                          ;;## ORDINARY SALES MODULE
   ]
   if (farmer-profile = "environmental") [                                            ;;## ORDINARY SALES MODULE
     sell-males                                                                       ;;## ORDINARY SALES MODULE
-    sell-empty-old-cows                                                              ;;## ORDINARY SALES MODULE
-
-    sell-empty-heifers-cowsLW_keep-n-cattle                                          ;;## ORDINARY SALES MODULE
+    sell-old-cows                                                                    ;;## ORDINARY SALES MODULE
+    sell-heifers-cows                                                                ;;## ORDINARY SALES MODULE
 
     sell-empty-heifers-cowsLW_env-farmer-SR                                          ;;## ORDINARY SALES MODULE
   ]
@@ -1013,7 +1012,7 @@ to sell-males                                                                   
 end
 
 
-to sell-empty-old-cows                                                               ;;## ORDINARY SALES MODULE ;; Ordinary sale of old empty cows. The age at which a cow is considered old is determined by the "age-sell-old-cow" slider in the interface.
+to sell-old-cows                                                               ;;## ORDINARY SALES MODULE ;; Ordinary sale of old empty cows. The age at which a cow is considered old is determined by the "age-sell-old-cow" slider in the interface.
   if current-season = 3 and (season-days = 1) [
     if any? cows with [cow?] [
 
@@ -1028,7 +1027,7 @@ to sell-empty-old-cows                                                          
 
 
 
-to sell-empty-heifers-cowsLW_keep-n-cattle                                           ;;## ORDINARY SALES MODULE ;; Ordinary sale of empty heifers and cows with the lowest live weight. The number of empty heifers and cows sold is determined by the maximum number of livestock the farmer wishes to keep in the system ("keep-n-cattle" slider in the interface). This is an early attempt to represent the maximum number of animals a farmer can manage.
+to sell-heifers-cows                                           ;;## ORDINARY SALES MODULE ;; Ordinary sale of heifers and cows. The number of heifers and cows sold is determined by the maximum number of livestock the farmer wishes to keep in the system ("keep-n-cattle" slider in the interface). This is an early attempt to represent the maximum number of animals a farmer can manage.
   if current-season = 3 and (season-days = 1) [
     if any? cows with [heifer? or cow?] [
       if count cows > keep-MAX-n-cattle [
