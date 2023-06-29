@@ -997,16 +997,28 @@ to ordinary-sale-males                                                          
   if current-season = 3 and (season-days = 1) [
     if any? cows with [weaned-calf-male?] [
       if count cows with [weaned-calf-male?] > keep-MAX-n-steers [
-        ask n-of (count cows with [weaned-calf-male?] - keep-MAX-n-steers) cows with [weaned-calf-male?] [
-          set sale? true
-          set OS-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]]]
+
+        if (ordinary-sale-of-cows-with = "highest live weight") [
+          ask max-n-of (count cows with [weaned-calf-male?] - keep-MAX-n-steers) cows with [weaned-calf-male?] [live-weight] [
+            set sale? true
+            set OS-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]
+        if (ordinary-sale-of-cows-with = "lowest live weight") [
+          ask min-n-of (count cows with [weaned-calf-male?] - keep-MAX-n-steers) cows with [weaned-calf-male?] [live-weight] [
+            set sale? true
+            set OS-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]]]]
 
   if current-season = 3 and (season-days = 1) [
     if any? cows with [steer?] [
       if count cows with [steer?] > keep-MAX-n-steers [
-        ask n-of (count cows with [steer?] - keep-MAX-n-steers) cows with [steer?] [
-          set sale? true
-          set OS-males-steer sum [value] of cows with [steer? and sale?]]]]]
+
+        if (ordinary-sale-of-cows-with = "highest live weight") [
+          ask max-n-of (count cows with [steer?] - keep-MAX-n-steers) cows with [steer?] [live-weight] [
+            set sale? true
+            set OS-males-steer sum [value] of cows with [steer? and sale?]]]
+        if (ordinary-sale-of-cows-with = "lowest live weight") [
+          ask min-n-of (count cows with [steer?] - keep-MAX-n-steers) cows with [steer?] [live-weight] [
+            set sale? true
+            set OS-males-steer sum [value] of cows with [steer? and sale?]]]]]]
 
   ask cows with [sale?] [die]
 end
@@ -1059,9 +1071,19 @@ end
 ;; Cattle sales: extraordinary sales
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to extraordinary-sale-environmental-farmer                                           ;;## ORDINARY SALES MODULE ;; If the enviromental-oriented farmer profile is selected, a second sale of empty heifers and cows with the lowest weight can happen if the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
-  if current-season = 3 and (season-days = 1) [
-    if any? cows with [heifer? or cow?] [
+to extraordinary-sale-males-environmental-farmer                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW ## ORDINARY SALES MODULE ;; If the enviromental-oriented farmer profile is selected, a second sale of empty heifers and cows with the lowest weight can happen if the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
+
+
+end
+
+
+
+
+
+
+to extraordinary-sale-environmental-farmer                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW ## ORDINARY SALES MODULE ;; If the enviromental-oriented farmer profile is selected, a second sale of empty heifers and cows with the lowest weight can happen if the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
+
+  if any? cows with [heifer? or cow?] [
 
       if sum [animal-units] of cows / count patches > env-farmer-SR [
         ;while [any? cows with [cow? or heifer? and pregnant? = false and sale? = false] and sum [animal-units] of cows with [sale? = false] / count patches > env-farmer-SR] [         ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
@@ -1072,7 +1094,7 @@ to extraordinary-sale-environmental-farmer                                      
 
             set sale? true
             set ES-SR-heifer sum [value] of cows with [heifer? and sale?]
-            set ES-SR-cow sum [value] of cows with [cow? and sale?]]]]]]
+            set ES-SR-cow sum [value] of cows with [cow? and sale?]]]]]
 
    ask cows with [sale?] [die]
 end
@@ -1102,7 +1124,9 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to farm-balance                                                                      ;;## ORDINARY SALES MODULE
-  set ordinary-sales-income OS-males-weaned-calf + OS-males-steer + OS-old-cow + OS-heifer + OS-cow + ES-SR-heifer + ES-SR-cow
+  set ordinary-sales-income OS-males-weaned-calf + OS-males-steer + OS-old-cow + OS-heifer + OS-cow
+
+  set extraordinary-sales-income ES-SR-heifer + ES-SR-cow
 
   set income ordinary-sales-income + extraordinary-sales-income
   set balance income - cost
@@ -2514,7 +2538,7 @@ CHOOSER
 farmer-profile
 farmer-profile
 "none" "traditional" "market" "environmental"
-2
+1
 
 SLIDER
 223
@@ -2623,7 +2647,7 @@ CHOOSER
 ordinary-sale-of-cows-with
 ordinary-sale-of-cows-with
 "highest live weight" "lowest live weight"
-1
+0
 
 MONITOR
 995
