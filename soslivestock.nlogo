@@ -65,11 +65,11 @@ globals [
 
   OS-males-weaned-calf                                                              ;;## ORDINARY SALES MODULE ;; income from the sale of male weaned calves during ordinary sales.
   OS-males-steer                                                                    ;;## ORDINARY SALES MODULE ;; income from the sale of steers during ordinary sales.
-  OS-empty-old-cow                                                                  ;;## ORDINARY SALES MODULE ;; income from the sale of empty old cows during ordinary sales.
-  OS-NCATTLE-empty-heiferLW                                                         ;;## ORDINARY SALES MODULE ;; income from the sale of empty heifers during ordinary sales.
-  OS-SR-empty-heiferLW                                                              ;;## ORDINARY SALES MODULE ;; income from the sale of empty heifers during ordinary sales for the environmental-oriented farmer when the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
-  OS-NCATTLE-empty-cowLW                                                            ;;## ORDINARY SALES MODULE ;; income from the sale of empty cows during ordinary sales.
-  OS-SR-empty-cowLW                                                                 ;;## ORDINARY SALES MODULE ;; income from the sale of empty cows during ordinary sales for the environmental-oriented farmer when the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
+  OS-old-cow                                                                  ;;## ORDINARY SALES MODULE ;; income from the sale of empty old cows during ordinary sales.
+  OS-heifer                                                         ;;## ORDINARY SALES MODULE ;; income from the sale of empty heifers during ordinary sales.
+  ES-SR-heifer                                                              ;;## ORDINARY SALES MODULE ;; income from the sale of empty heifers during ordinary sales for the environmental-oriented farmer when the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
+  OS-cow                                                            ;;## ORDINARY SALES MODULE ;; income from the sale of empty cows during ordinary sales.
+  ES-SR-cow                                                                 ;;## ORDINARY SALES MODULE ;; income from the sale of empty cows during ordinary sales for the environmental-oriented farmer when the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
 
   ordinary-sales-income                                                             ;;## ORDINARY SALES MODULE ;; total income from ordinary sales
   extraordinary-sales-income                                                        ;;## ORDINARY SALES MODULE ;; total income from extraordinary sales
@@ -1020,7 +1020,7 @@ to sell-old-cows                                                               ;
       ask cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [
 
             set sale? true
-            set OS-empty-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]]
+            set OS-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]]
 
   ask cows with [sale?] [die]
  end
@@ -1040,20 +1040,27 @@ to sell-heifers-cows                                           ;;## ORDINARY SAL
             ask max-n-of 1 cows with [cow? or heifer? and sale? = false] [live-weight]
             [
             set sale? true
-            set OS-NCATTLE-empty-heiferLW sum [value] of cows with [heifer? and sale?]
-            set OS-NCATTLE-empty-cowLW sum [value] of cows with [cow? and sale?]]]
+            set OS-heifer sum [value] of cows with [heifer? and sale?]
+            set OS-cow sum [value] of cows with [cow? and sale?]]]
 
           if (ordinary-sale-of-cows-with = "lowest live weight") [
             ;ask min-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight]
             ask min-n-of 1 cows with [cow? or heifer? and sale? = false] [live-weight]
             [
             set sale? true
-            set OS-NCATTLE-empty-heiferLW sum [value] of cows with [heifer? and sale?]
-            set OS-NCATTLE-empty-cowLW sum [value] of cows with [cow? and sale?]]]
+            set OS-heifer sum [value] of cows with [heifer? and sale?]
+            set OS-cow sum [value] of cows with [cow? and sale?]]]
     ]]]]
 
    ask cows with [sale?] [die]
 end
+
+
+
+
+
+
+
 
 
 to sell-empty-heifers-cowsLW_env-farmer-SR                                           ;;## ORDINARY SALES MODULE ;; If the enviromental-oriented farmer profile is selected, a second sale of empty heifers and cows with the lowest weight can happen if the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
@@ -1068,8 +1075,8 @@ to sell-empty-heifers-cowsLW_env-farmer-SR                                      
           ask min-n-of 1 cows with [cow? or heifer? and sale? = false] [live-weight] [
 
             set sale? true
-            set OS-SR-empty-heiferLW sum [value] of cows with [heifer? and sale?]
-            set OS-SR-empty-cowLW sum [value] of cows with [cow? and sale?]]]]]]
+            set ES-SR-heifer sum [value] of cows with [heifer? and sale?]
+            set ES-SR-cow sum [value] of cows with [cow? and sale?]]]]]]
 
    ask cows with [sale?] [die]
 end
@@ -1077,6 +1084,23 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Cattle sales: extraordinary sales
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 to extraordinary-sales
 
@@ -1087,14 +1111,14 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to farm-balance                                                                      ;;## ORDINARY SALES MODULE
-  set ordinary-sales-income OS-males-weaned-calf + OS-males-steer + OS-empty-old-cow + OS-NCATTLE-empty-heiferLW + OS-NCATTLE-empty-cowLW + OS-SR-empty-heiferLW + OS-SR-empty-cowLW
+  set ordinary-sales-income OS-males-weaned-calf + OS-males-steer + OS-old-cow + OS-heifer + OS-cow + ES-SR-heifer + ES-SR-cow
 
   set income ordinary-sales-income + extraordinary-sales-income
   set balance income - cost
 
   if current-season = 3 and season-days = 1 [set balance-snapshot balance]            ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################  VARIABLE ESPECIFICA QUE SE USA EXCLUSIVAMENTE PARA CALCULAR EL BALANCE-HISTORY (I.E., ACCUMULATED BALANCE)
 
-  if year-days = 1 [set OS-males-weaned-calf 0 set OS-males-steer 0 set OS-empty-old-cow 0 set OS-NCATTLE-empty-heiferLW 0 set OS-NCATTLE-empty-cowLW 0 set OS-SR-empty-heiferLW 0 set OS-SR-empty-cowLW 0]
+  if year-days = 1 [set OS-males-weaned-calf 0 set OS-males-steer 0 set OS-old-cow 0 set OS-heifer 0 set OS-cow 0 set ES-SR-heifer 0 set ES-SR-cow 0]
   if current-season = 3 and (season-days = 2) [set balance-snapshot 0]                ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################
 end
 
