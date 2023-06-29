@@ -718,20 +718,20 @@ to go
   update-prices                                                                      ;;## ORDINARY SALES MODULE
 
   if (farmer-profile = "traditional") [
-    sell-males                                                                       ;;## ORDINARY SALES MODULE
+    ordinary-sale-males                                                                       ;;## ORDINARY SALES MODULE
   ]
   if (farmer-profile = "market") [
-    sell-males                                                                       ;;## ORDINARY SALES MODULE
-    sell-old-cows                                                                    ;;## ORDINARY SALES MODULE
-    sell-heifers-cows                                                                ;;## ORDINARY SALES MODULE
+    ordinary-sale-males                                                                       ;;## ORDINARY SALES MODULE
+    ordinary-sale-old-cows                                                                    ;;## ORDINARY SALES MODULE
+    ordinary-sale-heifers-cows                                                                ;;## ORDINARY SALES MODULE
 
   ]
   if (farmer-profile = "environmental") [                                            ;;## ORDINARY SALES MODULE
-    sell-males                                                                       ;;## ORDINARY SALES MODULE
-    sell-old-cows                                                                    ;;## ORDINARY SALES MODULE
-    sell-heifers-cows                                                                ;;## ORDINARY SALES MODULE
+    ordinary-sale-males                                                                       ;;## ORDINARY SALES MODULE
+    ordinary-sale-old-cows                                                                    ;;## ORDINARY SALES MODULE
+    ordinary-sale-heifers-cows                                                                ;;## ORDINARY SALES MODULE
 
-    sell-empty-heifers-cowsLW_env-farmer-SR                                          ;;## ORDINARY SALES MODULE
+    extraordinary-sale-environmental-farmer                                          ;;## ORDINARY SALES MODULE
   ]
 
   farm-balance                                                                       ;;## ORDINARY SALES MODULE
@@ -993,7 +993,7 @@ end
 ;; Cattle sales: ordinary sales                                                      ;; Ordinary cattle sales are held on the first day of fall.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to sell-males                                                                        ;;## ORDINARY SALES MODULE ;; Ordinary sale of weaned male calves and steers, determined by the maximum number of males the farmer wishes to keep in the system ("keep-n-steers" slider in the interface)
+to ordinary-sale-males                                                                        ;;## ORDINARY SALES MODULE ;; Ordinary sale of weaned male calves and steers, determined by the maximum number of males the farmer wishes to keep in the system ("keep-n-steers" slider in the interface)
   if current-season = 3 and (season-days = 1) [
     if any? cows with [weaned-calf-male?] [
       if count cows with [weaned-calf-male?] > keep-MAX-n-steers [
@@ -1012,7 +1012,7 @@ to sell-males                                                                   
 end
 
 
-to sell-old-cows                                                               ;;## ORDINARY SALES MODULE ;; Ordinary sale of old empty cows. The age at which a cow is considered old is determined by the "age-sell-old-cow" slider in the interface.
+to ordinary-sale-old-cows                                                               ;;## ORDINARY SALES MODULE ;; Ordinary sale of old empty cows. The age at which a cow is considered old is determined by the "age-sell-old-cow" slider in the interface.
   if current-season = 3 and (season-days = 1) [
     if any? cows with [cow?] [
 
@@ -1027,7 +1027,7 @@ to sell-old-cows                                                               ;
 
 
 
-to sell-heifers-cows                                           ;;## ORDINARY SALES MODULE ;; Ordinary sale of heifers and cows. The number of heifers and cows sold is determined by the maximum number of livestock the farmer wishes to keep in the system ("keep-n-cattle" slider in the interface). This is an early attempt to represent the maximum number of animals a farmer can manage.
+to ordinary-sale-heifers-cows                                           ;;## ORDINARY SALES MODULE ;; Ordinary sale of heifers and cows. The number of heifers and cows sold is determined by the maximum number of livestock the farmer wishes to keep in the system ("keep-n-cattle" slider in the interface). This is an early attempt to represent the maximum number of animals a farmer can manage.
   if current-season = 3 and (season-days = 1) [
     if any? cows with [heifer? or cow?] [
       if count cows > keep-MAX-n-cattle [
@@ -1055,15 +1055,11 @@ to sell-heifers-cows                                           ;;## ORDINARY SAL
    ask cows with [sale?] [die]
 end
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Cattle sales: extraordinary sales
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-
-
-
-
-
-
-to sell-empty-heifers-cowsLW_env-farmer-SR                                           ;;## ORDINARY SALES MODULE ;; If the enviromental-oriented farmer profile is selected, a second sale of empty heifers and cows with the lowest weight can happen if the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
+to extraordinary-sale-environmental-farmer                                           ;;## ORDINARY SALES MODULE ;; If the enviromental-oriented farmer profile is selected, a second sale of empty heifers and cows with the lowest weight can happen if the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
   if current-season = 3 and (season-days = 1) [
     if any? cows with [heifer? or cow?] [
 
@@ -1080,11 +1076,6 @@ to sell-empty-heifers-cowsLW_env-farmer-SR                                      
 
    ask cows with [sale?] [die]
 end
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Cattle sales: extraordinary sales
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 
 
