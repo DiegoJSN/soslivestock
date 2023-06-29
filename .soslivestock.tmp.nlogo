@@ -77,6 +77,11 @@ globals [
   cost                                                                              ;;## ORDINARY SALES MODULE ;; regular costs resulting from the various management activities.
   income                                                                            ;;## ORDINARY SALES MODULE ;; total income (ordinary + extraordinary sales)
   balance                                                                           ;;## ORDINARY SALES MODULE ;; balance (income - cost)
+
+  balance-snapshot                                                                  ;;## ORDINARY SALES MODULE ;; NEW######################################### esta variable se usa exclusivamente para calcular el histórico acumulado de balance (i.e., balance-history)
+  balance-history                                                               ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################
+  balance-historyXticks                                                        ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################
+
 ]
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -215,6 +220,9 @@ to setup-globals
   set income 0                                                                      ;;## ORDINARY SALES MODULE
   set balance 0                                                                     ;;## ORDINARY SALES MODULE
 
+  set balance-snapshot 0                                                            ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################
+  set balance-history []                                                            ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################
+  set balance-historyXticks []                                                      ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################
 
 end
 
@@ -289,6 +297,7 @@ to setup-livestock
     set live-weight-gain-history-year []
     set live-weight-gain-historyXticks-year []
   ]
+
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -623,7 +632,7 @@ to go
   ask cows [                                                                         ;; in this line, the average live weight gain of the cows during the season is calculated
     set live-weight-gain-history-season fput live-weight-gain live-weight-gain-history-season
     if season-days > 0 [set live-weight-gain-historyXticks-season mean (sublist live-weight-gain-history-season 0 season-days)]
-    if season-days >= season-length [set live-weight-gain-history-season []]
+    if season-days = season-length [set live-weight-gain-history-season []]
   ]
 
   ask cows [                                                                         ;; in this line, the average live weight gain of the cows during the year (from day 1 to day 368 and in between) is calculated
@@ -631,6 +640,36 @@ to go
     if year-days > 0 [set live-weight-gain-historyXticks-year mean (sublist live-weight-gain-history-year 0 year-days)]
     if year-days = 368 [set live-weight-gain-history-year []]
   ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  set balance-history fput balance-snapshot balance-history                                                    ;;## ORDINARY SALES MODULE ;; NEW################################################################################################################################# PARA CALCULAR EL ACCUMULATED BALANCE
+  set balance-historyXticks sum (sublist balance-history 0 simulation-time)                                    ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   if simulation-time / 368 = STOP-SIMULATION-AT [stop]                               ;; the observer can decide whether the simulation should run indefinitely (STOP-SIMULATION-AT 0 years) or after X years
 
@@ -988,6 +1027,8 @@ to sell-empty-old-cows                                                          
  end
 
 
+
+
 to sell-empty-heifers-cowsLW_keep-n-cattle                                           ;;## ORDINARY SALES MODULE ;; Ordinary sale of empty heifers and cows with the lowest live weight. The number of empty heifers and cows sold is determined by the maximum number of livestock the farmer wishes to keep in the system ("keep-n-cattle" slider in the interface). This is an early attempt to represent the maximum number of animals a farmer can manage.
   if current-season = 3 and (season-days = 1) [
     if any? cows with [heifer? or cow?] [
@@ -1002,6 +1043,37 @@ to sell-empty-heifers-cowsLW_keep-n-cattle                                      
             set sale? true
             set OS-NCATTLE-empty-heiferLW sum [value] of cows with [heifer? and sale?]
             set OS-NCATTLE-empty-cowLW sum [value] of cows with [cow? and sale?]]]]]]
+
+   ask cows with [sale?] [die]
+end
+
+
+
+
+
+
+to sell-empty-heifers-cowsLW_keep-n-cattle_X                                           ;;## ORDINARY SALES MODULE ;; Ordinary sale of empty heifers and cows with the lowest live weight. The number of empty heifers and cows sold is determined by the maximum number of livestock the farmer wishes to keep in the system ("keep-n-cattle" slider in the interface). This is an early attempt to represent the maximum number of animals a farmer can manage.
+  if current-season = 3 and (season-days = 1) [
+    if any? cows with [heifer? or cow?] [
+      if count cows > keep-MAX-n-cattle [
+
+        ;while [any? cows with [cow? or heifer? and pregnant? = false and sale? = false] and count cows with [sale? = false] > keep-MAX-n-cattle] [      ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+        while [any? cows with [cow? or heifer? and sale? = false] and count cows with [sale? = false] > keep-MAX-n-cattle] [
+
+                    ;if (farmer-profile = "none")
+
+          ;ask min-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight] [                                        ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+
+          if (ordinary-sale-of-cows-with = "highest live weight") [ask max-n-of 1 cows with [cow? or heifer? and sale? = false] [live-weight] [
+            set sale? true
+            set OS-NCATTLE-empty-heiferLW sum [value] of cows with [heifer? and sale?]
+            set OS-NCATTLE-empty-cowLW sum [value] of cows with [cow? and sale?]]]
+
+          if (ordinary-sale-of-cows-with = "lowest live weight") [ask min-n-of 1 cows with [cow? or heifer? and sale? = false] [live-weight] [
+            set sale? true
+            set OS-NCATTLE-empty-heiferLW sum [value] of cows with [heifer? and sale?]
+            set OS-NCATTLE-empty-cowLW sum [value] of cows with [cow? and sale?]]]
+    ]]]]
 
    ask cows with [sale?] [die]
 end
@@ -1043,7 +1115,10 @@ to farm-balance                                                                 
   set income ordinary-sales-income + extraordinary-sales-income
   set balance income - cost
 
-  ;if year-days = 1 [set OS-males-weaned-calf 0 set OS-males-steer 0 set OS-empty-old-cow 0 set OS-NCATTLE-empty-heiferLW 0 set OS-NCATTLE-empty-cowLW 0 set OS-SR-empty-heiferLW 0 set OS-SR-empty-cowLW 0]
+  if current-season = 3 and season-days = 1 [set balance-snapshot balance]            ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################  VARIABLE ESPECIFICA QUE SE USA EXCLUSIVAMENTE PARA CALCULAR EL BALANCE-HISTORY (I.E., ACCUMULATED BALANCE)
+
+  if year-days = 1 [set OS-males-weaned-calf 0 set OS-males-steer 0 set OS-empty-old-cow 0 set OS-NCATTLE-empty-heiferLW 0 set OS-NCATTLE-empty-cowLW 0 set OS-SR-empty-heiferLW 0 set OS-SR-empty-cowLW 0]
+  if current-season = 3 and (season-days = 2) [set balance-snapshot 0]                ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1089,6 +1164,12 @@ end
 to-report crop-efficiency                                                            ;; outputs the crop eficiency (DM consumed / DM offered)
   report sum [DDMC] of cows / (DM-cm-ha * mean [grass-height] of patches) * 100
  end
+
+
+to-report accumulated-balance                                                        ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################
+    report balance-historyXticks
+end
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; REFERENCES
@@ -1195,9 +1276,9 @@ NIL
 HORIZONTAL
 
 PLOT
-1372
+2598
 165
-1710
+2936
 376
 Average of grass-height (GH)
 Days
@@ -1213,9 +1294,9 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot grass-height-report"
 
 PLOT
-965
+2191
 740
-1293
+2519
 960
 Live-weight (LW)
 Days
@@ -1309,9 +1390,9 @@ count cows
 11
 
 MONITOR
-1295
+2521
 740
-1481
+2707
 785
 Average LW (kg/animal)
 mean [live-weight] of cows
@@ -1335,9 +1416,9 @@ cm
 HORIZONTAL
 
 PLOT
-978
+2204
 163
-1364
+2590
 378
 Dry-matter (DM) and DM consumption (DDMC)
 Days
@@ -1364,9 +1445,9 @@ TEXTBOX
 1
 
 MONITOR
-1374
+2600
 377
-1500
+2726
 422
 Average GH (cm/ha)
 grass-height-report
@@ -1438,9 +1519,9 @@ Area (ha)
 11
 
 PLOT
-1595
+2821
 733
-2053
+3279
 960
 Daily individual-live-weight-gain (ILWG)
 Days
@@ -1462,9 +1543,9 @@ PENS
 "Average LWG" 1.0 0 -16777216 true "" "plot mean [live-weight-gain] of cows"
 
 PLOT
-1719
+2945
 165
-2045
+3271
 376
 Crop-efficiency (CE)
 Days
@@ -1480,9 +1561,9 @@ PENS
 "CE" 1.0 0 -16777216 true "" "plot crop-efficiency"
 
 MONITOR
-1721
+2947
 377
-1777
+3003
 422
 CE (%)
 crop-efficiency
@@ -1491,9 +1572,9 @@ crop-efficiency
 11
 
 MONITOR
-978
+2204
 418
-1127
+2353
 463
 Total DDMC (kg)
 sum [DDMC] of cows
@@ -1502,9 +1583,9 @@ sum [DDMC] of cows
 11
 
 MONITOR
-1127
+2353
 418
-1301
+2527
 463
 Average DDMC (kg/animal)
 mean [DDMC] of cows
@@ -1545,9 +1626,9 @@ kg
 HORIZONTAL
 
 PLOT
-978
+2204
 480
-1365
+2591
 674
 Body condition ccore (BCS)
 Days
@@ -1564,9 +1645,9 @@ PENS
 "Cow-with-calf" 1.0 0 -5825686 true "" "plot (mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40"
 
 MONITOR
-1035
+2261
 673
-1165
+2391
 718
 BCS of cows (points)
 ;(mean [live-weight] of cows with [cow?] - mean [min-weight] of cows with [cow?]) / 40\n;(mean [live-weight] of cows with [cow?] - (((mean [live-weight] of cows with [cow?]) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40
@@ -1575,9 +1656,9 @@ BCS of cows (points)
 11
 
 PLOT
-1401
+2627
 480
-1811
+3037
 673
 Pregnancy rate (PR)
 Days
@@ -1595,9 +1676,9 @@ PENS
 "Cow-with-calf" 1.0 0 -5825686 true "" "plot mean [pregnancy-rate] of cows with [cow-with-calf?] * 100"
 
 MONITOR
-1401
+2627
 673
-1533
+2759
 718
 PR of cows (%)
 mean [pregnancy-rate] of cows with [cow?] * 100
@@ -1606,9 +1687,9 @@ mean [pregnancy-rate] of cows with [cow?] * 100
 11
 
 MONITOR
-1532
+2758
 673
-1675
+2901
 718
 PR of cows-with-calf (%)
 mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
@@ -1617,9 +1698,9 @@ mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
 11
 
 MONITOR
-1675
+2901
 673
-1812
+3038
 718
 PR of heifers (%)
 mean [pregnancy-rate] of cows with [heifer?] * 100
@@ -1628,9 +1709,9 @@ mean [pregnancy-rate] of cows with [heifer?] * 100
 11
 
 MONITOR
-978
+2204
 377
-1127
+2353
 422
 Total DM (kg)
 dmgr
@@ -1639,9 +1720,9 @@ dmgr
 11
 
 MONITOR
-1295
+2521
 783
-1481
+2707
 828
 Average ILWG (kg/animal/day)
 ;mean [live-weight-gain] of cows\nILWG
@@ -1650,9 +1731,9 @@ Average ILWG (kg/animal/day)
 11
 
 MONITOR
-1165
+2391
 673
-1320
+2546
 718
 BCS of cows-with-calf (points)
 ;(mean [live-weight] of cows with [cow-with-calf?] - mean [min-weight] of cows with [cow-with-calf?]) / 40\n;(mean [live-weight] of cows with [cow-with-calf?] - (((mean [live-weight] of cows with [cow-with-calf?]) * set-MW-1-AU) / set-1-AU)) / 40\n\n(mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40
@@ -1661,9 +1742,9 @@ BCS of cows-with-calf (points)
 11
 
 MONITOR
-1292
+2518
 871
-1523
+2749
 916
 Average LW of cows (kg/animal)
 mean [live-weight] of cows with [cow?]
@@ -1672,9 +1753,9 @@ mean [live-weight] of cows with [cow?]
 11
 
 MONITOR
-1295
+2521
 916
-1524
+2750
 961
 Average ILWG of cows (kg/animal/day)
 mean [live-weight-gain] of cows with [cow?]
@@ -1869,9 +1950,9 @@ NIL
 1
 
 MONITOR
-1292
+2518
 828
-1594
+2820
 873
 Average annual live weight gain per hectare (ALWG, kg/ha)
 ;(sum [live-weight] of cows with [steer?] - sum [initial-weight] of cows with [steer?]) / count patches; para calcular el WGH de los steers\n;(sum [live-weight] of cows - sum [initial-weight] of cows) / count patches\nALWG
@@ -1913,9 +1994,9 @@ Average LWG since the start of the YEAR
 11
 
 MONITOR
-1127
+2353
 377
-1301
+2527
 422
 Total DM per ha (kg/ha)
 ;(DM-cm-ha * mean [grass-height] of patches) / DM-available-for-cattle\n(dmgr) / count patches
@@ -1965,7 +2046,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-10.0
+5.0
 1
 1
 years
@@ -2238,9 +2319,9 @@ INITIAL GRASS HEIGHT \nAND SOIL QUALITY
 1
 
 MONITOR
-1311
+2537
 64
-1375
+2601
 109
 NIL
 climacoef
@@ -2249,9 +2330,9 @@ climacoef
 11
 
 PLOT
-1371
+2597
 10
-1709
+2935
 146
 climacoef
 NIL
@@ -2331,11 +2412,11 @@ NIL
 1
 
 MONITOR
-407
-976
-577
-1021
-Ordinary sales income (USD)
+994
+107
+1199
+152
+Yearly ordinary sales income (USD)
 ordinary-sales-income
 3
 1
@@ -2357,11 +2438,11 @@ NIL
 HORIZONTAL
 
 PLOT
-407
-1022
-1045
-1172
-income
+994
+153
+1632
+303
+Yearly income
 Days
 USD
 0.0
@@ -2375,22 +2456,22 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot income"
 
 MONITOR
-407
-1192
-577
-1237
-Balance (USD)
+993
+321
+1163
+366
+Yearly balance (USD)
 balance
 3
 1
 11
 
 PLOT
-407
-1238
-1045
-1388
-balance
+994
+369
+1632
+519
+Yearly balance
 Days
 USD
 0.0
@@ -2412,7 +2493,7 @@ keep-MAX-n-cattle
 keep-MAX-n-cattle
 0
 500
-45.0
+20.0
 1
 1
 NIL
@@ -2484,10 +2565,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-1086
-969
-1264
-1014
+1673
+100
+1851
+145
 meat production (kg/ha)
 sum [live-weight] of cows / count patches
 3
@@ -2495,10 +2576,10 @@ sum [live-weight] of cows / count patches
 11
 
 PLOT
-1086
-1015
-1591
-1165
+1673
+146
+2178
+296
 meat production 
 days
 kg/ha
@@ -2541,6 +2622,45 @@ controlled-breeding-season
 1
 NIL
 HORIZONTAL
+
+CHOOSER
+219
+952
+392
+997
+ordinary-sale-of-cows-with
+ordinary-sale-of-cows-with
+"highest live weight" "lowest live weight"
+1
+
+MONITOR
+995
+531
+1174
+576
+Accumulated balance (USD)
+accumulated-balance
+3
+1
+11
+
+PLOT
+995
+584
+1633
+734
+Accumulated balance
+Days
+USD
+0.0
+368.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plot accumulated-balance"
 
 @#$#@#$#@
 ## WHAT IS IT?
