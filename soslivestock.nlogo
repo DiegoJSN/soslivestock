@@ -653,6 +653,12 @@ to go
   set balance-history fput balance balance-history                                                    ;;## ORDINARY SALES MODULE ;; NEW################################################################################################################################# PARA CALCULAR EL ACCUMULATED BALANCE
   set balance-historyXticks sum (sublist balance-history 0 simulation-time)                           ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################
 
+  ;set balance-history fput balance balance-history                                                   ;; Alternative
+  ;if year-days > 0 [set balance-historyXticks sum (sublist balance-history 0 year-days)]
+  ;if year-days = 368 [set balance-history []]
+
+
+
   if simulation-time / 368 = STOP-SIMULATION-AT [stop]                               ;; the observer can decide whether the simulation should run indefinitely (STOP-SIMULATION-AT 0 years) or after X years
 
   grow-grass
@@ -2176,7 +2182,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-1.0
+10.0
 1
 1
 years
@@ -2505,7 +2511,7 @@ CHOOSER
 climacoef-distribution
 climacoef-distribution
 "homogeneus" "uniform" "normal" "exponential_low" "exponential_high" "historic-climacoef" "test-climacoef"
-6
+0
 
 BUTTON
 168
@@ -2570,7 +2576,7 @@ HORIZONTAL
 PLOT
 1009
 277
-1647
+1636
 427
 Yearly income
 Days
@@ -2659,7 +2665,7 @@ SLIDER
 222
 738
 409
-772
+771
 ES-env-farmer-SR
 ES-env-farmer-SR
 0
@@ -2681,10 +2687,10 @@ LIVESTOCK MANAGEMENT STRATEGIES
 1
 
 SLIDER
-1577
-80
-1707
-113
+1573
+78
+1703
+111
 set-test-climacoef
 set-test-climacoef
 0.1
@@ -2840,7 +2846,7 @@ SLIDER
 418
 740
 636
-774
+773
 ES-market-farmer-min-weight
 ES-market-farmer-min-weight
 0

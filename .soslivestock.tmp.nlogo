@@ -650,27 +650,12 @@ to go
     if year-days = 368 [set live-weight-gain-history-year []]
   ]
 
-
-
-
-
-
-
-
   set balance-history fput balance balance-history                                                    ;;## ORDINARY SALES MODULE ;; NEW################################################################################################################################# PARA CALCULAR EL ACCUMULATED BALANCE
-  set balance-historyXticks sum (sublist balance-history 0 simulation-time)                                    ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################
+  set balance-historyXticks sum (sublist balance-history 0 simulation-time)                           ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################
 
-
-
-
-
-
-
-
-
-
-
-
+  ;set balance-history fput balance balance-history                                                   ;; Alternative
+  ;if year-days > 0 [set balance-historyXticks sum (sublist balance-history 0 year-days)]
+  ;if year-days = 368 [set balance-history []]
 
 
 
@@ -737,8 +722,8 @@ to go
   ]
   if (farmer-profile = "environmental") [                                                     ;;## ORDINARY SALES MODULE
     ordinary-sale-males                                                                       ;;## ORDINARY SALES MODULE
-    ;ordinary-sale-old-cows                                                                    ;;## ORDINARY SALES MODULE
-    ;ordinary-sale-heifers-cows                                                                ;;## ORDINARY SALES MODULE
+    ordinary-sale-old-cows                                                                    ;;## ORDINARY SALES MODULE
+    ordinary-sale-heifers-cows                                                                ;;## ORDINARY SALES MODULE
 
 
     extraordinary-sale-males-environmental-farmer                                                ;;##NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW## EXTRAORDINARY SALES MODULE
@@ -1266,14 +1251,6 @@ to farm-balance                                                                 
 
   set income ordinary-sales-income + extraordinary-sales-income
   set balance income - cost
-
-
-
-
-
-
-
-
 
   set OS-males-weaned-calf 0 set OS-males-steer 0 set OS-old-cow 0 set OS-heifer 0 set OS-cow 0
   set ES-males-weaned-calf 0 set ES-males-steer 0 set ES-old-cow 0 set ES-heifer 0 set ES-cow 0
@@ -2205,7 +2182,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-1.0
+10.0
 1
 1
 years
@@ -2534,7 +2511,7 @@ CHOOSER
 climacoef-distribution
 climacoef-distribution
 "homogeneus" "uniform" "normal" "exponential_low" "exponential_high" "historic-climacoef" "test-climacoef"
-6
+0
 
 BUTTON
 168
@@ -2688,7 +2665,7 @@ SLIDER
 222
 738
 409
-772
+771
 ES-env-farmer-SR
 ES-env-farmer-SR
 0
@@ -2710,10 +2687,10 @@ LIVESTOCK MANAGEMENT STRATEGIES
 1
 
 SLIDER
-1577
-80
-1707
-113
+1573
+78
+1703
+111
 set-test-climacoef
 set-test-climacoef
 0.1
@@ -2869,7 +2846,7 @@ SLIDER
 418
 740
 636
-774
+773
 ES-market-farmer-min-weight
 ES-market-farmer-min-weight
 0
