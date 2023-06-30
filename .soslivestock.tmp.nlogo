@@ -2681,13 +2681,13 @@ CHOOSER
 farmer-profile
 farmer-profile
 "none" "traditional" "market" "environmental"
-3
+1
 
 SLIDER
 222
 738
-396
-771
+409
+772
 ES-env-farmer-SR
 ES-env-farmer-SR
 0
@@ -2865,10 +2865,10 @@ count cows with [cow? and age / 368 > age-sell-old-cow and sale? = false]
 11
 
 SLIDER
-402
+418
 740
-606
-773
+636
+774
 ES-market-farmer-min-weight
 ES-market-farmer-min-weight
 0
