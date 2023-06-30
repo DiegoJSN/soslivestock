@@ -657,13 +657,7 @@ to go
 
 
 
-
-
-
-
-
-
-  set balance-history fput balance-snapshot balance-history                                                    ;;## ORDINARY SALES MODULE ;; NEW################################################################################################################################# PARA CALCULAR EL ACCUMULATED BALANCE
+  set balance-history fput balance balance-history                                                    ;;## ORDINARY SALES MODULE ;; NEW################################################################################################################################# PARA CALCULAR EL ACCUMULATED BALANCE
   set balance-historyXticks sum (sublist balance-history 0 simulation-time)                                    ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################
 
 
@@ -743,8 +737,8 @@ to go
   ]
   if (farmer-profile = "environmental") [                                                     ;;## ORDINARY SALES MODULE
     ordinary-sale-males                                                                       ;;## ORDINARY SALES MODULE
-    ordinary-sale-old-cows                                                                    ;;## ORDINARY SALES MODULE
-    ordinary-sale-heifers-cows                                                                ;;## ORDINARY SALES MODULE
+    ;ordinary-sale-old-cows                                                                    ;;## ORDINARY SALES MODULE
+    ;ordinary-sale-heifers-cows                                                                ;;## ORDINARY SALES MODULE
 
 
     extraordinary-sale-males-environmental-farmer                                                ;;##NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW## EXTRAORDINARY SALES MODULE
@@ -1273,10 +1267,17 @@ to farm-balance                                                                 
   set income ordinary-sales-income + extraordinary-sales-income
   set balance income - cost
 
-  if current-season = 3 and season-days = 1 [set balance-snapshot balance]            ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################  VARIABLE ESPECIFICA QUE SE USA EXCLUSIVAMENTE PARA CALCULAR EL BALANCE-HISTORY (I.E., ACCUMULATED BALANCE)
 
-  if year-days = 1 [set OS-males-weaned-calf 0 set OS-males-steer 0 set OS-old-cow 0 set OS-heifer 0 set OS-cow 0]
-  if current-season = 3 and (season-days = 2) [set balance-snapshot 0]                ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################
+
+
+
+
+
+
+
+  set OS-males-weaned-calf 0 set OS-males-steer 0 set OS-old-cow 0 set OS-heifer 0 set OS-cow 0
+  set ES-males-weaned-calf 0 set ES-males-steer 0 set ES-old-cow 0 set ES-heifer 0 set ES-cow 0
+
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1498,10 +1499,10 @@ stocking-rate
 11
 
 PLOT
-1203
-774
-1552
-947
+1207
+885
+1556
+1058
 Cattle age classes population sizes
 Days
 Heads
@@ -2033,10 +2034,10 @@ kg
 HORIZONTAL
 
 PLOT
-1002
-774
-1204
-946
+1005
+885
+1207
+1057
 Stocking rate
 Days
 AU/ha
@@ -2204,7 +2205,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-10.0
+1.0
 1
 1
 years
@@ -2477,10 +2478,10 @@ INITIAL GRASS HEIGHT \nAND SOIL QUALITY
 1
 
 MONITOR
-2537
-64
-2601
-109
+1565
+123
+1629
+168
 NIL
 climacoef
 2
@@ -2488,10 +2489,10 @@ climacoef
 11
 
 PLOT
-2597
-10
-2935
-146
+1010
+80
+1564
+217
 climacoef
 NIL
 NIL
@@ -2533,7 +2534,7 @@ CHOOSER
 climacoef-distribution
 climacoef-distribution
 "homogeneus" "uniform" "normal" "exponential_low" "exponential_high" "historic-climacoef" "test-climacoef"
-0
+6
 
 BUTTON
 168
@@ -2570,10 +2571,10 @@ NIL
 1
 
 MONITOR
-994
-107
-1233
-152
+1009
+230
+1248
+275
 Yearly ordinary sales (OS)  income (USD)
 ordinary-sales-income
 3
@@ -2596,10 +2597,10 @@ NIL
 HORIZONTAL
 
 PLOT
-994
-153
-1632
-303
+1009
+277
+1647
+427
 Yearly income
 Days
 USD
@@ -2615,10 +2616,10 @@ PENS
 "ES income" 1.0 0 -2674135 true "" "plot extraordinary-sales-income"
 
 MONITOR
-993
-321
-1163
-366
+1008
+444
+1178
+489
 Yearly balance (USD)
 balance
 3
@@ -2626,10 +2627,10 @@ balance
 11
 
 PLOT
-994
-369
-1558
-519
+1009
+493
+1573
+643
 Yearly balance
 Days
 USD
@@ -2652,7 +2653,7 @@ keep-MAX-n-cattle
 keep-MAX-n-cattle
 0
 500
-45.0
+50.0
 1
 1
 NIL
@@ -2681,7 +2682,7 @@ CHOOSER
 farmer-profile
 farmer-profile
 "none" "traditional" "market" "environmental"
-1
+3
 
 SLIDER
 222
@@ -2709,10 +2710,10 @@ LIVESTOCK MANAGEMENT STRATEGIES
 1
 
 SLIDER
-4520
-57
-4650
-90
+1577
+80
+1707
+113
 set-test-climacoef
 set-test-climacoef
 0.1
@@ -2724,10 +2725,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-1673
-100
-1851
-145
+1688
+223
+1866
+268
 meat production (kg/ha)
 sum [live-weight] of cows / count patches
 3
@@ -2735,10 +2736,10 @@ sum [live-weight] of cows / count patches
 11
 
 PLOT
-1673
-146
-2178
-296
+1688
+269
+2193
+419
 meat production 
 days
 kg/ha
@@ -2793,10 +2794,10 @@ ordinary-sale-of-cows-with
 1
 
 MONITOR
-995
-531
-1174
-576
+1009
+654
+1188
+699
 Accumulated balance (USD)
 accumulated-balance
 3
@@ -2804,10 +2805,10 @@ accumulated-balance
 11
 
 PLOT
-995
-584
-1560
-734
+1009
+708
+1574
+858
 Accumulated balance
 Days
 USD
@@ -2822,10 +2823,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot accumulated-balance"
 
 MONITOR
-1235
-108
-1500
-153
+1249
+232
+1514
+277
 Yearly extraordinary sales (ES)  income (USD)
 extraordinary-sales-income
 3
@@ -2888,7 +2889,7 @@ keep-MIN-n-cattle
 keep-MIN-n-cattle
 0
 500
-20.0
+10.0
 1
 1
 NIL
