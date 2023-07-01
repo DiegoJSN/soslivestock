@@ -54,42 +54,37 @@ globals [
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Market prices & economic balance global variables
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  supplement-prices                                                                 ;;## ORDINARY SALES MODULE ;; costs for feeding the animals with food supplements (grains, USD/head/season).
-  born-calf-prices                                                                  ;;## ORDINARY SALES MODULE ;; market prices per kg for born calves (USD/Kg).
-  weaned-calf-prices                                                                ;;## ORDINARY SALES MODULE ;; market prices per kg for weaned calves (USD/Kg).
-  steer-prices                                                                      ;;## ORDINARY SALES MODULE ;; market prices per kg for steers (USD/Kg).
-  heifer-prices                                                                     ;;## ORDINARY SALES MODULE ;; market prices per kg for empty heifers (USD/Kg).
-  cow-prices                                                                        ;;## ORDINARY SALES MODULE ;; market prices per kg for empty cows (USD/Kg).
-  cow-with-calf-prices                                                              ;;## ORDINARY SALES MODULE ;; market prices per kg for lactating cows (USD/Kg).
-  pregnant-prices                                                                   ;;## ORDINARY SALES MODULE ;; market prices per kg for pregnant cows (USD/Kg).
+  supplement-prices                                                                 ;;## SALES MODULE ;; costs for feeding the animals with food supplements (grains, USD/head/season).
+  born-calf-prices                                                                  ;;## SALES MODULE ;; market prices per kg for born calves (USD/Kg).
+  weaned-calf-prices                                                                ;;## SALES MODULE ;; market prices per kg for weaned calves (USD/Kg).
+  steer-prices                                                                      ;;## SALES MODULE ;; market prices per kg for steers (USD/Kg).
+  heifer-prices                                                                     ;;## SALES MODULE ;; market prices per kg for empty heifers (USD/Kg).
+  cow-prices                                                                        ;;## SALES MODULE ;; market prices per kg for empty cows (USD/Kg).
+  cow-with-calf-prices                                                              ;;## SALES MODULE ;; market prices per kg for lactating cows (USD/Kg).
+  pregnant-prices                                                                   ;;## SALES MODULE ;; market prices per kg for pregnant cows (USD/Kg).
 
   OS-males-weaned-calf                                                              ;;## ORDINARY SALES MODULE ;; income from the sale of male weaned calves during ordinary sales.
   OS-males-steer                                                                    ;;## ORDINARY SALES MODULE ;; income from the sale of steers during ordinary sales.
-  OS-old-cow                                                                        ;;## ORDINARY SALES MODULE ;; income from the sale of empty old cows during ordinary sales.
-  OS-heifer                                                                         ;;## ORDINARY SALES MODULE ;; income from the sale of empty heifers during ordinary sales.
-  OS-cow                                                                            ;;## ORDINARY SALES MODULE ;; income from the sale of empty cows during ordinary sales.
+  OS-old-cow                                                                        ;;## ORDINARY SALES MODULE ;; income from the sale of old cows during ordinary sales.
+  OS-heifer                                                                         ;;## ORDINARY SALES MODULE ;; income from the sale of heifers during ordinary sales.
+  OS-cow                                                                            ;;## ORDINARY SALES MODULE ;; income from the sale of cows during ordinary sales.
 
-
-
-
-
-  ES-males-weaned-calf                                                   ;;##NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW## EXTRAORDINARY SALES MODULE
-  ES-males-steer                                                         ;;##NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW## EXTRAORDINARY SALES MODULE
-  ES-old-cow                                                             ;;##NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW## EXTRAORDINARY SALES MODULE
-  ES-heifer                                                              ;;##NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW## EXTRAORDINARY SALES MODULE ;; income from the sale of empty heifers during extraordinary sales for the environmental-oriented farmer when the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
-  ES-cow                                                                 ;;##NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW## EXTRAORDINARY SALES MODULE ;; income from the sale of empty cows during extraordinary sales for the environmental-oriented farmer when the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
+  ES-males-weaned-calf                                                              ;;## EXTRAORDINARY SALES MODULE ;; income from the sale of male weaned calves during extraordinary sales.
+  ES-males-steer                                                                    ;;## EXTRAORDINARY SALES MODULE ;; income from the sale of steers during extraordinary sales.
+  ES-old-cow                                                                        ;;## EXTRAORDINARY SALES MODULE ;; income from the sale of old cows during extraordinary sales.
+  ES-heifer                                                                         ;;## EXTRAORDINARY SALES MODULE ;; income from the sale of heifers during extraordinary sales.
+  ES-cow                                                                            ;;## EXTRAORDINARY SALES MODULE ;; income from the sale of empty cows during extraordinary sales.
 
 
   ordinary-sales-income                                                             ;;## ORDINARY SALES MODULE ;; total income from ordinary sales
   extraordinary-sales-income                                                        ;;## EXTRAORDINARY SALES MODULE ;; total income from extraordinary sales
 
-  cost                                                                              ;;## ORDINARY SALES MODULE ;; regular costs resulting from the various management activities.
-  income                                                                            ;;## ORDINARY SALES MODULE ;; total income (ordinary + extraordinary sales)
-  balance                                                                           ;;## ORDINARY SALES MODULE ;; balance (income - cost)
+  cost                                                                              ;;## SALES MODULE ;; regular costs resulting from the various management activities.
+  income                                                                            ;;## SALES MODULE ;; total income (ordinary + extraordinary sales)
+  balance                                                                           ;;## SALES MODULE ;; balance (income - cost)
 
-  balance-snapshot                                                                  ;;## ORDINARY SALES MODULE ;; NEW######################################### esta variable se usa exclusivamente para calcular el histórico acumulado de balance (i.e., balance-history)
-  balance-history                                                                   ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################
-  balance-historyXticks                                                             ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################
+  balance-history                                                                   ;;## SALES MODULE ;; variable to store the balance of the system.
+  balance-historyXticks                                                             ;;## SALES MODULE ;; balance of the system since the start of the simulation.
 
 ]
 
@@ -150,9 +145,9 @@ cows-own [
   pregnancy-time                                                                    ;; variable to keep track of which day of pregnancy the cow is in (from 0 to 276)
   lactating-time                                                                    ;; variable to keep track of which day of the lactation period the cow is in (from 0 to 246)
 
-  price                                                                             ;;## ORDINARY SALES MODULE ;; market prices per kg for one animal (USD/kg)
-  sale?                                                                             ;;## ORDINARY SALES MODULE ;; boolean variable that determines whether the animal is selected for sale (and subsequently removed from the system)
-  value                                                                             ;;## ORDINARY SALES MODULE ;; live weight price for one animal (market prices per kg * live weight of the animal) (USD)
+  price                                                                             ;;## SALES MODULE ;; market prices per kg for one animal (USD/kg)
+  sale?                                                                             ;;## SALES MODULE ;; boolean variable that determines whether the animal is selected for sale (and subsequently removed from the system)
+  value                                                                             ;;## SALES MODULE ;; live weight price for one animal (market prices per kg * live weight of the animal) (USD)
 
   parent                                                                            ;;## EARLY/NATURAL WEANING MODULE
   child                                                                             ;;## EARLY/NATURAL WEANING MODULE
@@ -216,22 +211,21 @@ to setup-globals
   set current-season initial-season                                                 ;; the initial season is set by the observer in the interface
   set historic-climacoef [0.48 0.3 0.72 0.12 0.71 0.65 1.1]                         ;; historic climacoef values. One value = 1 season (for example, 7 values = 7 seasons, the simulation will stop after season 7). Replace these values with historical values. For the model to use "historic-climacoef" values, the observer must select the "historic-climacoef" option within the "climacoef-distribution" chooser in the interface.
 
-  set supplement-prices [0.113 0.121 0.123 0.115]                                   ;;## ORDINARY SALES MODULE
-  set born-calf-prices [0.94 1 0.97 0.961]                                          ;;## ORDINARY SALES MODULE
-  set weaned-calf-prices [0.98 1.02 1 0.982]                                        ;;## ORDINARY SALES MODULE
-  set steer-prices [0.856 0.917 0.881 0.873]                                        ;;## ORDINARY SALES MODULE
-  set heifer-prices [0.701 0.733 0.727 0.696]                                       ;;## ORDINARY SALES MODULE
-  set cow-prices [0.561 0.611 0.573 0.581]                                          ;;## ORDINARY SALES MODULE
-  set pregnant-prices [0.561 0.611 0.573 0.581]                                     ;;## ORDINARY SALES MODULE
-  set cow-with-calf-prices [0.61 0.664 0.665 0.617]                                 ;;## ORDINARY SALES MODULE
+  set supplement-prices [0.113 0.121 0.123 0.115]                                   ;;## SALES MODULE
+  set born-calf-prices [0.94 1 0.97 0.961]                                          ;;## SALES MODULE
+  set weaned-calf-prices [0.98 1.02 1 0.982]                                        ;;## SALES MODULE
+  set steer-prices [0.856 0.917 0.881 0.873]                                        ;;## SALES MODULE
+  set heifer-prices [0.701 0.733 0.727 0.696]                                       ;;## SALES MODULE
+  set cow-prices [0.561 0.611 0.573 0.581]                                          ;;## SALES MODULE
+  set pregnant-prices [0.561 0.611 0.573 0.581]                                     ;;## SALES MODULE
+  set cow-with-calf-prices [0.61 0.664 0.665 0.617]                                 ;;## SALES MODULE
 
-  set cost 0                                                                        ;;## ORDINARY SALES MODULE
-  set income 0                                                                      ;;## ORDINARY SALES MODULE
-  set balance 0                                                                     ;;## ORDINARY SALES MODULE
+  set cost 0                                                                        ;;## SALES MODULE
+  set income 0                                                                      ;;## SALES MODULE
+  set balance 0                                                                     ;;## SALES MODULE
 
-  set balance-snapshot 0                                                            ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################
-  set balance-history []                                                            ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################
-  set balance-historyXticks []                                                      ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################
+  set balance-history []                                                            ;;## SALES MODULE
+  set balance-historyXticks []                                                      ;;## SALES MODULE
 
 end
 
@@ -341,9 +335,9 @@ to become-born-calf-female
   set pregnancy-time 0
   set lactating-time 0
 
-  set price item current-season born-calf-prices                                    ;;## ORDINARY SALES MODULE
-  set sale? false                                                                   ;;## ORDINARY SALES MODULE
-  set value price * live-weight                                                     ;;## ORDINARY SALES MODULE
+  set price item current-season born-calf-prices                                    ;;## SALES MODULE
+  set sale? false                                                                   ;;## SALES MODULE
+  set value price * live-weight                                                     ;;## SALES MODULE
 end
 
 to become-born-calf-male
@@ -374,9 +368,9 @@ to become-born-calf-male
   set pregnancy-time 0
   set lactating-time 0
 
-  set price item current-season born-calf-prices                                    ;;## ORDINARY SALES MODULE
-  set sale? false                                                                   ;;## ORDINARY SALES MODULE
-  set value price * live-weight                                                     ;;## ORDINARY SALES MODULE
+  set price item current-season born-calf-prices                                    ;;## SALES MODULE
+  set sale? false                                                                   ;;## SALES MODULE
+  set value price * live-weight                                                     ;;## SALES MODULE
 end
 
 to become-weaned-calf-female
@@ -405,9 +399,9 @@ to become-weaned-calf-female
   set pregnancy-time 0
   set lactating-time 0
 
-  set price item current-season weaned-calf-prices                                  ;;## ORDINARY SALES MODULE
-  set sale? false                                                                   ;;## ORDINARY SALES MODULE
-  set value price * live-weight                                                     ;;## ORDINARY SALES MODULE
+  set price item current-season weaned-calf-prices                                  ;;## SALES MODULE
+  set sale? false                                                                   ;;## SALES MODULE
+  set value price * live-weight                                                     ;;## SALES MODULE
 end
 
 to become-weaned-calf-male
@@ -436,9 +430,9 @@ to become-weaned-calf-male
   set pregnancy-time 0
   set lactating-time 0
 
-  set price item current-season weaned-calf-prices                                  ;;## ORDINARY SALES MODULE
-  set sale? false                                                                   ;;## ORDINARY SALES MODULE
-  set value price * live-weight                                                     ;;## ORDINARY SALES MODULE
+  set price item current-season weaned-calf-prices                                  ;;## SALES MODULE
+  set sale? false                                                                   ;;## SALES MODULE
+  set value price * live-weight                                                     ;;## SALES MODULE
 end
 
 to become-heifer
@@ -467,9 +461,9 @@ to become-heifer
   set pregnancy-time 0
   set lactating-time 0
 
-  ifelse pregnant? = true [set price item current-season pregnant-prices] [set price item current-season heifer-prices]                 ;;## ORDINARY SALES MODULE
-  set sale? false                                                                                                                       ;;## ORDINARY SALES MODULE
-  set value price * live-weight                                                                                                         ;;## ORDINARY SALES MODULE
+  ifelse pregnant? = true [set price item current-season pregnant-prices] [set price item current-season heifer-prices]                 ;;## SALES MODULE
+  set sale? false                                                                                                                       ;;## SALES MODULE
+  set value price * live-weight                                                                                                         ;;## SALES MODULE
 end
 
 to become-steer
@@ -498,9 +492,9 @@ to become-steer
   set pregnancy-time 0
   set lactating-time 0
 
-  set price item current-season steer-prices                                        ;;## ORDINARY SALES MODULE
-  set sale? false                                                                   ;;## ORDINARY SALES MODULE
-  set value price * live-weight                                                     ;;## ORDINARY SALES MODULE
+  set price item current-season steer-prices                                        ;;## SALES MODULE
+  set sale? false                                                                   ;;## SALES MODULE
+  set value price * live-weight                                                     ;;## SALES MODULE
 end
 
 to become-cow
@@ -529,9 +523,9 @@ to become-cow
   set pregnancy-time 0
   set lactating-time 0
 
-  ifelse pregnant? = true  [set price item current-season pregnant-prices] [set price item current-season cow-prices]                   ;;## ORDINARY SALES MODULE
-  set sale? false                                                                                                                       ;;## ORDINARY SALES MODULE
-  set value price * live-weight                                                                                                         ;;## ORDINARY SALES MODULE
+  ifelse pregnant? = true  [set price item current-season pregnant-prices] [set price item current-season cow-prices]                   ;;## SALES MODULE
+  set sale? false                                                                                                                       ;;## SALES MODULE
+  set value price * live-weight                                                                                                         ;;## SALES MODULE
 end
 
 to become-cow-with-calf
@@ -560,9 +554,9 @@ to become-cow-with-calf
   set pregnancy-time 0
   set lactating-time 0
 
-  ifelse pregnant? = true  [set price item current-season pregnant-prices] [set price item current-season cow-with-calf-prices]         ;;## ORDINARY SALES MODULE
-  set sale? false                                                                                                                       ;;## ORDINARY SALES MODULE
-  set value price * live-weight                                                                                                         ;;## ORDINARY SALES MODULE
+  ifelse pregnant? = true  [set price item current-season pregnant-prices] [set price item current-season cow-with-calf-prices]         ;;## SALES MODULE
+  set sale? false                                                                                                                       ;;## SALES MODULE
+  set value price * live-weight                                                                                                         ;;## SALES MODULE
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -650,10 +644,10 @@ to go
     if year-days = 368 [set live-weight-gain-history-year []]
   ]
 
-  set balance-history fput balance balance-history                                                    ;;## ORDINARY SALES MODULE ;; NEW################################################################################################################################# PARA CALCULAR EL ACCUMULATED BALANCE
-  set balance-historyXticks sum (sublist balance-history 0 simulation-time)                           ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################
+  set balance-history fput balance balance-history                                                    ;;## SALES MODULE
+  set balance-historyXticks sum (sublist balance-history 0 simulation-time)                           ;;## SALES MODULE
 
-  ;set balance-history fput balance balance-history                                                   ;; Alternative
+  ;set balance-history fput balance balance-history
   ;if year-days > 0 [set balance-historyXticks sum (sublist balance-history 0 year-days)]
   ;if year-days = 368 [set balance-history []]
 
@@ -703,7 +697,7 @@ to go
 
 
 
-  update-prices                                                                      ;;## ORDINARY SALES MODULE
+  update-prices                                                                      ;;## SALES MODULE
 
   if (farmer-profile = "traditional") [
     ordinary-sale-males                                                                       ;;## ORDINARY SALES MODULE
@@ -713,9 +707,9 @@ to go
     ordinary-sale-old-cows                                                                    ;;## ORDINARY SALES MODULE
     ordinary-sale-heifers-cows                                                                ;;## ORDINARY SALES MODULE
 
-    extraordinary-sale-males-market-farmer                                         ;;##NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW## EXTRAORDINARY SALES MODULE
-    extraordinary-sale-old-cows-market-farmer                                         ;;##NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW## EXTRAORDINARY SALES MODULE
-    extraordinary-sale-heifers-cows-market-farmer                                         ;;##NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW## EXTRAORDINARY SALES MODULE
+    extraordinary-sale-males-market-farmer                                                    ;;## EXTRAORDINARY SALES MODULE
+    extraordinary-sale-old-cows-market-farmer                                                 ;;## EXTRAORDINARY SALES MODULE
+    extraordinary-sale-heifers-cows-market-farmer                                             ;;## EXTRAORDINARY SALES MODULE
 
 
 
@@ -726,12 +720,12 @@ to go
     ordinary-sale-heifers-cows                                                                ;;## ORDINARY SALES MODULE
 
 
-    extraordinary-sale-males-environmental-farmer                                                ;;##NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW## EXTRAORDINARY SALES MODULE
-    extraordinary-sale-old-cows-environmental-farmer                                             ;;##NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW## EXTRAORDINARY SALES MODULE
-    extraordinary-sale-heifers-cows-environmental-farmer                                         ;;##NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW## EXTRAORDINARY SALES MODULE
+    extraordinary-sale-males-environmental-farmer                                                ;;## EXTRAORDINARY SALES MODULE
+    extraordinary-sale-old-cows-environmental-farmer                                             ;;## EXTRAORDINARY SALES MODULE
+    extraordinary-sale-heifers-cows-environmental-farmer                                         ;;## EXTRAORDINARY SALES MODULE
   ]
 
-  farm-balance                                                                       ;;## ORDINARY SALES MODULE
+  farm-balance                                                                       ;;## SALES MODULE
 
   ;ask cows with [pregnant?] [set color pink + 2 set size 1.1]
 
@@ -974,7 +968,7 @@ end
 ;; Cattle prices
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to update-prices                                                                     ;;## ORDINARY SALES MODULE
+to update-prices                                                                     ;;## SALES MODULE
   ask cows [
     if born-calf? = true [set price item current-season born-calf-prices set value price * live-weight]
     if weaned-calf? = true [set price item current-season weaned-calf-prices set value price * live-weight]
@@ -1080,7 +1074,7 @@ end
 ;; Cattle sales: extraordinary sales
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to extraordinary-sale-males-market-farmer                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW ## EXTRAORDINARY SALES MODULE ;; If the enviromental-oriented farmer profile is selected, a second sale of empty heifers and cows with the lowest weight can happen if the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
+to extraordinary-sale-males-market-farmer                                           ;;## EXTRAORDINARY SALES MODULE ;; Extraordinary sale of male animals for the market-oriented farmer. If the market-oriented farmer profile is selected, the extraordinary sale of male animals takes place when the average live weight of all animals in the system is below a threshold (minimum weight set by the user, "ES-market-farmer-min-weight" slider in the interface).
 
   if any? cows with [weaned-calf-male?] [
     if mean [live-weight] of cows < ES-market-farmer-min-weight and count cows with [weaned-calf-male?] > keep-MAX-n-steers and count cows > keep-MIN-n-cattle [
@@ -1113,7 +1107,7 @@ to extraordinary-sale-males-market-farmer                                       
 
   end
 
-to extraordinary-sale-old-cows-market-farmer                                                               ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW;;## EXTRAORDINARY SALES MODULE ;; Extrardinary sale of old empty cows. The age at which a cow is considered old is determined by the "age-sell-old-cow" slider in the interface.
+to extraordinary-sale-old-cows-market-farmer                                                               ;;## EXTRAORDINARY SALES MODULE ;; Extrardinary sale of old cows for the market-oriented farmer. The age at which a cow is considered old is determined by the "age-sell-old-cow" slider in the interface.
 
   if any? cows with [cow? and age / 368 > age-sell-old-cow] [
     if mean [live-weight] of cows < ES-market-farmer-min-weight and count cows > keep-MIN-n-cattle [
@@ -1135,7 +1129,7 @@ to extraordinary-sale-old-cows-market-farmer                                    
 
  end
 
-to extraordinary-sale-heifers-cows-market-farmer                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW ## EXTRAORDINARY SALES MODULE ;; If the enviromental-oriented farmer profile is selected, a second sale of empty heifers and cows with the lowest weight can happen if the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
+to extraordinary-sale-heifers-cows-market-farmer                                           ;;## EXTRAORDINARY SALES MODULE ;; Extraordinary sale of heifers and cows for the market-oriented farmer
 
   if any? cows with [heifer? or cow?] [
     if mean [live-weight] of cows < ES-market-farmer-min-weight and count cows > keep-MIN-n-cattle [
@@ -1159,7 +1153,7 @@ to extraordinary-sale-heifers-cows-market-farmer                                
 
 end
 
-to extraordinary-sale-males-environmental-farmer                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW ## EXTRAORDINARY SALES MODULE ;; If the enviromental-oriented farmer profile is selected, a second sale of empty heifers and cows with the lowest weight can happen if the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
+to extraordinary-sale-males-environmental-farmer                                           ;; ## EXTRAORDINARY SALES MODULE ;; Extraordinary sale of male animals for the environmental farmer. If the enviromental-oriented farmer profile is selected, the extraordinary sale of male animals takes place when the Stocking Rate (SR) of the farm is above the desirable SR ("ES-env-farmer-SR" slider in the interface).
 
   if any? cows with [weaned-calf-male?] [
     if sum [animal-units] of cows / count patches > ES-env-farmer-SR and count cows with [weaned-calf-male?] > keep-MAX-n-steers and count cows > keep-MIN-n-cattle [
@@ -1192,7 +1186,7 @@ to extraordinary-sale-males-environmental-farmer                                
 
   end
 
-to extraordinary-sale-old-cows-environmental-farmer                                                               ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW;;## EXTRAORDINARY SALES MODULE ;; Extrardinary sale of old empty cows. The age at which a cow is considered old is determined by the "age-sell-old-cow" slider in the interface.
+to extraordinary-sale-old-cows-environmental-farmer                                                               ;;## EXTRAORDINARY SALES MODULE ;; Extraordinary sale of old cows for the environmental farmer. The age at which a cow is considered old is determined by the "age-sell-old-cow" slider in the interface.
 
   if any? cows with [cow? and age / 368 > age-sell-old-cow] [
     if sum [animal-units] of cows / count patches > ES-env-farmer-SR and count cows > keep-MIN-n-cattle [
@@ -1215,7 +1209,7 @@ to extraordinary-sale-old-cows-environmental-farmer                             
  end
 
 
-to extraordinary-sale-heifers-cows-environmental-farmer                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW ## EXTRAORDINARY SALES MODULE ;; If the enviromental-oriented farmer profile is selected, a second sale of empty heifers and cows with the lowest weight can happen if the Stocking Rate (SR) of the farm is above the desirable SR ("env-farmer-SR" slider in the interface).
+to extraordinary-sale-heifers-cows-environmental-farmer                                           ;;## EXTRAORDINARY SALES MODULE ;; Extraordinary sale of heifers and cows for the environmental farmer.
 
   if any? cows with [heifer? or cow?] [
     if sum [animal-units] of cows / count patches > ES-env-farmer-SR and count cows > keep-MIN-n-cattle [
@@ -1302,7 +1296,7 @@ to-report crop-efficiency                                                       
  end
 
 
-to-report accumulated-balance                                                        ;;## ORDINARY SALES MODULE ;; NEW##################################################################################################################################
+to-report accumulated-balance                                                        ;;## ORDINARY SALES MODULE ;; N
     report balance-historyXticks
 end
 
@@ -2576,7 +2570,7 @@ HORIZONTAL
 PLOT
 1009
 277
-1647
+1636
 427
 Yearly income
 Days
