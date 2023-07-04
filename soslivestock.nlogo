@@ -2393,7 +2393,7 @@ set-DM-cm-ha
 set-DM-cm-ha
 1
 180
-90.0
+180.0
 1
 1
 kg/cm/ha
@@ -2438,7 +2438,7 @@ winter-length
 winter-length
 0
 368 - spring-length - summer-length - fall-length
-368.0
+92.0
 1
 1
 days
@@ -2453,7 +2453,7 @@ spring-length
 spring-length
 0
 368 - winter-length - summer-length - fall-length
-0.0
+92.0
 1
 1
 days
@@ -2468,7 +2468,7 @@ summer-length
 summer-length
 0
 368 - spring-length - winter-length - fall-length
-0.0
+92.0
 1
 1
 days
@@ -2483,7 +2483,7 @@ fall-length
 fall-length
 0
 368 - spring-length - winter-length - summer-length
-0.0
+92.0
 1
 1
 days
