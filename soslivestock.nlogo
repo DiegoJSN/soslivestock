@@ -51,6 +51,8 @@ globals [
   lactation-period                                                                  ;; lactating period of cows with calves: 246 days
   weight-gain-lactation                                                             ;; affects the live weight gain of lactating animals (i.e., “born-calf” age class): 0.61 Kg/day
 
+  ticks-since-here                                                                  ;; for rotational grazing strategies only, it measures the number of days since the animals were moved to a new paddock. This variable is important to prevent animals from continuously moving from one paddock to another once they have met the criteria to move to the next paddock. Once animals have met the criteria, they will move to the next paddock and wait X days (defined by the RG-days-in-paddock slider in the interface) to acclimate to the new paddock. Once those days have passed, if the animals still meet the criteria to move between paddocks, they will move.
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Market prices & economic balance global variables
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -632,6 +634,8 @@ to go
 
   if year-days >= 369 [set year-days 1]                                              ;; This restart is important to make sure that the "live-weight-gain-history-year" variable works, which is used in the "ILWG_YEAR" report
 
+  if (spatial-management = "rotational grazing") [set ticks-since-here ticks-since-here + days-per-tick]                              ;; for rotational grazing strategies only, it measures the number of days since the animals were moved to a new paddock. This variable is important to prevent animals from continuously moving from one paddock to another once they have met the criteria to move to the next paddock. Once animals have met the criteria, they will move to the next paddock and wait X days (defined by the RG-days-in-paddock slider in the interface) to acclimate to the new paddock. Once those days have passed, if the animals still meet the criteria to move between paddocks, they will move.
+
   ask cows [                                                                         ;; in this line, the average live weight gain of the cows during the season is calculated
     set live-weight-gain-history-season fput live-weight-gain live-weight-gain-history-season
     if season-days > 0 [set live-weight-gain-historyXticks-season mean (sublist live-weight-gain-history-season 0 season-days)]
@@ -808,7 +812,8 @@ to move                                                                         
               [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]]]]]]
 
     if (farmer-profile = "market") [                                            ;; Market-oriented farmers move cows from one plot to another when the average live weight of the cows is below a threshold (determined by the "RG-live-weight-threshold" slider in the interface).
-      if RG-live-weight-threshold > mean [live-weight] of cows [
+      if RG-live-weight-threshold > mean [live-weight] of cows and ticks-since-here > RG-days-in-paddock [ ;; Once the animals are moved to the next paddock because they have met the criteria, because the effects of the new paddock on the animals' live weight take several days, and to avoid animals moving continuously from one paddock to another during these first days (because they will still have a value below the threshold), the minimum number of days the animals have to adapt to the new paddock before moving to the next is set with the "RG-days-in-paddock" slider.
+        set ticks-since-here 0
         ask cows
         [ifelse paddock-a = 1
           [let next-paddock one-of patches with [paddock-b = 1] move-to next-paddock]
@@ -820,7 +825,8 @@ to move                                                                         
 
 
     if (farmer-profile = "environmental") [                                            ;; Environmental-oriented farmers move cows from one plot to another when the SR of the paddock is below a threshold (determined by the "RG-SR-threshold" slider in the interface).
-      if RG-SR-threshold > sum [animal-units] of cows / (count patches / 4) [
+      if RG-SR-threshold > sum [animal-units] of cows / (count patches / 4) and ticks-since-here > RG-days-in-paddock [
+        set ticks-since-here 0
         ask cows
         [ifelse paddock-a = 1
           [let next-paddock one-of patches with [paddock-b = 1] move-to next-paddock]
@@ -1432,8 +1438,8 @@ end
 GRAPHICS-WINDOW
 401
 108
-969
-677
+968
+676
 -1
 -1
 55.9
@@ -1577,7 +1583,7 @@ MONITOR
 406
 683
 532
-729
+728
 Stoking rate (AU/ha)
 stocking-rate
 4
@@ -2082,7 +2088,7 @@ MONITOR
 533
 684
 647
-730
+729
 Area (ha)
 count patches
 17
@@ -2387,7 +2393,7 @@ set-DM-cm-ha
 set-DM-cm-ha
 1
 180
-180.0
+90.0
 1
 1
 kg/cm/ha
@@ -2432,7 +2438,7 @@ winter-length
 winter-length
 0
 368 - spring-length - summer-length - fall-length
-92.0
+368.0
 1
 1
 days
@@ -2447,7 +2453,7 @@ spring-length
 spring-length
 0
 368 - winter-length - summer-length - fall-length
-92.0
+0.0
 1
 1
 days
@@ -2462,7 +2468,7 @@ summer-length
 summer-length
 0
 368 - spring-length - winter-length - fall-length
-92.0
+0.0
 1
 1
 days
@@ -2477,7 +2483,7 @@ fall-length
 fall-length
 0
 368 - spring-length - winter-length - summer-length
-90.0
+0.0
 1
 1
 days
@@ -2671,7 +2677,7 @@ SLIDER
 214
 825
 399
-859
+858
 keep-MAX-n-steers
 keep-MAX-n-steers
 0
@@ -2734,7 +2740,7 @@ SLIDER
 214
 788
 400
-822
+821
 keep-MAX-n-cattle
 keep-MAX-n-cattle
 0
@@ -2749,7 +2755,7 @@ SLIDER
 214
 749
 401
-783
+782
 age-sell-old-cow
 age-sell-old-cow
 4
@@ -2774,7 +2780,7 @@ SLIDER
 418
 927
 637
-961
+960
 ES-env-farmer-SR
 ES-env-farmer-SR
 0
@@ -2843,7 +2849,7 @@ SLIDER
 214
 895
 399
-929
+928
 early-weaning-threshold
 early-weaning-threshold
 180
@@ -2873,7 +2879,7 @@ CHOOSER
 410
 784
 596
-830
+829
 ordinary-sale-of-cows-with
 ordinary-sale-of-cows-with
 "highest live weight" "lowest live weight"
@@ -2970,7 +2976,7 @@ SLIDER
 214
 860
 399
-894
+893
 keep-MIN-n-cattle
 keep-MIN-n-cattle
 0
@@ -2985,7 +2991,7 @@ MONITOR
 646
 955
 803
-1001
+1000
 NIL
 mean [live-weight] of cows
 3
@@ -2996,7 +3002,7 @@ SLIDER
 213
 966
 410
-1000
+999
 RG-live-weight-threshold
 RG-live-weight-threshold
 180
@@ -3011,7 +3017,7 @@ MONITOR
 407
 727
 533
-773
+772
 SR paddock (AU/ha)
 paddock-SR
 4
@@ -3022,7 +3028,7 @@ SLIDER
 213
 932
 399
-966
+965
 RG-SR-threshold
 RG-SR-threshold
 0
@@ -3037,12 +3043,38 @@ MONITOR
 532
 727
 647
-773
+772
 Paddock area (ha)
 paddock-size
 3
 1
 11
+
+MONITOR
+563
+63
+663
+108
+NIL
+ticks-since-here
+17
+1
+11
+
+SLIDER
+212
+1004
+410
+1037
+RG-days-in-paddock
+RG-days-in-paddock
+0
+368
+31.0
+1
+1
+days
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
