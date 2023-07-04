@@ -702,6 +702,8 @@ to go
   if (farmer-profile = "traditional") [
     ordinary-sale-males                                                                       ;;## ORDINARY SALES MODULE
   ]
+
+
   if (farmer-profile = "market") [
     ordinary-sale-males                                                                       ;;## ORDINARY SALES MODULE
     ordinary-sale-old-cows                                                                    ;;## ORDINARY SALES MODULE
@@ -710,10 +712,9 @@ to go
     extraordinary-sale-males-market-farmer                                                    ;;## EXTRAORDINARY SALES MODULE
     extraordinary-sale-old-cows-market-farmer                                                 ;;## EXTRAORDINARY SALES MODULE
     extraordinary-sale-heifers-cows-market-farmer                                             ;;## EXTRAORDINARY SALES MODULE
-
-
-
   ]
+
+
   if (farmer-profile = "environmental") [                                                     ;;## ORDINARY SALES MODULE
     ordinary-sale-males                                                                       ;;## ORDINARY SALES MODULE
     ordinary-sale-old-cows                                                                    ;;## ORDINARY SALES MODULE
@@ -795,15 +796,42 @@ to move                                                                         
         [move-to target-d1]
         [move-to one-of neighbors with [paddock-d = 1]]]]
 
-    if season-days >= season-length [
-      ask cows
-      [ifelse paddock-a = 1
-        [let next-paddock one-of patches with [paddock-b = 1] move-to next-paddock]
-        [ifelse paddock-b = 1
-          [let next-paddock one-of patches with [paddock-c = 1] move-to next-paddock]
-          [ifelse paddock-c = 1
-            [let next-paddock one-of patches with [paddock-d = 1] move-to next-paddock]
-            [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]]]]]]
+    if (farmer-profile = "none") or (farmer-profile = "traditional") [            ;; Traditional farmers move cows at the end of each season
+      if season-days >= season-length [
+        ask cows
+        [ifelse paddock-a = 1
+          [let next-paddock one-of patches with [paddock-b = 1] move-to next-paddock]
+          [ifelse paddock-b = 1
+            [let next-paddock one-of patches with [paddock-c = 1] move-to next-paddock]
+            [ifelse paddock-c = 1
+              [let next-paddock one-of patches with [paddock-d = 1] move-to next-paddock]
+              [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]]]]]]
+
+    if (farmer-profile = "market") [                                            ;; Market-oriented farmers move cows from one plot to another when the average live weight of the cows is below a threshold (determined by the "RG-live-weight-threshold" slider in the interface).
+      if RG-live-weight-threshold > mean [live-weight] of cows [
+        ask cows
+        [ifelse paddock-a = 1
+          [let next-paddock one-of patches with [paddock-b = 1] move-to next-paddock]
+          [ifelse paddock-b = 1
+            [let next-paddock one-of patches with [paddock-c = 1] move-to next-paddock]
+            [ifelse paddock-c = 1
+              [let next-paddock one-of patches with [paddock-d = 1] move-to next-paddock]
+              [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]]]]]]
+
+
+    if (farmer-profile = "environmental") [                                            ;; Environmental-oriented farmers move cows from one plot to another when the SR of the paddock is below a threshold (determined by the "RG-SR-threshold" slider in the interface).
+      if RG-SR-threshold > sum [animal-units] of cows / (count patches / 4) [
+        ask cows
+        [ifelse paddock-a = 1
+          [let next-paddock one-of patches with [paddock-b = 1] move-to next-paddock]
+          [ifelse paddock-b = 1
+            [let next-paddock one-of patches with [paddock-c = 1] move-to next-paddock]
+            [ifelse paddock-c = 1
+              [let next-paddock one-of patches with [paddock-d = 1] move-to next-paddock]
+              [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]]]]]]
+  ]
+
+
 end
 
 to kgDM/cow                                                                          ;; each cow calculates the amount of Kg of DM it will receive.
@@ -1155,32 +1183,65 @@ end
 
 to extraordinary-sale-males-environmental-farmer                                           ;; ## EXTRAORDINARY SALES MODULE ;; Extraordinary sale of male animals for the environmental farmer. If the enviromental-oriented farmer profile is selected, the extraordinary sale of male animals takes place when the Stocking Rate (SR) of the farm is above the desirable SR ("ES-env-farmer-SR" slider in the interface).
 
-  if any? cows with [weaned-calf-male?] [
-    if sum [animal-units] of cows / count patches > ES-env-farmer-SR and count cows with [weaned-calf-male?] > keep-MAX-n-steers and count cows > keep-MIN-n-cattle [
-      while [any? cows with [weaned-calf-male? and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle and sum [animal-units] of cows with [sale? = false] / count patches > ES-env-farmer-SR and count cows with [weaned-calf-male? and sale? = false] > keep-MAX-n-steers] [
-        if (extraordinary-sale-of-cows-with = "highest live weight") [
-          ask max-n-of 1 cows with [weaned-calf-male? and sale? = false] [live-weight] [
-            set sale? true
-            set ES-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]
+  if (spatial-management = "free grazing") [
 
-        if (extraordinary-sale-of-cows-with = "lowest live weight") [
-          ask min-n-of 1 cows with [weaned-calf-male? and sale? = false] [live-weight] [
-            set sale? true
-            set ES-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]]]]
+    if any? cows with [weaned-calf-male?] [
+      if sum [animal-units] of cows / count patches > ES-env-farmer-SR and count cows with [weaned-calf-male?] > keep-MAX-n-steers and count cows > keep-MIN-n-cattle [
+        while [any? cows with [weaned-calf-male? and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle and sum [animal-units] of cows with [sale? = false] / count patches > ES-env-farmer-SR and count cows with [weaned-calf-male? and sale? = false] > keep-MAX-n-steers] [
+          if (extraordinary-sale-of-cows-with = "highest live weight") [
+            ask max-n-of 1 cows with [weaned-calf-male? and sale? = false] [live-weight] [
+              set sale? true
+              set ES-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]
+
+          if (extraordinary-sale-of-cows-with = "lowest live weight") [
+            ask min-n-of 1 cows with [weaned-calf-male? and sale? = false] [live-weight] [
+              set sale? true
+              set ES-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]]]]
+
+    if any? cows with [steer?] [
+      if sum [animal-units] of cows / count patches > ES-env-farmer-SR and count cows with [steer?] > keep-MAX-n-steers and count cows > keep-MIN-n-cattle [
+        while [any? cows with [steer? and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle and sum [animal-units] of cows with [sale? = false] / count patches > ES-env-farmer-SR and count cows with [steer? and sale? = false] > keep-MAX-n-steers] [
+          if (extraordinary-sale-of-cows-with = "highest live weight") [
+            ask max-n-of 1 cows with [steer? and sale? = false] [live-weight] [
+              set sale? true
+              set ES-males-steer sum [value] of cows with [steer? and sale?]]]
+
+          if (extraordinary-sale-of-cows-with = "lowest live weight") [
+            ask min-n-of 1 cows with [steer? and sale? = false] [live-weight] [
+              set sale? true
+              set ES-males-steer sum [value] of cows with [steer? and sale?]]]]]]]
 
 
-  if any? cows with [steer?] [
-    if sum [animal-units] of cows / count patches > ES-env-farmer-SR and count cows with [steer?] > keep-MAX-n-steers and count cows > keep-MIN-n-cattle [
-      while [any? cows with [steer? and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle and sum [animal-units] of cows with [sale? = false] / count patches > ES-env-farmer-SR and count cows with [steer? and sale? = false] > keep-MAX-n-steers] [
-        if (extraordinary-sale-of-cows-with = "highest live weight") [
-          ask max-n-of 1 cows with [steer? and sale? = false] [live-weight] [
-            set sale? true
-            set ES-males-steer sum [value] of cows with [steer? and sale?]]]
 
-        if (extraordinary-sale-of-cows-with = "lowest live weight") [
-          ask min-n-of 1 cows with [steer? and sale? = false] [live-weight] [
-            set sale? true
-            set ES-males-steer sum [value] of cows with [steer? and sale?]]]]]]
+
+  if (spatial-management = "rotational grazing") [
+
+    if any? cows with [weaned-calf-male?] [
+      if sum [animal-units] of cows / (count patches / 4) > ES-env-farmer-SR and count cows with [weaned-calf-male?] > keep-MAX-n-steers and count cows > keep-MIN-n-cattle [
+        while [any? cows with [weaned-calf-male? and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle and sum [animal-units] of cows with [sale? = false] / (count patches / 4) > ES-env-farmer-SR and count cows with [weaned-calf-male? and sale? = false] > keep-MAX-n-steers] [
+          if (extraordinary-sale-of-cows-with = "highest live weight") [
+            ask max-n-of 1 cows with [weaned-calf-male? and sale? = false] [live-weight] [
+              set sale? true
+              set ES-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]
+
+          if (extraordinary-sale-of-cows-with = "lowest live weight") [
+            ask min-n-of 1 cows with [weaned-calf-male? and sale? = false] [live-weight] [
+              set sale? true
+              set ES-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]]]]
+
+    if any? cows with [steer?] [
+      if sum [animal-units] of cows / (count patches / 4) > ES-env-farmer-SR and count cows with [steer?] > keep-MAX-n-steers and count cows > keep-MIN-n-cattle [
+        while [any? cows with [steer? and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle and sum [animal-units] of cows with [sale? = false] / (count patches / 4) > ES-env-farmer-SR and count cows with [steer? and sale? = false] > keep-MAX-n-steers] [
+          if (extraordinary-sale-of-cows-with = "highest live weight") [
+            ask max-n-of 1 cows with [steer? and sale? = false] [live-weight] [
+              set sale? true
+              set ES-males-steer sum [value] of cows with [steer? and sale?]]]
+
+          if (extraordinary-sale-of-cows-with = "lowest live weight") [
+            ask min-n-of 1 cows with [steer? and sale? = false] [live-weight] [
+              set sale? true
+              set ES-males-steer sum [value] of cows with [steer? and sale?]]]]]]]
+
 
   ask cows with [sale?] [die]
 
@@ -1188,21 +1249,45 @@ to extraordinary-sale-males-environmental-farmer                                
 
 to extraordinary-sale-old-cows-environmental-farmer                                                               ;;## EXTRAORDINARY SALES MODULE ;; Extraordinary sale of old cows for the environmental farmer. The age at which a cow is considered old is determined by the "age-sell-old-cow" slider in the interface.
 
-  if any? cows with [cow? and age / 368 > age-sell-old-cow] [
-    if sum [animal-units] of cows / count patches > ES-env-farmer-SR and count cows > keep-MIN-n-cattle [
-      ;while [any? cows with [cow? and age / 368 > age-sell-old-cow and sale? = false and pregnant? = false] and sum [animal-units] of cows with [sale? = false] / count patches > ES-env-farmer-SR] [      ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-      while [any? cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle and sum [animal-units] of cows with [sale? = false] / count patches > ES-env-farmer-SR] [
-        if (extraordinary-sale-of-cows-with = "highest live weight") [
-          ;ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-          ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
-            set sale? true
-            set ES-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]
+  if (spatial-management = "free grazing") [
 
-        if (extraordinary-sale-of-cows-with = "lowest live weight") [
-          ;ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-          ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
-            set sale? true
-            set ES-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]]]]
+    if any? cows with [cow? and age / 368 > age-sell-old-cow] [
+      if sum [animal-units] of cows / count patches > ES-env-farmer-SR and count cows > keep-MIN-n-cattle [
+        ;while [any? cows with [cow? and age / 368 > age-sell-old-cow and sale? = false and pregnant? = false] and sum [animal-units] of cows with [sale? = false] / count patches > ES-env-farmer-SR] [      ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+        while [any? cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle and sum [animal-units] of cows with [sale? = false] / count patches > ES-env-farmer-SR] [
+          if (extraordinary-sale-of-cows-with = "highest live weight") [
+            ;ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+            ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
+              set sale? true
+              set ES-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]
+
+          if (extraordinary-sale-of-cows-with = "lowest live weight") [
+            ;ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+            ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
+              set sale? true
+              set ES-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]]]]]
+
+
+
+  if (spatial-management = "rotational grazing") [
+
+    if any? cows with [cow? and age / 368 > age-sell-old-cow] [
+      if sum [animal-units] of cows / (count patches / 4) > ES-env-farmer-SR and count cows > keep-MIN-n-cattle [
+        ;while [any? cows with [cow? and age / 368 > age-sell-old-cow and sale? = false and pregnant? = false] and sum [animal-units] of cows with [sale? = false] / (count patches / 4) > ES-env-farmer-SR] [      ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+        while [any? cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle and sum [animal-units] of cows with [sale? = false] / (count patches / 4) > ES-env-farmer-SR] [
+          if (extraordinary-sale-of-cows-with = "highest live weight") [
+            ;ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+            ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
+              set sale? true
+              set ES-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]
+
+
+
+          if (extraordinary-sale-of-cows-with = "lowest live weight") [
+            ;ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+            ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
+              set sale? true
+              set ES-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]]]]]
 
   ask cows with [sale?] [die]
 
@@ -1211,23 +1296,49 @@ to extraordinary-sale-old-cows-environmental-farmer                             
 
 to extraordinary-sale-heifers-cows-environmental-farmer                                           ;;## EXTRAORDINARY SALES MODULE ;; Extraordinary sale of heifers and cows for the environmental farmer.
 
-  if any? cows with [heifer? or cow?] [
-    if sum [animal-units] of cows / count patches > ES-env-farmer-SR and count cows > keep-MIN-n-cattle [
-      ;while [any? cows with [cow? or heifer? and pregnant? = false and sale? = false] and sum [animal-units] of cows with [sale? = false] / count patches > ES-env-farmer-SR] [         ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-      while [any? cows with [cow? or heifer? and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle and sum [animal-units] of cows with [sale? = false] / count patches > ES-env-farmer-SR] [
-        if (extraordinary-sale-of-cows-with = "highest live weight") [
-          ;ask max-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight] [                                                                           ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-          ask max-n-of 1 cows with [cow? or heifer? and sale? = false] [live-weight] [
-            set sale? true
-            set ES-heifer sum [value] of cows with [heifer? and sale?]
-            set ES-cow sum [value] of cows with [cow? and sale?]]]
+  if (spatial-management = "free grazing") [
 
-        if (extraordinary-sale-of-cows-with = "lowest live weight") [
-          ;ask min-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight] [                                                                           ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-          ask min-n-of 1 cows with [cow? or heifer? and sale? = false] [live-weight] [
-            set sale? true
-            set ES-heifer sum [value] of cows with [heifer? and sale?]
-            set ES-cow sum [value] of cows with [cow? and sale?]]]]]]
+    if any? cows with [heifer? or cow?] [
+      if sum [animal-units] of cows / count patches > ES-env-farmer-SR and count cows > keep-MIN-n-cattle [
+        ;while [any? cows with [cow? or heifer? and pregnant? = false and sale? = false] and sum [animal-units] of cows with [sale? = false] / count patches > ES-env-farmer-SR] [         ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+        while [any? cows with [cow? or heifer? and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle and sum [animal-units] of cows with [sale? = false] / count patches > ES-env-farmer-SR] [
+          if (extraordinary-sale-of-cows-with = "highest live weight") [
+            ;ask max-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight] [                                                                           ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+            ask max-n-of 1 cows with [cow? or heifer? and sale? = false] [live-weight] [
+              set sale? true
+              set ES-heifer sum [value] of cows with [heifer? and sale?]
+              set ES-cow sum [value] of cows with [cow? and sale?]]]
+
+          if (extraordinary-sale-of-cows-with = "lowest live weight") [
+            ;ask min-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight] [                                                                           ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+            ask min-n-of 1 cows with [cow? or heifer? and sale? = false] [live-weight] [
+              set sale? true
+              set ES-heifer sum [value] of cows with [heifer? and sale?]
+              set ES-cow sum [value] of cows with [cow? and sale?]]]]]]]
+
+
+
+  if (spatial-management = "rotational grazing") [
+
+    if any? cows with [heifer? or cow?] [
+      if sum [animal-units] of cows / (count patches / 4) > ES-env-farmer-SR and count cows > keep-MIN-n-cattle [
+        ;while [any? cows with [cow? or heifer? and pregnant? = false and sale? = false] and sum [animal-units] of cows with [sale? = false] / (count patches / 4) > ES-env-farmer-SR] [         ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+        while [any? cows with [cow? or heifer? and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle and sum [animal-units] of cows with [sale? = false] / (count patches / 4) > ES-env-farmer-SR] [
+          if (extraordinary-sale-of-cows-with = "highest live weight") [
+            ;ask max-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight] [                                                                           ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+            ask max-n-of 1 cows with [cow? or heifer? and sale? = false] [live-weight] [
+              set sale? true
+              set ES-heifer sum [value] of cows with [heifer? and sale?]
+              set ES-cow sum [value] of cows with [cow? and sale?]]]
+
+          if (extraordinary-sale-of-cows-with = "lowest live weight") [
+            ;ask min-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight] [                                                                           ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+            ask min-n-of 1 cows with [cow? or heifer? and sale? = false] [live-weight] [
+              set sale? true
+              set ES-heifer sum [value] of cows with [heifer? and sale?]
+              set ES-cow sum [value] of cows with [cow? and sale?]]]]]]]
+
+
 
   ask cows with [sale?] [die]
 
@@ -1257,6 +1368,10 @@ end
 
 to-report paddock-size
   if (spatial-management = "rotational grazing") [report count patches / 4]          ;; outputs the paddock area when the rotational grazing management strategy is in effect
+end
+
+to-report paddock-SR
+  if (spatial-management = "rotational grazing") [report sum [animal-units] of cows / (count patches / 4)]
 end
 
 to-report stocking-rate                                                              ;; outputs the relation between the number of livestock (in terms of animal units) and the grassland area (num. of patches. 1 patch = 1 ha)
@@ -1296,7 +1411,7 @@ to-report crop-efficiency                                                       
  end
 
 
-to-report accumulated-balance                                                        ;;## ORDINARY SALES MODULE ;; N
+to-report accumulated-balance                                                        ;;## ORDINARY SALES MODULE ;; outputs the accumulated balance of the system since the start of the simulation (USD)
     report balance-historyXticks
 end
 
@@ -1317,8 +1432,8 @@ end
 GRAPHICS-WINDOW
 401
 108
-968
-676
+969
+677
 -1
 -1
 55.9
@@ -1461,8 +1576,8 @@ simulation-time
 MONITOR
 406
 683
-519
-728
+532
+729
 Stoking rate (AU/ha)
 stocking-rate
 4
@@ -1509,10 +1624,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-589
-683
-718
-728
+646
+703
+775
+748
 Total number of cattle
 count cows
 7
@@ -1964,10 +2079,10 @@ GRAZING AREA
 1
 
 MONITOR
-519
-683
-585
-728
+533
+684
+647
+730
 Area (ha)
 count patches
 17
@@ -2553,10 +2668,10 @@ ordinary-sales-income
 11
 
 SLIDER
-220
-853
-371
-886
+214
+825
+399
+859
 keep-MAX-n-steers
 keep-MAX-n-steers
 0
@@ -2587,10 +2702,10 @@ PENS
 "ES income" 1.0 0 -2674135 true "" "plot extraordinary-sales-income"
 
 MONITOR
-1008
-444
-1178
-489
+1010
+440
+1180
+485
 Yearly balance (USD)
 balance
 3
@@ -2598,10 +2713,10 @@ balance
 11
 
 PLOT
-1009
-493
-1573
-643
+1012
+489
+1576
+639
 Yearly balance
 Days
 USD
@@ -2616,10 +2731,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot balance"
 
 SLIDER
-222
-814
-373
-847
+214
+788
+400
+822
 keep-MAX-n-cattle
 keep-MAX-n-cattle
 0
@@ -2631,10 +2746,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-222
-775
-373
-808
+214
+749
+401
+783
 age-sell-old-cow
 age-sell-old-cow
 4
@@ -2647,19 +2762,19 @@ HORIZONTAL
 
 CHOOSER
 222
-670
+683
 374
-715
+728
 farmer-profile
 farmer-profile
 "none" "traditional" "market" "environmental"
 3
 
 SLIDER
-222
-738
-409
-771
+418
+927
+637
+961
 ES-env-farmer-SR
 ES-env-farmer-SR
 0
@@ -2671,10 +2786,10 @@ AU/ha
 HORIZONTAL
 
 TEXTBOX
-230
-630
-380
-660
+229
+643
+379
+673
 LIVESTOCK MANAGEMENT STRATEGIES
 12
 0.0
@@ -2725,10 +2840,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot sum [live-weight] of cows / count patches"
 
 SLIDER
-219
-892
-401
-925
+214
+895
+399
+929
 early-weaning-threshold
 early-weaning-threshold
 180
@@ -2755,20 +2870,20 @@ NIL
 HORIZONTAL
 
 CHOOSER
-623
-828
-796
-873
+410
+784
+596
+830
 ordinary-sale-of-cows-with
 ordinary-sale-of-cows-with
 "highest live weight" "lowest live weight"
 1
 
 MONITOR
-1009
-654
-1188
-699
+1014
+639
+1193
+684
 Accumulated balance (USD)
 accumulated-balance
 3
@@ -2816,10 +2931,10 @@ count cows with [steer?]
 11
 
 CHOOSER
-804
-829
-988
-874
+410
+833
+594
+878
 extraordinary-sale-of-cows-with
 extraordinary-sale-of-cows-with
 "highest live weight" "lowest live weight"
@@ -2838,9 +2953,9 @@ count cows with [cow? and age / 368 > age-sell-old-cow and sale? = false]
 
 SLIDER
 418
-740
+967
 636
-773
+1000
 ES-market-farmer-min-weight
 ES-market-farmer-min-weight
 0
@@ -2852,10 +2967,10 @@ kg
 HORIZONTAL
 
 SLIDER
-409
-813
-582
-846
+214
+860
+399
+894
 keep-MIN-n-cattle
 keep-MIN-n-cattle
 0
@@ -2867,12 +2982,64 @@ NIL
 HORIZONTAL
 
 MONITOR
-650
-735
-813
-780
+646
+955
+803
+1001
 NIL
 mean [live-weight] of cows
+3
+1
+11
+
+SLIDER
+213
+966
+410
+1000
+RG-live-weight-threshold
+RG-live-weight-threshold
+180
+300
+255.0
+1
+1
+kg
+HORIZONTAL
+
+MONITOR
+407
+727
+533
+773
+SR paddock (AU/ha)
+paddock-SR
+4
+1
+11
+
+SLIDER
+213
+932
+399
+966
+RG-SR-threshold
+RG-SR-threshold
+0
+2
+0.3
+0.01
+1
+AU/ha
+HORIZONTAL
+
+MONITOR
+532
+727
+647
+773
+Paddock area (ha)
+paddock-size
 3
 1
 11
