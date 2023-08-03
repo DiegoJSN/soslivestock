@@ -923,7 +923,7 @@ ask cows [
       [set live-weight-gain live-weight * -0.005]]
 
     set live-weight live-weight + live-weight-gain
-    if (adult-cow? = true) and live-weight > maxLWcow [set live-weight maxLWcow]           ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
+    if (acow? = true) and live-weight > maxLWcow [set live-weight maxLWcow]           ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
     if (steer? = true) and live-weight > maxLWsteer [set live-weight maxLWsteer]     ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
     if live-weight < 0 [set live-weight 0]
 
