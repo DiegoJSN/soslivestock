@@ -1618,7 +1618,7 @@ initial-num-cows
 initial-num-cows
 0
 1000
-10.0
+50.0
 1
 1
 NIL
@@ -1972,7 +1972,7 @@ initial-weight-cows
 initial-weight-cows
 100
 1500
-310.0
+300.0
 1
 1
 kg
