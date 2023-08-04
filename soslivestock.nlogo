@@ -91,7 +91,9 @@ globals [
   FS-weaned-calf                                                                    ;; NEWWWWWWWWWWWWWWWWWWWW  ## FEED SUPPLEMENTATION MODULE ;; cost of supplementing weaned calves
   supplement-cost                                                                   ;; NEWWWWWWWWWWWWWWWWWWWW  ## FEED SUPPLEMENTATION MODULE ;; total cost of feed supplementation
 
-  cost                                                                              ;;## SALES MODULE ;; total costs resulting from the livestock system (supplement cost)
+  other-cost                                                                        ;; NEWWWWWWWWWWWWWWWWWWWW  ## SALES MODULE ;; other costs associated with the livestock system
+
+  cost                                                                              ;;## SALES MODULE ;; total costs resulting from the livestock system (supplement cost + other cost)
   income                                                                            ;;## SALES MODULE ;; total income (ordinary + extraordinary sales)
   balance                                                                           ;;## SALES MODULE ;; balance (income - cost)
 
@@ -1235,6 +1237,7 @@ end
 ;; Cattle sales: extraordinary sales
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; Extraordinary sales for the market-oriented farmer
 
 to extraordinary-sale-males-market-farmer                                           ;;## EXTRAORDINARY SALES MODULE ;; Extraordinary sale of male animals for the market-oriented farmer. If the market-oriented farmer profile is selected, the extraordinary sale of male animals takes place when the average live weight of all animals in the system is below a threshold (minimum weight set by the user, "ES-market-farmer-min-weight" slider in the interface).
 
@@ -1312,21 +1315,7 @@ to extraordinary-sale-heifers-cows-market-farmer                                
 end
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+;; Extraordinary sales for the environmental-oriented farmer
 
 to extraordinary-sale-males-environmental-farmer                                           ;; ## EXTRAORDINARY SALES MODULE ;; Extraordinary sale of male animals for the environmental farmer. If the enviromental-oriented farmer profile is selected, the extraordinary sale of male animals takes place when the Stocking Rate (SR) of the farm is above the desirable SR ("ES-env-farmer-SR" slider in the interface).
 
@@ -1358,9 +1347,6 @@ to extraordinary-sale-males-environmental-farmer                                
               set sale? true
               set ES-males-steer sum [value] of cows with [steer? and sale?]]]]]]]
 
-
-
-
   if (spatial-management = "rotational grazing") [
 
     if any? cows with [weaned-calf-male?] [
@@ -1389,7 +1375,6 @@ to extraordinary-sale-males-environmental-farmer                                
               set sale? true
               set ES-males-steer sum [value] of cows with [steer? and sale?]]]]]]]
 
-
   ask cows with [sale?] [die]
 
   end
@@ -1414,8 +1399,6 @@ to extraordinary-sale-old-cows-environmental-farmer                             
               set sale? true
               set ES-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]]]]]
 
-
-
   if (spatial-management = "rotational grazing") [
 
     if any? cows with [cow? and age / 368 > age-sell-old-cow] [
@@ -1427,8 +1410,6 @@ to extraordinary-sale-old-cows-environmental-farmer                             
             ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
               set sale? true
               set ES-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]
-
-
 
           if (extraordinary-sale-of-cows-with = "lowest live weight") [
             ;ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
@@ -1462,8 +1443,6 @@ to extraordinary-sale-heifers-cows-environmental-farmer                         
               set sale? true
               set ES-heifer sum [value] of cows with [heifer? and sale?]
               set ES-cow sum [value] of cows with [cow? and sale?]]]]]]]
-
-
 
   if (spatial-management = "rotational grazing") [
 
@@ -1499,8 +1478,10 @@ to farm-balance                                                                 
 
   set extraordinary-sales-income ES-males-weaned-calf + ES-males-steer + ES-old-cow + ES-heifer + ES-cow
 
+  set other-cost set-other-monthly-costs / (368 / 12)                                           ;; NEWWWWWWWWWWWWWWWWWWWW
+
   set income ordinary-sales-income + extraordinary-sales-income
-  set cost supplement-cost                                                         ;; NEWWWWWWWWWWWWWWWWWWWW
+  set cost supplement-cost + other-cost                                                         ;; NEWWWWWWWWWWWWWWWWWWWW
   set balance income - cost
 
   set OS-males-weaned-calf 0 set OS-males-steer 0 set OS-old-cow 0 set OS-heifer 0 set OS-cow 0
@@ -2774,7 +2755,7 @@ keep-MAX-n-cattle
 keep-MAX-n-cattle
 0
 500
-55.0
+100.0
 1
 1
 NIL
@@ -2839,7 +2820,7 @@ set-direct-climacoef-control
 set-direct-climacoef-control
 0.1
 1.5
-1.0
+0.5
 0.1
 1
 NIL
@@ -3051,10 +3032,10 @@ days
 HORIZONTAL
 
 MONITOR
-1708
-291
-1894
-336
+1531
+492
+1717
+537
 Total daily kg-supplement-DM (kg)
 sum [kg-supplement-DM] of cows
 17
@@ -3152,7 +3133,7 @@ PLOT
 339
 1898
 488
-Daily cost
+Daily costs
 Days
 USD
 0.0
@@ -3160,10 +3141,11 @@ USD
 0.0
 4.0
 true
-false
+true
 "" ""
 PENS
-"default" 1.0 0 -2674135 true "" "plot supplement-cost   "
+"Supplements" 1.0 0 -2674135 true "" "plot supplement-cost   "
+"Other" 1.0 0 -13791810 true "" "plot other-cost"
 
 BUTTON
 1308
@@ -3241,6 +3223,43 @@ MONITOR
 151
 Daily balance (USD)
 balance
+17
+1
+11
+
+SLIDER
+404
+955
+607
+988
+set-other-monthly-costs
+set-other-monthly-costs
+0
+10000
+0.0
+50
+1
+USD
+HORIZONTAL
+
+MONITOR
+1704
+291
+1846
+336
+Daily other costs (USD)
+other-cost
+17
+1
+11
+
+MONITOR
+1691
+105
+1840
+150
+NIL
+accumulated-cost
 17
 1
 11
