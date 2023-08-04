@@ -95,8 +95,14 @@ globals [
   income                                                                            ;;## SALES MODULE ;; total income (ordinary + extraordinary sales)
   balance                                                                           ;;## SALES MODULE ;; balance (income - cost)
 
-  balance-history                                                                   ;;## SALES MODULE ;; variable to store the balance of the system
-  balance-historyXticks                                                             ;;## SALES MODULE ;; balance of the system since the start of the simulation (i.e., savings)
+  cost-history                                                                      ;; NEWWWWWWWWWWWWWWWWWWWW ## SALES MODULE ;; variable to store the cost history of the system
+  cost-historyXticks                                                                ;; NEWWWWWWWWWWWWWWWWWWWW ## SALES MODULE ;; costs of the system since the start of the simulation
+
+  income-history                                                                    ;; NEWWWWWWWWWWWWWWWWWWWW ## SALES MODULE ;; variable to store the income history of the system
+  income-historyXticks                                                              ;; NEWWWWWWWWWWWWWWWWWWWW ## SALES MODULE ;; income of the system since the start of the simulation
+
+  balance-history                                                                   ;; ## SALES MODULE ;; variable to store the balance history of the system
+  balance-historyXticks                                                             ;; ## SALES MODULE ;; balance of the system since the start of the simulation (i.e., savings)
 
 ]
 
@@ -245,6 +251,12 @@ to setup-globals
   set cost 0                                                                        ;;## SALES MODULE
   set income 0                                                                      ;;## SALES MODULE
   set balance 0                                                                     ;;## SALES MODULE
+
+  set cost-history []                                                               ;;## SALES MODULE
+  set cost-historyXticks []                                                         ;;## SALES MODULE
+
+  set income-history []                                                             ;;## SALES MODULE
+  set income-historyXticks []                                                       ;;## SALES MODULE
 
   set balance-history []                                                            ;;## SALES MODULE
   set balance-historyXticks []                                                      ;;## SALES MODULE
@@ -701,7 +713,7 @@ to go
   set season-days season-days + days-per-tick
   set year-days year-days + days-per-tick
 
-  if year-days >= 369 [set year-days 1]                                              ;; This restart is important to make sure that the "live-weight-gain-history-year" variable works, which is used in the "ILWG_YEAR" report
+  if year-days >= 369 [set year-days 1]                                              ;; This reset is important to make sure that the "live-weight-gain-history-year" variable works, which is used in the "ILWG_YEAR" report
 
   if (spatial-management = "rotational grazing") [set ticks-since-here ticks-since-here + days-per-tick]                              ;; for rotational grazing strategies only, it measures the number of days since the animals were moved to a new paddock. This variable is important to prevent animals from continuously moving from one paddock to another once they have met the criteria to move to the next paddock. Once animals have met the criteria, they will move to the next paddock and wait X days (defined by the RG-days-in-paddock slider in the interface) to acclimate to the new paddock. Once those days have passed, if the animals still meet the criteria to move between paddocks, they will move.
 
@@ -718,12 +730,15 @@ to go
   ]
 
 
+  set cost-history fput cost cost-history                                                             ;;## SALES MODULE
+  set cost-historyXticks sum (sublist cost-history 0 simulation-time)                                 ;;## SALES MODULE
+
+  set income-history fput income income-history                                                       ;;## SALES MODULE
+  set income-historyXticks sum (sublist income-history 0 simulation-time)                             ;;## SALES MODULE
+
   set balance-history fput balance balance-history                                                    ;;## SALES MODULE
   set balance-historyXticks sum (sublist balance-history 0 simulation-time)                           ;;## SALES MODULE
 
-  ;set balance-history fput balance balance-history
-  ;if year-days > 0 [set balance-historyXticks sum (sublist balance-history 0 year-days)]
-  ;if year-days = 368 [set balance-history []]
 
   if simulation-time / 368 = STOP-SIMULATION-AT [stop]                               ;; the observer can decide whether the simulation should run indefinitely (STOP-SIMULATION-AT 0 years) or after X years
 
@@ -1274,7 +1289,7 @@ to extraordinary-sale-old-cows-market-farmer                                    
 
 to extraordinary-sale-heifers-cows-market-farmer                                           ;;## EXTRAORDINARY SALES MODULE ;; Extraordinary sale of heifers and cows for the market-oriented farmer
 
-  if count cows with [steer?] <= keep-MAX-n-steers and count cows with [cow? and age / 368 > age-sell-old-cow] = 0 [
+  if count cows with [steer?] <= keep-MAX-n-steers and count cows with [cow? and age / 368 > age-sell-old-cow] = 0 [   ;; when there are no more males and old cows available for the extraordinary sales, the farmer starts selling cows and heifers
     if any? cows with [heifer? or cow?] [
       ;if any? cows with [heifer? or cow? and pregnant? = false] [   ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
       if mean [live-weight] of cows < market-farmer-ES-min-weight and count cows > keep-MIN-n-cattle [
@@ -1471,7 +1486,6 @@ to extraordinary-sale-heifers-cows-environmental-farmer                         
               set ES-cow sum [value] of cows with [cow? and sale?]]]]]]]
 
 
-
   ask cows with [sale?] [die]
 
 end
@@ -1545,7 +1559,15 @@ to-report crop-efficiency                                                       
   report sum [DDMC] of cows / (DM-cm-ha * mean [grass-height] of patches) * 100
  end
 
-to-report accumulated-balance                                                        ;;## ORDINARY SALES MODULE ;; outputs the accumulated balance of the system since the start of the simulation (USD)
+to-report accumulated-cost                                                        ;;## SALES MODULE ;; outputs the accumulated balance of the system since the start of the simulation (USD)
+    report cost-historyXticks
+end
+
+to-report accumulated-income                                                        ;;## SALES MODULE ;; outputs the accumulated balance of the system since the start of the simulation (USD)
+    report income-historyXticks
+end
+
+to-report accumulated-balance                                                        ;;## SALES MODULE ;; outputs the accumulated balance of the system since the start of the simulation (USD)
     report balance-historyXticks
 end
 
@@ -2325,7 +2347,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-50.0
+20.0
 1
 1
 years
@@ -2680,10 +2702,10 @@ NIL
 1
 
 MONITOR
-1179
-283
-1362
-328
+1182
+334
+1365
+379
 Ordinary sales (OS) income (USD)
 ordinary-sales-income
 3
@@ -2706,11 +2728,11 @@ NIL
 HORIZONTAL
 
 PLOT
-1179
-330
-1526
-480
-Income
+1182
+381
+1529
+531
+Daily income
 Days
 USD
 0.0
@@ -2816,7 +2838,7 @@ set-direct-climacoef-control
 set-direct-climacoef-control
 0.1
 1.5
-1.0
+0.5
 0.1
 1
 NIL
@@ -2918,13 +2940,13 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "plot accumulated-balance"
+"Balance" 1.0 0 -16777216 true "" "plot accumulated-balance"
 
 MONITOR
-1364
-283
-1524
-328
+1367
+334
+1527
+379
 Extraordinary sales (ES) income (USD)
 extraordinary-sales-income
 3
@@ -3028,10 +3050,10 @@ days
 HORIZONTAL
 
 MONITOR
-1711
-285
-1897
-330
+1713
+334
+1899
+379
 Total daily kg-supplement-DM (kg)
 sum [kg-supplement-DM] of cows
 17
@@ -3039,10 +3061,10 @@ sum [kg-supplement-DM] of cows
 11
 
 MONITOR
-1536
-286
-1705
-331
+1538
+335
+1707
+380
 Daily supplement cost (USD)
 supplement-cost
 17
@@ -3073,7 +3095,7 @@ cow-min-weight-for-feed-sup
 cow-min-weight-for-feed-sup
 0
 350
-200.0
+300.0
 1
 1
 kg
@@ -3088,7 +3110,7 @@ cow-with-calf-min-weight-for-feed-sup
 cow-with-calf-min-weight-for-feed-sup
 0
 350
-200.0
+300.0
 1
 1
 kg
@@ -3125,11 +3147,11 @@ kg
 HORIZONTAL
 
 PLOT
-1535
-333
-1901
-482
-Cost
+1537
+382
+1903
+531
+Daily cost
 Days
 USD
 0.0
@@ -3148,7 +3170,7 @@ BUTTON
 1428
 49
 NIL
-set balance 60
+set balance 600
 NIL
 1
 T
