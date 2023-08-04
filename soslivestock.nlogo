@@ -1544,6 +1544,7 @@ end
 
 to-report ILWG                                                                       ;; outputs the mean Inidividual Live Weight Gain (kg/animal)
   report mean [live-weight-gain] of cows
+  ;report mean [live-weight-gain] of cows with [born-calf? = false]
 end
 
 to-report ILWG_SEASON                                                                ;; outputs the mean IWLG throughout the season
@@ -1693,10 +1694,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot grass-height-report"
 
 PLOT
-792
-470
-1086
-690
+793
+454
+1173
+674
 Live-weight (LW)
 Days
 kg
@@ -1739,10 +1740,10 @@ stocking-rate
 11
 
 PLOT
-5009
-514
-5303
+1140
 687
+1514
+860
 Cattle age classes population sizes
 Days
 Heads
@@ -1779,9 +1780,9 @@ HORIZONTAL
 
 MONITOR
 1090
-637
-1276
-682
+587
+1270
+632
 Average LW (kg/animal)
 mean [live-weight] of cows
 3
@@ -1907,10 +1908,10 @@ Area (ha)
 11
 
 PLOT
-791
-694
-1086
-916
+793
+679
+1129
+901
 Daily individual-live-weight-gain (ILWG)
 Days
 kg
@@ -2109,9 +2110,9 @@ dmgr
 
 MONITOR
 1091
-686
-1277
-731
+636
+1268
+681
 Average ILWG (kg/animal/day)
 ;mean [live-weight-gain] of cows\nILWG
 3
@@ -2130,10 +2131,10 @@ BCS of cows-with-calf (points)
 11
 
 MONITOR
-1284
-636
-1507
-681
+1273
+587
+1503
+632
 Average LW of adult cows (kg/animal)
 mean [live-weight] of cows with [adult-cow?]
 3
@@ -2141,10 +2142,10 @@ mean [live-weight] of cows with [adult-cow?]
 11
 
 MONITOR
-1287
-687
-1548
-732
+1274
+635
+1503
+680
 Average ILWG of adult cows (kg/animal/day)
 mean [live-weight-gain] of cows with [adult-cow?]
 3
@@ -2160,7 +2161,7 @@ initial-num-steers
 initial-num-steers
 0
 1000
-5.0
+0.0
 1
 1
 NIL
@@ -2253,9 +2254,9 @@ HORIZONTAL
 
 PLOT
 793
-291
-1084
-463
+279
+1173
+451
 Stocking rate
 Days
 AU/ha
@@ -2264,10 +2265,11 @@ AU/ha
 0.0
 0.0
 true
-false
+true
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "plot stocking-rate"
+"SR total area" 1.0 0 -16777216 true "" "plot stocking-rate"
+"SR paddock area" 1.0 0 -7500403 true "" "plot paddock-SR"
 
 OUTPUT
 926
@@ -2346,7 +2348,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-20.0
+50.0
 1
 1
 years
@@ -2701,10 +2703,10 @@ NIL
 1
 
 MONITOR
-1182
-334
-1365
-379
+1177
+291
+1360
+336
 Ordinary sales (OS) income (USD)
 ordinary-sales-income
 3
@@ -2727,10 +2729,10 @@ NIL
 HORIZONTAL
 
 PLOT
-1182
-381
-1529
-531
+1177
+338
+1524
+488
 Daily income
 Days
 USD
@@ -2772,7 +2774,7 @@ keep-MAX-n-cattle
 keep-MAX-n-cattle
 0
 500
-100.0
+55.0
 1
 1
 NIL
@@ -2829,10 +2831,10 @@ LIVESTOCK MANAGEMENT STRATEGIES
 1
 
 SLIDER
-827
-188
-1025
-221
+869
+190
+1066
+223
 set-direct-climacoef-control
 set-direct-climacoef-control
 0.1
@@ -2942,10 +2944,10 @@ PENS
 "Balance" 1.0 0 -16777216 true "" "plot accumulated-balance"
 
 MONITOR
-1367
-334
-1527
-379
+1362
+291
+1522
+336
 Extraordinary sales (ES) income (USD)
 extraordinary-sales-income
 3
@@ -3001,7 +3003,7 @@ market-farmer-RG-live-weight-threshold
 market-farmer-RG-live-weight-threshold
 180
 300
-190.0
+255.0
 1
 1
 kg
@@ -3027,7 +3029,7 @@ env-farmer-RG-SR-threshold
 env-farmer-RG-SR-threshold
 0
 2
-0.3
+0.6
 0.01
 1
 AU/ha
@@ -3049,10 +3051,10 @@ days
 HORIZONTAL
 
 MONITOR
-1713
-334
-1899
-379
+1708
+291
+1894
+336
 Total daily kg-supplement-DM (kg)
 sum [kg-supplement-DM] of cows
 17
@@ -3060,10 +3062,10 @@ sum [kg-supplement-DM] of cows
 11
 
 MONITOR
-1538
-335
-1707
-380
+1533
+292
+1702
+337
 Daily supplement cost (USD)
 supplement-cost
 17
@@ -3094,7 +3096,7 @@ cow-min-weight-for-feed-sup
 cow-min-weight-for-feed-sup
 0
 350
-210.0
+250.0
 1
 1
 kg
@@ -3109,7 +3111,7 @@ cow-with-calf-min-weight-for-feed-sup
 cow-with-calf-min-weight-for-feed-sup
 0
 350
-210.0
+250.0
 1
 1
 kg
@@ -3124,7 +3126,7 @@ heifer/steer-min-weight-for-feed-sup
 heifer/steer-min-weight-for-feed-sup
 0
 300
-150.0
+180.0
 1
 1
 kg
@@ -3139,17 +3141,17 @@ weaned-calf-min-weight-for-feed-sup
 weaned-calf-min-weight-for-feed-sup
 0
 200
-100.0
+180.0
 1
 1
 kg
 HORIZONTAL
 
 PLOT
-1537
-382
-1903
-531
+1532
+339
+1898
+488
 Daily cost
 Days
 USD
@@ -3170,7 +3172,7 @@ BUTTON
 49
 NIL
 set balance 600
-NIL
+T
 1
 T
 OBSERVER
