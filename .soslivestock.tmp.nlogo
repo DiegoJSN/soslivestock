@@ -3228,10 +3228,10 @@ balance
 11
 
 SLIDER
-502
-808
-705
-841
+404
+955
+607
+988
 set-other-monthly-costs
 set-other-monthly-costs
 0
@@ -3263,6 +3263,16 @@ accumulated-cost
 17
 1
 11
+
+TEXTBOX
+361
+991
+693
+1103
+Slider to simulate other costs related to the livestock system (maintenance, veterinary, vehicles, gas, etc.) and/or the farmer's personal (non-work related) costs (such as family costs, etc.).\n\nRight now, the only cost associated with the Livestock System is feed supplementing.
+13
+0.0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
