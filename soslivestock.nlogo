@@ -42,8 +42,8 @@ globals [
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   maxLWG                                                                            ;; defines the maximum live weight gain per animal according to the season: spring = 60 Kg/animal; winter, summer and fall = 40 Kg/animal.
 
-  maxLWcow                                                                          ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE ;; defines the maximum live weight for cows (650 kg)
-  maxLWsteer                                                                        ;; NEWWWWWWWWWWWWWWWWWWWW ;; defines the maximum live weight for steers (1000 kg)
+  maxLWcow                                                                          ;; defines the maximum live weight for cows (650 kg)
+  maxLWsteer                                                                        ;; defines the maximum live weight for steers (1000 kg)
 
   ni                                                                                ;; defines the live weight gain per animal: 0.24 1/cm
   xi                                                                                ;; defines the live weight gain per animal: 132 kg
@@ -84,27 +84,27 @@ globals [
   ordinary-sales-income                                                             ;;## ORDINARY SALES MODULE ;; total income from ordinary sales
   extraordinary-sales-income                                                        ;;## EXTRAORDINARY SALES MODULE ;; total income from extraordinary sales
 
-  FS-cow                                                                            ;; NEWWWWWWWWWWWWWWWWWWWW  ## FEED SUPPLEMENTATION MODULE ;; cost of supplementing adult cows
-  FS-cow-with-calf                                                                  ;; NEWWWWWWWWWWWWWWWWWWWW  ## FEED SUPPLEMENTATION MODULE ;; cost of supplementing cows with calves
-  FS-heifer                                                                         ;; NEWWWWWWWWWWWWWWWWWWWW  ## FEED SUPPLEMENTATION MODULE ;; cost of supplementing heifers
-  FS-steer                                                                          ;; NEWWWWWWWWWWWWWWWWWWWW  ## FEED SUPPLEMENTATION MODULE ;; cost of supplementing steers
-  FS-weaned-calf                                                                    ;; NEWWWWWWWWWWWWWWWWWWWW  ## FEED SUPPLEMENTATION MODULE ;; cost of supplementing weaned calves
-  supplement-cost                                                                   ;; NEWWWWWWWWWWWWWWWWWWWW  ## FEED SUPPLEMENTATION MODULE ;; total cost of feed supplementation
+  FS-cow                                                                            ;;## FEED SUPPLEMENTATION MODULE ;; cost of supplementing adult cows
+  FS-cow-with-calf                                                                  ;;## FEED SUPPLEMENTATION MODULE ;; cost of supplementing cows with calves
+  FS-heifer                                                                         ;;## FEED SUPPLEMENTATION MODULE ;; cost of supplementing heifers
+  FS-steer                                                                          ;;## FEED SUPPLEMENTATION MODULE ;; cost of supplementing steers
+  FS-weaned-calf                                                                    ;;## FEED SUPPLEMENTATION MODULE ;; cost of supplementing weaned calves
+  supplement-cost                                                                   ;;## FEED SUPPLEMENTATION MODULE ;; total cost of feed supplementation
 
-  other-cost                                                                        ;; NEWWWWWWWWWWWWWWWWWWWW  ## SALES MODULE ;; other costs associated with the livestock system
+  other-cost                                                                        ;;## SALES MODULE ;; other costs associated with the livestock system
 
   cost                                                                              ;;## SALES MODULE ;; total costs resulting from the livestock system (supplement cost + other cost)
   income                                                                            ;;## SALES MODULE ;; total income (ordinary + extraordinary sales)
   balance                                                                           ;;## SALES MODULE ;; balance (income - cost)
 
-  cost-history                                                                      ;; NEWWWWWWWWWWWWWWWWWWWW ## SALES MODULE ;; variable to store the cost history of the system
-  cost-historyXticks                                                                ;; NEWWWWWWWWWWWWWWWWWWWW ## SALES MODULE ;; costs of the system since the start of the simulation
+  cost-history                                                                      ;;## SALES MODULE ;; variable to store the cost history of the system
+  cost-historyXticks                                                                ;;## SALES MODULE ;; costs of the system since the start of the simulation
 
-  income-history                                                                    ;; NEWWWWWWWWWWWWWWWWWWWW ## SALES MODULE ;; variable to store the income history of the system
-  income-historyXticks                                                              ;; NEWWWWWWWWWWWWWWWWWWWW ## SALES MODULE ;; income of the system since the start of the simulation
+  income-history                                                                    ;;## SALES MODULE ;; variable to store the income history of the system
+  income-historyXticks                                                              ;;## SALES MODULE ;; income of the system since the start of the simulation
 
-  balance-history                                                                   ;; ## SALES MODULE ;; variable to store the balance history of the system
-  balance-historyXticks                                                             ;; ## SALES MODULE ;; balance of the system since the start of the simulation (i.e., savings)
+  balance-history                                                                   ;;## SALES MODULE ;; variable to store the balance history of the system
+  balance-historyXticks                                                             ;;## SALES MODULE ;; balance of the system since the start of the simulation (i.e., savings)
 
 ]
 
@@ -172,11 +172,11 @@ cows-own [
   parent                                                                            ;;## EARLY/NATURAL WEANING MODULE
   child                                                                             ;;## EARLY/NATURAL WEANING MODULE
 
-  supplemented?                                                                     ;; NEWWWWWWWWWWWWWWWWWWWW  ## FEED SUPPLEMENTATION MODULE ;; boolean variable that indicates whether or not the animal has been selected for feed supplementation
-  difference-LW                                                                     ;; NEWWWWWWWWWWWWWWWWWWWW  ## FEED SUPPLEMENTATION MODULE ;; variable to know how many kilos the animal selected for supplementation is below the threshold ("xxxx-min-weight-for-feed-sup" sliders in the interface) at which it will be supplemented.
+  supplemented?                                                                     ;;## FEED SUPPLEMENTATION MODULE ;; boolean variable that indicates whether or not the animal has been selected for feed supplementation
+  difference-LW                                                                     ;;## FEED SUPPLEMENTATION MODULE ;; variable to know how many kilos the animal selected for supplementation is below the threshold ("xxxx-min-weight-for-feed-sup" sliders in the interface) at which it will be supplemented.
 
-  kg-supplement-DM                                                                  ;; NEWWWWWWWWWWWWWWWWWWWW  ## FEED SUPPLEMENTATION MODULE ;; kg of supplementary feed required by the animal
-  USD-supplement-DM                                                                 ;; NEWWWWWWWWWWWWWWWWWWWW  ## FEED SUPPLEMENTATION MODULE ;; the price of the feed supplement that is required by the animal(USD)
+  kg-supplement-DM                                                                  ;;## FEED SUPPLEMENTATION MODULE ;; kg of supplementary feed required by the animal
+  USD-supplement-DM                                                                 ;;## FEED SUPPLEMENTATION MODULE ;; the price of the feed supplement that is required by the animal(USD)
 
 ]
 
@@ -235,33 +235,33 @@ to setup-globals
   ;set kmax [7.4 22.2 15.6 11.1]
   set maxLWG [40 60 40 40]
 
-  set maxLWcow 650                                                                  ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-  set maxLWsteer 1000                                                               ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
+  set maxLWcow 650
+  set maxLWsteer 1000
 
   set current-season initial-season                                                 ;; the initial season is set by the observer in the interface
   set historic-climacoef [0.48 0.3 0.72 0.12 0.71 0.65 1.1]                         ;; historic climacoef values. One value = 1 season (for example, 7 values = 7 seasons, the simulation will stop after season 7). Replace these values with historical values. For the model to use "historic-climacoef" values, the observer must select the "historic-climacoef" option within the "climacoef-distribution" chooser in the interface.
 
-  set supplement-prices [0.113 0.121 0.123 0.115]                                   ;;## SALES MODULE
-  set born-calf-prices [0.94 1 0.97 0.961]                                          ;;## SALES MODULE
-  set weaned-calf-prices [0.98 1.02 1 0.982]                                        ;;## SALES MODULE
-  set steer-prices [0.856 0.917 0.881 0.873]                                        ;;## SALES MODULE
-  set heifer-prices [0.701 0.733 0.727 0.696]                                       ;;## SALES MODULE
-  set cow-prices [0.561 0.611 0.573 0.581]                                          ;;## SALES MODULE
-  set pregnant-prices [0.561 0.611 0.573 0.581]                                     ;;## SALES MODULE
-  set cow-with-calf-prices [0.61 0.664 0.665 0.617]                                 ;;## SALES MODULE
+  set supplement-prices [0.113 0.121 0.123 0.115]
+  set born-calf-prices [0.94 1 0.97 0.961]
+  set weaned-calf-prices [0.98 1.02 1 0.982]
+  set steer-prices [0.856 0.917 0.881 0.873]
+  set heifer-prices [0.701 0.733 0.727 0.696]
+  set cow-prices [0.561 0.611 0.573 0.581]
+  set pregnant-prices [0.561 0.611 0.573 0.581]
+  set cow-with-calf-prices [0.61 0.664 0.665 0.617]
 
-  set cost 0                                                                        ;;## SALES MODULE
-  set income 0                                                                      ;;## SALES MODULE
-  set balance 0                                                                     ;;## SALES MODULE
+  set cost 0
+  set income 0
+  set balance 0
 
-  set cost-history []                                                               ;;## SALES MODULE
-  set cost-historyXticks []                                                         ;;## SALES MODULE
+  set cost-history []
+  set cost-historyXticks []
 
-  set income-history []                                                             ;;## SALES MODULE
-  set income-historyXticks []                                                       ;;## SALES MODULE
+  set income-history []
+  set income-historyXticks []
 
-  set balance-history []                                                            ;;## SALES MODULE
-  set balance-historyXticks []                                                      ;;## SALES MODULE
+  set balance-history []
+  set balance-historyXticks []
 
 end
 
@@ -387,9 +387,9 @@ to become-born-calf-female
   set sale? false                                                                   ;;## SALES MODULE
   set value price * live-weight                                                     ;;## SALES MODULE
 
-  set supplemented? false                                                           ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-  set kg-supplement-DM 0                                                            ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-  set USD-supplement-DM 0                                                           ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
+  set supplemented? false                                                           ;;## FEED SUPPLEMENTATION MODULE
+  set kg-supplement-DM 0                                                            ;;## FEED SUPPLEMENTATION MODULE
+  set USD-supplement-DM 0                                                           ;;## FEED SUPPLEMENTATION MODULE
 end
 
 to become-born-calf-male
@@ -424,9 +424,9 @@ to become-born-calf-male
   set sale? false                                                                   ;;## SALES MODULE
   set value price * live-weight                                                     ;;## SALES MODULE
 
-  set supplemented? false                                                           ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-  set kg-supplement-DM 0                                                            ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-  set USD-supplement-DM 0                                                           ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
+  set supplemented? false                                                           ;;## FEED SUPPLEMENTATION MODULE
+  set kg-supplement-DM 0                                                            ;;## FEED SUPPLEMENTATION MODULE
+  set USD-supplement-DM 0                                                           ;;## FEED SUPPLEMENTATION MODULE
 end
 
 to become-weaned-calf-female
@@ -459,10 +459,10 @@ to become-weaned-calf-female
   set sale? false                                                                   ;;## SALES MODULE
   set value price * live-weight                                                     ;;## SALES MODULE
 
-  set supplemented? false                                                                               ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-  if supplemented? = true [set difference-LW weaned-calf-min-weight-for-feed-sup - live-weight]         ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-  set kg-supplement-DM 0                                                                                ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-  set USD-supplement-DM 0                                                                               ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
+  set supplemented? false                                                                               ;;## FEED SUPPLEMENTATION MODULE
+  if supplemented? = true [set difference-LW weaned-calf-min-weight-for-feed-sup - live-weight]         ;;## FEED SUPPLEMENTATION MODULE
+  set kg-supplement-DM 0                                                                                ;;## FEED SUPPLEMENTATION MODULE
+  set USD-supplement-DM 0                                                                               ;;## FEED SUPPLEMENTATION MODULE
 end
 
 to become-weaned-calf-male
@@ -495,10 +495,10 @@ to become-weaned-calf-male
   set sale? false                                                                   ;;## SALES MODULE
   set value price * live-weight                                                     ;;## SALES MODULE
 
-  set supplemented? false                                                                                          ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-  if supplemented? = true [set difference-LW weaned-calf-min-weight-for-feed-sup - live-weight]                    ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-  set kg-supplement-DM 0                                                                                           ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-  set USD-supplement-DM 0                                                                                          ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
+  set supplemented? false                                                                                          ;;## FEED SUPPLEMENTATION MODULE
+  if supplemented? = true [set difference-LW weaned-calf-min-weight-for-feed-sup - live-weight]                    ;;## FEED SUPPLEMENTATION MODULE
+  set kg-supplement-DM 0                                                                                           ;;## FEED SUPPLEMENTATION MODULE
+  set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
 end
 
 to become-heifer
@@ -531,10 +531,10 @@ to become-heifer
   set sale? false                                                                                                                       ;;## SALES MODULE
   set value price * live-weight                                                                                                         ;;## SALES MODULE
 
-  set supplemented? false                                                                                          ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-  if supplemented? = true [set difference-LW heifer/steer-min-weight-for-feed-sup - live-weight]                   ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-  set kg-supplement-DM 0                                                                                           ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-  set USD-supplement-DM 0                                                                                          ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
+  set supplemented? false                                                                                          ;;## FEED SUPPLEMENTATION MODULE
+  if supplemented? = true [set difference-LW heifer/steer-min-weight-for-feed-sup - live-weight]                   ;;## FEED SUPPLEMENTATION MODULE
+  set kg-supplement-DM 0                                                                                           ;;## FEED SUPPLEMENTATION MODULE
+  set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
 end
 
 to become-steer
@@ -567,10 +567,10 @@ to become-steer
   set sale? false                                                                   ;;## SALES MODULE
   set value price * live-weight                                                     ;;## SALES MODULE
 
-  set supplemented? false                                                                                          ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-  if supplemented? = true [set difference-LW heifer/steer-min-weight-for-feed-sup - live-weight]                   ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-  set kg-supplement-DM 0                                                                                           ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-  set USD-supplement-DM 0                                                                                          ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
+  set supplemented? false                                                                                          ;;## FEED SUPPLEMENTATION MODULE
+  if supplemented? = true [set difference-LW heifer/steer-min-weight-for-feed-sup - live-weight]                   ;;## FEED SUPPLEMENTATION MODULE
+  set kg-supplement-DM 0                                                                                           ;;## FEED SUPPLEMENTATION MODULE
+  set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
 end
 
 to become-cow
@@ -603,10 +603,10 @@ to become-cow
   set sale? false                                                                                                                       ;;## SALES MODULE
   set value price * live-weight                                                                                                         ;;## SALES MODULE
 
-  set supplemented? false                                                                                          ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-  if supplemented? = true [set difference-LW cow-min-weight-for-feed-sup - live-weight]                            ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-  set kg-supplement-DM 0                                                                                           ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-  set USD-supplement-DM 0                                                                                          ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
+  set supplemented? false                                                                                          ;;## FEED SUPPLEMENTATION MODULE
+  if supplemented? = true [set difference-LW cow-min-weight-for-feed-sup - live-weight]                            ;;## FEED SUPPLEMENTATION MODULE
+  set kg-supplement-DM 0                                                                                           ;;## FEED SUPPLEMENTATION MODULE
+  set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
 
 
 end
@@ -641,10 +641,10 @@ to become-cow-with-calf
   set sale? false                                                                                                                       ;;## SALES MODULE
   set value price * live-weight                                                                                                         ;;## SALES MODULE
 
-  set supplemented? false                                                                                          ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-  if supplemented? = true [set difference-LW cow-with-calf-min-weight-for-feed-sup - live-weight]                  ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-  set kg-supplement-DM 0                                                                                           ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-  set USD-supplement-DM 0                                                                                          ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
+  set supplemented? false                                                                                          ;;## FEED SUPPLEMENTATION MODULE
+  if supplemented? = true [set difference-LW cow-with-calf-min-weight-for-feed-sup - live-weight]                  ;;## FEED SUPPLEMENTATION MODULE
+  set kg-supplement-DM 0                                                                                           ;;## FEED SUPPLEMENTATION MODULE
+  set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -751,11 +751,11 @@ to go
   DM-consumption
 
   if (farmer-profile = "market") [
-    feed-supplementation                                                             ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
+    feed-supplementation                                                             ;;## FEED SUPPLEMENTATION MODULE
   ]
 
   if (farmer-profile = "environmental") [
-    if count cows <= keep-MIN-n-cattle [feed-supplementation]                        ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE ;; environmental farmers only supplement animals when the system meets or falls below the minimum herd size desired by the farmer ("keep-MIN-n-cattle" slider in the interface)
+    if count cows <= keep-MIN-n-cattle [feed-supplementation]                        ;;## FEED SUPPLEMENTATION MODULE ;; environmental farmers only supplement animals when the system meets or falls below the minimum herd size desired by the farmer ("keep-MIN-n-cattle" slider in the interface)
   ]
 
   if (farmer-profile = "none") [
@@ -940,8 +940,8 @@ ask cows [
       [set live-weight-gain live-weight * -0.005]]
 
     set live-weight live-weight + live-weight-gain
-    if (adult-cow? = true) and live-weight > maxLWcow [set live-weight maxLWcow]           ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
-    if (steer? = true) and live-weight > maxLWsteer [set live-weight maxLWsteer]     ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
+    if (adult-cow? = true) and live-weight > maxLWcow [set live-weight maxLWcow]
+    if (steer? = true) and live-weight > maxLWsteer [set live-weight maxLWsteer]
     if live-weight < 0 [set live-weight 0]
 
     set animal-units live-weight / set-1-AU                                          ;; updating the AU of each cow used to calculate the total Stocking Rate (SR) of the system
@@ -962,7 +962,7 @@ ask cows [
 end
 
 
-to feed-supplementation                                                             ;; NEWWWWWWWWWWWWWWWWWWWW ## FEED SUPPLEMENTATION MODULE
+to feed-supplementation                                                             ;;## FEED SUPPLEMENTATION MODULE
 
   set FS-cow 0 set FS-cow-with-calf 0 set FS-heifer 0 set FS-steer 0 set FS-weaned-calf 0       ;; the daily cost of purchasing feed supplements is reset every tick. This allows to keep track of the amount of money spent on feed supplements each day.
 
@@ -1478,10 +1478,10 @@ to farm-balance                                                                 
 
   set extraordinary-sales-income ES-males-weaned-calf + ES-males-steer + ES-old-cow + ES-heifer + ES-cow
 
-  set other-cost set-other-monthly-costs / (368 / 12)                                           ;; NEWWWWWWWWWWWWWWWWWWWW
+  set other-cost set-other-monthly-costs / (368 / 12)
 
   set income ordinary-sales-income + extraordinary-sales-income
-  set cost supplement-cost + other-cost                                                         ;; NEWWWWWWWWWWWWWWWWWWWW
+  set cost supplement-cost + other-cost
   set balance income - cost
 
   set OS-males-weaned-calf 0 set OS-males-steer 0 set OS-old-cow 0 set OS-heifer 0 set OS-cow 0
@@ -1540,11 +1540,11 @@ to-report crop-efficiency                                                       
   report sum [DDMC] of cows / (DM-cm-ha * mean [grass-height] of patches) * 100
  end
 
-to-report accumulated-cost                                                        ;;## SALES MODULE ;; outputs the accumulated balance of the system since the start of the simulation (USD)
+to-report accumulated-cost                                                           ;;## SALES MODULE ;; outputs the accumulated balance of the system since the start of the simulation (USD)
     report cost-historyXticks
 end
 
-to-report accumulated-income                                                        ;;## SALES MODULE ;; outputs the accumulated balance of the system since the start of the simulation (USD)
+to-report accumulated-income                                                         ;;## SALES MODULE ;; outputs the accumulated balance of the system since the start of the simulation (USD)
     report income-historyXticks
 end
 
@@ -3107,7 +3107,7 @@ heifer/steer-min-weight-for-feed-sup
 heifer/steer-min-weight-for-feed-sup
 0
 300
-180.0
+175.0
 1
 1
 kg
@@ -3263,6 +3263,16 @@ accumulated-cost
 17
 1
 11
+
+TEXTBOX
+361
+991
+693
+1103
+Slider to simulate other costs related to the livestock system (maintenance, veterinary, vehicles, gas, etc.) and/or the farmer's personal (non-work related) costs (such as family costs, etc.).\n\nRight now, the only cost associated with the livestock system is feed supplementing.
+13
+0.0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
