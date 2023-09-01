@@ -1657,10 +1657,10 @@ NIL
 HORIZONTAL
 
 PLOT
-1607
-658
-1945
-869
+1723
+722
+2061
+933
 Average of grass-height (GH)
 Days
 cm
@@ -1675,10 +1675,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot grass-height-report"
 
 PLOT
-793
-454
-1173
-674
+860
+488
+1240
+708
 Live-weight (LW)
 Days
 kg
@@ -1721,10 +1721,10 @@ stocking-rate
 11
 
 PLOT
-1140
-687
-1514
-860
+1207
+721
+1581
+894
 Cattle age classes population sizes
 Days
 Heads
@@ -1760,10 +1760,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-1090
-587
-1270
-632
+1157
+621
+1337
+666
 Average LW (kg/animal)
 mean [live-weight] of cows
 3
@@ -1786,10 +1786,10 @@ cm
 HORIZONTAL
 
 PLOT
-1952
-658
-2275
-873
+2062
+721
+2385
+936
 Dry-matter (DM) and DM consumption (DDMC)
 Days
 kg
@@ -1815,10 +1815,10 @@ TEXTBOX
 1
 
 MONITOR
-1606
-611
-1732
-656
+1722
+675
+1848
+720
 Average GH (cm/ha)
 grass-height-report
 3
@@ -1889,10 +1889,10 @@ Area (ha)
 11
 
 PLOT
-793
-679
-1129
-901
+860
+713
+1196
+935
 Daily individual-live-weight-gain (ILWG)
 Days
 kg
@@ -1913,10 +1913,10 @@ PENS
 "Average LWG" 1.0 0 -16777216 true "" "plot mean [live-weight-gain] of cows"
 
 PLOT
-2282
-660
-2608
-871
+2387
+720
+2713
+931
 Crop-efficiency (CE)
 Days
 %
@@ -1931,10 +1931,10 @@ PENS
 "CE" 1.0 0 -16777216 true "" "plot crop-efficiency"
 
 MONITOR
-2283
-613
-2339
-658
+2388
+673
+2444
+718
 CE (%)
 crop-efficiency
 2
@@ -1942,10 +1942,10 @@ crop-efficiency
 11
 
 MONITOR
-1950
-609
-2099
-654
+2060
+672
+2209
+717
 Total DDMC (kg)
 sum [DDMC] of cows
 3
@@ -1953,10 +1953,10 @@ sum [DDMC] of cows
 11
 
 MONITOR
-2099
-609
-2273
-654
+2209
+672
+2383
+717
 Average DDMC (kg/animal)
 mean [DDMC] of cows
 3
@@ -1996,10 +1996,10 @@ kg
 HORIZONTAL
 
 PLOT
-791
-995
-1133
-1189
+858
+997
+1200
+1191
 Body condition ccore (BCS)
 Days
 points
@@ -2015,10 +2015,10 @@ PENS
 "Cow-with-calf" 1.0 0 -5825686 true "" "plot (mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40"
 
 MONITOR
-792
-948
-922
-993
+859
+950
+989
+995
 BCS of cows (points)
 ;(mean [live-weight] of cows with [cow?] - mean [min-weight] of cows with [cow?]) / 40\n;(mean [live-weight] of cows with [cow?] - (((mean [live-weight] of cows with [cow?]) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40
 2
@@ -2026,10 +2026,10 @@ BCS of cows (points)
 11
 
 PLOT
-1148
-995
-1558
-1188
+1215
+997
+1625
+1190
 Pregnancy rate (PR)
 Days
 %
@@ -2046,10 +2046,10 @@ PENS
 "Cow-with-calf" 1.0 0 -5825686 true "" "plot mean [pregnancy-rate] of cows with [cow-with-calf?] * 100"
 
 MONITOR
-1149
-947
-1281
-992
+1216
+949
+1348
+994
 PR of cows (%)
 mean [pregnancy-rate] of cows with [cow?] * 100
 2
@@ -2057,10 +2057,10 @@ mean [pregnancy-rate] of cows with [cow?] * 100
 11
 
 MONITOR
-1280
-947
-1423
-992
+1347
+949
+1490
+994
 PR of cows-with-calf (%)
 mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
 2
@@ -2068,10 +2068,10 @@ mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
 11
 
 MONITOR
-1423
-947
-1560
-992
+1490
+949
+1627
+994
 PR of heifers (%)
 mean [pregnancy-rate] of cows with [heifer?] * 100
 2
@@ -2079,10 +2079,10 @@ mean [pregnancy-rate] of cows with [heifer?] * 100
 11
 
 MONITOR
-1950
-568
-2099
-613
+2060
+631
+2209
+676
 Total DM (kg)
 dmgr
 3
@@ -2090,10 +2090,10 @@ dmgr
 11
 
 MONITOR
-1091
-636
-1268
-681
+1158
+670
+1335
+715
 Average ILWG (kg/animal/day)
 ;mean [live-weight-gain] of cows\nILWG
 3
@@ -2101,10 +2101,10 @@ Average ILWG (kg/animal/day)
 11
 
 MONITOR
-922
-948
-1077
-993
+989
+950
+1144
+995
 BCS of cows-with-calf (points)
 ;(mean [live-weight] of cows with [cow-with-calf?] - mean [min-weight] of cows with [cow-with-calf?]) / 40\n;(mean [live-weight] of cows with [cow-with-calf?] - (((mean [live-weight] of cows with [cow-with-calf?]) * set-MW-1-AU) / set-1-AU)) / 40\n\n(mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40
 2
@@ -2112,10 +2112,10 @@ BCS of cows-with-calf (points)
 11
 
 MONITOR
-1273
-587
-1503
-632
+1340
+621
+1570
+666
 Average LW of adult cows (kg/animal)
 mean [live-weight] of cows with [adult-cow?]
 3
@@ -2123,10 +2123,10 @@ mean [live-weight] of cows with [adult-cow?]
 11
 
 MONITOR
-1274
-635
-1503
-680
+1341
+669
+1570
+714
 Average ILWG of adult cows (kg/animal/day)
 mean [live-weight-gain] of cows with [adult-cow?]
 3
@@ -2204,10 +2204,10 @@ GRAZING AREA
 1
 
 SLIDER
-5120
-10
-5218
-43
+5127
+209
+5225
+242
 set-1-AU
 set-1-AU
 1
@@ -2219,10 +2219,10 @@ kg
 HORIZONTAL
 
 SLIDER
-5221
-10
-5342
-43
+5228
+209
+5349
+242
 set-MW-1-AU
 set-MW-1-AU
 1
@@ -2234,10 +2234,10 @@ kg
 HORIZONTAL
 
 PLOT
-793
-279
-1173
-451
+860
+313
+1296
+486
 Stocking rate
 Days
 AU/ha
@@ -2250,7 +2250,7 @@ true
 "" ""
 PENS
 "SR total area" 1.0 0 -16777216 true "" "plot stocking-rate"
-"SR paddock area" 1.0 0 -7500403 true "" "plot paddock-SR"
+"SR paddock area (only for RG)" 1.0 0 -7500403 true "" "plot paddock-SR"
 
 OUTPUT
 926
@@ -2277,10 +2277,10 @@ NIL
 1
 
 MONITOR
-5007
-740
-5309
-785
+5029
+664
+5331
+709
 Average annual live weight gain per hectare (ALWG, kg/ha)
 ;(sum [live-weight] of cows with [steer?] - sum [initial-weight] of cows with [steer?]) / count patches; para calcular el WGH de los steers\n;(sum [live-weight] of cows - sum [initial-weight] of cows) / count patches\nALWG
 3
@@ -2310,10 +2310,10 @@ season-days
 11
 
 MONITOR
-2099
-568
-2273
-613
+2209
+631
+2383
+676
 Total DM per ha (kg/ha)
 ;(DM-cm-ha * mean [grass-height] of patches) / DM-available-for-cattle\n(dmgr) / count patches
 3
@@ -2346,10 +2346,10 @@ soil-quality-distribution
 0
 
 PLOT
-5006
-172
-5341
-386
+5013
+309
+5348
+523
 Grass height distribution
 cm
 nº patches
@@ -2364,10 +2364,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [grass-height] of patches"
 
 MONITOR
-5007
-388
-5154
-433
+5014
+525
+5161
+570
 min grass-height of patches
 min [grass-height] of patches
 17
@@ -2375,10 +2375,10 @@ min [grass-height] of patches
 11
 
 MONITOR
-5173
-389
-5344
-434
+5180
+526
+5351
+571
 max grass-height of patches
 max [grass-height] of patches
 17
@@ -2594,18 +2594,18 @@ SEASONS AND CLIMATE
 TEXTBOX
 204
 94
-353
-124
+402
+158
 INITIAL GRASS HEIGHT \nAND SOIL QUALITY
 12
 0.0
 1
 
 PLOT
-827
-65
-1121
-185
+892
+99
+1186
+219
 climacoef
 NIL
 NIL
@@ -2684,10 +2684,10 @@ NIL
 1
 
 MONITOR
-1177
-291
-1360
-336
+1351
+319
+1534
+364
 Ordinary sales (OS) income (USD)
 ordinary-sales-income
 3
@@ -2710,10 +2710,10 @@ NIL
 HORIZONTAL
 
 PLOT
-1177
-338
-1524
-488
+1351
+366
+1698
+516
 Daily income
 Days
 USD
@@ -2729,10 +2729,10 @@ PENS
 "ES income" 1.0 0 -2674135 true "" "plot extraordinary-sales-income"
 
 PLOT
-1536
-157
-1899
-284
+1710
+185
+2073
+312
 Daily balance
 Days
 USD
@@ -2812,25 +2812,25 @@ LIVESTOCK MANAGEMENT STRATEGIES
 1
 
 SLIDER
-869
-190
-1066
-223
+934
+224
+1131
+257
 set-direct-climacoef-control
 set-direct-climacoef-control
 0.1
 1.5
-0.5
+1.0
 0.1
 1
 NIL
 HORIZONTAL
 
 MONITOR
-1921
-176
-2099
-221
+2095
+204
+2273
+249
 meat production (kg/ha)
 sum [live-weight] of cows / count patches
 3
@@ -2838,10 +2838,10 @@ sum [live-weight] of cows / count patches
 11
 
 PLOT
-1922
-228
-2287
-378
+2096
+256
+2461
+406
 meat production 
 days
 kg/ha
@@ -2871,10 +2871,10 @@ kg
 HORIZONTAL
 
 SLIDER
-4917
-11
-5100
-44
+4924
+210
+5107
+243
 controlled-breeding-season
 controlled-breeding-season
 0
@@ -2896,10 +2896,10 @@ ordinary-sale-of-cows-with
 1
 
 MONITOR
-1179
-111
-1358
-156
+1353
+139
+1532
+184
 Accumulated balance (USD)
 accumulated-balance
 17
@@ -2907,10 +2907,10 @@ accumulated-balance
 11
 
 PLOT
-1179
-157
-1523
-277
+1353
+185
+1697
+305
 Accumulated balance
 Days
 USD
@@ -2925,10 +2925,10 @@ PENS
 "Balance" 1.0 0 -16777216 true "" "plot accumulated-balance"
 
 MONITOR
-1362
-291
-1522
-336
+1536
+319
+1696
+364
 Extraordinary sales (ES) income (USD)
 extraordinary-sales-income
 3
@@ -3032,10 +3032,10 @@ days
 HORIZONTAL
 
 MONITOR
-1531
-492
-1717
-537
+1705
+520
+1924
+566
 Total daily kg-supplement-DM (kg)
 sum [kg-supplement-DM] of cows
 17
@@ -3043,10 +3043,10 @@ sum [kg-supplement-DM] of cows
 11
 
 MONITOR
-1533
-292
-1702
-337
+1707
+320
+1876
+365
 Daily supplement cost (USD)
 supplement-cost
 17
@@ -3129,10 +3129,10 @@ kg
 HORIZONTAL
 
 PLOT
-1532
-339
-1898
-488
+1706
+367
+2072
+516
 Daily costs
 Days
 USD
@@ -3152,9 +3152,9 @@ BUTTON
 15
 1428
 49
+free 1000 USD
+set balance 1000
 NIL
-set balance 600
-T
 1
 T
 OBSERVER
@@ -3187,40 +3187,40 @@ count cows
 11
 
 TEXTBOX
-830
-256
-1043
-290
+901
+285
+1212
+329
 LIVESTOCK RELATED OUTPUTS
-14
+18
 34.0
 1
 
 TEXTBOX
-1611
-76
-1821
-110
+1768
+96
+2072
+140
 ECONOMIC RELATED OUTPUTS
-14
+18
 0.0
 1
 
 TEXTBOX
-1990
-532
-2247
-566
+2061
+599
+2359
+634
 RESOURCE RELATED OUTPUTS
-14
+18
 64.0
 1
 
 MONITOR
-1536
-106
-1674
-151
+1710
+134
+1848
+179
 Daily balance (USD)
 balance
 17
@@ -3243,10 +3243,10 @@ USD
 HORIZONTAL
 
 MONITOR
-1704
-291
-1846
-336
+1878
+319
+2020
+364
 Daily other costs (USD)
 other-cost
 17
@@ -3254,10 +3254,10 @@ other-cost
 11
 
 MONITOR
-1691
-105
-1840
-150
+1865
+133
+2014
+178
 NIL
 accumulated-cost
 17
@@ -3267,8 +3267,8 @@ accumulated-cost
 TEXTBOX
 361
 991
-693
-1103
+719
+1140
 Slider to simulate other costs related to the livestock system (maintenance, veterinary, vehicles, gas, etc.) and/or the farmer's personal (non-work related) costs (such as family costs, etc.).\n\nRight now, the only cost associated with the livestock system is feed supplementing.
 13
 0.0
