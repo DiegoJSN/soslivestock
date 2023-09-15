@@ -7750,6 +7750,163 @@ NetLogo 6.2.2
       <value value="2"/>
     </enumeratedValueSet>
   </experiment>
+  <experiment name="ES_LW vs HW" repetitions="100" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="7360"/>
+    <metric>count turtles</metric>
+    <enumeratedValueSet variable="initial-num-heifers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-weaned-calves">
+      <value value="150"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-X-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-MIN-n-cattle">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-1-AU">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cow-min-weight-for-feed-sup">
+      <value value="250"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="weaned-calf-min-weight-for-feed-sup">
+      <value value="180"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="extraordinary-sale-of-cows-with">
+      <value value="&quot;lowest live weight&quot;"/>
+      <value value="&quot;highest live weight&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="heifer/steer-min-weight-for-feed-sup">
+      <value value="175"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spatial-management">
+      <value value="&quot;free grazing&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="feed-sup-conversion-ratio">
+      <value value="7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="market-farmer-ES-min-weight">
+      <value value="180"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cow-with-calf-min-weight-for-feed-sup">
+      <value value="250"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="farmer-profile">
+      <value value="&quot;market&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="env-farmer-ES-SR">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="RG-days-in-paddock">
+      <value value="31"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-steers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-steers">
+      <value value="300"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-season">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="env-farmer-RG-SR-threshold">
+      <value value="0.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="early-weaning-threshold">
+      <value value="200"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="ordinary-sale-of-cows-with">
+      <value value="&quot;lowest live weight&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-cows">
+      <value value="300"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-other-monthly-costs">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="age-sell-old-cow">
+      <value value="7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="soil-quality-distribution">
+      <value value="&quot;homogeneus&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="starting-paddock">
+      <value value="&quot;paddock a&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="market-farmer-RG-live-weight-threshold">
+      <value value="255"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-Y-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-weaned-calves">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-MW-1-AU">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-cows">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="perception">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-MAX-n-cattle">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-direct-climacoef-control">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-DM-cm-ha">
+      <value value="180"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-grass-height">
+      <value value="7.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="STOP-SIMULATION-AT">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-MAX-n-steers">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-heifers">
+      <value value="250"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="climacoef-distribution">
+      <value value="&quot;direct-climacoef-control&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="controlled-breeding-season">
+      <value value="2"/>
+    </enumeratedValueSet>
+  </experiment>
 </experiments>
 @#$#@#$#@
 @#$#@#$#@
