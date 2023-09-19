@@ -1016,6 +1016,7 @@ ask cows [
     [set mortality-rate natural-mortality-rate]
     if random-float 1 < mortality-rate [die]
 
+    ask cows with [cow-with-calf? and not any? my-links] [become-cow]                                                      ;; if the link with the child (an agent with the state "born-calf") is lost (this happens when the child dies), the mother changes from the state "cow-with-calf" to the state "cow".
     ask cows with [born-calf-female? and not any? my-links ] [ become-weaned-calf-female ]                                 ;; if the link with the mother (an agent with a "cow-with-calf?" state) is lost (this happens when the mother dies, or when the mother switches from a "cow-with-calf?" state to a "cow?" state), the calf weans prematurely.
     ask cows with [born-calf-male? and not any? my-links ] [ become-weaned-calf-male ]
 
@@ -1041,6 +1042,7 @@ ask cows [
 
     if (cow-with-calf? = true and live-weight < early-weaning-threshold) [become-cow ask my-out-links [die]]               ;; if the mother (an agent with a "cow-with-calf?" state) is below a certain weight, it will switch to the "cow?" state and will kill the link with its child (an agent with a "born-calf" state). This weight is determined by the "early-weaning-threshold" slider in the interface.
 
+    ask cows with [cow-with-calf? and not any? my-links] [become-cow]                                                      ;; if the link with the child (an agent with the state "born-calf") is lost (this happens when the child dies), the mother changes from the state "cow-with-calf" to the state "cow".
     ask cows with [born-calf-female? and not any? my-links ] [ become-weaned-calf-female ]                                 ;; if the link with the mother (an agent with a "cow-with-calf?" state) is lost (this happens when the mother dies, or when the mother switches from a "cow-with-calf?" state to a "cow?" state), the calf weans prematurely.
     ask cows with [born-calf-male? and not any? my-links ] [ become-weaned-calf-male ]
 
@@ -2595,7 +2597,7 @@ TEXTBOX
 204
 94
 402
-158
+124
 INITIAL GRASS HEIGHT \nAND SOIL QUALITY
 12
 0.0

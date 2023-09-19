@@ -1018,6 +1018,7 @@ ask cows [
 
     ask cows with [born-calf-female? and not any? my-links ] [ become-weaned-calf-female ]                                 ;; if the link with the mother (an agent with a "cow-with-calf?" state) is lost (this happens when the mother dies, or when the mother switches from a "cow-with-calf?" state to a "cow?" state), the calf weans prematurely.
     ask cows with [born-calf-male? and not any? my-links ] [ become-weaned-calf-male ]
+    ask cows with [cow-with-calf? and not any? my-links] [become-cow]                                                      ;; if the link with the child (an agent with the state "born-calf") is lost (this happens when the child dies), the mother changes from the state "cow-with-calf" to the state "cow".
 
     if (born-calf-female? = true) and (age >= weaned-calf-age-min) [become-weaned-calf-female ask my-out-links [die]]       ;; when the lactating calf moves on to the next age group (weaned-calf), the link (dependency) with its parent is terminated
     if (born-calf-male? = true) and (age >= weaned-calf-age-min) [become-weaned-calf-male ask my-out-links [die]]
@@ -1043,6 +1044,7 @@ ask cows [
 
     ask cows with [born-calf-female? and not any? my-links ] [ become-weaned-calf-female ]                                 ;; if the link with the mother (an agent with a "cow-with-calf?" state) is lost (this happens when the mother dies, or when the mother switches from a "cow-with-calf?" state to a "cow?" state), the calf weans prematurely.
     ask cows with [born-calf-male? and not any? my-links ] [ become-weaned-calf-male ]
+    ask cows with [cow-with-calf? and not any? my-links] [become-cow]                                                      ;; if the link with the child (an agent with the state "born-calf") is lost (this happens when the child dies), the mother changes from the state "cow-with-calf" to the state "cow".
 
     if (born-calf-female? = true) and (age >= weaned-calf-age-min) [become-weaned-calf-female ask my-out-links [die]]       ;; when the lactating calf moves on to the next age group (weaned-calf), the link (dependency) with its parent is terminated
     if (born-calf-male? = true) and (age >= weaned-calf-age-min) [become-weaned-calf-male ask my-out-links [die]]
@@ -1635,7 +1637,7 @@ initial-num-cows
 initial-num-cows
 0
 1000
-50.0
+0.0
 1
 1
 NIL
@@ -2440,7 +2442,7 @@ initial-num-weaned-calves
 initial-num-weaned-calves
 0
 1000
-0.0
+1.0
 1
 1
 NIL
@@ -2595,7 +2597,7 @@ TEXTBOX
 204
 94
 402
-158
+124
 INITIAL GRASS HEIGHT \nAND SOIL QUALITY
 12
 0.0
@@ -7754,7 +7756,8 @@ NetLogo 6.2.2
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="7360"/>
-    <metric>count turtles</metric>
+    <metric>count cows</metric>
+    <metric>mean [live-weight] of cows</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
     </enumeratedValueSet>
@@ -7800,6 +7803,8 @@ NetLogo 6.2.2
     </enumeratedValueSet>
     <enumeratedValueSet variable="farmer-profile">
       <value value="&quot;market&quot;"/>
+      <value value="&quot;traditional&quot;"/>
+      <value value="&quot;environmental&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="env-farmer-ES-SR">
       <value value="0.5"/>
