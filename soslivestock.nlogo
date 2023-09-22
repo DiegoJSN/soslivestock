@@ -106,6 +106,212 @@ globals [
   balance-history                                                                   ;;## SALES MODULE ;; variable to store the balance history of the system
   balance-historyXticks                                                             ;;## SALES MODULE ;; balance of the system since the start of the simulation (i.e., savings)
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Wellbeing related global variables                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  supplement-effort                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  supplement-effort-history
+  supplement-effort-historyXticks
+
+  supplement-effort-history-season                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  supplement-effort-historyXticks-season                                         ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  supplement-effort-history-year                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  supplement-effort-historyXticks-year                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
+
+
+  weaning-effort
+
+  weaning-effort-history                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  weaning-effort-historyXticks
+
+  weaning-effort-history-season                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  weaning-effort-historyXticks-season                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  weaning-effort-history-year                                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  weaning-effort-historyXticks-year                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
+
+
+
+  OS-males-effort                                                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  OS-males-effort-history                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  OS-males-effort-historyXticks
+
+  OS-males-effort-history-season                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  OS-males-effort-historyXticks-season                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  OS-males-effort-history-year                                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  OS-males-effort-historyXticks-year                                             ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
+
+
+
+  OS-old-cow-effort                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  OS-old-cow-effort-history                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  OS-old-cow-effort-historyXticks
+
+  OS-old-cow-effort-history-season                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  OS-old-cow-effort-historyXticks-season                                         ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  OS-old-cow-effort-history-year                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  OS-old-cow-effort-historyXticks-year                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
+
+
+
+  OS-heifer-cow-effort                                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  OS-heifer-cow-effort-history                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  OS-heifer-cow-effort-historyXticks
+
+  OS-heifer-cow-effort-history-season                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  OS-heifer-cow-effort-historyXticks-season                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  OS-heifer-cow-effort-history-year                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  OS-heifer-cow-effort-historyXticks-year                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
+
+
+
+  OS-total-effort                                                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  OS-total-effort-history
+
+  OS-total-effort-history-season                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  OS-total-effort-history-year                                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
+
+
+
+  ES-males-effort                                                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  ES-males-effort-history                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ES-males-effort-historyXticks
+
+  ES-males-effort-history-season                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ES-males-effort-historyXticks-season                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ES-males-effort-history-year                                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ES-males-effort-historyXticks-year                                             ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
+
+
+
+  ES-old-cow-effort                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  ES-old-cow-effort-history                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ES-old-cow-effort-historyXticks
+
+  ES-old-cow-effort-history-season                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ES-old-cow-effort-historyXticks-season                                         ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ES-old-cow-effort-history-year                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ES-old-cow-effort-historyXticks-year                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
+
+
+
+  ES-heifer-cow-effort                                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  ES-heifer-cow-effort-history                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ES-heifer-cow-effort-historyXticks
+
+  ES-heifer-cow-effort-history-season                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ES-heifer-cow-effort-historyXticks-season                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ES-heifer-cow-effort-history-year                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ES-heifer-cow-effort-historyXticks-year                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
+
+
+
+  ES-total-effort                                                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  ES-total-effort-history                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  ES-total-effort-history-season                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ES-total-effort-history-year                                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
+
+
+
+  breeding-effort
+
+  breeding-effort-history                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  breeding-effort-historyXticks
+
+  breeding-effort-history-season                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  breeding-effort-historyXticks-season                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  breeding-effort-history-year                                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  breeding-effort-historyXticks-year                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
+
+
+
+
+
+  rotational-effort
+
+  rotational-effort-history                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  rotational-effort-historyXticks
+
+  rotational-effort-history-season                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  rotational-effort-historyXticks-season                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  rotational-effort-history-year                                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  rotational-effort-historyXticks-year                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
+
+
+
+
+
+
+
+  total-effort                                                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  total-effort-history
+
+  total-effort-history-season                                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  total-effort-history-year                                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
+
 ]
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -177,6 +383,8 @@ cows-own [
 
   kg-supplement-DM                                                                  ;;## FEED SUPPLEMENTATION MODULE ;; kg of supplementary feed required by the animal
   USD-supplement-DM                                                                 ;;## FEED SUPPLEMENTATION MODULE ;; the price of the feed supplement that is required by the animal(USD)
+
+  weaning-calf?                                                                     ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 ]
 
@@ -253,6 +461,16 @@ to setup-globals
   set cost 0
   set income 0
   set balance 0
+  set supplement-effort 0
+  set weaning-effort 0
+  set OS-males-effort 0                                                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-old-cow-effort 0                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-heifer-cow-effort 0                                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-males-effort 0                                                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-old-cow-effort 0                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-heifer-cow-effort 0                                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set breeding-effort 0
+  set rotational-effort 0
 
   set cost-history []
   set cost-historyXticks []
@@ -262,6 +480,122 @@ to setup-globals
 
   set balance-history []
   set balance-historyXticks []
+
+
+
+
+
+  set supplement-effort-history []
+  set supplement-effort-history-season []                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set supplement-effort-historyXticks-season []                                         ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set supplement-effort-history-year []                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set supplement-effort-historyXticks-year []                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  set weaning-effort-history []
+  set weaning-effort-history-season []                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set weaning-effort-historyXticks-season []                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set weaning-effort-history-year []                                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set weaning-effort-historyXticks-year []                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
+
+
+
+
+  set OS-males-effort-history []
+  set OS-males-effort-history-season []                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-males-effort-historyXticks-season []                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-males-effort-history-year []                                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-males-effort-historyXticks-year []                                             ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
+
+
+
+  set OS-old-cow-effort-history []
+  set OS-old-cow-effort-history-season []                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-old-cow-effort-historyXticks-season []                                         ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-old-cow-effort-history-year []                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-old-cow-effort-historyXticks-year []                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
+
+
+
+
+  set OS-heifer-cow-effort-history []
+  set OS-heifer-cow-effort-history-season []                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-heifer-cow-effort-historyXticks-season []                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-heifer-cow-effort-history-year []                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-heifer-cow-effort-historyXticks-year []                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
+
+
+
+
+
+  set ES-males-effort-history []
+  set ES-males-effort-history-season []                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-males-effort-historyXticks-season []                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-males-effort-history-year []                                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-males-effort-historyXticks-year []                                             ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
+
+
+
+
+
+
+  set ES-old-cow-effort-history []
+  set ES-old-cow-effort-history-season []                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-old-cow-effort-historyXticks-season []                                         ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-old-cow-effort-history-year []                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-old-cow-effort-historyXticks-year []                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
+
+
+
+
+
+  set ES-heifer-cow-effort-history []
+  set ES-heifer-cow-effort-history-season []                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-heifer-cow-effort-historyXticks-season []                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-heifer-cow-effort-history-year []                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-heifer-cow-effort-historyXticks-year []                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+  set breeding-effort-history []
+  set breeding-effort-history-season []                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set breeding-effort-historyXticks-season []                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set breeding-effort-history-year []                                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set breeding-effort-historyXticks-year []                                             ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+  set rotational-effort-history []
+  set rotational-effort-history-season []                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set rotational-effort-historyXticks-season []                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set rotational-effort-history-year []                                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set rotational-effort-historyXticks-year []                                             ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
 
 end
 
@@ -390,6 +724,8 @@ to become-born-calf-female
   set supplemented? false                                                           ;;## FEED SUPPLEMENTATION MODULE
   set kg-supplement-DM 0                                                            ;;## FEED SUPPLEMENTATION MODULE
   set USD-supplement-DM 0                                                           ;;## FEED SUPPLEMENTATION MODULE
+
+  set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 end
 
 to become-born-calf-male
@@ -427,6 +763,8 @@ to become-born-calf-male
   set supplemented? false                                                           ;;## FEED SUPPLEMENTATION MODULE
   set kg-supplement-DM 0                                                            ;;## FEED SUPPLEMENTATION MODULE
   set USD-supplement-DM 0                                                           ;;## FEED SUPPLEMENTATION MODULE
+
+  set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 end
 
 to become-weaned-calf-female
@@ -463,6 +801,8 @@ to become-weaned-calf-female
   if supplemented? = true [set difference-LW weaned-calf-min-weight-for-feed-sup - live-weight]         ;;## FEED SUPPLEMENTATION MODULE
   set kg-supplement-DM 0                                                                                ;;## FEED SUPPLEMENTATION MODULE
   set USD-supplement-DM 0                                                                               ;;## FEED SUPPLEMENTATION MODULE
+
+  set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 end
 
 to become-weaned-calf-male
@@ -499,6 +839,8 @@ to become-weaned-calf-male
   if supplemented? = true [set difference-LW weaned-calf-min-weight-for-feed-sup - live-weight]                    ;;## FEED SUPPLEMENTATION MODULE
   set kg-supplement-DM 0                                                                                           ;;## FEED SUPPLEMENTATION MODULE
   set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
+
+  set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 end
 
 to become-heifer
@@ -535,6 +877,8 @@ to become-heifer
   if supplemented? = true [set difference-LW heifer/steer-min-weight-for-feed-sup - live-weight]                   ;;## FEED SUPPLEMENTATION MODULE
   set kg-supplement-DM 0                                                                                           ;;## FEED SUPPLEMENTATION MODULE
   set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
+
+  set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 end
 
 to become-steer
@@ -571,6 +915,8 @@ to become-steer
   if supplemented? = true [set difference-LW heifer/steer-min-weight-for-feed-sup - live-weight]                   ;;## FEED SUPPLEMENTATION MODULE
   set kg-supplement-DM 0                                                                                           ;;## FEED SUPPLEMENTATION MODULE
   set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
+
+  set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 end
 
 to become-cow
@@ -608,7 +954,7 @@ to become-cow
   set kg-supplement-DM 0                                                                                           ;;## FEED SUPPLEMENTATION MODULE
   set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
 
-
+  set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 end
 
 to become-cow-with-calf
@@ -645,6 +991,8 @@ to become-cow-with-calf
   if supplemented? = true [set difference-LW cow-with-calf-min-weight-for-feed-sup - live-weight]                  ;;## FEED SUPPLEMENTATION MODULE
   set kg-supplement-DM 0                                                                                           ;;## FEED SUPPLEMENTATION MODULE
   set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
+
+  set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -722,7 +1070,8 @@ to go
   ask cows [                                                                         ;; in this line, the average live weight gain of the cows during the season is calculated
     set live-weight-gain-history-season fput live-weight-gain live-weight-gain-history-season
     if season-days > 0 [set live-weight-gain-historyXticks-season mean (sublist live-weight-gain-history-season 0 season-days)]
-    if season-days = season-length [set live-weight-gain-history-season []]
+    ;if season-days = season-length [set live-weight-gain-history-season []]
+    if season-days = 92 [set live-weight-gain-history-season []]
   ]
 
   ask cows [                                                                         ;; in this line, the average live weight gain of the cows during the year (from day 1 to day 368 and in between) is calculated
@@ -740,6 +1089,199 @@ to go
 
   set balance-history fput balance balance-history                                                    ;;## SALES MODULE
   set balance-historyXticks sum (sublist balance-history 0 simulation-time)                           ;;## SALES MODULE
+
+
+
+
+  set supplement-effort-history fput supplement-effort supplement-effort-history                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set supplement-effort-historyXticks sum (sublist supplement-effort-history 0 simulation-time)                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+  set supplement-effort-history-season fput supplement-effort supplement-effort-history-season                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set supplement-effort-historyXticks-season sum (sublist supplement-effort-history-season 0 season-days)                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  if season-days = 92 [set supplement-effort-history-season []]                                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  set supplement-effort-history-year fput supplement-effort supplement-effort-history-year                                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set supplement-effort-historyXticks-year sum (sublist supplement-effort-history-year 0 year-days)                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  if year-days = 368 [set supplement-effort-history-year []]                                                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
+
+
+
+  set weaning-effort-history fput weaning-effort weaning-effort-history                                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set weaning-effort-historyXticks sum (sublist weaning-effort-history 0 simulation-time)                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  set weaning-effort-history-season fput weaning-effort weaning-effort-history-season                                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set weaning-effort-historyXticks-season sum (sublist weaning-effort-history-season 0 season-days)                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  if season-days = 92 [set weaning-effort-history-season []]                                                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  set weaning-effort-history-year fput weaning-effort weaning-effort-history-year                                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set weaning-effort-historyXticks-year sum (sublist weaning-effort-history-year 0 year-days)                                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  if year-days = 368 [set weaning-effort-history-year []]                                                                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
+
+
+
+
+
+  set OS-males-effort-history fput OS-males-effort OS-males-effort-history                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-males-effort-historyXticks sum (sublist OS-males-effort-history 0 simulation-time)
+
+  set OS-males-effort-history-season fput OS-males-effort OS-males-effort-history-season                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-males-effort-historyXticks-season sum (sublist OS-males-effort-history-season 0 season-days)                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  if season-days = 92 [set OS-males-effort-history-season []]
+
+  set OS-males-effort-history-year fput OS-males-effort OS-males-effort-history-year                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-males-effort-historyXticks-year sum (sublist OS-males-effort-history-year 0 year-days)                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  if year-days = 368 [set OS-males-effort-history-year []]
+
+
+
+
+
+
+
+
+  set OS-old-cow-effort-history fput OS-old-cow-effort OS-old-cow-effort-history                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-old-cow-effort-historyXticks sum (sublist OS-old-cow-effort-history 0 simulation-time)
+
+  set OS-old-cow-effort-history-season fput OS-old-cow-effort OS-old-cow-effort-history-season                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-old-cow-effort-historyXticks-season sum (sublist OS-old-cow-effort-history-season 0 season-days)                                         ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  if season-days = 92 [set OS-old-cow-effort-history-season []]
+
+  set OS-old-cow-effort-history-year fput OS-old-cow-effort OS-old-cow-effort-history-year                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-old-cow-effort-historyXticks-year sum (sublist OS-old-cow-effort-history-year 0 year-days)                                         ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  if year-days = 368 [set OS-old-cow-effort-history-year []]
+
+
+
+
+
+
+
+
+
+  set OS-heifer-cow-effort-history fput OS-heifer-cow-effort OS-heifer-cow-effort-history                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-heifer-cow-effort-historyXticks sum (sublist OS-heifer-cow-effort-history 0 simulation-time)
+
+  set OS-heifer-cow-effort-history-season fput OS-heifer-cow-effort OS-heifer-cow-effort-history-season                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-heifer-cow-effort-historyXticks-season sum (sublist OS-heifer-cow-effort-history-season 0 season-days)                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  if season-days = 92 [set OS-heifer-cow-effort-history-season []]
+
+  set OS-heifer-cow-effort-history-year fput OS-heifer-cow-effort OS-heifer-cow-effort-history-year                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-heifer-cow-effort-historyXticks-year sum (sublist OS-heifer-cow-effort-history-year 0 year-days)                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  if year-days = 368 [set OS-heifer-cow-effort-history-year []]
+
+
+
+
+
+
+
+
+
+
+  set ES-males-effort-history fput ES-males-effort ES-males-effort-history                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-males-effort-historyXticks sum (sublist ES-males-effort-history 0 simulation-time)
+
+  set ES-males-effort-history-season fput ES-males-effort ES-males-effort-history-season                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-males-effort-historyXticks-season sum (sublist ES-males-effort-history-season 0 season-days)                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  if season-days = 92 [set ES-males-effort-history-season []]
+
+  set ES-males-effort-history-year fput ES-males-effort ES-males-effort-history-year                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-males-effort-historyXticks-year sum (sublist ES-males-effort-history-year 0 year-days)                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  if year-days = 368 [set ES-males-effort-history-year []]
+
+
+
+
+
+
+
+
+
+
+  set ES-old-cow-effort-history fput ES-old-cow-effort ES-old-cow-effort-history                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-old-cow-effort-historyXticks sum (sublist ES-old-cow-effort-history 0 simulation-time)
+
+  set ES-old-cow-effort-history-season fput ES-old-cow-effort ES-old-cow-effort-history-season                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-old-cow-effort-historyXticks-season sum (sublist ES-old-cow-effort-history-season 0 season-days)                                         ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  if season-days = 92 [set ES-old-cow-effort-history-season []]
+
+  set ES-old-cow-effort-history-year fput ES-old-cow-effort ES-old-cow-effort-history-year                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-old-cow-effort-historyXticks-year sum (sublist ES-old-cow-effort-history-year 0 year-days)                                         ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  if year-days = 368 [set ES-old-cow-effort-history-year []]
+
+
+
+
+
+
+
+
+
+  set ES-heifer-cow-effort-history fput ES-heifer-cow-effort ES-heifer-cow-effort-history                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-heifer-cow-effort-historyXticks sum (sublist ES-heifer-cow-effort-history 0 simulation-time)
+
+  set ES-heifer-cow-effort-history-season fput ES-heifer-cow-effort ES-heifer-cow-effort-history-season                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-heifer-cow-effort-historyXticks-season sum (sublist ES-heifer-cow-effort-history-season 0 season-days)                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  if season-days = 92 [set ES-heifer-cow-effort-history-season []]
+
+  set ES-heifer-cow-effort-history-year fput ES-heifer-cow-effort ES-heifer-cow-effort-history-year                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-heifer-cow-effort-historyXticks-year sum (sublist ES-heifer-cow-effort-history-year 0 year-days)                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  if year-days = 368 [set ES-heifer-cow-effort-history-year []]
+
+
+
+
+
+
+
+
+  set breeding-effort-history fput breeding-effort breeding-effort-history                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set breeding-effort-historyXticks sum (sublist breeding-effort-history 0 simulation-time)
+
+  set breeding-effort-history-season fput breeding-effort breeding-effort-history-season                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set breeding-effort-historyXticks-season sum (sublist breeding-effort-history-season 0 season-days)                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  set breeding-effort-history-year fput breeding-effort breeding-effort-history-year                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set breeding-effort-historyXticks-year sum (sublist breeding-effort-history-year 0 year-days)                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  set breeding-effort 0
+
+
+
+
+
+
+
+
+
+
+  if ticks-since-here = 1 [set rotational-effort 0]
+
+  set rotational-effort-history fput rotational-effort rotational-effort-history
+  set rotational-effort-historyXticks sum (sublist rotational-effort-history 0 simulation-time)
+
+  set rotational-effort-history-season fput rotational-effort rotational-effort-history-season
+  set rotational-effort-historyXticks-season sum (sublist rotational-effort-history-season 0 season-days)
+
+  set rotational-effort-history-year fput rotational-effort rotational-effort-history-year
+  set rotational-effort-historyXticks-year sum (sublist rotational-effort-history-year 0 year-days)
+
+
+
+
+
+
+
+
 
 
   if simulation-time / 368 = STOP-SIMULATION-AT [stop]                               ;; the observer can decide whether the simulation should run indefinitely (STOP-SIMULATION-AT 0 years) or after X years
@@ -807,13 +1349,14 @@ to go
     ordinary-sale-old-cows                                                           ;;## ORDINARY SALES MODULE
     ordinary-sale-heifers-cows                                                       ;;## ORDINARY SALES MODULE
 
-
     extraordinary-sale-males-environmental-farmer                                    ;;## EXTRAORDINARY SALES MODULE
     extraordinary-sale-old-cows-environmental-farmer                                 ;;## EXTRAORDINARY SALES MODULE
     extraordinary-sale-heifers-cows-environmental-farmer                             ;;## EXTRAORDINARY SALES MODULE
   ]
 
   farm-balance                                                                       ;;## SALES MODULE
+
+  effort
 
   tick
 end
@@ -883,6 +1426,7 @@ to move                                                                         
 
     if (farmer-profile = "none") or (farmer-profile = "traditional") [               ;; Traditional farmers move cows at the end of each season
       if season-days >= season-length [
+        set ticks-since-here 0
         ask cows
         [ifelse paddock-a = 1
           [let next-paddock one-of patches with [paddock-b = 1] move-to next-paddock]
@@ -966,6 +1510,14 @@ to feed-supplementation                                                         
 
   set FS-cow 0 set FS-cow-with-calf 0 set FS-heifer 0 set FS-steer 0 set FS-weaned-calf 0       ;; the daily cost of purchasing feed supplements is reset every tick. This allows to keep track of the amount of money spent on feed supplements each day.
 
+  if balance-historyXticks <= 0 [                                                                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    ask cows with [cow?] [set supplemented? false set difference-LW 0 set kg-supplement-DM 0 set USD-supplement-DM 0]              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    ask cows with [heifer?] [set supplemented? false set difference-LW 0 set kg-supplement-DM 0 set USD-supplement-DM 0]           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    ask cows with [steer?] [set supplemented? false set difference-LW 0 set kg-supplement-DM 0 set USD-supplement-DM 0]            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    ask cows with [weaned-calf?] [set supplemented? false set difference-LW 0 set kg-supplement-DM 0 set USD-supplement-DM 0]      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    ask cows with [cow-with-calf?] [set supplemented? false set difference-LW 0 set kg-supplement-DM 0 set USD-supplement-DM 0]    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ]
+
   if balance-historyXticks > 0 [                                                                ;; the farmer can buy feed for the animals if the balance of the system is positive (i.e. if there are savings).
 
     ask cows with [cow?] [ifelse live-weight < cow-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set difference-LW 0 set kg-supplement-DM 0 set USD-supplement-DM 0]] ;; animals below the threshold set by the farmer (the "xxxx-min-weight-for-feed-sup" slider in the interface) are selected for feed supplementation
@@ -1005,6 +1557,7 @@ to feed-supplementation                                                         
 
   set supplement-cost FS-cow + FS-cow-with-calf + FS-heifer + FS-steer + FS-weaned-calf         ;; once the daily cost has been calculated for each age group, the TOTAL daily cost (i.e. the total cost to feed ALL animals in one day) is calculated
 
+
 end
 
 to grow-livestock-natural-weaning                                                    ;;## EARLY/NATURAL WEANING MODULE ;; this procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactation period of animals in a NATURAL weaning scenario.
@@ -1032,7 +1585,10 @@ end
 
 
 to grow-livestock-early-weaning                                                      ;;## EARLY/NATURAL WEANING MODULE ;; this procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactation period of animals in a EARLY weaning scenario.
-ask cows [
+
+  ask cows with [weaning-calf? = true] [set weaning-calf? false]                                                                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  ask cows [
     set age age + days-per-tick
     if age > cow-age-max [die]
     ifelse live-weight < min-weight
@@ -1040,7 +1596,7 @@ ask cows [
     [set mortality-rate natural-mortality-rate]
     if random-float 1 < mortality-rate [die]
 
-    if (cow-with-calf? = true and live-weight < early-weaning-threshold) [become-cow ask my-out-links [die]]               ;; if the mother (an agent with a "cow-with-calf?" state) is below a certain weight, it will switch to the "cow?" state and will kill the link with its child (an agent with a "born-calf" state). This weight is determined by the "early-weaning-threshold" slider in the interface.
+    if (cow-with-calf? = true and live-weight < early-weaning-threshold) [become-cow set weaning-calf? true ask my-out-links [die]]               ;; ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWW if the mother (an agent with a "cow-with-calf?" state) is below a certain weight, it will switch to the "cow?" state and will kill the link with its child (an agent with a "born-calf" state). This weight is determined by the "early-weaning-threshold" slider in the interface.
 
     ask cows with [cow-with-calf? and not any? my-links] [become-cow]                                                      ;; if the link with the child (an agent with the state "born-calf") is lost (this happens when the child dies), the mother changes from the state "cow-with-calf" to the state "cow".
     ask cows with [born-calf-female? and not any? my-links ] [ become-weaned-calf-female ]                                 ;; if the link with the mother (an agent with a "cow-with-calf?" state) is lost (this happens when the mother dies, or when the mother switches from a "cow-with-calf?" state to a "cow?" state), the calf weans prematurely.
@@ -1180,6 +1736,8 @@ to ordinary-sale-males                                                          
               set sale? true
               set OS-males-steer sum [value] of cows with [steer? and sale?]]]]]]]
 
+  set OS-males-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
   ask cows with [sale?] [die]
 
 end
@@ -1203,6 +1761,8 @@ to ordinary-sale-old-cows                                                       
             ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
               set sale? true
               set OS-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]]]]]
+
+  set OS-old-cow-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
   ask cows with [sale?] [die]
 
@@ -1230,6 +1790,8 @@ to ordinary-sale-heifers-cows                                           ;;## ORD
               set sale? true
               set OS-heifer sum [value] of cows with [heifer? and sale?]
               set OS-cow sum [value] of cows with [cow? and sale?]]]]]]]
+
+  set OS-heifer-cow-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
   ask cows with [sale?] [die]
 
@@ -1266,6 +1828,8 @@ to extraordinary-sale-males-market-farmer                                       
           set sale? true
           set ES-males-steer sum [value] of cows with [steer? and sale?]]]]]
 
+  set ES-males-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
   ask cows with [sale?] [die]
 
   end
@@ -1287,6 +1851,8 @@ to extraordinary-sale-old-cows-market-farmer                                    
           ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
             set sale? true
             set ES-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]]]]
+
+  set ES-old-cow-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
   ask cows with [sale?] [die]
 
@@ -1311,6 +1877,8 @@ to extraordinary-sale-heifers-cows-market-farmer                                
             set sale? true
             set ES-heifer sum [value] of cows with [heifer? and sale?]
             set ES-cow sum [value] of cows with [cow? and sale?]]]]]]
+
+  set ES-heifer-cow-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
   ask cows with [sale?] [die]
 
@@ -1377,6 +1945,8 @@ to extraordinary-sale-males-environmental-farmer                                
               set sale? true
               set ES-males-steer sum [value] of cows with [steer? and sale?]]]]]]]
 
+  set ES-males-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
   ask cows with [sale?] [die]
 
   end
@@ -1418,6 +1988,8 @@ to extraordinary-sale-old-cows-environmental-farmer                             
             ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
               set sale? true
               set ES-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]]]]]
+
+  set ES-old-cow-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
   ask cows with [sale?] [die]
 
@@ -1466,6 +2038,8 @@ to extraordinary-sale-heifers-cows-environmental-farmer                         
               set ES-heifer sum [value] of cows with [heifer? and sale?]
               set ES-cow sum [value] of cows with [cow? and sale?]]]]]]]
 
+  set ES-heifer-cow-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
   ask cows with [sale?] [die]
 
 end
@@ -1493,6 +2067,48 @@ to farm-balance                                                                 
 
 end
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; WELLBEING MODULE                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+to effort                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  ;; Feed supplementation effort
+
+  set supplement-effort count cows with [supplemented?] / supplement-effort-magnitude    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  set weaning-effort count cows with [weaning-calf?] / weaning-effort-magnitude       ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  set OS-total-effort OS-males-effort + OS-old-cow-effort + OS-heifer-cow-effort                                                                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-total-effort-history-season OS-males-effort-historyXticks-season + OS-old-cow-effort-historyXticks-season + OS-heifer-cow-effort-historyXticks-season          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-total-effort-history-year OS-males-effort-historyXticks-year + OS-old-cow-effort-historyXticks-year + OS-heifer-cow-effort-historyXticks-year                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  set ES-total-effort ES-males-effort + ES-old-cow-effort + ES-heifer-cow-effort                                                                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-total-effort-history-season ES-males-effort-historyXticks-season + ES-old-cow-effort-historyXticks-season + ES-heifer-cow-effort-historyXticks-season          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-total-effort-history-year ES-males-effort-historyXticks-year + ES-old-cow-effort-historyXticks-year + ES-heifer-cow-effort-historyXticks-year                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  if farmer-profile = "market" [if current-season = controlled-breeding-season and (season-days = 1) [set breeding-effort keep-MAX-n-steers / breeding-effort-magnitude]]  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  if farmer-profile = "environmental" [if current-season = controlled-breeding-season and (season-days = 1) [set breeding-effort keep-MAX-n-steers / breeding-effort-magnitude]]   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+  if (spatial-management = "rotational grazing") [                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    if farmer-profile = "traditional" [if season-days >= season-length [set rotational-effort count cows / rotational-effort-magnitude]]                                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    if farmer-profile = "market" [if market-farmer-RG-live-weight-threshold > mean [live-weight] of cows and ticks-since-here >= RG-days-in-paddock [set rotational-effort count cows / rotational-effort-magnitude]]                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    if farmer-profile = "environmental" [if env-farmer-RG-SR-threshold > sum [animal-units] of cows / (count patches / 4) and ticks-since-here >= RG-days-in-paddock [set rotational-effort count cows / rotational-effort-magnitude]]]               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+  set total-effort supplement-effort + weaning-effort + OS-total-effort + ES-total-effort + breeding-effort + rotational-effort                                                                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set total-effort-history supplement-effort-historyXticks + weaning-effort-historyXticks + OS-males-effort-historyXticks + OS-old-cow-effort-historyXticks + OS-heifer-cow-effort-historyXticks + ES-males-effort-historyXticks + ES-old-cow-effort-historyXticks + ES-heifer-cow-effort-historyXticks + breeding-effort-historyXticks + rotational-effort-historyXticks ;; Accumulated effort over time
+  set total-effort-history-season supplement-effort-historyXticks-season + weaning-effort-historyXticks-season + OS-total-effort-history-season + ES-total-effort-history-season + breeding-effort-historyXticks-season + rotational-effort-historyXticks-season          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set total-effort-history-year supplement-effort-historyXticks-year + weaning-effort-historyXticks-year + OS-total-effort-history-year + ES-total-effort-history-year + breeding-effort-historyXticks-year + rotational-effort-historyXticks-year                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
+
+end
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; REPORTERS (This section of the code contains the reporters that collect the model outputs)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1514,7 +2130,7 @@ to-report grass-height-report                                                   
 end
 
 to-report season-report                                                              ;; outputs the name of the season
-    report  item current-season current-season-name
+  report  item current-season current-season-name
 end
 
  to-report dmgr                                                                      ;; outputs the Dry Matter Growth Rate (DMGR, units: kgDM/ha/day)
@@ -1543,16 +2159,117 @@ to-report crop-efficiency                                                       
  end
 
 to-report accumulated-cost                                                           ;;## SALES MODULE ;; outputs the accumulated balance of the system since the start of the simulation (USD)
-    report cost-historyXticks
+  report cost-historyXticks
 end
 
 to-report accumulated-income                                                         ;;## SALES MODULE ;; outputs the accumulated balance of the system since the start of the simulation (USD)
-    report income-historyXticks
+  report income-historyXticks
 end
 
 to-report accumulated-balance                                                        ;;## SALES MODULE ;; outputs the accumulated balance of the system since the start of the simulation (USD)
-    report balance-historyXticks
+  report balance-historyXticks
 end
+
+to-report accumulated-supplement-effort-season                                       ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  report supplement-effort-historyXticks-season
+end
+
+to-report accumulated-supplement-effort-year                                         ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  report supplement-effort-historyXticks-year
+end
+
+to-report accumulated-weaning-effort-season                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  report weaning-effort-historyXticks-season
+end
+
+to-report accumulated-weaning-effort-year                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  report weaning-effort-historyXticks-year
+end
+
+to-report acummulated-OS-males-effort-season
+  report OS-males-effort-historyXticks-season                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+end
+
+to-report acummulated-OS-males-effort-year
+  report OS-males-effort-historyXticks-year                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+end
+
+to-report acummulated-OS-old-cow-effort-season
+  report OS-old-cow-effort-historyXticks-season                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+end
+
+  to-report acummulated-OS-old-cow-effort-year
+  report OS-old-cow-effort-historyXticks-year                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+end
+
+to-report acummulated-OS-heifer-cow-effort-season
+  report OS-heifer-cow-effort-historyXticks-season                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+end
+
+to-report acummulated-OS-heifer-cow-effort-year
+  report OS-heifer-cow-effort-historyXticks-year                                     ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+end
+
+to-report acummulated-ES-males-effort-season
+  report ES-males-effort-historyXticks-season                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+end
+
+to-report acummulated-ES-males-effort-year
+  report ES-males-effort-historyXticks-year                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+end
+
+to-report acummulated-ES-old-cow-effort-season
+  report ES-old-cow-effort-historyXticks-season                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+end
+
+to-report acummulated-ES-old-cow-effort-year
+  report ES-old-cow-effort-historyXticks-year                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+end
+
+to-report acummulated-ES-heifer-cow-effort-season
+  report ES-heifer-cow-effort-historyXticks-season                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+end
+
+to-report acummulated-ES-heifer-cow-effort-year
+  report ES-heifer-cow-effort-historyXticks-year                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+end
+
+
+
+
+
+
+
+to-report acummulated-breeding-effort-season
+  report breeding-effort-historyXticks-season                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+end
+
+to-report acummulated-breeding-effort-year
+  report breeding-effort-historyXticks-year                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+end
+
+
+
+
+
+
+
+
+
+to-report acummulated-rotational-effort-season
+  report rotational-effort-historyXticks-season                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+end
+
+to-report acummulated-rotational-effort-year
+  report rotational-effort-historyXticks-year                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+end
+
+
+
+
+
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; REFERENCES
@@ -1659,10 +2376,10 @@ NIL
 HORIZONTAL
 
 PLOT
-1723
-722
-2061
-933
+2128
+798
+2466
+1009
 Average of grass-height (GH)
 Days
 cm
@@ -1677,10 +2394,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot grass-height-report"
 
 PLOT
-860
-488
-1240
-708
+861
+1002
+1241
+1222
 Live-weight (LW)
 Days
 kg
@@ -1723,10 +2440,10 @@ stocking-rate
 11
 
 PLOT
-1207
-721
-1581
-894
+1208
+1235
+1582
+1408
 Cattle age classes population sizes
 Days
 Heads
@@ -1762,10 +2479,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-1157
-621
-1337
-666
+1158
+1135
+1338
+1180
 Average LW (kg/animal)
 mean [live-weight] of cows
 3
@@ -1788,10 +2505,10 @@ cm
 HORIZONTAL
 
 PLOT
-2062
-721
-2385
-936
+2467
+797
+2790
+1012
 Dry-matter (DM) and DM consumption (DDMC)
 Days
 kg
@@ -1817,10 +2534,10 @@ TEXTBOX
 1
 
 MONITOR
-1722
-675
-1848
-720
+2127
+751
+2253
+796
 Average GH (cm/ha)
 grass-height-report
 3
@@ -1891,10 +2608,10 @@ Area (ha)
 11
 
 PLOT
-860
-713
-1196
-935
+861
+1227
+1197
+1449
 Daily individual-live-weight-gain (ILWG)
 Days
 kg
@@ -1915,10 +2632,10 @@ PENS
 "Average LWG" 1.0 0 -16777216 true "" "plot mean [live-weight-gain] of cows"
 
 PLOT
-2387
-720
-2713
-931
+2792
+796
+3118
+1007
 Crop-efficiency (CE)
 Days
 %
@@ -1933,10 +2650,10 @@ PENS
 "CE" 1.0 0 -16777216 true "" "plot crop-efficiency"
 
 MONITOR
-2388
-673
-2444
-718
+2793
+749
+2849
+794
 CE (%)
 crop-efficiency
 2
@@ -1944,10 +2661,10 @@ crop-efficiency
 11
 
 MONITOR
-2060
-672
-2209
-717
+2465
+748
+2614
+793
 Total DDMC (kg)
 sum [DDMC] of cows
 3
@@ -1955,10 +2672,10 @@ sum [DDMC] of cows
 11
 
 MONITOR
-2209
-672
-2383
-717
+2614
+748
+2788
+793
 Average DDMC (kg/animal)
 mean [DDMC] of cows
 3
@@ -1998,10 +2715,10 @@ kg
 HORIZONTAL
 
 PLOT
-858
-997
-1200
-1191
+859
+1511
+1201
+1705
 Body condition ccore (BCS)
 Days
 points
@@ -2017,10 +2734,10 @@ PENS
 "Cow-with-calf" 1.0 0 -5825686 true "" "plot (mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40"
 
 MONITOR
-859
-950
-989
-995
+860
+1464
+990
+1509
 BCS of cows (points)
 ;(mean [live-weight] of cows with [cow?] - mean [min-weight] of cows with [cow?]) / 40\n;(mean [live-weight] of cows with [cow?] - (((mean [live-weight] of cows with [cow?]) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40
 2
@@ -2028,10 +2745,10 @@ BCS of cows (points)
 11
 
 PLOT
-1215
-997
-1625
-1190
+1216
+1511
+1626
+1704
 Pregnancy rate (PR)
 Days
 %
@@ -2048,10 +2765,10 @@ PENS
 "Cow-with-calf" 1.0 0 -5825686 true "" "plot mean [pregnancy-rate] of cows with [cow-with-calf?] * 100"
 
 MONITOR
-1216
-949
-1348
-994
+1217
+1463
+1349
+1508
 PR of cows (%)
 mean [pregnancy-rate] of cows with [cow?] * 100
 2
@@ -2059,10 +2776,10 @@ mean [pregnancy-rate] of cows with [cow?] * 100
 11
 
 MONITOR
-1347
-949
-1490
-994
+1348
+1463
+1491
+1508
 PR of cows-with-calf (%)
 mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
 2
@@ -2070,10 +2787,10 @@ mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
 11
 
 MONITOR
-1490
-949
-1627
-994
+1491
+1463
+1628
+1508
 PR of heifers (%)
 mean [pregnancy-rate] of cows with [heifer?] * 100
 2
@@ -2081,10 +2798,10 @@ mean [pregnancy-rate] of cows with [heifer?] * 100
 11
 
 MONITOR
-2060
-631
-2209
-676
+2465
+707
+2614
+752
 Total DM (kg)
 dmgr
 3
@@ -2092,10 +2809,10 @@ dmgr
 11
 
 MONITOR
-1158
-670
-1335
-715
+1159
+1184
+1336
+1229
 Average ILWG (kg/animal/day)
 ;mean [live-weight-gain] of cows\nILWG
 3
@@ -2103,10 +2820,10 @@ Average ILWG (kg/animal/day)
 11
 
 MONITOR
-989
-950
-1144
-995
+990
+1464
+1145
+1509
 BCS of cows-with-calf (points)
 ;(mean [live-weight] of cows with [cow-with-calf?] - mean [min-weight] of cows with [cow-with-calf?]) / 40\n;(mean [live-weight] of cows with [cow-with-calf?] - (((mean [live-weight] of cows with [cow-with-calf?]) * set-MW-1-AU) / set-1-AU)) / 40\n\n(mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40
 2
@@ -2114,10 +2831,10 @@ BCS of cows-with-calf (points)
 11
 
 MONITOR
-1340
-621
-1570
-666
+1341
+1135
+1571
+1180
 Average LW of adult cows (kg/animal)
 mean [live-weight] of cows with [adult-cow?]
 3
@@ -2125,10 +2842,10 @@ mean [live-weight] of cows with [adult-cow?]
 11
 
 MONITOR
-1341
-669
-1570
-714
+1342
+1183
+1571
+1228
 Average ILWG of adult cows (kg/animal/day)
 mean [live-weight-gain] of cows with [adult-cow?]
 3
@@ -2236,10 +2953,10 @@ kg
 HORIZONTAL
 
 PLOT
-860
-313
-1296
-486
+861
+827
+1297
+1000
 Stocking rate
 Days
 AU/ha
@@ -2312,10 +3029,10 @@ season-days
 11
 
 MONITOR
-2209
-631
-2383
-676
+2614
+707
+2788
+752
 Total DM per ha (kg/ha)
 ;(DM-cm-ha * mean [grass-height] of patches) / DM-available-for-cattle\n(dmgr) / count patches
 3
@@ -2331,7 +3048,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-50.0
+10.0
 1
 1
 years
@@ -2604,10 +3321,10 @@ INITIAL GRASS HEIGHT \nAND SOIL QUALITY
 1
 
 PLOT
-892
-99
-1186
-219
+814
+100
+1108
+220
 climacoef
 NIL
 NIL
@@ -2686,10 +3403,10 @@ NIL
 1
 
 MONITOR
-1351
-319
-1534
-364
+2179
+286
+2362
+331
 Ordinary sales (OS) income (USD)
 ordinary-sales-income
 3
@@ -2712,10 +3429,10 @@ NIL
 HORIZONTAL
 
 PLOT
-1351
-366
-1698
-516
+2179
+333
+2526
+483
 Daily income
 Days
 USD
@@ -2731,10 +3448,10 @@ PENS
 "ES income" 1.0 0 -2674135 true "" "plot extraordinary-sales-income"
 
 PLOT
-1710
-185
-2073
-312
+2538
+152
+2901
+279
 Daily balance
 Days
 USD
@@ -2770,9 +3487,9 @@ SLIDER
 627
 age-sell-old-cow
 age-sell-old-cow
-4
+2
 15
-7.0
+6.0
 1
 1
 years
@@ -2814,10 +3531,10 @@ LIVESTOCK MANAGEMENT STRATEGIES
 1
 
 SLIDER
-934
-224
-1131
-257
+856
+225
+1053
+258
 set-direct-climacoef-control
 set-direct-climacoef-control
 0.1
@@ -2829,10 +3546,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-2095
-204
-2273
-249
+2923
+171
+3101
+216
 meat production (kg/ha)
 sum [live-weight] of cows / count patches
 3
@@ -2840,10 +3557,10 @@ sum [live-weight] of cows / count patches
 11
 
 PLOT
-2096
-256
-2461
-406
+2924
+223
+3289
+373
 meat production 
 days
 kg/ha
@@ -2865,7 +3582,7 @@ SLIDER
 early-weaning-threshold
 early-weaning-threshold
 180
-300
+800
 200.0
 1
 1
@@ -2898,10 +3615,10 @@ ordinary-sale-of-cows-with
 1
 
 MONITOR
-1353
-139
-1532
-184
+2181
+106
+2360
+151
 Accumulated balance (USD)
 accumulated-balance
 17
@@ -2909,10 +3626,10 @@ accumulated-balance
 11
 
 PLOT
-1353
-185
-1697
-305
+2181
+152
+2525
+272
 Accumulated balance
 Days
 USD
@@ -2927,10 +3644,10 @@ PENS
 "Balance" 1.0 0 -16777216 true "" "plot accumulated-balance"
 
 MONITOR
-1536
-319
-1696
-364
+2364
+286
+2524
+331
 Extraordinary sales (ES) income (USD)
 extraordinary-sales-income
 3
@@ -2955,7 +3672,7 @@ SLIDER
 market-farmer-ES-min-weight
 market-farmer-ES-min-weight
 0
-500
+1000
 180.0
 1
 1
@@ -3034,10 +3751,10 @@ days
 HORIZONTAL
 
 MONITOR
-1705
-520
-1924
-565
+2533
+487
+2752
+532
 Total daily kg-supplement-DM (kg)
 sum [kg-supplement-DM] of cows
 17
@@ -3045,10 +3762,10 @@ sum [kg-supplement-DM] of cows
 11
 
 MONITOR
-1707
-320
-1876
-365
+2535
+287
+2704
+332
 Daily supplement cost (USD)
 supplement-cost
 17
@@ -3079,7 +3796,7 @@ cow-min-weight-for-feed-sup
 cow-min-weight-for-feed-sup
 0
 350
-250.0
+350.0
 1
 1
 kg
@@ -3131,10 +3848,10 @@ kg
 HORIZONTAL
 
 PLOT
-1706
-367
-2072
-516
+2534
+334
+2900
+483
 Daily costs
 Days
 USD
@@ -3155,7 +3872,7 @@ BUTTON
 1428
 49
 free 1000 USD
-set balance 1000
+set balance 500
 NIL
 1
 T
@@ -3189,40 +3906,40 @@ count cows
 11
 
 TEXTBOX
-901
-285
-1212
-329
+902
+799
+1213
+843
 LIVESTOCK RELATED OUTPUTS
 18
 34.0
 1
 
 TEXTBOX
-1768
-96
-2072
-140
+2596
+63
+2900
+107
 ECONOMIC RELATED OUTPUTS
 18
 0.0
 1
 
 TEXTBOX
-2061
-599
-2359
-634
+2466
+675
+2764
+710
 RESOURCE RELATED OUTPUTS
 18
 64.0
 1
 
 MONITOR
-1710
-134
-1848
-179
+2538
+101
+2676
+146
 Daily balance (USD)
 balance
 17
@@ -3245,10 +3962,10 @@ USD
 HORIZONTAL
 
 MONITOR
-1878
-319
-2020
-364
+2706
+286
+2848
+331
 Daily other costs (USD)
 other-cost
 17
@@ -3256,10 +3973,10 @@ other-cost
 11
 
 MONITOR
-1865
-133
-2014
-178
+2693
+100
+2842
+145
 NIL
 accumulated-cost
 17
@@ -3275,6 +3992,681 @@ Slider to simulate other costs related to the livestock system (maintenance, vet
 13
 0.0
 1
+
+MONITOR
+1768
+668
+1881
+713
+NIL
+supplement-effort
+17
+1
+11
+
+MONITOR
+1342
+1081
+1559
+1126
+NIL
+min [live-weight] of cows with [cow?]
+17
+1
+11
+
+MONITOR
+1566
+1081
+1853
+1126
+NIL
+count cows with [cow?] with [live-weight <= 250]
+17
+1
+11
+
+SLIDER
+1623
+368
+1771
+401
+sales-effort-magnitude
+sales-effort-magnitude
+1
+10
+5.0
+1
+1
+NIL
+HORIZONTAL
+
+MONITOR
+1768
+712
+1942
+757
+SUPP-EFFORT-SEASON
+accumulated-supplement-effort-season
+17
+1
+11
+
+MONITOR
+1768
+757
+1942
+802
+SUPP-EFFORT-YEAR
+accumulated-supplement-effort-year
+17
+1
+11
+
+MONITOR
+1585
+669
+1681
+714
+NIL
+weaning-effort
+17
+1
+11
+
+MONITOR
+1585
+712
+1754
+757
+WEAN-EFFORT-SEASON
+accumulated-weaning-effort-season
+17
+1
+11
+
+MONITOR
+1585
+757
+1754
+802
+WEAN-EFFORT-YEAR
+accumulated-weaning-effort-year
+17
+1
+11
+
+MONITOR
+1169
+328
+1244
+373
+NIL
+total-effort
+17
+1
+11
+
+MONITOR
+1169
+371
+1319
+416
+TOTAL-EFFORT-SEASON
+total-effort-history-season
+17
+1
+11
+
+MONITOR
+1169
+414
+1307
+459
+TOTAL-EFFORT-YEAR
+total-effort-history-year
+17
+1
+11
+
+MONITOR
+1795
+502
+1897
+547
+NIL
+OS-males-effort
+17
+1
+11
+
+MONITOR
+1795
+460
+1897
+505
+n steers
+count cows with [steer?]
+17
+1
+11
+
+MONITOR
+1795
+546
+1952
+591
+OS-MALES-EFFORT-SEASON
+acummulated-OS-males-effort-season
+17
+1
+11
+
+MONITOR
+1795
+589
+1952
+634
+OS-MALES-EFFORT-YEAR
+OS-males-effort-historyXticks-year
+17
+1
+11
+
+MONITOR
+1628
+502
+1741
+547
+NIL
+OS-old-cow-effort
+17
+1
+11
+
+MONITOR
+1628
+545
+1796
+590
+OS-OLD-COW-EFFORT-SEASON
+acummulated-OS-old-cow-effort-season
+17
+1
+11
+
+MONITOR
+1628
+589
+1796
+634
+OS-OLD-COW-EFFORT-YEAR
+acummulated-OS-old-cow-effort-year
+17
+1
+11
+
+MONITOR
+1628
+458
+1699
+503
+n old cow
+count cows with [cow? and age / 368 > age-sell-old-cow]
+17
+1
+11
+
+MONITOR
+1598
+412
+1655
+457
+n cow
+count cows with [cow?]
+17
+1
+11
+
+MONITOR
+1482
+502
+1601
+547
+NIL
+OS-heifer-cow-effort
+17
+1
+11
+
+MONITOR
+1482
+545
+1629
+590
+OS-HEIFER-COW-SEASON
+acummulated-OS-heifer-cow-effort-season
+17
+1
+11
+
+MONITOR
+1482
+589
+1629
+634
+OS-HEIFER-COW-YEAR
+acummulated-OS-heifer-cow-effort-year
+17
+1
+11
+
+MONITOR
+1482
+457
+1559
+502
+n heifer cow
+count cows with [cow? or heifer?]
+17
+1
+11
+
+MONITOR
+1542
+412
+1599
+457
+n heifer
+count cows with [heifer?]
+17
+1
+11
+
+MONITOR
+1329
+502
+1425
+547
+NIL
+OS-total-effort
+17
+1
+11
+
+MONITOR
+1329
+545
+1484
+590
+OS-TOTAL-EFFORT-SEASON
+OS-total-effort-history-season
+17
+1
+11
+
+MONITOR
+1329
+589
+1484
+634
+OS-TOTAL-EFFORT-YEAR
+OS-total-effort-history-year
+17
+1
+11
+
+MONITOR
+1797
+187
+1897
+232
+NIL
+ES-males-effort
+17
+1
+11
+
+MONITOR
+1797
+230
+1949
+275
+ES-MALES-EFFORT-SEASON
+acummulated-ES-males-effort-season
+17
+1
+11
+
+MONITOR
+1797
+274
+1949
+319
+ES-MALES-EFFORT-YEAR
+acummulated-ES-males-effort-year
+17
+1
+11
+
+MONITOR
+1797
+143
+1855
+188
+n steers
+count cows with [steer?]
+17
+1
+11
+
+MONITOR
+1628
+186
+1741
+231
+NIL
+ES-old-cow-effort
+17
+1
+11
+
+MONITOR
+1628
+230
+1798
+275
+ES-OLD-COW-EFFORT-SEASON
+acummulated-ES-old-cow-effort-season
+17
+1
+11
+
+MONITOR
+1628
+274
+1798
+319
+ES-OLD-COW-EFFORT-YEAR
+acummulated-ES-old-cow-effort-year
+17
+1
+11
+
+MONITOR
+1628
+142
+1693
+187
+n old cow
+count cows with [cow? and age / 368 > age-sell-old-cow]
+17
+1
+11
+
+MONITOR
+1597
+98
+1650
+143
+n cow
+count cows with [cow?]
+17
+1
+11
+
+MONITOR
+1485
+187
+1605
+232
+NIL
+ES-heifer-cow-effort
+17
+1
+11
+
+MONITOR
+1485
+230
+1629
+275
+ES-HEIFER-COW-SEASON
+acummulated-ES-heifer-cow-effort-season
+17
+1
+11
+
+MONITOR
+1485
+274
+1629
+319
+ES-HEIFER-COW-YEAR
+acummulated-ES-heifer-cow-effort-year
+17
+1
+11
+
+MONITOR
+1485
+143
+1566
+188
+n heifer cow
+count cows with [cow? or heifer?]
+17
+1
+11
+
+MONITOR
+1544
+98
+1598
+143
+n heifer
+count cows with [heifer?]
+17
+1
+11
+
+MONITOR
+1328
+186
+1422
+231
+NIL
+ES-total-effort
+17
+1
+11
+
+MONITOR
+1328
+230
+1486
+275
+ES-TOTAL-EFFORT-SEASON
+ES-total-effort-history-season
+17
+1
+11
+
+MONITOR
+1328
+274
+1486
+319
+ES-TOTAL-EFFORT-YEAR
+ES-total-effort-history-year
+17
+1
+11
+
+MONITOR
+1416
+667
+1514
+712
+NIL
+breeding-effort
+17
+1
+11
+
+MONITOR
+1417
+712
+1577
+757
+BREEDING-EFFORT-SEASON
+acummulated-breeding-effort-season
+17
+1
+11
+
+MONITOR
+1417
+757
+1578
+802
+BREEDING-EFFORT-YEAR
+acummulated-breeding-effort-year
+17
+1
+11
+
+MONITOR
+1242
+670
+1345
+715
+NIL
+rotational-effort
+17
+1
+11
+
+MONITOR
+1242
+714
+1409
+759
+ROTATIONAL-EFFORT-SEASON
+acummulated-rotational-effort-season
+17
+1
+11
+
+MONITOR
+1242
+758
+1409
+803
+ROTATIONAL-EFFORT-YEAR
+acummulated-rotational-effort-year
+17
+1
+11
+
+PLOT
+810
+397
+1163
+589
+total-effort
+Days
+Effort
+0.0
+92.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plot total-effort"
+
+MONITOR
+808
+342
+982
+387
+Accumulated effort over time
+total-effort-history
+17
+1
+11
+
+TEXTBOX
+1505
+53
+1754
+86
+EFFORT RELATED OUTPUTS
+18
+135.0
+1
+
+SLIDER
+1351
+329
+1527
+362
+rotational-effort-magnitude
+rotational-effort-magnitude
+1
+10
+5.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+1536
+329
+1709
+362
+breeding-effort-magnitude
+breeding-effort-magnitude
+1
+10
+5.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+1715
+329
+1890
+362
+weaning-effort-magnitude
+weaning-effort-magnitude
+1
+10
+5.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+1430
+369
+1618
+402
+supplement-effort-magnitude
+supplement-effort-magnitude
+1
+100
+5.0
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
