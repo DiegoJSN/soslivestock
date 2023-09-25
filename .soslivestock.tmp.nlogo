@@ -1541,7 +1541,7 @@ to feed-supplementation                                                         
       ifelse sum [USD-supplement-DM] of cows with [supplemented?] > balance-historyXticks       ;; if the money needed to supplement all the animals selected for supplementation is greater than the savings of the livestock system (balance-historyXticks)...
        [set kg-supplement-DM (balance-historyXticks / count cows with [supplemented?]) / item current-season supplement-prices  ;; ...the kg of supplement to be purchased is calculated based on the current system's savings and divided among the animals selected for supplementation
         set USD-supplement-DM kg-supplement-DM * item current-season supplement-prices
-        set live-weight live-weight + (kg-supplement-DM / feed-sup-conversion-ratio)]
+        set live-weight live-weight + (kg-supplement-DM  feed-sup-conversion-ratio)]
                                                                                                 ;; if the money needed is below than the savings of the livestock system (i.e., if the farmer has enough money)...
        [set kg-supplement-DM difference-LW * feed-sup-conversion-ratio                          ;; ...the kg of supplement to be purchased is calculated based on the difference of kg below the threshold (threshold - live-weight) multiplied by the feed conversion ratio
         set USD-supplement-DM item current-season supplement-prices * kg-supplement-DM
@@ -2354,7 +2354,7 @@ initial-num-cows
 initial-num-cows
 0
 1000
-50.0
+1000.0
 1
 1
 NIL
@@ -2479,10 +2479,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-1157
-1137
-1336
-1182
+902
+638
+1082
+683
 Average LW (kg/animal)
 mean [live-weight] of cows
 3
@@ -2708,7 +2708,7 @@ initial-weight-cows
 initial-weight-cows
 100
 1500
-300.0
+200.0
 1
 1
 kg
@@ -3796,7 +3796,7 @@ cow-min-weight-for-feed-sup
 cow-min-weight-for-feed-sup
 0
 350
-250.0
+327.0
 1
 1
 kg
