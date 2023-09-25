@@ -91,6 +91,8 @@ globals [
   FS-weaned-calf                                                                    ;;## FEED SUPPLEMENTATION MODULE ;; cost of supplementing weaned calves
   supplement-cost                                                                   ;;## FEED SUPPLEMENTATION MODULE ;; total cost of feed supplementation
 
+  FSB-cow                                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW ;; Feed supplementation for breeding cows
+
   other-cost                                                                        ;;## SALES MODULE ;; other costs associated with the livestock system
 
   cost                                                                              ;;## SALES MODULE ;; total costs resulting from the livestock system (supplement cost + other cost)
@@ -381,8 +383,14 @@ cows-own [
   supplemented?                                                                     ;;## FEED SUPPLEMENTATION MODULE ;; boolean variable that indicates whether or not the animal has been selected for feed supplementation
   difference-LW                                                                     ;;## FEED SUPPLEMENTATION MODULE ;; variable to know how many kilos the animal selected for supplementation is below the threshold ("xxxx-min-weight-for-feed-sup" sliders in the interface) at which it will be supplemented.
 
+  difference-LW-breeding                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
   kg-supplement-DM                                                                  ;;## FEED SUPPLEMENTATION MODULE ;; kg of supplementary feed required by the animal
   USD-supplement-DM                                                                 ;;## FEED SUPPLEMENTATION MODULE ;; the price of the feed supplement that is required by the animal(USD)
+
+  kg-supplement-DM-breeding                                                         ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  USD-supplement-DM-breeding                                                        ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
 
   weaning-calf?                                                                     ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
@@ -725,6 +733,14 @@ to become-born-calf-female
   set kg-supplement-DM 0                                                            ;;## FEED SUPPLEMENTATION MODULE
   set USD-supplement-DM 0                                                           ;;## FEED SUPPLEMENTATION MODULE
 
+
+
+  set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
   set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 end
 
@@ -764,6 +780,12 @@ to become-born-calf-male
   set kg-supplement-DM 0                                                            ;;## FEED SUPPLEMENTATION MODULE
   set USD-supplement-DM 0                                                           ;;## FEED SUPPLEMENTATION MODULE
 
+
+  set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
   set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 end
 
@@ -801,6 +823,13 @@ to become-weaned-calf-female
   if supplemented? = true [set difference-LW weaned-calf-min-weight-for-feed-sup - live-weight]         ;;## FEED SUPPLEMENTATION MODULE
   set kg-supplement-DM 0                                                                                ;;## FEED SUPPLEMENTATION MODULE
   set USD-supplement-DM 0                                                                               ;;## FEED SUPPLEMENTATION MODULE
+
+
+
+  set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
 
   set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 end
@@ -840,6 +869,16 @@ to become-weaned-calf-male
   set kg-supplement-DM 0                                                                                           ;;## FEED SUPPLEMENTATION MODULE
   set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
 
+
+  set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+  set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
   set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 end
 
@@ -877,6 +916,13 @@ to become-heifer
   if supplemented? = true [set difference-LW heifer/steer-min-weight-for-feed-sup - live-weight]                   ;;## FEED SUPPLEMENTATION MODULE
   set kg-supplement-DM 0                                                                                           ;;## FEED SUPPLEMENTATION MODULE
   set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
+
+
+
+  set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
 
   set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 end
@@ -916,6 +962,13 @@ to become-steer
   set kg-supplement-DM 0                                                                                           ;;## FEED SUPPLEMENTATION MODULE
   set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
 
+
+
+
+  set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
   set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 end
 
@@ -954,6 +1007,12 @@ to become-cow
   set kg-supplement-DM 0                                                                                           ;;## FEED SUPPLEMENTATION MODULE
   set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
 
+
+  if supplemented? = true [set difference-LW-breeding min-weight-for-breeding - live-weight] ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
   set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 end
 
@@ -991,6 +1050,12 @@ to become-cow-with-calf
   if supplemented? = true [set difference-LW cow-with-calf-min-weight-for-feed-sup - live-weight]                  ;;## FEED SUPPLEMENTATION MODULE
   set kg-supplement-DM 0                                                                                           ;;## FEED SUPPLEMENTATION MODULE
   set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
+
+
+
+  set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
 
   set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 end
@@ -1294,6 +1359,9 @@ to go
 
   if (farmer-profile = "market") [
     feed-supplementation                                                             ;;## FEED SUPPLEMENTATION MODULE
+
+    if (supplement-cows-before-breeding-season? = "Yes") [feed-supplementation-for-controlled-breeding]                                     ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
   ]
 
   if (farmer-profile = "environmental") [
@@ -1556,6 +1624,64 @@ to feed-supplementation                                                         
       set FS-weaned-calf sum [USD-supplement-DM] of cows with [weaned-calf?]]]
 
   set supplement-cost FS-cow + FS-cow-with-calf + FS-heifer + FS-steer + FS-weaned-calf         ;; once the daily cost has been calculated for each age group, the TOTAL daily cost (i.e. the total cost to feed ALL animals in one day) is calculated
+
+
+end
+
+to feed-supplementation-for-controlled-breeding                                                 ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW ;; Feed supplementation for breeding cows
+
+  set FSB-cow 0 ;; the daily cost of purchasing feed supplements is reset every tick. This allows to keep track of the amount of money spent on feed supplements each day.
+
+  if balance-historyXticks <= 0 [
+    ask cows with [cow? and pregnant? = false] [set supplemented? false set difference-LW-breeding 0 set kg-supplement-DM-breeding 0 set USD-supplement-DM-breeding 0]
+]
+
+  if balance-historyXticks > 0 [
+
+  if current-season = controlled-breeding-season - 1 ;or controlled-breeding-season
+    [
+      ask cows with [cow? and pregnant? = false] [ifelse live-weight < min-weight-for-breeding [set supplemented? true] [set supplemented? false set difference-LW-breeding 0 set kg-supplement-DM-breeding 0 set USD-supplement-DM-breeding 0]]
+      ask cows with [cow? and pregnant? = false and supplemented?] [set difference-LW-breeding min-weight-for-breeding - live-weight]
+      ask cows with [cow? and pregnant? = false and supplemented?] [
+        set kg-supplement-DM-breeding difference-LW-breeding * feed-sup-conversion-ratio
+        set USD-supplement-DM-breeding item current-season supplement-prices * kg-supplement-DM-breeding]
+
+      ask cows with [cow? and pregnant? = false and supplemented?] [
+        ifelse sum [USD-supplement-DM-breeding] of cows with [cow? and pregnant? = false and supplemented?] > balance-historyXticks [
+
+          set kg-supplement-DM-breeding (balance-historyXticks / count cows with [cow? and pregnant? = false and supplemented?]) / item current-season supplement-prices
+
+
+          set USD-supplement-DM-breeding kg-supplement-DM-breeding * item current-season supplement-prices
+
+
+          set live-weight live-weight + (kg-supplement-DM-breeding / feed-sup-conversion-ratio)]
+
+
+          [
+
+
+          set kg-supplement-DM-breeding difference-LW-breeding * feed-sup-conversion-ratio
+          set USD-supplement-DM-breeding item current-season supplement-prices * kg-supplement-DM-breeding
+          set live-weight live-weight + difference-LW-breeding]
+
+          set animal-units live-weight / set-1-AU
+
+        set FSB-cow sum [USD-supplement-DM-breeding] of cows with [cow? and pregnant? = false and supplemented?]
+
+
+        ]
+
+        ]
+
+
+
+        ]
+
+
+
+      set supplement-cost supplement-cost + FSB-cow
+
 
 
 end
@@ -2479,10 +2605,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-1157
-1137
-1336
-1182
+1158
+1135
+1338
+1180
 Average LW (kg/animal)
 mean [live-weight] of cows
 3
@@ -3048,7 +3174,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-10.0
+100.0
 1
 1
 years
@@ -3403,10 +3529,10 @@ NIL
 1
 
 MONITOR
-2179
-286
-2362
-331
+1084
+451
+1267
+496
 Ordinary sales (OS) income (USD)
 ordinary-sales-income
 3
@@ -3429,10 +3555,10 @@ NIL
 HORIZONTAL
 
 PLOT
-2179
-333
-2526
-483
+1084
+498
+1431
+648
 Daily income
 Days
 USD
@@ -3448,10 +3574,10 @@ PENS
 "ES income" 1.0 0 -2674135 true "" "plot extraordinary-sales-income"
 
 PLOT
-2538
-152
-2901
-279
+1443
+317
+1806
+444
 Daily balance
 Days
 USD
@@ -3506,10 +3632,10 @@ farmer-profile
 2
 
 SLIDER
-522
-850
-741
-883
+533
+945
+752
+978
 env-farmer-ES-SR
 env-farmer-ES-SR
 0
@@ -3546,10 +3672,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-2923
-171
-3101
-216
+1828
+336
+2006
+381
 meat production (kg/ha)
 sum [live-weight] of cows / count patches
 3
@@ -3557,10 +3683,10 @@ sum [live-weight] of cows / count patches
 11
 
 PLOT
-2924
-223
-3289
-373
+1829
+388
+2194
+538
 meat production 
 days
 kg/ha
@@ -3615,10 +3741,10 @@ ordinary-sale-of-cows-with
 1
 
 MONITOR
-2181
-106
-2360
-151
+1086
+271
+1265
+316
 Accumulated balance (USD)
 accumulated-balance
 17
@@ -3626,10 +3752,10 @@ accumulated-balance
 11
 
 PLOT
-2181
-152
-2525
-272
+1086
+317
+1430
+437
 Accumulated balance
 Days
 USD
@@ -3644,10 +3770,10 @@ PENS
 "Balance" 1.0 0 -16777216 true "" "plot accumulated-balance"
 
 MONITOR
-2364
-286
-2524
-331
+1269
+451
+1429
+496
 Extraordinary sales (ES) income (USD)
 extraordinary-sales-income
 3
@@ -3665,10 +3791,10 @@ extraordinary-sale-of-cows-with
 1
 
 SLIDER
-521
-885
-743
-918
+532
+980
+754
+1013
 market-farmer-ES-min-weight
 market-farmer-ES-min-weight
 0
@@ -3695,10 +3821,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-238
-887
-491
-920
+249
+982
+502
+1015
 market-farmer-RG-live-weight-threshold
 market-farmer-RG-live-weight-threshold
 180
@@ -3721,10 +3847,10 @@ paddock-SR
 11
 
 SLIDER
-237
-848
-490
-881
+248
+943
+501
+976
 env-farmer-RG-SR-threshold
 env-farmer-RG-SR-threshold
 0
@@ -3751,21 +3877,21 @@ days
 HORIZONTAL
 
 MONITOR
-2533
-487
-2752
-532
+1438
+652
+1657
+697
 Total daily kg-supplement-DM (kg)
-sum [kg-supplement-DM] of cows
+sum [kg-supplement-DM] of cows + sum [kg-supplement-DM-breeding] of cows
 17
 1
 11
 
 MONITOR
-2535
-287
-2704
-332
+1440
+452
+1609
+497
 Daily supplement cost (USD)
 supplement-cost
 17
@@ -3773,10 +3899,10 @@ supplement-cost
 11
 
 SLIDER
-504
-621
-698
-654
+517
+609
+711
+642
 feed-sup-conversion-ratio
 feed-sup-conversion-ratio
 1
@@ -3788,10 +3914,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-478
-661
-733
-694
+491
+649
+746
+682
 cow-min-weight-for-feed-sup
 cow-min-weight-for-feed-sup
 0
@@ -3803,10 +3929,10 @@ kg
 HORIZONTAL
 
 SLIDER
-477
-695
-733
-728
+490
+683
+746
+716
 cow-with-calf-min-weight-for-feed-sup
 cow-with-calf-min-weight-for-feed-sup
 0
@@ -3818,10 +3944,10 @@ kg
 HORIZONTAL
 
 SLIDER
-477
-731
-734
-764
+490
+719
+747
+752
 heifer/steer-min-weight-for-feed-sup
 heifer/steer-min-weight-for-feed-sup
 0
@@ -3833,10 +3959,10 @@ kg
 HORIZONTAL
 
 SLIDER
-477
-767
-734
-800
+490
+755
+747
+788
 weaned-calf-min-weight-for-feed-sup
 weaned-calf-min-weight-for-feed-sup
 0
@@ -3848,10 +3974,10 @@ kg
 HORIZONTAL
 
 PLOT
-2534
-334
-2900
-483
+1439
+499
+1805
+648
 Daily costs
 Days
 USD
@@ -3872,7 +3998,7 @@ BUTTON
 1428
 49
 free 1000 USD
-set balance 500
+set balance 5000
 NIL
 1
 T
@@ -3916,10 +4042,10 @@ LIVESTOCK RELATED OUTPUTS
 1
 
 TEXTBOX
-2596
-63
-2900
-107
+1501
+228
+1805
+272
 ECONOMIC RELATED OUTPUTS
 18
 0.0
@@ -3936,10 +4062,10 @@ RESOURCE RELATED OUTPUTS
 1
 
 MONITOR
-2538
-101
-2676
-146
+1443
+266
+1581
+311
 Daily balance (USD)
 balance
 17
@@ -3947,10 +4073,10 @@ balance
 11
 
 SLIDER
-404
-955
-607
-988
+401
+1056
+604
+1089
 set-other-monthly-costs
 set-other-monthly-costs
 0
@@ -3962,10 +4088,10 @@ USD
 HORIZONTAL
 
 MONITOR
-2706
-286
-2848
-331
+1611
+451
+1753
+496
 Daily other costs (USD)
 other-cost
 17
@@ -3973,10 +4099,10 @@ other-cost
 11
 
 MONITOR
-2693
-100
-2842
-145
+1598
+265
+1747
+310
 NIL
 accumulated-cost
 17
@@ -3984,20 +4110,20 @@ accumulated-cost
 11
 
 TEXTBOX
-361
-991
-719
-1140
+358
+1092
+716
+1241
 Slider to simulate other costs related to the livestock system (maintenance, veterinary, vehicles, gas, etc.) and/or the farmer's personal (non-work related) costs (such as family costs, etc.).\n\nRight now, the only cost associated with the livestock system is feed supplementing.
 13
 0.0
 1
 
 MONITOR
-1768
-668
-1881
-713
+2755
+1719
+2868
+1764
 NIL
 supplement-effort
 17
@@ -4027,10 +4153,10 @@ count cows with [cow?] with [live-weight <= 250]
 11
 
 SLIDER
-1623
-368
-1771
-401
+2610
+1419
+2758
+1452
 sales-effort-magnitude
 sales-effort-magnitude
 1
@@ -4042,10 +4168,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-1768
-712
-1942
-757
+2755
+1763
+2929
+1808
 SUPP-EFFORT-SEASON
 accumulated-supplement-effort-season
 17
@@ -4053,10 +4179,10 @@ accumulated-supplement-effort-season
 11
 
 MONITOR
-1768
-757
-1942
-802
+2755
+1808
+2929
+1853
 SUPP-EFFORT-YEAR
 accumulated-supplement-effort-year
 17
@@ -4064,10 +4190,10 @@ accumulated-supplement-effort-year
 11
 
 MONITOR
-1585
-669
-1681
-714
+2572
+1720
+2668
+1765
 NIL
 weaning-effort
 17
@@ -4075,10 +4201,10 @@ weaning-effort
 11
 
 MONITOR
-1585
-712
-1754
-757
+2572
+1763
+2741
+1808
 WEAN-EFFORT-SEASON
 accumulated-weaning-effort-season
 17
@@ -4086,10 +4212,10 @@ accumulated-weaning-effort-season
 11
 
 MONITOR
-1585
-757
-1754
-802
+2572
+1808
+2741
+1853
 WEAN-EFFORT-YEAR
 accumulated-weaning-effort-year
 17
@@ -4097,10 +4223,10 @@ accumulated-weaning-effort-year
 11
 
 MONITOR
-1169
-328
-1244
-373
+2156
+1379
+2231
+1424
 NIL
 total-effort
 17
@@ -4108,10 +4234,10 @@ total-effort
 11
 
 MONITOR
-1169
-371
-1319
-416
+2156
+1422
+2306
+1467
 TOTAL-EFFORT-SEASON
 total-effort-history-season
 17
@@ -4119,10 +4245,10 @@ total-effort-history-season
 11
 
 MONITOR
-1169
-414
-1307
-459
+2156
+1465
+2294
+1510
 TOTAL-EFFORT-YEAR
 total-effort-history-year
 17
@@ -4130,10 +4256,10 @@ total-effort-history-year
 11
 
 MONITOR
-1795
-502
-1897
-547
+2782
+1553
+2884
+1598
 NIL
 OS-males-effort
 17
@@ -4141,10 +4267,10 @@ OS-males-effort
 11
 
 MONITOR
-1795
-460
-1897
-505
+2782
+1511
+2884
+1556
 n steers
 count cows with [steer?]
 17
@@ -4152,10 +4278,10 @@ count cows with [steer?]
 11
 
 MONITOR
-1795
-546
-1952
-591
+2782
+1597
+2939
+1642
 OS-MALES-EFFORT-SEASON
 acummulated-OS-males-effort-season
 17
@@ -4163,10 +4289,10 @@ acummulated-OS-males-effort-season
 11
 
 MONITOR
-1795
-589
-1952
-634
+2782
+1640
+2939
+1685
 OS-MALES-EFFORT-YEAR
 OS-males-effort-historyXticks-year
 17
@@ -4174,10 +4300,10 @@ OS-males-effort-historyXticks-year
 11
 
 MONITOR
-1628
-502
-1741
-547
+2615
+1553
+2728
+1598
 NIL
 OS-old-cow-effort
 17
@@ -4185,10 +4311,10 @@ OS-old-cow-effort
 11
 
 MONITOR
-1628
-545
-1796
-590
+2615
+1596
+2783
+1641
 OS-OLD-COW-EFFORT-SEASON
 acummulated-OS-old-cow-effort-season
 17
@@ -4196,10 +4322,10 @@ acummulated-OS-old-cow-effort-season
 11
 
 MONITOR
-1628
-589
-1796
-634
+2615
+1640
+2783
+1685
 OS-OLD-COW-EFFORT-YEAR
 acummulated-OS-old-cow-effort-year
 17
@@ -4207,10 +4333,10 @@ acummulated-OS-old-cow-effort-year
 11
 
 MONITOR
-1628
-458
-1699
-503
+2615
+1509
+2686
+1554
 n old cow
 count cows with [cow? and age / 368 > age-sell-old-cow]
 17
@@ -4218,10 +4344,10 @@ count cows with [cow? and age / 368 > age-sell-old-cow]
 11
 
 MONITOR
-1598
-412
-1655
-457
+2585
+1463
+2642
+1508
 n cow
 count cows with [cow?]
 17
@@ -4229,10 +4355,10 @@ count cows with [cow?]
 11
 
 MONITOR
-1482
-502
-1601
-547
+2469
+1553
+2588
+1598
 NIL
 OS-heifer-cow-effort
 17
@@ -4240,10 +4366,10 @@ OS-heifer-cow-effort
 11
 
 MONITOR
-1482
-545
-1629
-590
+2469
+1596
+2616
+1641
 OS-HEIFER-COW-SEASON
 acummulated-OS-heifer-cow-effort-season
 17
@@ -4251,10 +4377,10 @@ acummulated-OS-heifer-cow-effort-season
 11
 
 MONITOR
-1482
-589
-1629
-634
+2469
+1640
+2616
+1685
 OS-HEIFER-COW-YEAR
 acummulated-OS-heifer-cow-effort-year
 17
@@ -4262,10 +4388,10 @@ acummulated-OS-heifer-cow-effort-year
 11
 
 MONITOR
-1482
-457
-1559
-502
+2469
+1508
+2546
+1553
 n heifer cow
 count cows with [cow? or heifer?]
 17
@@ -4273,10 +4399,10 @@ count cows with [cow? or heifer?]
 11
 
 MONITOR
-1542
-412
-1599
-457
+2529
+1463
+2586
+1508
 n heifer
 count cows with [heifer?]
 17
@@ -4284,10 +4410,10 @@ count cows with [heifer?]
 11
 
 MONITOR
-1329
-502
-1425
-547
+2316
+1553
+2412
+1598
 NIL
 OS-total-effort
 17
@@ -4295,10 +4421,10 @@ OS-total-effort
 11
 
 MONITOR
-1329
-545
-1484
-590
+2316
+1596
+2471
+1641
 OS-TOTAL-EFFORT-SEASON
 OS-total-effort-history-season
 17
@@ -4306,10 +4432,10 @@ OS-total-effort-history-season
 11
 
 MONITOR
-1329
-589
-1484
-634
+2316
+1640
+2471
+1685
 OS-TOTAL-EFFORT-YEAR
 OS-total-effort-history-year
 17
@@ -4317,10 +4443,10 @@ OS-total-effort-history-year
 11
 
 MONITOR
-1797
-187
-1897
-232
+2784
+1238
+2884
+1283
 NIL
 ES-males-effort
 17
@@ -4328,10 +4454,10 @@ ES-males-effort
 11
 
 MONITOR
-1797
-230
-1949
-275
+2784
+1281
+2936
+1326
 ES-MALES-EFFORT-SEASON
 acummulated-ES-males-effort-season
 17
@@ -4339,10 +4465,10 @@ acummulated-ES-males-effort-season
 11
 
 MONITOR
-1797
-274
-1949
-319
+2784
+1325
+2936
+1370
 ES-MALES-EFFORT-YEAR
 acummulated-ES-males-effort-year
 17
@@ -4350,10 +4476,10 @@ acummulated-ES-males-effort-year
 11
 
 MONITOR
-1797
-143
-1855
-188
+2784
+1194
+2842
+1239
 n steers
 count cows with [steer?]
 17
@@ -4361,10 +4487,10 @@ count cows with [steer?]
 11
 
 MONITOR
-1628
-186
-1741
-231
+2615
+1237
+2728
+1282
 NIL
 ES-old-cow-effort
 17
@@ -4372,10 +4498,10 @@ ES-old-cow-effort
 11
 
 MONITOR
-1628
-230
-1798
-275
+2615
+1281
+2785
+1326
 ES-OLD-COW-EFFORT-SEASON
 acummulated-ES-old-cow-effort-season
 17
@@ -4383,10 +4509,10 @@ acummulated-ES-old-cow-effort-season
 11
 
 MONITOR
-1628
-274
-1798
-319
+2615
+1325
+2785
+1370
 ES-OLD-COW-EFFORT-YEAR
 acummulated-ES-old-cow-effort-year
 17
@@ -4394,10 +4520,10 @@ acummulated-ES-old-cow-effort-year
 11
 
 MONITOR
-1628
-142
-1693
-187
+2615
+1193
+2680
+1238
 n old cow
 count cows with [cow? and age / 368 > age-sell-old-cow]
 17
@@ -4405,10 +4531,10 @@ count cows with [cow? and age / 368 > age-sell-old-cow]
 11
 
 MONITOR
-1597
-98
-1650
-143
+2584
+1149
+2637
+1194
 n cow
 count cows with [cow?]
 17
@@ -4416,10 +4542,10 @@ count cows with [cow?]
 11
 
 MONITOR
-1485
-187
-1605
-232
+2472
+1238
+2592
+1283
 NIL
 ES-heifer-cow-effort
 17
@@ -4427,10 +4553,10 @@ ES-heifer-cow-effort
 11
 
 MONITOR
-1485
-230
-1629
-275
+2472
+1281
+2616
+1326
 ES-HEIFER-COW-SEASON
 acummulated-ES-heifer-cow-effort-season
 17
@@ -4438,10 +4564,10 @@ acummulated-ES-heifer-cow-effort-season
 11
 
 MONITOR
-1485
-274
-1629
-319
+2472
+1325
+2616
+1370
 ES-HEIFER-COW-YEAR
 acummulated-ES-heifer-cow-effort-year
 17
@@ -4449,10 +4575,10 @@ acummulated-ES-heifer-cow-effort-year
 11
 
 MONITOR
-1485
-143
-1566
-188
+2472
+1194
+2553
+1239
 n heifer cow
 count cows with [cow? or heifer?]
 17
@@ -4460,10 +4586,10 @@ count cows with [cow? or heifer?]
 11
 
 MONITOR
-1544
-98
-1598
-143
+2531
+1149
+2585
+1194
 n heifer
 count cows with [heifer?]
 17
@@ -4471,10 +4597,10 @@ count cows with [heifer?]
 11
 
 MONITOR
-1328
-186
-1422
-231
+2315
+1237
+2409
+1282
 NIL
 ES-total-effort
 17
@@ -4482,10 +4608,10 @@ ES-total-effort
 11
 
 MONITOR
-1328
-230
-1486
-275
+2315
+1281
+2473
+1326
 ES-TOTAL-EFFORT-SEASON
 ES-total-effort-history-season
 17
@@ -4493,10 +4619,10 @@ ES-total-effort-history-season
 11
 
 MONITOR
-1328
-274
-1486
-319
+2315
+1325
+2473
+1370
 ES-TOTAL-EFFORT-YEAR
 ES-total-effort-history-year
 17
@@ -4504,10 +4630,10 @@ ES-total-effort-history-year
 11
 
 MONITOR
-1416
-667
-1514
-712
+2403
+1718
+2501
+1763
 NIL
 breeding-effort
 17
@@ -4515,10 +4641,10 @@ breeding-effort
 11
 
 MONITOR
-1417
-712
-1577
-757
+2404
+1763
+2564
+1808
 BREEDING-EFFORT-SEASON
 acummulated-breeding-effort-season
 17
@@ -4526,10 +4652,10 @@ acummulated-breeding-effort-season
 11
 
 MONITOR
-1417
-757
-1578
-802
+2404
+1808
+2565
+1853
 BREEDING-EFFORT-YEAR
 acummulated-breeding-effort-year
 17
@@ -4537,10 +4663,10 @@ acummulated-breeding-effort-year
 11
 
 MONITOR
-1242
-670
-1345
-715
+2229
+1721
+2332
+1766
 NIL
 rotational-effort
 17
@@ -4548,10 +4674,10 @@ rotational-effort
 11
 
 MONITOR
-1242
-714
-1409
-759
+2229
+1765
+2396
+1810
 ROTATIONAL-EFFORT-SEASON
 acummulated-rotational-effort-season
 17
@@ -4559,10 +4685,10 @@ acummulated-rotational-effort-season
 11
 
 MONITOR
-1242
-758
-1409
-803
+2229
+1809
+2396
+1854
 ROTATIONAL-EFFORT-YEAR
 acummulated-rotational-effort-year
 17
@@ -4570,10 +4696,10 @@ acummulated-rotational-effort-year
 11
 
 PLOT
-810
-397
-1163
-589
+1939
+1520
+2292
+1712
 total-effort
 Days
 Effort
@@ -4588,10 +4714,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot total-effort"
 
 MONITOR
-808
-342
-982
-387
+1937
+1465
+2111
+1510
 Accumulated effort over time
 total-effort-history
 17
@@ -4599,20 +4725,20 @@ total-effort-history
 11
 
 TEXTBOX
-1505
-53
-1754
-86
+2492
+1104
+2741
+1137
 EFFORT RELATED OUTPUTS
 18
 135.0
 1
 
 SLIDER
-1351
-329
-1527
-362
+2338
+1380
+2514
+1413
 rotational-effort-magnitude
 rotational-effort-magnitude
 1
@@ -4624,10 +4750,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1536
-329
-1709
-362
+2523
+1380
+2696
+1413
 breeding-effort-magnitude
 breeding-effort-magnitude
 1
@@ -4639,10 +4765,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1715
-329
-1890
-362
+2702
+1380
+2877
+1413
 weaning-effort-magnitude
 weaning-effort-magnitude
 1
@@ -4654,10 +4780,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1430
-369
-1618
-402
+2417
+1420
+2605
+1453
 supplement-effort-magnitude
 supplement-effort-magnitude
 1
@@ -4667,6 +4793,42 @@ supplement-effort-magnitude
 1
 NIL
 HORIZONTAL
+
+SLIDER
+520
+860
+704
+893
+min-weight-for-breeding
+min-weight-for-breeding
+0
+460
+420.0
+1
+1
+NIL
+HORIZONTAL
+
+MONITOR
+814
+381
+1056
+426
+NIL
+mean [live-weight] of cows with [adult-cow?]
+17
+1
+11
+
+CHOOSER
+500
+811
+736
+856
+supplement-cows-before-breeding-season?
+supplement-cows-before-breeding-season?
+"Yes" "No"
+0
 
 @#$#@#$#@
 ## WHAT IS IT?
