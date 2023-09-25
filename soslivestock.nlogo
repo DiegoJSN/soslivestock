@@ -3796,7 +3796,7 @@ cow-min-weight-for-feed-sup
 cow-min-weight-for-feed-sup
 0
 350
-350.0
+250.0
 1
 1
 kg
