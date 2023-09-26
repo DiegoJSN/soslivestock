@@ -3529,10 +3529,10 @@ NIL
 1
 
 MONITOR
-1084
-451
-1267
-496
+2351
+327
+2534
+372
 Ordinary sales (OS) income (USD)
 ordinary-sales-income
 3
@@ -3555,10 +3555,10 @@ NIL
 HORIZONTAL
 
 PLOT
-1084
-498
-1431
-648
+2351
+374
+2698
+524
 Daily income
 Days
 USD
@@ -3574,10 +3574,10 @@ PENS
 "ES income" 1.0 0 -2674135 true "" "plot extraordinary-sales-income"
 
 PLOT
-1443
-317
-1806
-444
+2710
+193
+3073
+320
 Daily balance
 Days
 USD
@@ -3672,10 +3672,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-1828
-336
-2006
-381
+3095
+212
+3273
+257
 meat production (kg/ha)
 sum [live-weight] of cows / count patches
 3
@@ -3683,10 +3683,10 @@ sum [live-weight] of cows / count patches
 11
 
 PLOT
-1829
-388
-2194
-538
+3096
+264
+3461
+414
 meat production 
 days
 kg/ha
@@ -3741,10 +3741,10 @@ ordinary-sale-of-cows-with
 1
 
 MONITOR
-1086
-271
-1265
-316
+2353
+147
+2532
+192
 Accumulated balance (USD)
 accumulated-balance
 17
@@ -3752,10 +3752,10 @@ accumulated-balance
 11
 
 PLOT
-1086
-317
-1430
-437
+2353
+193
+2697
+313
 Accumulated balance
 Days
 USD
@@ -3770,10 +3770,10 @@ PENS
 "Balance" 1.0 0 -16777216 true "" "plot accumulated-balance"
 
 MONITOR
-1269
-451
-1429
-496
+2536
+327
+2696
+372
 Extraordinary sales (ES) income (USD)
 extraordinary-sales-income
 3
@@ -3877,10 +3877,10 @@ days
 HORIZONTAL
 
 MONITOR
-1438
-652
-1657
-697
+2705
+528
+2924
+573
 Total daily kg-supplement-DM (kg)
 sum [kg-supplement-DM] of cows + sum [kg-supplement-DM-breeding] of cows
 17
@@ -3888,10 +3888,10 @@ sum [kg-supplement-DM] of cows + sum [kg-supplement-DM-breeding] of cows
 11
 
 MONITOR
-1440
-452
-1609
-497
+2707
+328
+2876
+373
 Daily supplement cost (USD)
 supplement-cost
 17
@@ -3974,10 +3974,10 @@ kg
 HORIZONTAL
 
 PLOT
-1439
-499
-1805
-648
+2706
+375
+3072
+524
 Daily costs
 Days
 USD
@@ -3998,7 +3998,7 @@ BUTTON
 1428
 49
 free 1000 USD
-set balance 5000
+set balance 1000
 NIL
 1
 T
@@ -4042,10 +4042,10 @@ LIVESTOCK RELATED OUTPUTS
 1
 
 TEXTBOX
-1501
-228
-1805
-272
+2768
+104
+3072
+148
 ECONOMIC RELATED OUTPUTS
 18
 0.0
@@ -4062,10 +4062,10 @@ RESOURCE RELATED OUTPUTS
 1
 
 MONITOR
-1443
-266
-1581
-311
+2710
+142
+2848
+187
 Daily balance (USD)
 balance
 17
@@ -4088,10 +4088,10 @@ USD
 HORIZONTAL
 
 MONITOR
-1611
-451
-1753
-496
+2878
+327
+3020
+372
 Daily other costs (USD)
 other-cost
 17
@@ -4099,10 +4099,10 @@ other-cost
 11
 
 MONITOR
-1598
-265
-1747
-310
+2865
+141
+3014
+186
 NIL
 accumulated-cost
 17
@@ -4120,10 +4120,10 @@ Slider to simulate other costs related to the livestock system (maintenance, vet
 1
 
 MONITOR
-2755
-1719
-2868
-1764
+1722
+671
+1835
+716
 NIL
 supplement-effort
 17
@@ -4153,10 +4153,10 @@ count cows with [cow?] with [live-weight <= 250]
 11
 
 SLIDER
-2610
-1419
-2758
-1452
+1577
+371
+1725
+404
 sales-effort-magnitude
 sales-effort-magnitude
 1
@@ -4168,10 +4168,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-2755
-1763
-2929
-1808
+1722
+715
+1896
+760
 SUPP-EFFORT-SEASON
 accumulated-supplement-effort-season
 17
@@ -4179,10 +4179,10 @@ accumulated-supplement-effort-season
 11
 
 MONITOR
-2755
-1808
-2929
-1853
+1722
+760
+1896
+805
 SUPP-EFFORT-YEAR
 accumulated-supplement-effort-year
 17
@@ -4190,10 +4190,10 @@ accumulated-supplement-effort-year
 11
 
 MONITOR
-2572
-1720
-2668
-1765
+1539
+672
+1635
+717
 NIL
 weaning-effort
 17
@@ -4201,10 +4201,10 @@ weaning-effort
 11
 
 MONITOR
-2572
-1763
-2741
-1808
+1539
+715
+1708
+760
 WEAN-EFFORT-SEASON
 accumulated-weaning-effort-season
 17
@@ -4212,10 +4212,10 @@ accumulated-weaning-effort-season
 11
 
 MONITOR
-2572
-1808
-2741
-1853
+1539
+760
+1708
+805
 WEAN-EFFORT-YEAR
 accumulated-weaning-effort-year
 17
@@ -4223,10 +4223,10 @@ accumulated-weaning-effort-year
 11
 
 MONITOR
-2156
-1379
-2231
-1424
+1123
+331
+1198
+376
 NIL
 total-effort
 17
@@ -4234,10 +4234,10 @@ total-effort
 11
 
 MONITOR
-2156
-1422
-2306
-1467
+1123
+374
+1273
+419
 TOTAL-EFFORT-SEASON
 total-effort-history-season
 17
@@ -4245,10 +4245,10 @@ total-effort-history-season
 11
 
 MONITOR
-2156
-1465
-2294
-1510
+1123
+417
+1261
+462
 TOTAL-EFFORT-YEAR
 total-effort-history-year
 17
@@ -4256,10 +4256,10 @@ total-effort-history-year
 11
 
 MONITOR
-2782
-1553
-2884
-1598
+1749
+505
+1851
+550
 NIL
 OS-males-effort
 17
@@ -4267,10 +4267,10 @@ OS-males-effort
 11
 
 MONITOR
-2782
-1511
-2884
-1556
+1749
+463
+1851
+508
 n steers
 count cows with [steer?]
 17
@@ -4278,10 +4278,10 @@ count cows with [steer?]
 11
 
 MONITOR
-2782
-1597
-2939
-1642
+1749
+549
+1906
+594
 OS-MALES-EFFORT-SEASON
 acummulated-OS-males-effort-season
 17
@@ -4289,10 +4289,10 @@ acummulated-OS-males-effort-season
 11
 
 MONITOR
-2782
-1640
-2939
-1685
+1749
+592
+1906
+637
 OS-MALES-EFFORT-YEAR
 OS-males-effort-historyXticks-year
 17
@@ -4300,10 +4300,10 @@ OS-males-effort-historyXticks-year
 11
 
 MONITOR
-2615
-1553
-2728
-1598
+1582
+505
+1695
+550
 NIL
 OS-old-cow-effort
 17
@@ -4311,10 +4311,10 @@ OS-old-cow-effort
 11
 
 MONITOR
-2615
-1596
-2783
-1641
+1582
+548
+1750
+593
 OS-OLD-COW-EFFORT-SEASON
 acummulated-OS-old-cow-effort-season
 17
@@ -4322,10 +4322,10 @@ acummulated-OS-old-cow-effort-season
 11
 
 MONITOR
-2615
-1640
-2783
-1685
+1582
+592
+1750
+637
 OS-OLD-COW-EFFORT-YEAR
 acummulated-OS-old-cow-effort-year
 17
@@ -4333,10 +4333,10 @@ acummulated-OS-old-cow-effort-year
 11
 
 MONITOR
-2615
-1509
-2686
-1554
+1582
+461
+1653
+506
 n old cow
 count cows with [cow? and age / 368 > age-sell-old-cow]
 17
@@ -4344,10 +4344,10 @@ count cows with [cow? and age / 368 > age-sell-old-cow]
 11
 
 MONITOR
-2585
-1463
-2642
-1508
+1552
+415
+1609
+460
 n cow
 count cows with [cow?]
 17
@@ -4355,10 +4355,10 @@ count cows with [cow?]
 11
 
 MONITOR
-2469
-1553
-2588
-1598
+1436
+505
+1555
+550
 NIL
 OS-heifer-cow-effort
 17
@@ -4366,10 +4366,10 @@ OS-heifer-cow-effort
 11
 
 MONITOR
-2469
-1596
-2616
-1641
+1436
+548
+1583
+593
 OS-HEIFER-COW-SEASON
 acummulated-OS-heifer-cow-effort-season
 17
@@ -4377,10 +4377,10 @@ acummulated-OS-heifer-cow-effort-season
 11
 
 MONITOR
-2469
-1640
-2616
-1685
+1436
+592
+1583
+637
 OS-HEIFER-COW-YEAR
 acummulated-OS-heifer-cow-effort-year
 17
@@ -4388,10 +4388,10 @@ acummulated-OS-heifer-cow-effort-year
 11
 
 MONITOR
-2469
-1508
-2546
-1553
+1436
+460
+1513
+505
 n heifer cow
 count cows with [cow? or heifer?]
 17
@@ -4399,10 +4399,10 @@ count cows with [cow? or heifer?]
 11
 
 MONITOR
-2529
-1463
-2586
-1508
+1496
+415
+1553
+460
 n heifer
 count cows with [heifer?]
 17
@@ -4410,10 +4410,10 @@ count cows with [heifer?]
 11
 
 MONITOR
-2316
-1553
-2412
-1598
+1283
+505
+1379
+550
 NIL
 OS-total-effort
 17
@@ -4421,10 +4421,10 @@ OS-total-effort
 11
 
 MONITOR
-2316
-1596
-2471
-1641
+1283
+548
+1438
+593
 OS-TOTAL-EFFORT-SEASON
 OS-total-effort-history-season
 17
@@ -4432,10 +4432,10 @@ OS-total-effort-history-season
 11
 
 MONITOR
-2316
-1640
-2471
-1685
+1283
+592
+1438
+637
 OS-TOTAL-EFFORT-YEAR
 OS-total-effort-history-year
 17
@@ -4443,10 +4443,10 @@ OS-total-effort-history-year
 11
 
 MONITOR
-2784
-1238
-2884
-1283
+1751
+190
+1851
+235
 NIL
 ES-males-effort
 17
@@ -4454,10 +4454,10 @@ ES-males-effort
 11
 
 MONITOR
-2784
-1281
-2936
-1326
+1751
+233
+1903
+278
 ES-MALES-EFFORT-SEASON
 acummulated-ES-males-effort-season
 17
@@ -4465,10 +4465,10 @@ acummulated-ES-males-effort-season
 11
 
 MONITOR
-2784
-1325
-2936
-1370
+1751
+277
+1903
+322
 ES-MALES-EFFORT-YEAR
 acummulated-ES-males-effort-year
 17
@@ -4476,10 +4476,10 @@ acummulated-ES-males-effort-year
 11
 
 MONITOR
-2784
-1194
-2842
-1239
+1751
+146
+1809
+191
 n steers
 count cows with [steer?]
 17
@@ -4487,10 +4487,10 @@ count cows with [steer?]
 11
 
 MONITOR
-2615
-1237
-2728
-1282
+1582
+189
+1695
+234
 NIL
 ES-old-cow-effort
 17
@@ -4498,10 +4498,10 @@ ES-old-cow-effort
 11
 
 MONITOR
-2615
-1281
-2785
-1326
+1582
+233
+1752
+278
 ES-OLD-COW-EFFORT-SEASON
 acummulated-ES-old-cow-effort-season
 17
@@ -4509,10 +4509,10 @@ acummulated-ES-old-cow-effort-season
 11
 
 MONITOR
-2615
-1325
-2785
-1370
+1582
+277
+1752
+322
 ES-OLD-COW-EFFORT-YEAR
 acummulated-ES-old-cow-effort-year
 17
@@ -4520,10 +4520,10 @@ acummulated-ES-old-cow-effort-year
 11
 
 MONITOR
-2615
-1193
-2680
-1238
+1582
+145
+1647
+190
 n old cow
 count cows with [cow? and age / 368 > age-sell-old-cow]
 17
@@ -4531,10 +4531,10 @@ count cows with [cow? and age / 368 > age-sell-old-cow]
 11
 
 MONITOR
-2584
-1149
-2637
-1194
+1551
+101
+1604
+146
 n cow
 count cows with [cow?]
 17
@@ -4542,10 +4542,10 @@ count cows with [cow?]
 11
 
 MONITOR
-2472
-1238
-2592
-1283
+1439
+190
+1559
+235
 NIL
 ES-heifer-cow-effort
 17
@@ -4553,10 +4553,10 @@ ES-heifer-cow-effort
 11
 
 MONITOR
-2472
-1281
-2616
-1326
+1439
+233
+1583
+278
 ES-HEIFER-COW-SEASON
 acummulated-ES-heifer-cow-effort-season
 17
@@ -4564,10 +4564,10 @@ acummulated-ES-heifer-cow-effort-season
 11
 
 MONITOR
-2472
-1325
-2616
-1370
+1439
+277
+1583
+322
 ES-HEIFER-COW-YEAR
 acummulated-ES-heifer-cow-effort-year
 17
@@ -4575,10 +4575,10 @@ acummulated-ES-heifer-cow-effort-year
 11
 
 MONITOR
-2472
-1194
-2553
-1239
+1439
+146
+1520
+191
 n heifer cow
 count cows with [cow? or heifer?]
 17
@@ -4586,10 +4586,10 @@ count cows with [cow? or heifer?]
 11
 
 MONITOR
-2531
-1149
-2585
-1194
+1498
+101
+1552
+146
 n heifer
 count cows with [heifer?]
 17
@@ -4597,10 +4597,10 @@ count cows with [heifer?]
 11
 
 MONITOR
-2315
-1237
-2409
 1282
+189
+1376
+234
 NIL
 ES-total-effort
 17
@@ -4608,10 +4608,10 @@ ES-total-effort
 11
 
 MONITOR
-2315
-1281
-2473
-1326
+1282
+233
+1440
+278
 ES-TOTAL-EFFORT-SEASON
 ES-total-effort-history-season
 17
@@ -4619,10 +4619,10 @@ ES-total-effort-history-season
 11
 
 MONITOR
-2315
-1325
-2473
-1370
+1282
+277
+1440
+322
 ES-TOTAL-EFFORT-YEAR
 ES-total-effort-history-year
 17
@@ -4630,10 +4630,10 @@ ES-total-effort-history-year
 11
 
 MONITOR
-2403
-1718
-2501
-1763
+1370
+670
+1468
+715
 NIL
 breeding-effort
 17
@@ -4641,10 +4641,10 @@ breeding-effort
 11
 
 MONITOR
-2404
-1763
-2564
-1808
+1371
+715
+1531
+760
 BREEDING-EFFORT-SEASON
 acummulated-breeding-effort-season
 17
@@ -4652,10 +4652,10 @@ acummulated-breeding-effort-season
 11
 
 MONITOR
-2404
-1808
-2565
-1853
+1371
+760
+1532
+805
 BREEDING-EFFORT-YEAR
 acummulated-breeding-effort-year
 17
@@ -4663,10 +4663,10 @@ acummulated-breeding-effort-year
 11
 
 MONITOR
-2229
-1721
-2332
-1766
+1196
+673
+1299
+718
 NIL
 rotational-effort
 17
@@ -4674,10 +4674,10 @@ rotational-effort
 11
 
 MONITOR
-2229
-1765
-2396
-1810
+1196
+717
+1363
+762
 ROTATIONAL-EFFORT-SEASON
 acummulated-rotational-effort-season
 17
@@ -4685,10 +4685,10 @@ acummulated-rotational-effort-season
 11
 
 MONITOR
-2229
-1809
-2396
-1854
+1196
+761
+1363
+806
 ROTATIONAL-EFFORT-YEAR
 acummulated-rotational-effort-year
 17
@@ -4696,10 +4696,10 @@ acummulated-rotational-effort-year
 11
 
 PLOT
-1939
-1520
-2292
-1712
+906
+472
+1259
+664
 total-effort
 Days
 Effort
@@ -4714,10 +4714,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot total-effort"
 
 MONITOR
-1937
-1465
-2111
-1510
+904
+417
+1078
+462
 Accumulated effort over time
 total-effort-history
 17
@@ -4725,20 +4725,20 @@ total-effort-history
 11
 
 TEXTBOX
-2492
-1104
-2741
-1137
+1459
+56
+1708
+89
 EFFORT RELATED OUTPUTS
 18
 135.0
 1
 
 SLIDER
-2338
-1380
-2514
-1413
+1305
+332
+1481
+365
 rotational-effort-magnitude
 rotational-effort-magnitude
 1
@@ -4750,10 +4750,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-2523
-1380
-2696
-1413
+1490
+332
+1663
+365
 breeding-effort-magnitude
 breeding-effort-magnitude
 1
@@ -4765,10 +4765,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-2702
-1380
-2877
-1413
+1669
+332
+1844
+365
 weaning-effort-magnitude
 weaning-effort-magnitude
 1
@@ -4780,10 +4780,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-2417
-1420
-2605
-1453
+1384
+372
+1572
+405
 supplement-effort-magnitude
 supplement-effort-magnitude
 1
@@ -4810,10 +4810,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-814
-381
-1056
-426
+2047
+59
+2289
+104
 NIL
 mean [live-weight] of cows with [adult-cow?]
 17
