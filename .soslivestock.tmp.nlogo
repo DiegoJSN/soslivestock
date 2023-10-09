@@ -351,6 +351,9 @@ cows-own [
   cow?                                                                              ;; boolean variable that determines the "cow" age class of the livestock life cycle
   cow-with-calf?                                                                    ;; boolean variable that determines the "cow-withcalf" age class of the livestock life cycle
   pregnant?                                                                         ;; boolean variable that determines the "pregnant" age class of the livestock life cycle
+
+  old?                                                                              ;; OLDNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
   animal-units                                                                      ;; variable used to calculate the stocking rate. AU = LW / 380
   category-coef                                                                     ;; coefficient that varies with age class and affects the grass consumption of animals. Equal to 1 in all age classes, except for cow-with-calf = 1.1
   initial-weight                                                                    ;; initial weight of the animal at the beginning of the simulation. Set by the observer in the interface
@@ -824,6 +827,7 @@ to become-weaned-calf-female
   set kg-supplement-DM 0                                                                                ;;## FEED SUPPLEMENTATION MODULE
   set USD-supplement-DM 0                                                                               ;;## FEED SUPPLEMENTATION MODULE
 
+  ifelse age / 368 > age-sell-old-cow [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
 
 
   set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -874,6 +878,9 @@ to become-weaned-calf-male
   set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 
+  ifelse age / 368 > age-sell-old-cow [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
+
+
   set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
   set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
@@ -917,6 +924,8 @@ to become-heifer
   set kg-supplement-DM 0                                                                                           ;;## FEED SUPPLEMENTATION MODULE
   set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
 
+
+  ifelse age / 368 > age-sell-old-cow [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
 
 
   set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -963,6 +972,7 @@ to become-steer
   set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
 
 
+  ifelse age / 368 > age-sell-old-cow [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
 
 
   set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -1013,6 +1023,10 @@ to become-cow
   set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 
+
+  ifelse age / 368 > age-sell-old-cow [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
+
+
   set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 end
 
@@ -1055,6 +1069,11 @@ to become-cow-with-calf
 
   set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
   set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+  ifelse age / 368 > age-sell-old-cow [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
+
 
 
   set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -1695,6 +1714,8 @@ ask cows [
     [set mortality-rate natural-mortality-rate]
     if random-float 1 < mortality-rate [die]
 
+    ifelse age / 368 > age-sell-old-cow [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
+
     ask cows with [cow-with-calf? and not any? my-links] [become-cow]                                                      ;; if the link with the child (an agent with the state "born-calf") is lost (this happens when the child dies), the mother changes from the state "cow-with-calf" to the state "cow".
     ask cows with [born-calf-female? and not any? my-links ] [ become-weaned-calf-female ]                                 ;; if the link with the mother (an agent with a "cow-with-calf?" state) is lost (this happens when the mother dies, or when the mother switches from a "cow-with-calf?" state to a "cow?" state), the calf weans prematurely.
     ask cows with [born-calf-male? and not any? my-links ] [ become-weaned-calf-male ]
@@ -1721,6 +1742,8 @@ to grow-livestock-early-weaning                                                 
     [set mortality-rate except-mort-rate]
     [set mortality-rate natural-mortality-rate]
     if random-float 1 < mortality-rate [die]
+
+    ifelse age / 368 > age-sell-old-cow [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
 
     if (cow-with-calf? = true and live-weight < early-weaning-threshold) [become-cow set weaning-calf? true ask my-out-links [die]]               ;; ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWW if the mother (an agent with a "cow-with-calf?" state) is below a certain weight, it will switch to the "cow?" state and will kill the link with its child (an agent with a "born-calf" state). This weight is determined by the "early-weaning-threshold" slider in the interface.
 
@@ -1872,21 +1895,24 @@ end
 to ordinary-sale-old-cows                                                               ;;## ORDINARY SALES MODULE ;; Ordinary sale of old empty cows. The age at which a cow is considered old is determined by the "age-sell-old-cow" slider in the interface.
 
   if current-season = 3 and (season-days = 1) [
-    if any? cows with [cow? and age / 368 > age-sell-old-cow] [
+    if any? cows with [cow? and old? = true] [
       if count cows > keep-MIN-n-cattle [
-        ;while [any? cows with [cow? and age / 368 > age-sell-old-cow and sale? = false and pregnant? = false] and count cows with [sale? = false] > keep-MIN-n-cattle] [      ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-        while [any? cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle] [
+        ;while [any? cows with [cow? and old? = true and sale? = false and pregnant? = false] and count cows with [sale? = false] > keep-MIN-n-cattle] [      ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+
+        while [any? cows with [cow? and old? = true and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle] [
           if (ordinary-sale-of-cows-with = "highest live weight") [
-            ;ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-            ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
+            ;ask max-n-of 1 cows with [cow? and old? = true and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+
+            ask max-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
               set sale? true
-              set OS-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]
+              set OS-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]
 
           if (ordinary-sale-of-cows-with = "lowest live weight") [
-            ;ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-            ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
+            ;ask min-n-of 1 cows with [cow? and old? = true and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+
+            ask min-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
               set sale? true
-              set OS-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]]]]]
+              set OS-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]]]]]
 
   set OS-old-cow-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
@@ -1963,20 +1989,23 @@ to extraordinary-sale-males-market-farmer                                       
 to extraordinary-sale-old-cows-market-farmer                                                               ;;## EXTRAORDINARY SALES MODULE ;; Extrardinary sale of old cows for the market-oriented farmer. The age at which a cow is considered old is determined by the "age-sell-old-cow" slider in the interface.
 
   if count cows with [steer?] <= keep-MAX-n-steers [                                                       ;; when there are no more males available for the extraordinary sales (because the "keep-MAX-n-steers" number is the maximum number of breeding males the farmer wants to have in the system), the farmer starts selling old cows
-    if any? cows with [cow? and age / 368 > age-sell-old-cow] [
-      ;if any? cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false] [  ;;       alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+    if any? cows with [cow? and old? = true] [
+
+      ;if any? cows with [cow? and old? = true and pregnant? = false] [  ;;       alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
       if mean [live-weight] of cows < market-farmer-ES-min-weight and count cows > keep-MIN-n-cattle [
         if (extraordinary-sale-of-cows-with = "highest live weight") [
-          ;ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-          ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
+          ;ask max-n-of 1 cows with [cow? and old? = true and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+
+          ask max-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
             set sale? true
-            set ES-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]
+            set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]
 
         if (extraordinary-sale-of-cows-with = "lowest live weight") [
-          ;ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-          ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
+          ;ask min-n-of 1 cows with [cow? and old? = true and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+
+          ask min-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
             set sale? true
-            set ES-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]]]]
+            set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]]]]
 
   set ES-old-cow-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
@@ -1986,7 +2015,7 @@ to extraordinary-sale-old-cows-market-farmer                                    
 
 to extraordinary-sale-heifers-cows-market-farmer                                           ;;## EXTRAORDINARY SALES MODULE ;; Extraordinary sale of heifers and cows for the market-oriented farmer
 
-  if count cows with [steer?] <= keep-MAX-n-steers and count cows with [cow? and age / 368 > age-sell-old-cow] = 0 [   ;; when there are no more males and old cows available for the extraordinary sales, the farmer starts selling cows and heifers
+  if count cows with [steer?] <= keep-MAX-n-steers and count cows with [cow? and old? = true] = 0 [   ;; when there are no more males and old cows available for the extraordinary sales, the farmer starts selling cows and heifers
     if any? cows with [heifer? or cow?] [
       ;if any? cows with [heifer? or cow? and pregnant? = false] [   ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
       if mean [live-weight] of cows < market-farmer-ES-min-weight and count cows > keep-MIN-n-cattle [
@@ -2081,39 +2110,45 @@ to extraordinary-sale-old-cows-environmental-farmer                             
 
   if (spatial-management = "free grazing") [
 
-    if any? cows with [cow? and age / 368 > age-sell-old-cow] [
+    if any? cows with [cow? and old? = true] [
       if sum [animal-units] of cows / count patches > env-farmer-ES-SR and count cows > keep-MIN-n-cattle [
-        ;while [any? cows with [cow? and age / 368 > age-sell-old-cow and sale? = false and pregnant? = false] and sum [animal-units] of cows with [sale? = false] / count patches > ES-env-farmer-SR] [      ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-        while [any? cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle and sum [animal-units] of cows with [sale? = false] / count patches > env-farmer-ES-SR] [
+        ;while [any? cows with [cow? and old? = true and sale? = false and pregnant? = false] and sum [animal-units] of cows with [sale? = false] / count patches > ES-env-farmer-SR] [      ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+
+        while [any? cows with [cow? and old? = true and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle and sum [animal-units] of cows with [sale? = false] / count patches > env-farmer-ES-SR] [
           if (extraordinary-sale-of-cows-with = "highest live weight") [
-            ;ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-            ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
+            ;ask max-n-of 1 cows with [cow? and old? = true and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+
+            ask max-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
               set sale? true
-              set ES-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]
+              set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]
 
           if (extraordinary-sale-of-cows-with = "lowest live weight") [
-            ;ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-            ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
+            ;ask min-n-of 1 cows with [cow? and old? = true and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+
+            ask min-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
               set sale? true
-              set ES-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]]]]]
+              set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]]]]]
 
   if (spatial-management = "rotational grazing") [
 
-    if any? cows with [cow? and age / 368 > age-sell-old-cow] [
+    if any? cows with [cow? and old? = true] [
       if sum [animal-units] of cows / (count patches / 4) > env-farmer-ES-SR and count cows > keep-MIN-n-cattle [
-        ;while [any? cows with [cow? and age / 368 > age-sell-old-cow and sale? = false and pregnant? = false] and sum [animal-units] of cows with [sale? = false] / (count patches / 4) > ES-env-farmer-SR] [      ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-        while [any? cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle and sum [animal-units] of cows with [sale? = false] / (count patches / 4) > env-farmer-ES-SR] [
+        ;while [any? cows with [cow? and old? = true and sale? = false and pregnant? = false] and sum [animal-units] of cows with [sale? = false] / (count patches / 4) > ES-env-farmer-SR] [      ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+
+        while [any? cows with [cow? and old? = true and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle and sum [animal-units] of cows with [sale? = false] / (count patches / 4) > env-farmer-ES-SR] [
           if (extraordinary-sale-of-cows-with = "highest live weight") [
-            ;ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-            ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
+            ;ask max-n-of 1 cows with [cow? and old? = true and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+
+            ask max-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
               set sale? true
-              set ES-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]
+              set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]
 
           if (extraordinary-sale-of-cows-with = "lowest live weight") [
-            ;ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-            ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
+            ;ask min-n-of 1 cows with [cow? and old? = true and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+
+            ask min-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
               set sale? true
-              set ES-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]]]]]
+              set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]]]]]
 
   set ES-old-cow-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
@@ -2480,7 +2515,7 @@ initial-num-cows
 initial-num-cows
 0
 1000
-50.0
+100.0
 1
 1
 NIL
@@ -4120,10 +4155,10 @@ Slider to simulate other costs related to the livestock system (maintenance, vet
 1
 
 MONITOR
-1904
-625
-2017
-670
+1722
+671
+1835
+716
 NIL
 supplement-effort
 17
@@ -4153,10 +4188,10 @@ count cows with [cow?] with [live-weight <= 250]
 11
 
 SLIDER
-1759
-325
-1907
-358
+1577
+371
+1725
+404
 sales-effort-magnitude
 sales-effort-magnitude
 1
@@ -4168,10 +4203,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-1904
-669
-2078
-714
+1722
+715
+1896
+760
 SUPP-EFFORT-SEASON
 accumulated-supplement-effort-season
 17
@@ -4179,10 +4214,10 @@ accumulated-supplement-effort-season
 11
 
 MONITOR
-1904
-714
-2078
-759
+1722
+760
+1896
+805
 SUPP-EFFORT-YEAR
 accumulated-supplement-effort-year
 17
@@ -4190,10 +4225,10 @@ accumulated-supplement-effort-year
 11
 
 MONITOR
-1721
-626
-1817
-671
+1539
+672
+1635
+717
 NIL
 weaning-effort
 17
@@ -4201,10 +4236,10 @@ weaning-effort
 11
 
 MONITOR
-1721
-669
-1890
-714
+1539
+715
+1708
+760
 WEAN-EFFORT-SEASON
 accumulated-weaning-effort-season
 17
@@ -4212,10 +4247,10 @@ accumulated-weaning-effort-season
 11
 
 MONITOR
-1721
-714
-1890
-759
+1539
+760
+1708
+805
 WEAN-EFFORT-YEAR
 accumulated-weaning-effort-year
 17
@@ -4223,10 +4258,10 @@ accumulated-weaning-effort-year
 11
 
 MONITOR
-1305
-285
-1380
-330
+1123
+331
+1198
+376
 NIL
 total-effort
 17
@@ -4234,10 +4269,10 @@ total-effort
 11
 
 MONITOR
-1305
-328
-1455
-373
+1123
+374
+1273
+419
 TOTAL-EFFORT-SEASON
 total-effort-history-season
 17
@@ -4245,10 +4280,10 @@ total-effort-history-season
 11
 
 MONITOR
-1305
-371
-1443
-416
+1123
+417
+1261
+462
 TOTAL-EFFORT-YEAR
 total-effort-history-year
 17
@@ -4256,10 +4291,10 @@ total-effort-history-year
 11
 
 MONITOR
-1931
-459
-2033
-504
+1749
+505
+1851
+550
 NIL
 OS-males-effort
 17
@@ -4267,10 +4302,10 @@ OS-males-effort
 11
 
 MONITOR
-1931
-417
-2033
-462
+1749
+463
+1851
+508
 n steers
 count cows with [steer?]
 17
@@ -4278,10 +4313,10 @@ count cows with [steer?]
 11
 
 MONITOR
-1931
-503
-2088
-548
+1749
+549
+1906
+594
 OS-MALES-EFFORT-SEASON
 acummulated-OS-males-effort-season
 17
@@ -4289,10 +4324,10 @@ acummulated-OS-males-effort-season
 11
 
 MONITOR
-1931
-546
-2088
-591
+1749
+592
+1906
+637
 OS-MALES-EFFORT-YEAR
 OS-males-effort-historyXticks-year
 17
@@ -4300,10 +4335,10 @@ OS-males-effort-historyXticks-year
 11
 
 MONITOR
-1764
-459
-1877
-504
+1582
+505
+1695
+550
 NIL
 OS-old-cow-effort
 17
@@ -4311,10 +4346,10 @@ OS-old-cow-effort
 11
 
 MONITOR
-1764
-502
-1932
-547
+1582
+548
+1750
+593
 OS-OLD-COW-EFFORT-SEASON
 acummulated-OS-old-cow-effort-season
 17
@@ -4322,10 +4357,10 @@ acummulated-OS-old-cow-effort-season
 11
 
 MONITOR
-1764
-546
-1932
-591
+1582
+592
+1750
+637
 OS-OLD-COW-EFFORT-YEAR
 acummulated-OS-old-cow-effort-year
 17
@@ -4333,10 +4368,10 @@ acummulated-OS-old-cow-effort-year
 11
 
 MONITOR
-1764
-415
-1835
-460
+1582
+461
+1653
+506
 n old cow
 count cows with [cow? and age / 368 > age-sell-old-cow]
 17
@@ -4344,10 +4379,10 @@ count cows with [cow? and age / 368 > age-sell-old-cow]
 11
 
 MONITOR
-1734
-369
-1791
-414
+1552
+415
+1609
+460
 n cow
 count cows with [cow?]
 17
@@ -4355,10 +4390,10 @@ count cows with [cow?]
 11
 
 MONITOR
-1618
-459
-1737
-504
+1436
+505
+1555
+550
 NIL
 OS-heifer-cow-effort
 17
@@ -4366,10 +4401,10 @@ OS-heifer-cow-effort
 11
 
 MONITOR
-1618
-502
-1765
-547
+1436
+548
+1583
+593
 OS-HEIFER-COW-SEASON
 acummulated-OS-heifer-cow-effort-season
 17
@@ -4377,10 +4412,10 @@ acummulated-OS-heifer-cow-effort-season
 11
 
 MONITOR
-1618
-546
-1765
-591
+1436
+592
+1583
+637
 OS-HEIFER-COW-YEAR
 acummulated-OS-heifer-cow-effort-year
 17
@@ -4388,10 +4423,10 @@ acummulated-OS-heifer-cow-effort-year
 11
 
 MONITOR
-1618
-414
-1695
-459
+1436
+460
+1513
+505
 n heifer cow
 count cows with [cow? or heifer?]
 17
@@ -4399,10 +4434,10 @@ count cows with [cow? or heifer?]
 11
 
 MONITOR
-1678
-369
-1735
-414
+1496
+415
+1553
+460
 n heifer
 count cows with [heifer?]
 17
@@ -4410,10 +4445,10 @@ count cows with [heifer?]
 11
 
 MONITOR
-1465
-459
-1561
-504
+1283
+505
+1379
+550
 NIL
 OS-total-effort
 17
@@ -4421,10 +4456,10 @@ OS-total-effort
 11
 
 MONITOR
-1465
-502
-1620
-547
+1283
+548
+1438
+593
 OS-TOTAL-EFFORT-SEASON
 OS-total-effort-history-season
 17
@@ -4432,10 +4467,10 @@ OS-total-effort-history-season
 11
 
 MONITOR
-1465
-546
-1620
-591
+1283
+592
+1438
+637
 OS-TOTAL-EFFORT-YEAR
 OS-total-effort-history-year
 17
@@ -4443,10 +4478,10 @@ OS-total-effort-history-year
 11
 
 MONITOR
-1933
-144
-2033
-189
+1751
+190
+1851
+235
 NIL
 ES-males-effort
 17
@@ -4454,10 +4489,10 @@ ES-males-effort
 11
 
 MONITOR
-1933
-187
-2085
-232
+1751
+233
+1903
+278
 ES-MALES-EFFORT-SEASON
 acummulated-ES-males-effort-season
 17
@@ -4465,10 +4500,10 @@ acummulated-ES-males-effort-season
 11
 
 MONITOR
-1933
-231
-2085
-276
+1751
+277
+1903
+322
 ES-MALES-EFFORT-YEAR
 acummulated-ES-males-effort-year
 17
@@ -4476,10 +4511,10 @@ acummulated-ES-males-effort-year
 11
 
 MONITOR
-1933
-100
-1991
-145
+1751
+146
+1809
+191
 n steers
 count cows with [steer?]
 17
@@ -4487,10 +4522,10 @@ count cows with [steer?]
 11
 
 MONITOR
-1764
-143
-1877
-188
+1582
+189
+1695
+234
 NIL
 ES-old-cow-effort
 17
@@ -4498,10 +4533,10 @@ ES-old-cow-effort
 11
 
 MONITOR
-1764
-187
-1934
-232
+1582
+233
+1752
+278
 ES-OLD-COW-EFFORT-SEASON
 acummulated-ES-old-cow-effort-season
 17
@@ -4509,10 +4544,10 @@ acummulated-ES-old-cow-effort-season
 11
 
 MONITOR
-1764
-231
-1934
-276
+1582
+277
+1752
+322
 ES-OLD-COW-EFFORT-YEAR
 acummulated-ES-old-cow-effort-year
 17
@@ -4520,10 +4555,10 @@ acummulated-ES-old-cow-effort-year
 11
 
 MONITOR
-1764
-99
-1829
-144
+1582
+145
+1647
+190
 n old cow
 count cows with [cow? and age / 368 > age-sell-old-cow]
 17
@@ -4531,10 +4566,10 @@ count cows with [cow? and age / 368 > age-sell-old-cow]
 11
 
 MONITOR
-1733
-55
-1786
-100
+1551
+101
+1604
+146
 n cow
 count cows with [cow?]
 17
@@ -4542,10 +4577,10 @@ count cows with [cow?]
 11
 
 MONITOR
-1621
-144
-1741
-189
+1439
+190
+1559
+235
 NIL
 ES-heifer-cow-effort
 17
@@ -4553,10 +4588,10 @@ ES-heifer-cow-effort
 11
 
 MONITOR
-1621
-187
-1765
-232
+1439
+233
+1583
+278
 ES-HEIFER-COW-SEASON
 acummulated-ES-heifer-cow-effort-season
 17
@@ -4564,10 +4599,10 @@ acummulated-ES-heifer-cow-effort-season
 11
 
 MONITOR
-1621
-231
-1765
-276
+1439
+277
+1583
+322
 ES-HEIFER-COW-YEAR
 acummulated-ES-heifer-cow-effort-year
 17
@@ -4575,10 +4610,10 @@ acummulated-ES-heifer-cow-effort-year
 11
 
 MONITOR
-1621
-100
-1702
-145
+1439
+146
+1520
+191
 n heifer cow
 count cows with [cow? or heifer?]
 17
@@ -4586,10 +4621,10 @@ count cows with [cow? or heifer?]
 11
 
 MONITOR
-1680
-55
-1734
-100
+1498
+101
+1552
+146
 n heifer
 count cows with [heifer?]
 17
@@ -4597,10 +4632,10 @@ count cows with [heifer?]
 11
 
 MONITOR
-1464
-143
-1558
-188
+1282
+189
+1376
+234
 NIL
 ES-total-effort
 17
@@ -4608,10 +4643,10 @@ ES-total-effort
 11
 
 MONITOR
-1464
-187
-1622
-232
+1282
+233
+1440
+278
 ES-TOTAL-EFFORT-SEASON
 ES-total-effort-history-season
 17
@@ -4619,10 +4654,10 @@ ES-total-effort-history-season
 11
 
 MONITOR
-1464
-231
-1622
-276
+1282
+277
+1440
+322
 ES-TOTAL-EFFORT-YEAR
 ES-total-effort-history-year
 17
@@ -4630,10 +4665,10 @@ ES-total-effort-history-year
 11
 
 MONITOR
-1552
-624
-1650
-669
+1370
+670
+1468
+715
 NIL
 breeding-effort
 17
@@ -4641,10 +4676,10 @@ breeding-effort
 11
 
 MONITOR
-1553
-669
-1713
-714
+1371
+715
+1531
+760
 BREEDING-EFFORT-SEASON
 acummulated-breeding-effort-season
 17
@@ -4652,10 +4687,10 @@ acummulated-breeding-effort-season
 11
 
 MONITOR
-1553
-714
-1714
-759
+1371
+760
+1532
+805
 BREEDING-EFFORT-YEAR
 acummulated-breeding-effort-year
 17
@@ -4663,10 +4698,10 @@ acummulated-breeding-effort-year
 11
 
 MONITOR
-1378
-627
-1481
-672
+1196
+673
+1299
+718
 NIL
 rotational-effort
 17
@@ -4674,10 +4709,10 @@ rotational-effort
 11
 
 MONITOR
-1378
-671
-1545
-716
+1196
+717
+1363
+762
 ROTATIONAL-EFFORT-SEASON
 acummulated-rotational-effort-season
 17
@@ -4685,10 +4720,10 @@ acummulated-rotational-effort-season
 11
 
 MONITOR
-1378
-715
-1545
-760
+1196
+761
+1363
+806
 ROTATIONAL-EFFORT-YEAR
 acummulated-rotational-effort-year
 17
@@ -4696,10 +4731,10 @@ acummulated-rotational-effort-year
 11
 
 PLOT
-1088
-426
-1441
-618
+906
+472
+1259
+664
 total-effort
 Days
 Effort
@@ -4714,10 +4749,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot total-effort"
 
 MONITOR
-1086
-371
-1260
-416
+904
+417
+1078
+462
 Accumulated effort over time
 total-effort-history
 17
@@ -4725,35 +4760,35 @@ total-effort-history
 11
 
 TEXTBOX
-1641
-10
-1890
-43
+1459
+56
+1708
+89
 EFFORT RELATED OUTPUTS
 18
 135.0
 1
 
 SLIDER
-1487
-286
+1305
+332
+1481
+365
+rotational-effort-magnitude
+rotational-effort-magnitude
+1
+10
+5.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+1490
+332
 1663
-319
-rotational-effort-magnitude
-rotational-effort-magnitude
-1
-10
-5.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-1672
-286
-1845
-319
+365
 breeding-effort-magnitude
 breeding-effort-magnitude
 1
@@ -4765,10 +4800,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1851
-286
-2026
-319
+1669
+332
+1844
+365
 weaning-effort-magnitude
 weaning-effort-magnitude
 1
@@ -4780,10 +4815,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1566
-326
-1754
-359
+1384
+372
+1572
+405
 supplement-effort-magnitude
 supplement-effort-magnitude
 1
@@ -4810,10 +4845,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-814
-381
-1056
-426
+2047
+59
+2289
+104
 NIL
 mean [live-weight] of cows with [adult-cow?]
 17
@@ -4829,6 +4864,17 @@ supplement-cows-before-breeding-season?
 supplement-cows-before-breeding-season?
 "Yes" "No"
 0
+
+MONITOR
+1647
+97
+1822
+142
+NIL
+count cows with [cow? and old?]
+17
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?

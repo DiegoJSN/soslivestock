@@ -351,6 +351,9 @@ cows-own [
   cow?                                                                              ;; boolean variable that determines the "cow" age class of the livestock life cycle
   cow-with-calf?                                                                    ;; boolean variable that determines the "cow-withcalf" age class of the livestock life cycle
   pregnant?                                                                         ;; boolean variable that determines the "pregnant" age class of the livestock life cycle
+
+  old?                                                                              ;; OLDNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
   animal-units                                                                      ;; variable used to calculate the stocking rate. AU = LW / 380
   category-coef                                                                     ;; coefficient that varies with age class and affects the grass consumption of animals. Equal to 1 in all age classes, except for cow-with-calf = 1.1
   initial-weight                                                                    ;; initial weight of the animal at the beginning of the simulation. Set by the observer in the interface
@@ -824,6 +827,7 @@ to become-weaned-calf-female
   set kg-supplement-DM 0                                                                                ;;## FEED SUPPLEMENTATION MODULE
   set USD-supplement-DM 0                                                                               ;;## FEED SUPPLEMENTATION MODULE
 
+  ifelse age / 368 > age-sell-old-cow [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
 
 
   set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -874,6 +878,9 @@ to become-weaned-calf-male
   set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 
+  ifelse age / 368 > age-sell-old-cow [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
+
+
   set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
   set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
@@ -917,6 +924,8 @@ to become-heifer
   set kg-supplement-DM 0                                                                                           ;;## FEED SUPPLEMENTATION MODULE
   set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
 
+
+  ifelse age / 368 > age-sell-old-cow [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
 
 
   set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -963,6 +972,7 @@ to become-steer
   set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
 
 
+  ifelse age / 368 > age-sell-old-cow [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
 
 
   set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -1013,6 +1023,10 @@ to become-cow
   set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 
+
+  ifelse age / 368 > age-sell-old-cow [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
+
+
   set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 end
 
@@ -1055,6 +1069,11 @@ to become-cow-with-calf
 
   set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
   set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+  ifelse age / 368 > age-sell-old-cow [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
+
 
 
   set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -1695,6 +1714,8 @@ ask cows [
     [set mortality-rate natural-mortality-rate]
     if random-float 1 < mortality-rate [die]
 
+    ifelse age / 368 > age-sell-old-cow [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
+
     ask cows with [cow-with-calf? and not any? my-links] [become-cow]                                                      ;; if the link with the child (an agent with the state "born-calf") is lost (this happens when the child dies), the mother changes from the state "cow-with-calf" to the state "cow".
     ask cows with [born-calf-female? and not any? my-links ] [ become-weaned-calf-female ]                                 ;; if the link with the mother (an agent with a "cow-with-calf?" state) is lost (this happens when the mother dies, or when the mother switches from a "cow-with-calf?" state to a "cow?" state), the calf weans prematurely.
     ask cows with [born-calf-male? and not any? my-links ] [ become-weaned-calf-male ]
@@ -1721,6 +1742,8 @@ to grow-livestock-early-weaning                                                 
     [set mortality-rate except-mort-rate]
     [set mortality-rate natural-mortality-rate]
     if random-float 1 < mortality-rate [die]
+
+    ifelse age / 368 > age-sell-old-cow [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
 
     if (cow-with-calf? = true and live-weight < early-weaning-threshold) [become-cow set weaning-calf? true ask my-out-links [die]]               ;; ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWW if the mother (an agent with a "cow-with-calf?" state) is below a certain weight, it will switch to the "cow?" state and will kill the link with its child (an agent with a "born-calf" state). This weight is determined by the "early-weaning-threshold" slider in the interface.
 
@@ -1872,21 +1895,24 @@ end
 to ordinary-sale-old-cows                                                               ;;## ORDINARY SALES MODULE ;; Ordinary sale of old empty cows. The age at which a cow is considered old is determined by the "age-sell-old-cow" slider in the interface.
 
   if current-season = 3 and (season-days = 1) [
-    if any? cows with [cow? and age / 368 > age-sell-old-cow] [
+    if any? cows with [cow? and old? = true] [
       if count cows > keep-MIN-n-cattle [
-        ;while [any? cows with [cow? and age / 368 > age-sell-old-cow and sale? = false and pregnant? = false] and count cows with [sale? = false] > keep-MIN-n-cattle] [      ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-        while [any? cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle] [
+        ;while [any? cows with [cow? and old? = true and sale? = false and pregnant? = false] and count cows with [sale? = false] > keep-MIN-n-cattle] [      ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+
+        while [any? cows with [cow? and old? = true and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle] [
           if (ordinary-sale-of-cows-with = "highest live weight") [
-            ;ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-            ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
+            ;ask max-n-of 1 cows with [cow? and old? = true and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+
+            ask max-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
               set sale? true
-              set OS-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]
+              set OS-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]
 
           if (ordinary-sale-of-cows-with = "lowest live weight") [
-            ;ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-            ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
+            ;ask min-n-of 1 cows with [cow? and old? = true and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+
+            ask min-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
               set sale? true
-              set OS-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]]]]]
+              set OS-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]]]]]
 
   set OS-old-cow-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
@@ -1963,20 +1989,23 @@ to extraordinary-sale-males-market-farmer                                       
 to extraordinary-sale-old-cows-market-farmer                                                               ;;## EXTRAORDINARY SALES MODULE ;; Extrardinary sale of old cows for the market-oriented farmer. The age at which a cow is considered old is determined by the "age-sell-old-cow" slider in the interface.
 
   if count cows with [steer?] <= keep-MAX-n-steers [                                                       ;; when there are no more males available for the extraordinary sales (because the "keep-MAX-n-steers" number is the maximum number of breeding males the farmer wants to have in the system), the farmer starts selling old cows
-    if any? cows with [cow? and age / 368 > age-sell-old-cow] [
-      ;if any? cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false] [  ;;       alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+    if any? cows with [cow? and old? = true] [
+
+      ;if any? cows with [cow? and old? = true and pregnant? = false] [  ;;       alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
       if mean [live-weight] of cows < market-farmer-ES-min-weight and count cows > keep-MIN-n-cattle [
         if (extraordinary-sale-of-cows-with = "highest live weight") [
-          ;ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-          ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
+          ;ask max-n-of 1 cows with [cow? and old? = true and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+
+          ask max-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
             set sale? true
-            set ES-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]
+            set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]
 
         if (extraordinary-sale-of-cows-with = "lowest live weight") [
-          ;ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-          ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
+          ;ask min-n-of 1 cows with [cow? and old? = true and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+
+          ask min-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
             set sale? true
-            set ES-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]]]]
+            set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]]]]
 
   set ES-old-cow-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
@@ -1986,7 +2015,7 @@ to extraordinary-sale-old-cows-market-farmer                                    
 
 to extraordinary-sale-heifers-cows-market-farmer                                           ;;## EXTRAORDINARY SALES MODULE ;; Extraordinary sale of heifers and cows for the market-oriented farmer
 
-  if count cows with [steer?] <= keep-MAX-n-steers and count cows with [cow? and age / 368 > age-sell-old-cow] = 0 [   ;; when there are no more males and old cows available for the extraordinary sales, the farmer starts selling cows and heifers
+  if count cows with [steer?] <= keep-MAX-n-steers and count cows with [cow? and old? = true] = 0 [   ;; when there are no more males and old cows available for the extraordinary sales, the farmer starts selling cows and heifers
     if any? cows with [heifer? or cow?] [
       ;if any? cows with [heifer? or cow? and pregnant? = false] [   ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
       if mean [live-weight] of cows < market-farmer-ES-min-weight and count cows > keep-MIN-n-cattle [
@@ -2081,39 +2110,45 @@ to extraordinary-sale-old-cows-environmental-farmer                             
 
   if (spatial-management = "free grazing") [
 
-    if any? cows with [cow? and age / 368 > age-sell-old-cow] [
+    if any? cows with [cow? and old? = true] [
       if sum [animal-units] of cows / count patches > env-farmer-ES-SR and count cows > keep-MIN-n-cattle [
-        ;while [any? cows with [cow? and age / 368 > age-sell-old-cow and sale? = false and pregnant? = false] and sum [animal-units] of cows with [sale? = false] / count patches > ES-env-farmer-SR] [      ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-        while [any? cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle and sum [animal-units] of cows with [sale? = false] / count patches > env-farmer-ES-SR] [
+        ;while [any? cows with [cow? and old? = true and sale? = false and pregnant? = false] and sum [animal-units] of cows with [sale? = false] / count patches > ES-env-farmer-SR] [      ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+
+        while [any? cows with [cow? and old? = true and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle and sum [animal-units] of cows with [sale? = false] / count patches > env-farmer-ES-SR] [
           if (extraordinary-sale-of-cows-with = "highest live weight") [
-            ;ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-            ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
+            ;ask max-n-of 1 cows with [cow? and old? = true and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+
+            ask max-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
               set sale? true
-              set ES-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]
+              set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]
 
           if (extraordinary-sale-of-cows-with = "lowest live weight") [
-            ;ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-            ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
+            ;ask min-n-of 1 cows with [cow? and old? = true and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+
+            ask min-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
               set sale? true
-              set ES-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]]]]]
+              set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]]]]]
 
   if (spatial-management = "rotational grazing") [
 
-    if any? cows with [cow? and age / 368 > age-sell-old-cow] [
+    if any? cows with [cow? and old? = true] [
       if sum [animal-units] of cows / (count patches / 4) > env-farmer-ES-SR and count cows > keep-MIN-n-cattle [
-        ;while [any? cows with [cow? and age / 368 > age-sell-old-cow and sale? = false and pregnant? = false] and sum [animal-units] of cows with [sale? = false] / (count patches / 4) > ES-env-farmer-SR] [      ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-        while [any? cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle and sum [animal-units] of cows with [sale? = false] / (count patches / 4) > env-farmer-ES-SR] [
+        ;while [any? cows with [cow? and old? = true and sale? = false and pregnant? = false] and sum [animal-units] of cows with [sale? = false] / (count patches / 4) > ES-env-farmer-SR] [      ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+
+        while [any? cows with [cow? and old? = true and sale? = false] and count cows with [sale? = false] > keep-MIN-n-cattle and sum [animal-units] of cows with [sale? = false] / (count patches / 4) > env-farmer-ES-SR] [
           if (extraordinary-sale-of-cows-with = "highest live weight") [
-            ;ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-            ask max-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
+            ;ask max-n-of 1 cows with [cow? and old? = true and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+
+            ask max-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
               set sale? true
-              set ES-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]
+              set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]
 
           if (extraordinary-sale-of-cows-with = "lowest live weight") [
-            ;ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-            ask min-n-of 1 cows with [cow? and age / 368 > age-sell-old-cow and sale? = false] [live-weight] [
+            ;ask min-n-of 1 cows with [cow? and old? = true and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
+
+            ask min-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
               set sale? true
-              set ES-old-cow sum [value] of cows with [cow? and age / 368 > age-sell-old-cow and sale?]]]]]]]
+              set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]]]]]
 
   set ES-old-cow-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
@@ -2480,7 +2515,7 @@ initial-num-cows
 initial-num-cows
 0
 1000
-50.0
+100.0
 1
 1
 NIL
