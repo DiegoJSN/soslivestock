@@ -1553,10 +1553,8 @@ to kgDM/cow                                                                     
   ask cows [set DM-kg-cow 0]
 
   ask patches [
-  ;ask cows-here with [weaned-calf? or heifer? or steer? or cow? or cow-with-calf?] [set DM-kg-cow DM-kg-ha / count cows-here with [weaned-calf? or heifer? or steer? or cow? or cow-with-calf?]]
-  ask cows-here with [born-calf? = false] [set DM-kg-cow DM-kg-ha / count cows-here with [born-calf? = false]]
+    ask cows-here with [born-calf? = false] [set DM-kg-cow DM-kg-ha / count cows-here with [born-calf? = false]]
   ]
-
    ask cows [set gh-individual ((DM-kg-cow) / DM-cm-ha )]                            ;; for its use in the following procedures, this amount of DM (kg) is converted back to grass height (cm) (important: this is not the grass height the animal consumes!!)
 end
 
