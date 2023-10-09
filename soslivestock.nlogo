@@ -1066,14 +1066,11 @@ to become-cow-with-calf
   set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
 
 
-
   set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
   set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 
-
   ifelse age / 368 > age-sell-old-cow [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
-
 
 
   set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -1348,16 +1345,16 @@ to go
 
 
 
-  if ticks-since-here = 1 [set rotational-effort 0]
+  if ticks-since-here = 1 [set rotational-effort 0]                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
-  set rotational-effort-history fput rotational-effort rotational-effort-history
-  set rotational-effort-historyXticks sum (sublist rotational-effort-history 0 simulation-time)
+  set rotational-effort-history fput rotational-effort rotational-effort-history                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set rotational-effort-historyXticks sum (sublist rotational-effort-history 0 simulation-time)                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
-  set rotational-effort-history-season fput rotational-effort rotational-effort-history-season
-  set rotational-effort-historyXticks-season sum (sublist rotational-effort-history-season 0 season-days)
+  set rotational-effort-history-season fput rotational-effort rotational-effort-history-season                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set rotational-effort-historyXticks-season sum (sublist rotational-effort-history-season 0 season-days)                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
-  set rotational-effort-history-year fput rotational-effort rotational-effort-history-year
-  set rotational-effort-historyXticks-year sum (sublist rotational-effort-history-year 0 year-days)
+  set rotational-effort-history-year fput rotational-effort rotational-effort-history-year                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set rotational-effort-historyXticks-year sum (sublist rotational-effort-history-year 0 year-days)                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 
 
@@ -1556,7 +1553,8 @@ to kgDM/cow                                                                     
   ask cows [set DM-kg-cow 0]
 
   ask patches [
-  ask cows-here with [weaned-calf? or heifer? or steer? or cow? or cow-with-calf?] [set DM-kg-cow DM-kg-ha / count cows-here with [weaned-calf? or heifer? or steer? or cow? or cow-with-calf?] ]
+  ;ask cows-here with [weaned-calf? or heifer? or steer? or cow? or cow-with-calf?] [set DM-kg-cow DM-kg-ha / count cows-here with [weaned-calf? or heifer? or steer? or cow? or cow-with-calf?]]
+  ask cows-here with [born-calf? = false] [set DM-kg-cow DM-kg-ha / count cows-here with [born-calf? = false]]
   ]
 
    ask cows [set gh-individual ((DM-kg-cow) / DM-cm-ha )]                            ;; for its use in the following procedures, this amount of DM (kg) is converted back to grass height (cm) (important: this is not the grass height the animal consumes!!)
@@ -3209,7 +3207,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-100.0
+4.0
 1
 1
 years
