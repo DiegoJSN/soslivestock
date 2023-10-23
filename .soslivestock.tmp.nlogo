@@ -5160,7 +5160,7 @@ bull:female-ratio
 bull:female-ratio
 0
 100
-15.0
+26.0
 1
 1
 cows
@@ -5172,7 +5172,7 @@ MONITOR
 155
 847
 initial-num-bulls
-;round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:female-ratio)\nround ((initial-num-cows + initial-num-heifers) / bull:female-ratio)
+;round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:female-ratio)\n;round ((initial-num-cows + initial-num-heifers) / bull:female-ratio)\nif round ((initial-num-cows + initial-num-heifers) / bull:female-ratio) < 1 [set initial-num-bulls 1]
 17
 1
 11
