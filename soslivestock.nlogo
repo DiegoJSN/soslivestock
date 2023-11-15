@@ -322,7 +322,7 @@ globals [
 
 
 
-  rotational-effort
+  rotational-effort                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
   rotational-effort-history                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
   rotational-effort-historyXticks
@@ -336,7 +336,15 @@ globals [
 
 
 
+  other-daily-effort                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
+  other-daily-effort-history                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  other-daily-effort-historyXticks                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  other-daily-effort-history-season                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  other-daily-effort-historyXticks-season                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  other-daily-effort-history-year                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  other-daily-effort-historyXticks-year                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 
 
@@ -526,6 +534,12 @@ to setup-globals
   set breeding-effort 0
   set rotational-effort 0
 
+  set other-daily-effort 0
+
+
+
+
+
   set OS-old-bull-effort 0
 
   set cost-history []
@@ -546,6 +560,11 @@ to setup-globals
   set supplement-effort-historyXticks-season []                                         ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
   set supplement-effort-history-year []                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
   set supplement-effort-historyXticks-year []                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+
+
 
   set weaning-effort-history []
   set weaning-effort-history-season []                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -659,6 +678,12 @@ to setup-globals
   set rotational-effort-historyXticks-year []                                             ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 
+
+  set other-daily-effort-history []
+  set other-daily-effort-history-season []
+  set other-daily-effort-historyXticks-season []
+  set other-daily-effort-history-year []
+  set other-daily-effort-historyXticks-year []
 
 
 
@@ -1510,7 +1535,7 @@ to go
 
 
 
-  if ticks-since-here = 1 [set rotational-effort 0]                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
 
   set rotational-effort-history fput rotational-effort rotational-effort-history                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
   set rotational-effort-historyXticks sum (sublist rotational-effort-history 0 simulation-time)                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -1521,7 +1546,24 @@ to go
   set rotational-effort-history-year fput rotational-effort rotational-effort-history-year                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
   set rotational-effort-historyXticks-year sum (sublist rotational-effort-history-year 0 year-days)                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
+  if ticks-since-here = 1 [set rotational-effort 0]                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
+
+
+
+
+
+
+  set other-daily-effort-history fput other-daily-effort other-daily-effort-history                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set other-daily-effort-historyXticks sum (sublist other-daily-effort-history 0 simulation-time)
+
+  set other-daily-effort-history-season fput other-daily-effort other-daily-effort-history-season                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set other-daily-effort-historyXticks-season sum (sublist other-daily-effort-history-season 0 season-days)                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  set other-daily-effort-history-year fput other-daily-effort other-daily-effort-history-year                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set other-daily-effort-historyXticks-year sum (sublist other-daily-effort-history-year 0 year-days)                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+  ;set other-daily-effort 0
 
 
 
@@ -2064,7 +2106,7 @@ to ordinary-sale-males                                                          
 
     if any? cows with [weaned-calf-male?] [
 
-      if count cows with [bull?] > 1 [
+      if count cows with [bull?] >= 1 [
       if count cows with [weaned-calf-male?] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [
 
         while [any? cows with [weaned-calf-male? and sale? = false] and count cows with [weaned-calf-male? and sale? = false] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio)] [
@@ -2104,7 +2146,7 @@ to ordinary-sale-males                                                          
               set sale? true
               set OS-bull sum [value] of cows with [bull? and sale?]]]]]]]
 
-  set OS-males-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-males-effort count cows with [sale?] * sales-effort-time          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
   ask cows with [sale?] [die]
 
@@ -2135,7 +2177,7 @@ to ordinary-sale-old-cows                                                       
               set sale? true
               set OS-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]]]]]
 
-  set OS-old-cow-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-old-cow-effort count cows with [sale?] * sales-effort-time          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
   ask cows with [sale?] [die]
 
@@ -2169,7 +2211,7 @@ to ordinary-sale-old-bulls                                                      
               set sale? true
               set OS-old-bull sum [value] of cows with [bull? and old? = true and sale?]]]]]]]
 
-  set OS-old-bull-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-old-bull-effort count cows with [sale?] * sales-effort-time          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
   ask cows with [sale?] [die]
 
@@ -2242,7 +2284,7 @@ to ordinary-sale-non-replacement-females                                        
                 set OS-cow sum [value] of cows with [adult-cow? and sale?]]]]]]
 
 
-    set OS-females-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    set OS-females-effort count cows with [sale?] * sales-effort-time          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 
   ask cows with [sale?] [die]
@@ -2288,7 +2330,7 @@ to extraordinary-sale-males-market-farmer                                       
           set sale? true
           set ES-males-steer sum [value] of cows with [steer? and sale?]]]]]
 
-  set ES-males-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-males-effort count cows with [sale?] * sales-effort-time          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
   ask cows with [sale?] [die]
 
@@ -2319,7 +2361,7 @@ to extraordinary-sale-old-cows-market-farmer                                    
             set sale? true
               set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]]]
 
-  set ES-old-cow-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-old-cow-effort count cows with [sale?] * sales-effort-time          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
   ask cows with [sale?] [die]
 
@@ -2386,7 +2428,7 @@ to extraordinary-sale-non-replacement-females-market-farmer                     
                 set ES-cow sum [value] of cows with [adult-cow? and sale?]]]]]
 
 
-  set ES-females-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-females-effort count cows with [sale?] * sales-effort-time          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
   ask cows with [sale?] [die]
 
@@ -2456,7 +2498,7 @@ to extraordinary-sale-males-environmental-farmer                                
               set sale? true
               set ES-males-steer sum [value] of cows with [steer? and sale?]]]]]]
 
-  set ES-males-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-males-effort count cows with [sale?] * sales-effort-time          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
   ask cows with [sale?] [die]
 
@@ -2518,7 +2560,7 @@ to extraordinary-sale-old-cows-environmental-farmer                             
               set sale? true
               set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]]]]]
 
-  set ES-old-cow-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-old-cow-effort count cows with [sale?] * sales-effort-time          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
   ask cows with [sale?] [die]
 
@@ -2662,7 +2704,7 @@ to extraordinary-sale-non-replacement-females-environmental-farmer              
               set ES-cow sum [value] of cows with [adult-cow? and sale?]]]]]]
   ]
 
-  set ES-females-effort count cows with [sale?] / sales-effort-magnitude          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-females-effort count cows with [sale?] * sales-effort-time          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
   ask cows with [sale?] [die]
 
@@ -2692,41 +2734,57 @@ to farm-balance                                                                 
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; WELLBEING MODULE                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+;; WELLBEING MODULE
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to effort                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+to effort
 
-  ;; Feed supplementation effort
+  ;; Feed supplementation effort                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set supplement-effort count cows with [supplemented?] * supplement-effort-time
 
-  set supplement-effort count cows with [supplemented?] / supplement-effort-magnitude    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ;; Weaning effort                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set weaning-effort count cows with [weaning-calf?] * weaning-effort-time
 
-  set weaning-effort count cows with [weaning-calf?] / weaning-effort-magnitude       ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ;; Ordinary sales effort                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-total-effort OS-males-effort + OS-old-cow-effort + OS-females-effort + OS-old-bull-effort
+  set OS-total-effort-history-season OS-males-effort-historyXticks-season + OS-old-cow-effort-historyXticks-season + OS-females-effort-historyXticks-season + OS-old-bull-effort-historyXticks-season
+  set OS-total-effort-history-year OS-males-effort-historyXticks-year + OS-old-cow-effort-historyXticks-year + OS-females-effort-historyXticks-year
 
-  set OS-total-effort OS-males-effort + OS-old-cow-effort + OS-females-effort + OS-old-bull-effort                                                                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set OS-total-effort-history-season OS-males-effort-historyXticks-season + OS-old-cow-effort-historyXticks-season + OS-females-effort-historyXticks-season + OS-old-bull-effort-historyXticks-season          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set OS-total-effort-history-year OS-males-effort-historyXticks-year + OS-old-cow-effort-historyXticks-year + OS-females-effort-historyXticks-year                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ;; Extraordinary sales effort                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-total-effort ES-males-effort + ES-old-cow-effort + ES-females-effort
+  set ES-total-effort-history-season ES-males-effort-historyXticks-season + ES-old-cow-effort-historyXticks-season + ES-females-effort-historyXticks-season
+  set ES-total-effort-history-year ES-males-effort-historyXticks-year + ES-old-cow-effort-historyXticks-year + ES-females-effort-historyXticks-year + OS-old-bull-effort-historyXticks-year
 
-  set ES-total-effort ES-males-effort + ES-old-cow-effort + ES-females-effort                                                                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set ES-total-effort-history-season ES-males-effort-historyXticks-season + ES-old-cow-effort-historyXticks-season + ES-females-effort-historyXticks-season          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set ES-total-effort-history-year ES-males-effort-historyXticks-year + ES-old-cow-effort-historyXticks-year + ES-females-effort-historyXticks-year + OS-old-bull-effort-historyXticks-year                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ;; Controlled breeding effort                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  if farmer-profile = "market" [if current-season = controlled-breeding-season and (season-days = 1) [set breeding-effort breeding-effort-time]]
+  if farmer-profile = "environmental" [if current-season = controlled-breeding-season and (season-days = 1) [set breeding-effort breeding-effort-time]]
 
-  if farmer-profile = "market" [if current-season = controlled-breeding-season and (season-days = 1) [set breeding-effort count cows with [bull?] / breeding-effort-magnitude]]  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  if farmer-profile = "environmental" [if current-season = controlled-breeding-season and (season-days = 1) [set breeding-effort count cows with [bull?] / breeding-effort-magnitude]]   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-  if (spatial-management = "rotational grazing") [                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-    if farmer-profile = "traditional" [if season-days >= season-length [set rotational-effort count cows / rotational-effort-magnitude]]                                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-    if farmer-profile = "market" [if market-farmer-RG-live-weight-threshold > mean [live-weight] of cows and ticks-since-here >= RG-days-in-paddock [set rotational-effort count cows / rotational-effort-magnitude]]                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-    if farmer-profile = "environmental" [if env-farmer-RG-SR-threshold > sum [animal-units] of cows / (count patches / 4) and ticks-since-here >= RG-days-in-paddock [set rotational-effort count cows / rotational-effort-magnitude]]]               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ;, Other daily efforts
+  set other-daily-effort other-daily-effort-time
 
 
-  set total-effort supplement-effort + weaning-effort + OS-total-effort + ES-total-effort + breeding-effort + rotational-effort                                                                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set total-effort-history supplement-effort-historyXticks + weaning-effort-historyXticks + OS-males-effort-historyXticks + OS-old-cow-effort-historyXticks + OS-females-effort-historyXticks + ES-males-effort-historyXticks + ES-old-cow-effort-historyXticks + ES-females-effort-historyXticks + breeding-effort-historyXticks + rotational-effort-historyXticks + OS-old-bull-effort-historyXticks ;; Accumulated effort over time
-  set total-effort-history-season supplement-effort-historyXticks-season + weaning-effort-historyXticks-season + OS-total-effort-history-season + ES-total-effort-history-season + breeding-effort-historyXticks-season + rotational-effort-historyXticks-season          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set total-effort-history-year supplement-effort-historyXticks-year + weaning-effort-historyXticks-year + OS-total-effort-history-year + ES-total-effort-history-year + breeding-effort-historyXticks-year + rotational-effort-historyXticks-year                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ;; Rotational grazing effort                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  if (spatial-management = "rotational grazing") [
+    if farmer-profile = "traditional" [if season-days >= season-length [set rotational-effort rotational-effort-time]]
+    if farmer-profile = "market" [if market-farmer-RG-live-weight-threshold > mean [live-weight] of cows and ticks-since-here >= RG-days-in-paddock [set rotational-effort rotational-effort-time]]
+    if farmer-profile = "environmental" [if env-farmer-RG-SR-threshold > sum [animal-units] of cows / (count patches / 4) and ticks-since-here >= RG-days-in-paddock [set rotational-effort rotational-effort-time]]]
+
+
+
+
+
+
+
+  ;; Total effort                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set total-effort supplement-effort + weaning-effort + OS-total-effort + ES-total-effort + breeding-effort + rotational-effort + other-daily-effort
+  set total-effort-history supplement-effort-historyXticks + weaning-effort-historyXticks + OS-males-effort-historyXticks + OS-old-bull-effort-historyXticks + OS-females-effort-historyXticks + OS-old-cow-effort-historyXticks + ES-males-effort-historyXticks + ES-old-cow-effort-historyXticks + ES-females-effort-historyXticks + breeding-effort-historyXticks + rotational-effort-historyXticks + other-daily-effort-historyXticks ;; Accumulated effort over time
+  set total-effort-history-season supplement-effort-historyXticks-season + weaning-effort-historyXticks-season + OS-total-effort-history-season + ES-total-effort-history-season + breeding-effort-historyXticks-season + rotational-effort-historyXticks-season + other-daily-effort-historyXticks-season
+  set total-effort-history-year supplement-effort-historyXticks-year + weaning-effort-historyXticks-year + OS-total-effort-history-year + ES-total-effort-history-year + breeding-effort-historyXticks-year + rotational-effort-historyXticks-year + other-daily-effort-historyXticks-year
 
 end
+
+
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2897,6 +2955,18 @@ end
 
 
 
+to-report acummulated-other-daily-effort-season
+  report other-daily-effort-historyXticks-season                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+end
+
+to-report acummulated-other-daily-effort-year
+  report other-daily-effort-historyXticks-year                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+end
+
+
+
+
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -3004,9 +3074,9 @@ NIL
 HORIZONTAL
 
 PLOT
-2350
+3696
 767
-2688
+4034
 978
 Average of grass-height (GH)
 Days
@@ -3022,10 +3092,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot grass-height-report"
 
 PLOT
-846
-1011
-1226
-1231
+850
+1447
+1230
+1698
 Live-weight (LW)
 Days
 kg
@@ -3043,7 +3113,8 @@ PENS
 "Steer" 1.0 0 -2674135 true "" "plot mean [live-weight] of cows with [steer?]"
 "Cow" 1.0 0 -6459832 true "" "plot mean [live-weight] of cows with [cow?]"
 "Cow-with-calf" 1.0 0 -5825686 true "" "plot mean [live-weight] of cows with [cow-with-calf?]"
-"Average LW" 1.0 0 -16777216 true "" "plot mean [live-weight] of cows"
+"Bull" 1.0 0 -16777216 true "" "plot mean [live-weight] of cows with [bull?]"
+"Average LW" 1.0 0 -7500403 true "" "plot mean [live-weight] of cows"
 
 MONITOR
 659
@@ -3068,10 +3139,10 @@ stocking-rate
 11
 
 PLOT
-1193
-1244
-1567
-1417
+822
+456
+1196
+629
 Cattle age classes population sizes
 Days
 Heads
@@ -3089,7 +3160,8 @@ PENS
 "Steer" 1.0 0 -2674135 true "" "plot count cows with [steer?]"
 "Cow" 1.0 0 -6459832 true "" "plot count cows with [cow?]"
 "Cow-with-calf" 1.0 0 -5825686 true "" "plot count cows with [cow-with-calf?]"
-"Total" 1.0 0 -16777216 true "" "plot count cows"
+"Bull" 1.0 0 -16777216 true "" "plot count cows with [bull?]"
+"Total" 1.0 0 -7500403 true "" "plot count cows"
 
 SLIDER
 8
@@ -3107,10 +3179,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-1143
-1144
-1323
-1189
+1147
+1611
+1327
+1656
 Average LW (kg/animal)
 mean [live-weight] of cows
 3
@@ -3133,9 +3205,9 @@ cm
 HORIZONTAL
 
 PLOT
-2689
+4035
 766
-3012
+4358
 981
 Dry-matter (DM) and DM consumption (DDMC)
 Days
@@ -3162,9 +3234,9 @@ TEXTBOX
 1
 
 MONITOR
-2349
+3695
 720
-2475
+3821
 765
 Average GH (cm/ha)
 grass-height-report
@@ -3236,10 +3308,10 @@ Area (ha)
 11
 
 PLOT
-846
-1236
-1182
-1458
+850
+1703
+1186
+1925
 Daily individual-live-weight-gain (ILWG)
 Days
 kg
@@ -3257,12 +3329,13 @@ PENS
 "Steer" 1.0 0 -2674135 true "" "plot mean [live-weight-gain] of cows with [steer?]"
 "Cow" 1.0 0 -6459832 true "" "plot mean [live-weight-gain] of cows with [cow?]"
 "Cow-with-calf" 1.0 0 -5825686 true "" "plot mean [live-weight-gain] of cows with [cow-with-calf?]"
-"Average LWG" 1.0 0 -16777216 true "" "plot mean [live-weight-gain] of cows"
+"Bull" 1.0 0 -16777216 true "" "plot mean [live-weight-gain] of cows with [bull?]"
+"Average LWG" 1.0 0 -7500403 true "" "plot mean [live-weight-gain] of cows"
 
 PLOT
-3014
+4360
 765
-3340
+4686
 981
 Crop-efficiency (CE)
 Days
@@ -3278,9 +3351,9 @@ PENS
 "CE" 1.0 0 -16777216 true "" "plot crop-efficiency"
 
 MONITOR
-3015
+4361
 718
-3071
+4417
 763
 CE (%)
 crop-efficiency
@@ -3289,9 +3362,9 @@ crop-efficiency
 11
 
 MONITOR
-2687
+4033
 717
-2836
+4182
 762
 Total DDMC (kg)
 sum [DDMC] of cows
@@ -3300,9 +3373,9 @@ sum [DDMC] of cows
 11
 
 MONITOR
-2836
+4182
 717
-3010
+4356
 762
 Average DDMC (kg/animal)
 mean [DDMC] of cows
@@ -3343,10 +3416,10 @@ kg
 HORIZONTAL
 
 PLOT
-844
-1520
-1186
-1714
+848
+1987
+1190
+2181
 Body condition ccore (BCS)
 Days
 points
@@ -3362,10 +3435,10 @@ PENS
 "Cow-with-calf" 1.0 0 -5825686 true "" "plot (mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40"
 
 MONITOR
-844
-1473
-974
-1518
+848
+1940
+978
+1985
 BCS of cows (points)
 ;(mean [live-weight] of cows with [cow?] - mean [min-weight] of cows with [cow?]) / 40\n;(mean [live-weight] of cows with [cow?] - (((mean [live-weight] of cows with [cow?]) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40
 2
@@ -3373,10 +3446,10 @@ BCS of cows (points)
 11
 
 PLOT
-1201
-1520
-1611
-1713
+1205
+1987
+1615
+2180
 Pregnancy rate (PR)
 Days
 %
@@ -3393,10 +3466,10 @@ PENS
 "Cow-with-calf" 1.0 0 -5825686 true "" "plot mean [pregnancy-rate] of cows with [cow-with-calf?] * 100"
 
 MONITOR
-1202
-1472
-1334
-1517
+1206
+1939
+1338
+1984
 PR of cows (%)
 mean [pregnancy-rate] of cows with [cow?] * 100
 2
@@ -3404,10 +3477,10 @@ mean [pregnancy-rate] of cows with [cow?] * 100
 11
 
 MONITOR
-1333
-1472
-1476
-1517
+1337
+1939
+1480
+1984
 PR of cows-with-calf (%)
 mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
 2
@@ -3415,10 +3488,10 @@ mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
 11
 
 MONITOR
-1476
-1472
-1613
-1517
+1480
+1939
+1617
+1984
 PR of heifers (%)
 mean [pregnancy-rate] of cows with [heifer?] * 100
 2
@@ -3426,9 +3499,9 @@ mean [pregnancy-rate] of cows with [heifer?] * 100
 11
 
 MONITOR
-2687
+4033
 676
-2836
+4182
 721
 Total DM (kg)
 dmgr
@@ -3437,10 +3510,10 @@ dmgr
 11
 
 MONITOR
-1144
-1193
-1321
-1238
+1148
+1660
+1325
+1705
 Average ILWG (kg/animal/day)
 ;mean [live-weight-gain] of cows\nILWG
 3
@@ -3448,10 +3521,10 @@ Average ILWG (kg/animal/day)
 11
 
 MONITOR
-975
-1473
-1130
-1518
+979
+1940
+1134
+1985
 BCS of cows-with-calf (points)
 ;(mean [live-weight] of cows with [cow-with-calf?] - mean [min-weight] of cows with [cow-with-calf?]) / 40\n;(mean [live-weight] of cows with [cow-with-calf?] - (((mean [live-weight] of cows with [cow-with-calf?]) * set-MW-1-AU) / set-1-AU)) / 40\n\n(mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40
 2
@@ -3459,10 +3532,10 @@ BCS of cows-with-calf (points)
 11
 
 MONITOR
-1326
-1144
-1556
-1189
+1330
+1611
+1560
+1656
 Average LW of adult cows (kg/animal)
 mean [live-weight] of cows with [adult-cow?]
 3
@@ -3470,10 +3543,10 @@ mean [live-weight] of cows with [adult-cow?]
 11
 
 MONITOR
-1327
-1192
-1556
-1237
+1331
+1659
+1560
+1704
 Average ILWG of adult cows (kg/animal/day)
 mean [live-weight-gain] of cows with [adult-cow?]
 3
@@ -3581,10 +3654,10 @@ kg
 HORIZONTAL
 
 PLOT
-846
-836
-1282
-1009
+822
+276
+1258
+449
 Stocking rate
 Days
 AU/ha
@@ -3657,9 +3730,9 @@ season-days
 11
 
 MONITOR
-2836
+4182
 676
-3010
+4356
 721
 Total DM per ha (kg/ha)
 ;(DM-cm-ha * mean [grass-height] of patches) / DM-available-for-cattle\n(dmgr) / count patches
@@ -3676,7 +3749,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-0.0
+100.0
 1
 1
 years
@@ -3750,7 +3823,7 @@ CHOOSER
 starting-paddock
 starting-paddock
 "paddock a" "paddock b" "paddock c" "paddock d"
-3
+0
 
 MONITOR
 536
@@ -4031,10 +4104,10 @@ NIL
 1
 
 MONITOR
-1160
-390
-1343
-435
+804
+878
+987
+923
 Ordinary sales (OS) income (USD)
 ordinary-sales-income
 3
@@ -4042,10 +4115,10 @@ ordinary-sales-income
 11
 
 PLOT
-1160
-437
-1507
-587
+804
+925
+1151
+1075
 Daily income
 Days
 USD
@@ -4061,10 +4134,10 @@ PENS
 "ES income" 1.0 0 -2674135 true "" "plot extraordinary-sales-income"
 
 PLOT
-1519
-256
-1882
-383
+1163
+744
+1526
+871
 Daily balance
 Days
 USD
@@ -4159,10 +4232,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-1904
-275
-2082
-320
+1548
+763
+1726
+808
 meat production (kg/ha)
 sum [live-weight] of cows / count patches
 3
@@ -4170,10 +4243,10 @@ sum [live-weight] of cows / count patches
 11
 
 PLOT
-1905
-327
-2270
-477
+1549
+815
+1914
+965
 meat production 
 days
 kg/ha
@@ -4188,10 +4261,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot sum [live-weight] of cows / count patches"
 
 SLIDER
-236
-729
-425
-762
+2353
+858
+2542
+891
 early-weaning-threshold
 early-weaning-threshold
 180
@@ -4228,10 +4301,10 @@ ordinary-sale-of-cows-with
 1
 
 MONITOR
-1162
-210
-1341
-255
+806
+698
+985
+743
 Accumulated balance (USD)
 accumulated-balance
 17
@@ -4239,10 +4312,10 @@ accumulated-balance
 11
 
 PLOT
-1162
-256
-1506
-376
+806
+744
+1150
+864
 Accumulated balance
 Days
 USD
@@ -4257,10 +4330,10 @@ PENS
 "Balance" 1.0 0 -16777216 true "" "plot accumulated-balance"
 
 MONITOR
-1345
-390
-1505
-435
+989
+878
+1149
+923
 Extraordinary sales (ES) income (USD)
 extraordinary-sales-income
 3
@@ -4301,7 +4374,7 @@ keep-MIN-n-breeding-cows
 keep-MIN-n-breeding-cows
 0
 500
-15.0
+10.0
 1
 1
 NIL
@@ -4364,10 +4437,10 @@ days
 HORIZONTAL
 
 MONITOR
-1514
-591
-1733
-636
+1158
+1079
+1377
+1124
 Total daily kg-supplement-DM (kg)
 sum [kg-supplement-DM] of cows + sum [kg-supplement-DM-breeding] of cows
 17
@@ -4375,10 +4448,10 @@ sum [kg-supplement-DM] of cows + sum [kg-supplement-DM-breeding] of cows
 11
 
 MONITOR
-1516
-391
-1685
-436
+1160
+879
+1329
+924
 Daily supplement cost (USD)
 supplement-cost
 17
@@ -4401,10 +4474,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-491
-649
-746
-682
+2560
+748
+2815
+781
 cow-min-weight-for-feed-sup
 cow-min-weight-for-feed-sup
 0
@@ -4439,7 +4512,7 @@ heifer/steer-min-weight-for-feed-sup
 heifer/steer-min-weight-for-feed-sup
 0
 300
-175.0
+180.0
 1
 1
 kg
@@ -4461,10 +4534,10 @@ kg
 HORIZONTAL
 
 PLOT
-1515
-438
-1881
-587
+1159
+926
+1525
+1075
 Daily costs
 Days
 USD
@@ -4519,29 +4592,29 @@ count cows
 11
 
 TEXTBOX
-887
-808
-1198
-852
+863
+248
+1174
+292
 LIVESTOCK RELATED OUTPUTS
 18
 34.0
 1
 
 TEXTBOX
-1577
-167
-1881
-211
+1221
+655
+1525
+699
 ECONOMIC RELATED OUTPUTS
 18
 0.0
 1
 
 TEXTBOX
-2688
+4034
 644
-2986
+4332
 679
 RESOURCE RELATED OUTPUTS
 18
@@ -4549,10 +4622,10 @@ RESOURCE RELATED OUTPUTS
 1
 
 MONITOR
-1519
-205
-1657
-250
+1163
+693
+1301
+738
 Daily balance (USD)
 balance
 17
@@ -4575,10 +4648,10 @@ USD
 HORIZONTAL
 
 MONITOR
-1687
-390
-1829
-435
+1331
+878
+1473
+923
 Daily other costs (USD)
 other-cost
 17
@@ -4586,10 +4659,10 @@ other-cost
 11
 
 MONITOR
-1674
-204
-1823
-249
+1318
+692
+1467
+737
 NIL
 accumulated-cost
 17
@@ -4607,10 +4680,10 @@ Slider to simulate other costs related to the livestock system (maintenance, vet
 1
 
 MONITOR
-4377
-663
-4490
-708
+2561
+569
+2674
+614
 NIL
 supplement-effort
 17
@@ -4618,10 +4691,10 @@ supplement-effort
 11
 
 MONITOR
-1327
-1090
-1544
-1135
+1331
+1557
+1548
+1602
 NIL
 min [live-weight] of cows with [cow?]
 17
@@ -4629,10 +4702,10 @@ min [live-weight] of cows with [cow?]
 11
 
 MONITOR
-1551
-1090
-1838
-1135
+1555
+1557
+1842
+1602
 NIL
 count cows with [cow?] with [live-weight <= 250]
 17
@@ -4640,25 +4713,25 @@ count cows with [cow?] with [live-weight <= 250]
 11
 
 SLIDER
-4232
-363
-4380
-396
-sales-effort-magnitude
-sales-effort-magnitude
+1272
+553
+1468
+586
+sales-effort-time
+sales-effort-time
 1
-10
+200
 5.0
 1
 1
-NIL
+min/animal
 HORIZONTAL
 
 MONITOR
-4377
-707
-4551
-752
+2561
+613
+2735
+658
 SUPP-EFFORT-SEASON
 accumulated-supplement-effort-season
 17
@@ -4666,10 +4739,10 @@ accumulated-supplement-effort-season
 11
 
 MONITOR
-4377
-752
-4551
-797
+2561
+658
+2735
+703
 SUPP-EFFORT-YEAR
 accumulated-supplement-effort-year
 17
@@ -4677,10 +4750,10 @@ accumulated-supplement-effort-year
 11
 
 MONITOR
-4194
-664
-4290
-709
+2349
+572
+2445
+617
 NIL
 weaning-effort
 17
@@ -4688,10 +4761,10 @@ weaning-effort
 11
 
 MONITOR
-4194
-707
-4363
-752
+2349
+615
+2518
+660
 WEAN-EFFORT-SEASON
 accumulated-weaning-effort-season
 17
@@ -4699,10 +4772,10 @@ accumulated-weaning-effort-season
 11
 
 MONITOR
-4194
-752
-4363
-797
+2349
+660
+2518
+705
 WEAN-EFFORT-YEAR
 accumulated-weaning-effort-year
 17
@@ -4710,43 +4783,43 @@ accumulated-weaning-effort-year
 11
 
 MONITOR
-3778
-323
-3853
-368
-NIL
-total-effort
-17
+1510
+171
+1606
+216
+Total effort (h)
+total-effort / 60
+3
 1
 11
 
 MONITOR
-3778
-366
-3928
-411
-TOTAL-EFFORT-SEASON
-total-effort-history-season
-17
+1510
+214
+1680
+259
+TOTAL-EFFORT-SEASON (h)
+total-effort-history-season / 60
+3
 1
 11
 
 MONITOR
-3778
-409
-3916
-454
-TOTAL-EFFORT-YEAR
-total-effort-history-year
-17
+1510
+257
+1664
+302
+TOTAL-EFFORT-YEAR (h)
+total-effort-history-year / 60
+3
 1
 11
 
 MONITOR
-4404
-497
-4506
-542
+2410
+347
+2512
+392
 NIL
 OS-males-effort
 17
@@ -4754,10 +4827,10 @@ OS-males-effort
 11
 
 MONITOR
-4404
-455
-4506
-500
+2385
+303
+2487
+348
 n steers
 count cows with [steer?]
 17
@@ -4765,10 +4838,10 @@ count cows with [steer?]
 11
 
 MONITOR
-4404
-541
-4561
-586
+2410
+391
+2567
+436
 OS-MALES-EFFORT-SEASON
 acummulated-OS-males-effort-season
 17
@@ -4776,10 +4849,10 @@ acummulated-OS-males-effort-season
 11
 
 MONITOR
-4404
-584
-4561
-629
+2410
+434
+2567
+479
 OS-MALES-EFFORT-YEAR
 OS-males-effort-historyXticks-year
 17
@@ -4787,10 +4860,10 @@ OS-males-effort-historyXticks-year
 11
 
 MONITOR
-4237
-497
-4350
-542
+2242
+347
+2355
+392
 NIL
 OS-old-cow-effort
 17
@@ -4798,10 +4871,10 @@ OS-old-cow-effort
 11
 
 MONITOR
-4237
-540
-4405
-585
+2242
+390
+2410
+435
 OS-OLD-COW-EFFORT-SEASON
 acummulated-OS-old-cow-effort-season
 17
@@ -4809,10 +4882,10 @@ acummulated-OS-old-cow-effort-season
 11
 
 MONITOR
-4237
-584
-4405
-629
+2242
+434
+2410
+479
 OS-OLD-COW-EFFORT-YEAR
 acummulated-OS-old-cow-effort-year
 17
@@ -4820,10 +4893,10 @@ acummulated-OS-old-cow-effort-year
 11
 
 MONITOR
-4237
-453
-4308
-498
+2242
+303
+2313
+348
 n old cow
 count cows with [cow? and age / 368 > age-sell-old-cow/bull]
 17
@@ -4831,10 +4904,10 @@ count cows with [cow? and age / 368 > age-sell-old-cow/bull]
 11
 
 MONITOR
-4207
-407
-4264
-452
+2212
+257
+2269
+302
 n cow
 count cows with [cow?]
 17
@@ -4842,10 +4915,10 @@ count cows with [cow?]
 11
 
 MONITOR
-4091
-497
-4210
-542
+2096
+347
+2215
+392
 NIL
 OS-females-effort
 17
@@ -4853,10 +4926,10 @@ OS-females-effort
 11
 
 MONITOR
-4091
-540
-4238
-585
+2096
+390
+2243
+435
 OS-HEIFER-COW-SEASON
 acummulated-OS-females-effort-season
 17
@@ -4864,10 +4937,10 @@ acummulated-OS-females-effort-season
 11
 
 MONITOR
-4091
-584
-4238
-629
+2096
+434
+2243
+479
 OS-HEIFER-COW-YEAR
 acummulated-OS-females-effort-year
 17
@@ -4875,10 +4948,10 @@ acummulated-OS-females-effort-year
 11
 
 MONITOR
-4091
-452
-4168
-497
+2096
+302
+2173
+347
 n heifer cow
 count cows with [cow? or heifer?]
 17
@@ -4886,10 +4959,10 @@ count cows with [cow? or heifer?]
 11
 
 MONITOR
-4151
-407
-4208
-452
+2156
+257
+2213
+302
 n heifer
 count cows with [heifer?]
 17
@@ -4897,10 +4970,10 @@ count cows with [heifer?]
 11
 
 MONITOR
-3938
-497
-4034
-542
+1943
+347
+2039
+392
 NIL
 OS-total-effort
 17
@@ -4908,10 +4981,10 @@ OS-total-effort
 11
 
 MONITOR
-3938
-540
-4093
-585
+1943
+390
+2098
+435
 OS-TOTAL-EFFORT-SEASON
 OS-total-effort-history-season
 17
@@ -4919,10 +4992,10 @@ OS-total-effort-history-season
 11
 
 MONITOR
-3938
-584
-4093
-629
+1943
+434
+2098
+479
 OS-TOTAL-EFFORT-YEAR
 OS-total-effort-history-year
 17
@@ -4930,10 +5003,10 @@ OS-total-effort-history-year
 11
 
 MONITOR
-4406
-182
-4506
-227
+2486
+119
+2586
+164
 NIL
 ES-males-effort
 17
@@ -4941,10 +5014,10 @@ ES-males-effort
 11
 
 MONITOR
-4406
-225
-4558
-270
+2486
+162
+2638
+207
 ES-MALES-EFFORT-SEASON
 acummulated-ES-males-effort-season
 17
@@ -4952,10 +5025,10 @@ acummulated-ES-males-effort-season
 11
 
 MONITOR
-4406
-269
-4558
-314
+2486
+206
+2638
+251
 ES-MALES-EFFORT-YEAR
 acummulated-ES-males-effort-year
 17
@@ -4963,10 +5036,10 @@ acummulated-ES-males-effort-year
 11
 
 MONITOR
-4406
-138
-4464
-183
+2486
+75
+2544
+120
 n steers
 count cows with [steer?]
 17
@@ -4974,10 +5047,10 @@ count cows with [steer?]
 11
 
 MONITOR
-4237
-181
-4350
-226
+2316
+118
+2429
+163
 NIL
 ES-old-cow-effort
 17
@@ -4985,10 +5058,10 @@ ES-old-cow-effort
 11
 
 MONITOR
-4237
-225
-4407
-270
+2316
+162
+2486
+207
 ES-OLD-COW-EFFORT-SEASON
 acummulated-ES-old-cow-effort-season
 17
@@ -4996,10 +5069,10 @@ acummulated-ES-old-cow-effort-season
 11
 
 MONITOR
-4237
-269
-4407
-314
+2316
+206
+2486
+251
 ES-OLD-COW-EFFORT-YEAR
 acummulated-ES-old-cow-effort-year
 17
@@ -5007,10 +5080,10 @@ acummulated-ES-old-cow-effort-year
 11
 
 MONITOR
-4237
-137
-4302
-182
+2316
+74
+2381
+119
 n old cow
 count cows with [cow? and age / 368 > age-sell-old-cow/bull]
 17
@@ -5018,10 +5091,10 @@ count cows with [cow? and age / 368 > age-sell-old-cow/bull]
 11
 
 MONITOR
-4206
-93
-4259
-138
+2285
+30
+2338
+75
 n cow
 count cows with [cow?]
 17
@@ -5029,10 +5102,10 @@ count cows with [cow?]
 11
 
 MONITOR
-4094
-182
-4214
-227
+2173
+119
+2293
+164
 NIL
 ES-females-effort
 17
@@ -5040,10 +5113,10 @@ ES-females-effort
 11
 
 MONITOR
-4094
-225
-4238
-270
+2173
+162
+2317
+207
 ES-HEIFER-COW-SEASON
 acummulated-ES-females-effort-season
 17
@@ -5051,10 +5124,10 @@ acummulated-ES-females-effort-season
 11
 
 MONITOR
-4094
-269
-4238
-314
+2173
+206
+2317
+251
 ES-HEIFER-COW-YEAR
 acummulated-ES-females-effort-year
 17
@@ -5062,10 +5135,10 @@ acummulated-ES-females-effort-year
 11
 
 MONITOR
-4094
-138
-4175
-183
+2173
+75
+2254
+120
 n heifer cow
 count cows with [cow? or heifer?]
 17
@@ -5073,10 +5146,10 @@ count cows with [cow? or heifer?]
 11
 
 MONITOR
-4153
-93
-4207
-138
+2232
+30
+2286
+75
 n heifer
 count cows with [heifer?]
 17
@@ -5084,10 +5157,10 @@ count cows with [heifer?]
 11
 
 MONITOR
-3937
-181
-4031
-226
+2016
+118
+2110
+163
 NIL
 ES-total-effort
 17
@@ -5095,10 +5168,10 @@ ES-total-effort
 11
 
 MONITOR
-3937
-225
-4095
-270
+2016
+162
+2174
+207
 ES-TOTAL-EFFORT-SEASON
 ES-total-effort-history-season
 17
@@ -5106,10 +5179,10 @@ ES-total-effort-history-season
 11
 
 MONITOR
-3937
-269
-4095
-314
+2016
+206
+2174
+251
 ES-TOTAL-EFFORT-YEAR
 ES-total-effort-history-year
 17
@@ -5117,10 +5190,10 @@ ES-total-effort-history-year
 11
 
 MONITOR
-4025
-662
-4123
-707
+2143
+580
+2241
+625
 NIL
 breeding-effort
 17
@@ -5128,10 +5201,10 @@ breeding-effort
 11
 
 MONITOR
-4026
-707
-4186
-752
+2144
+625
+2304
+670
 BREEDING-EFFORT-SEASON
 acummulated-breeding-effort-season
 17
@@ -5139,10 +5212,10 @@ acummulated-breeding-effort-season
 11
 
 MONITOR
-4026
-752
-4187
-797
+2144
+670
+2305
+715
 BREEDING-EFFORT-YEAR
 acummulated-breeding-effort-year
 17
@@ -5150,10 +5223,10 @@ acummulated-breeding-effort-year
 11
 
 MONITOR
-3851
-665
-3954
-710
+1941
+579
+2044
+624
 NIL
 rotational-effort
 17
@@ -5161,10 +5234,10 @@ rotational-effort
 11
 
 MONITOR
-3851
-709
-4018
-754
+1941
+623
+2108
+668
 ROTATIONAL-EFFORT-SEASON
 acummulated-rotational-effort-season
 17
@@ -5172,10 +5245,10 @@ acummulated-rotational-effort-season
 11
 
 MONITOR
-3851
-753
-4018
-798
+1941
+667
+2108
+712
 ROTATIONAL-EFFORT-YEAR
 acummulated-rotational-effort-year
 17
@@ -5183,13 +5256,13 @@ acummulated-rotational-effort-year
 11
 
 PLOT
-3561
-464
-3914
-656
-total-effort
+1293
+308
+1676
+502
+total-effort (h)
 Days
-Effort
+Effort (h)
 0.0
 92.0
 0.0
@@ -5198,87 +5271,87 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "plot total-effort"
+"default" 1.0 0 -16777216 true "" "plot total-effort / 60"
 
 MONITOR
-3595
-412
-3769
-457
-Accumulated effort over time
-total-effort-history
-17
+1314
+259
+1508
+304
+Accumulated effort over time (h)
+total-effort-history / 60
+3
 1
 11
 
 TEXTBOX
-4114
-48
-4363
-81
+1406
+136
+1655
+169
 EFFORT RELATED OUTPUTS
 18
 135.0
 1
 
 SLIDER
-3960
-324
-4136
-357
-rotational-effort-magnitude
-rotational-effort-magnitude
+1272
+513
+1468
+546
+rotational-effort-time
+rotational-effort-time
 1
-10
-5.0
+200
+30.0
 1
 1
-NIL
+min
 HORIZONTAL
 
 SLIDER
-4145
-324
-4318
-357
-breeding-effort-magnitude
-breeding-effort-magnitude
+1476
+513
+1700
+546
+breeding-effort-time
+breeding-effort-time
 1
-10
-5.0
+200
+15.0
 1
 1
-NIL
+min
 HORIZONTAL
 
 SLIDER
-4324
-324
-4499
-357
-weaning-effort-magnitude
-weaning-effort-magnitude
+1271
+591
+1469
+624
+weaning-effort-time
+weaning-effort-time
 1
-10
+200
 5.0
 1
 1
-NIL
+min/calf
 HORIZONTAL
 
 SLIDER
-4039
-364
-4227
-397
-supplement-effort-magnitude
-supplement-effort-magnitude
+1476
+552
+1700
+585
+supplement-effort-time
+supplement-effort-time
 1
-100
-5.0
+200
+2.0
 1
 1
-NIL
+min/animal
 HORIZONTAL
 
 SLIDER
@@ -5363,74 +5436,178 @@ initial-num-bulls
 11
 
 MONITOR
-811
-280
-985
-325
+2348
+713
+2538
+758
 NIL
-count cows with [adult-cow?]
+count cows with [weaning-calf?]
 17
 1
 11
 
 MONITOR
-866
-334
-1086
-379
+2349
+763
+2519
+808
 NIL
-count cows with [weaned-calf-female?]
+count cows with [born-calf?]
 17
 1
 11
 
 MONITOR
-867
-387
-1019
-432
+2550
+860
+2797
+905
 NIL
-count cows with [heifer?]
+mean [live-weight] of cows with [cow-with-calf?]
+3
+1
+11
+
+MONITOR
+2822
+748
+3050
+793
+NIL
+mean [live-weight] of cows with [cow?]
 17
 1
 11
 
-PLOT
+MONITOR
+2566
+301
+2638
+346
+n old bull
+count cows with [bull? and old?]
+17
+1
+11
+
+MONITOR
+2486
+303
+2544
+348
+n bull
+count cows with [bull?]
+17
+1
+11
+
+MONITOR
+2566
+345
+2676
+390
+NIL
+OS-old-bull-effort
+17
+1
+11
+
+MONITOR
+2566
+390
+2734
+435
+OS-OLD-BULL-EFFORT-SEASON
+acummulated-OS-old-bull-effort-season
+17
+1
+11
+
+MONITOR
+2566
+433
+2734
+478
+OS-OLD-BULL-EFFORT-YEAR
+acummulated-OS-old-bull-effort-year
+17
+1
+11
+
+SLIDER
+234
+729
+423
+762
+early-weaning-threshold
+early-weaning-threshold
+0
 800
-465
-1152
-615
-num of adult-cows
-NIL
-NIL
+200.0
+1
+1
+kg
+HORIZONTAL
+
+SLIDER
+490
+649
+747
+682
+cow-min-weight-for-feed-sup
+cow-min-weight-for-feed-sup
+0
+350
+250.0
+1
+1
+kg
+HORIZONTAL
+
+SLIDER
+1710
+536
+1906
+569
+other-daily-effort-time
+other-daily-effort-time
+0
+480
 0.0
-10.0
-0.0
-10.0
-true
-true
-"" ""
-PENS
-"adult-cows" 1.0 0 -16777216 true "" "plot count cows with [adult-cow?]"
+1
+1
+min
+HORIZONTAL
 
 MONITOR
-1004
-281
-1140
-326
+2805
+570
+2915
+615
 NIL
-count cows with [old?]
+other-daily-effort
 17
 1
 11
 
 MONITOR
-910
-671
-1072
-716
-NIL
-mean [live-weight] of cows
+2805
+614
+2957
+659
+OTHER-EFFORT-SEASON
+acummulated-other-daily-effort-season
+17
+1
+11
+
+MONITOR
+2804
+658
+2940
+703
+OTHER-EFFORT-YEAR
+acummulated-other-daily-effort-year
 17
 1
 11
@@ -10069,6 +10246,378 @@ NetLogo 6.2.2
     </enumeratedValueSet>
     <enumeratedValueSet variable="controlled-breeding-season">
       <value value="2"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="SR in different CC (0 a 0.8)" repetitions="25" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="9200"/>
+    <metric>stocking-rate</metric>
+    <metric>mean [live-weight] of cows</metric>
+    <metric>count cows</metric>
+    <enumeratedValueSet variable="initial-weight-bulls">
+      <value value="300"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-MAX-n-breeding-cows">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-heifers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-weaned-calves">
+      <value value="150"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cow-min-weight-for-feed-sup">
+      <value value="250"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-1-AU">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="min-weight-for-breeding">
+      <value value="420"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="extraordinary-sale-of-cows-with">
+      <value value="&quot;lowest live weight&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="heifer/steer-min-weight-for-feed-sup">
+      <value value="180"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="market-farmer-ES-min-weight">
+      <value value="180"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cow-with-calf-min-weight-for-feed-sup">
+      <value value="250"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-steers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-steers">
+      <value value="300"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="early-weaning-threshold">
+      <value value="200"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-cows">
+      <value value="300"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-other-monthly-costs">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-Y-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="sales-effort-time">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bull-min-weight-for-feed-sup">
+      <value value="300"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <steppedValueSet variable="set-direct-climacoef-control" first="0" step="0.01" last="0.8"/>
+    <enumeratedValueSet variable="set-DM-cm-ha">
+      <value value="180"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-grass-height">
+      <value value="7.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-MIN-n-breeding-cows">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rotational-effort-time">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="STOP-SIMULATION-AT">
+      <value value="25"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="climacoef-distribution">
+      <value value="&quot;direct-climacoef-control&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="age-sell-old-cow/bull">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="controlled-breeding-season">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="other-daily-effort-time">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="supplement-effort-time">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-X-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="weaned-calf-min-weight-for-feed-sup">
+      <value value="180"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spatial-management">
+      <value value="&quot;free grazing&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="feed-sup-conversion-ratio">
+      <value value="7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="env-farmer-ES-SR">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="farmer-profile">
+      <value value="&quot;none&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="RG-days-in-paddock">
+      <value value="31"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-season">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="env-farmer-RG-SR-threshold">
+      <value value="0.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="ordinary-sale-of-cows-with">
+      <value value="&quot;lowest live weight&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="breeding-effort-time">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="soil-quality-distribution">
+      <value value="&quot;homogeneus&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="starting-paddock">
+      <value value="&quot;paddock a&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="market-farmer-RG-live-weight-threshold">
+      <value value="255"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-weaned-calves">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="weaning-effort-time">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-cows">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-MW-1-AU">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bull:cow-ratio">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="perception">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="supplement-cows-before-breeding-season?">
+      <value value="&quot;No&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-heifers">
+      <value value="250"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="SR in different CC (0.8 a 1.5)" repetitions="25" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="9200"/>
+    <metric>stocking-rate</metric>
+    <metric>mean [live-weight] of cows</metric>
+    <metric>count cows</metric>
+    <enumeratedValueSet variable="initial-weight-bulls">
+      <value value="300"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-MAX-n-breeding-cows">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-heifers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-weaned-calves">
+      <value value="150"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cow-min-weight-for-feed-sup">
+      <value value="250"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-1-AU">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="min-weight-for-breeding">
+      <value value="420"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="extraordinary-sale-of-cows-with">
+      <value value="&quot;lowest live weight&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="heifer/steer-min-weight-for-feed-sup">
+      <value value="180"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="market-farmer-ES-min-weight">
+      <value value="180"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cow-with-calf-min-weight-for-feed-sup">
+      <value value="250"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-steers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-steers">
+      <value value="300"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="early-weaning-threshold">
+      <value value="200"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-cows">
+      <value value="300"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-other-monthly-costs">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-Y-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="sales-effort-time">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bull-min-weight-for-feed-sup">
+      <value value="300"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <steppedValueSet variable="set-direct-climacoef-control" first="0.8" step="0.01" last="1.5"/>
+    <enumeratedValueSet variable="set-DM-cm-ha">
+      <value value="180"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-grass-height">
+      <value value="7.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-MIN-n-breeding-cows">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rotational-effort-time">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="STOP-SIMULATION-AT">
+      <value value="25"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="climacoef-distribution">
+      <value value="&quot;direct-climacoef-control&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="age-sell-old-cow/bull">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="controlled-breeding-season">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="other-daily-effort-time">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="supplement-effort-time">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-X-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="weaned-calf-min-weight-for-feed-sup">
+      <value value="180"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spatial-management">
+      <value value="&quot;free grazing&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="feed-sup-conversion-ratio">
+      <value value="7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="env-farmer-ES-SR">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="farmer-profile">
+      <value value="&quot;none&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="RG-days-in-paddock">
+      <value value="31"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-season">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="env-farmer-RG-SR-threshold">
+      <value value="0.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="ordinary-sale-of-cows-with">
+      <value value="&quot;lowest live weight&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="breeding-effort-time">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="soil-quality-distribution">
+      <value value="&quot;homogeneus&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="starting-paddock">
+      <value value="&quot;paddock a&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="market-farmer-RG-live-weight-threshold">
+      <value value="255"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-weaned-calves">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="weaning-effort-time">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-cows">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-MW-1-AU">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bull:cow-ratio">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="perception">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="supplement-cows-before-breeding-season?">
+      <value value="&quot;No&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-heifers">
+      <value value="250"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
