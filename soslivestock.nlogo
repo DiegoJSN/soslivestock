@@ -63,6 +63,9 @@ globals [
 
   ticks-since-here                                                                  ;; for rotational grazing strategies only, it measures the number of days since the animals were moved to a new paddock. This variable is important to prevent animals from continuously moving from one paddock to another once they have met the criteria to move to the next paddock. Once animals have met the criteria, they will move to the next paddock and wait X days (defined by the RG-days-in-paddock slider in the interface) to acclimate to the new paddock. Once those days have passed, if the animals still meet the criteria to move between paddocks, they will move.
 
+  days-until-breeding-season                                                        ;; NEWWWWWWWWWWWWWWW;; FEED SUPPLEMENTATION (FOR BREEDING) MODULE
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Market prices & economic balance global variables
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -373,7 +376,6 @@ patches-own [
   soil-quality                                                                      ;; affects the maximum grass height that can be achieved in a patch
   r                                                                                 ;; growth rate for the grass = 0.02 1/day
   GH-consumed                                                                       ;; grass-height consumed by all cows
-  DM-kg-ha                                                                          ;; primary production (biomass), expressed in kg of Dry Matter (DM)
   paddock-a                                                                         ;; defines the patches that make up paddock-a in a rotational grazing spatial management strategy
   paddock-b                                                                         ;; defines the patches that make up paddock-b in a rotational grazing spatial management strategy
   paddock-c                                                                         ;; defines the patches that make up paddock-c in a rotational grazing spatial management strategy
@@ -408,8 +410,20 @@ cows-own [
   category-coef                                                                     ;; coefficient that varies with age class and affects the grass consumption of animals. Equal to 1 in all age classes, except for cow-with-calf = 1.1
   initial-weight                                                                    ;; initial weight of the animal at the beginning of the simulation. Set by the observer in the interface
   min-weight                                                                        ;; defines the critical weight which below the animal can die by forage crisis
+
   live-weight                                                                       ;; variable that defines the state of the animals in terms of live weight
+
+
   live-weight-gain                                                                  ;; defines the increment of weight.
+
+  live-weight-gain-feed                                                             ;;NEWWWWWWWWWWWWW ;;FEED SUPPLEMENTATION MODULE ;; define el incremento de peso
+  live-weight-gain-feed-breeding
+
+  live-weight-gain-max                                                              ;;NEWWWWWWWWWWWWW ;;FEED SUPPLEMENTATION MODULE ;; con esta variable calculamos el LWG máximo que puede ganar el animal en un día.
+
+  live-weight-gain-history                                                          ;;NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  live-weight-gain-historyXticks                                                    ;;NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
   live-weight-gain-history-season                                                   ;; variable to store the live weight gain during a season
   live-weight-gain-historyXticks-season                                             ;; live weight gain since start of season
   live-weight-gain-history-year                                                     ;; variable to store the live weight gain during 368 days (a year)
@@ -428,9 +442,9 @@ cows-own [
 
 
 
-
-
   metabolic-body-size                                                               ;; Metabolic Body Size (MBS) = LW^(3/4)
+
+
   mortality-rate                                                                    ;; mortality rate can be natural or exceptional
   natural-mortality-rate                                                            ;; annual natural mortality = 2%
   except-mort-rate                                                                  ;; exceptional mortality rates increases to 15% in cows, 30% in pregnant cows, and 23% in the rest of age classes when animal LW falls below the minimum weight
@@ -800,6 +814,10 @@ to setup-livestock
   ]
 
   ask cows [                                                                        ;; setup of the variables used to output the average live weight gained during a season (see report "ILWG_SEASON" and "Average SEASONAL ILWG" monitor) or during a year (see report "ILWG_YEAR" and "Average YEARLY ILWG" monitor)
+
+    set live-weight-gain-history []
+    set live-weight-gain-historyXticks []
+
     set live-weight-gain-history-season []
     set live-weight-gain-historyXticks-season []
     set live-weight-gain-history-year []
@@ -1347,6 +1365,45 @@ to go
 
   if (spatial-management = "rotational grazing") [set ticks-since-here ticks-since-here + days-per-tick]                              ;; for rotational grazing strategies only, it measures the number of days since the animals were moved to a new paddock. This variable is important to prevent animals from continuously moving from one paddock to another once they have met the criteria to move to the next paddock. Once animals have met the criteria, they will move to the next paddock and wait X days (defined by the RG-days-in-paddock slider in the interface) to acclimate to the new paddock. Once those days have passed, if the animals still meet the criteria to move between paddocks, they will move.
 
+
+
+  ;; DÍAS HASTA QUE EMPIECE LA BREEDING-SEASON.
+
+  if controlled-breeding-season = 0 [
+    if current-season = 0 [set days-until-breeding-season 0]
+    if current-season = 1 [set days-until-breeding-season (spring-length + summer-length + fall-length) - season-days]
+    if current-season = 2 [set days-until-breeding-season (summer-length + fall-length) - season-days]
+    if current-season = 3 [set days-until-breeding-season (fall-length) - season-days]]
+
+  if controlled-breeding-season = 1 [
+    if current-season = 0 [set days-until-breeding-season (winter-length) - season-days]
+    if current-season = 1 [set days-until-breeding-season 0]
+    if current-season = 2 [set days-until-breeding-season (summer-length + fall-length + winter-length) - season-days]
+    if current-season = 3 [set days-until-breeding-season (fall-length + winter-length) - season-days]]
+
+  if controlled-breeding-season = 2 [
+    if current-season = 0 [set days-until-breeding-season (winter-length + spring-length) - season-days]
+    if current-season = 1 [set days-until-breeding-season (spring-length) - season-days]
+    if current-season = 2 [set days-until-breeding-season 0]
+    if current-season = 3 [set days-until-breeding-season (fall-length + winter-length + spring-length) - season-days]]
+
+  if controlled-breeding-season = 3 [
+    if current-season = 0 [set days-until-breeding-season (winter-length + spring-length + summer-length) - season-days]
+    if current-season = 1 [set days-until-breeding-season (spring-length + summer-length) - season-days]
+    if current-season = 2 [set days-until-breeding-season (summer-length) - season-days]
+    if current-season = 3 [set days-until-breeding-season 0]]
+
+
+
+
+
+
+
+  ask cows [
+    set live-weight-gain-history fput live-weight-gain live-weight-gain-history
+    set live-weight-gain-historyXticks sum (sublist live-weight-gain-history 0 simulation-time)
+  ]
+
   ask cows [                                                                         ;; in this line, the average live weight gain of the cows during the season is calculated
     set live-weight-gain-history-season fput live-weight-gain live-weight-gain-history-season
     if season-days > 0 [set live-weight-gain-historyXticks-season mean (sublist live-weight-gain-history-season 0 season-days)]
@@ -1679,6 +1736,7 @@ to go
   DM-consumption
 
   if (farmer-profile = "market") [
+
     feed-supplementation                                                             ;;## FEED SUPPLEMENTATION MODULE
 
     if (supplement-cows-before-breeding-season? = "Yes") [feed-supplementation-for-controlled-breeding]                                     ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -1772,8 +1830,6 @@ to grow-grass                                                                   
     ifelse grass-height < 2                                                          ;; patches with grass height less than 2 cm are colored light green. This is based on the assumption that cows cannot eat grass less than 2 cm high
     [set pcolor 37]
     [set pcolor scale-color green grass-height 23 0]
-
-    set DM-kg-ha DM-cm-ha * grass-height                                             ;; converting cm of grass in each patch into kg of Dry Matter (DM)
   ]
 
 
@@ -1852,7 +1908,8 @@ end
 
 to LWG                                                                               ;; the live weight gain of each cow is calculated according to the number of centimeters of grass that correspond to each animal
 ask cows [
-   ifelse born-calf? = true
+
+    ifelse born-calf? = true
     [set live-weight-gain weight-gain-lactation]
     [ifelse grass-height >= 2                                                        ;; cows cannot eat grass less than 2 cm high
       [set live-weight-gain ( item current-season maxLWG - ( xi * e ^ ( - ni * grass-height ) ) ) / ( season-length * item current-season season-coef )]
@@ -1865,8 +1922,6 @@ ask cows [
     if (bull? = true) and live-weight > maxLWbull [set live-weight maxLWbull]                                                ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
     if live-weight < 0 [set live-weight 0]
 
-    ;set live-weight 650
-
     set animal-units live-weight / set-1-AU                                          ;; updating the AU of each cow used to calculate the total Stocking Rate (SR) of the system
   ]
 end
@@ -1875,7 +1930,7 @@ end
 
 to DM-consumption                                                                    ;; the DDMC consumed by each cow (in kg) is calculated in this procedure
 ask cows [
-  set metabolic-body-size live-weight ^ (3 / 4)
+    set metabolic-body-size live-weight ^ (3 / 4)
     ifelse born-calf? = true
        [set DDMC 0]
        [ifelse grass-height >= 2
@@ -1890,107 +1945,142 @@ end
 
 
 
+
+
+
+
 to feed-supplementation                                                             ;;## FEED SUPPLEMENTATION MODULE
 
   set FS-cow 0 set FS-cow-with-calf 0 set FS-heifer 0 set FS-steer 0 set FS-weaned-calf 0 set FS-bull 0      ;; the daily cost of purchasing feed supplements is reset every tick. This allows to keep track of the amount of money spent on feed supplements each day.
 
-  if balance-historyXticks <= 0 [                                                                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-    ask cows with [cow?] [set supplemented? false set difference-LW 0 set kg-supplement-DM 0 set USD-supplement-DM 0]              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ask cows [set live-weight-gain-feed 0] ;; reseteamos el live-weight-gain-feed en cada tick
 
-    ask cows with [bull?] [set supplemented? false set difference-LW 0 set kg-supplement-DM 0 set USD-supplement-DM 0]             ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-    ask cows with [heifer?] [set supplemented? false set difference-LW 0 set kg-supplement-DM 0 set USD-supplement-DM 0]           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-    ask cows with [steer?] [set supplemented? false set difference-LW 0 set kg-supplement-DM 0 set USD-supplement-DM 0]            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-    ask cows with [weaned-calf?] [set supplemented? false set difference-LW 0 set kg-supplement-DM 0 set USD-supplement-DM 0]      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-    ask cows with [cow-with-calf?] [set supplemented? false set difference-LW 0 set kg-supplement-DM 0 set USD-supplement-DM 0]    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  if balance-historyXticks <= 0 [                                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    ask cows with [cow?] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    ask cows with [bull?] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]             ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    ask cows with [heifer?] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    ask cows with [steer?] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    ask cows with [weaned-calf?] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    ask cows with [cow-with-calf?] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
   ]
 
+
   if balance-historyXticks > 0 [                                                                ;; the farmer can buy feed for the animals if the balance of the system is positive (i.e. if there are savings).
+    ask cows with [cow?] [ifelse live-weight < cow-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]] ;; animals below the threshold set by the farmer (the "xxxx-min-weight-for-feed-sup" slider in the interface) are selected for feed supplementation
+    ask cows with [bull?] [ifelse live-weight < bull-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]]             ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    ask cows with [heifer?] [ifelse live-weight < heifer/steer-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]]
+    ask cows with [steer?] [ifelse live-weight < heifer/steer-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]]
+    ask cows with [weaned-calf?] [ifelse live-weight < weaned-calf-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]]
+    ask cows with [cow-with-calf?] [ifelse live-weight < cow-with-calf-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]]
 
-    ask cows with [cow?] [ifelse live-weight < cow-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set difference-LW 0 set kg-supplement-DM 0 set USD-supplement-DM 0]] ;; animals below the threshold set by the farmer (the "xxxx-min-weight-for-feed-sup" slider in the interface) are selected for feed supplementation
 
-    ask cows with [bull?] [ifelse live-weight < bull-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set difference-LW 0 set kg-supplement-DM 0 set USD-supplement-DM 0]]             ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    ask cows with [supplemented?] [                                       ;; PRIMERO, ASUMIMOS EL PESO MAXIMO QUE PUEDE GANAR UNA VACA AL DIA
+      set live-weight-gain-max set-live-weight-gain-max
 
-    ask cows with [heifer?] [ifelse live-weight < heifer/steer-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set difference-LW 0 set kg-supplement-DM 0 set USD-supplement-DM 0]]
-    ask cows with [steer?] [ifelse live-weight < heifer/steer-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set difference-LW 0 set kg-supplement-DM 0 set USD-supplement-DM 0]]
-    ask cows with [weaned-calf?] [ifelse live-weight < weaned-calf-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set difference-LW 0 set kg-supplement-DM 0 set USD-supplement-DM 0]]
-    ask cows with [cow-with-calf?] [ifelse live-weight < cow-with-calf-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set difference-LW 0 set kg-supplement-DM 0 set USD-supplement-DM 0]]
+      set live-weight-gain-feed live-weight-gain-max - live-weight-gain   ;; SEGUNDO, EN FUNCIÓN DEL PESO MAXIMO QUE PUEDE GANAR LA VACA, CALCULAMOS EL PESO RESTANTE QUE QUEDA PARA ALCANZAR ESE PESO MAXIMO PARTIENDO DE LO QUE YA HA GANADO LA VACA
 
-    ask cows [                                                                                  ;; animals selected for supplementation calculate how many kilos they are below the threshold. This is necessary to calculate the kg of supplement the farmer needs to buy.
-      if cow? = true and supplemented? = true [set difference-LW cow-min-weight-for-feed-sup - live-weight]
+      set kg-supplement-DM live-weight-gain-feed * feed-sup-conversion-ratio  ;; TERCERO, CALCULAMOS LOS KG DE FORRAJE QUE HAY QUE COMPRAR PARA QUE LA VACA LLEGUE AL PESO MAXIMO DIARIO
 
-      if bull? = true and supplemented? = true [set difference-LW bull-min-weight-for-feed-sup - live-weight]             ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    ]
 
-      if heifer? = true and supplemented? = true [set difference-LW heifer/steer-min-weight-for-feed-sup - live-weight]
-      if steer? = true and supplemented? = true [set difference-LW heifer/steer-min-weight-for-feed-sup - live-weight]
-      if cow-with-calf? = true and supplemented? = true [set difference-LW cow-with-calf-min-weight-for-feed-sup - live-weight]
-      if weaned-calf? = true and supplemented? = true [set difference-LW weaned-calf-min-weight-for-feed-sup - live-weight]]
 
-    ask cows with [supplemented?] [                                                             ;; here we calculate the kg of feed supplementation that must be purchased by the farmer to keep the animals above the threshold
-      set kg-supplement-DM difference-LW * feed-sup-conversion-ratio                            ;; this difference is multiplied by the feed conversion ratio ("feed-sup-conversion-ratio" slider in the interface)
+    ask cows with [supplemented?] [
       set USD-supplement-DM item current-season supplement-prices * kg-supplement-DM]           ;; the price of the feed supplement required to keep the animals above the threshold
 
-    ask cows with [supplemented?][
-      ifelse sum [USD-supplement-DM] of cows with [supplemented?] > balance-historyXticks       ;; if the money needed to supplement all the animals selected for supplementation is greater than the savings of the livestock system (balance-historyXticks)...
-       [set kg-supplement-DM (balance-historyXticks / count cows with [supplemented?]) / item current-season supplement-prices  ;; ...the kg of supplement to be purchased is calculated based on the current system's savings and divided among the animals selected for supplementation
+
+    ask cows with [supplemented?] [
+      ifelse sum [USD-supplement-DM] of cows with [supplemented?] > balance-historyXticks
+      [                                                                                       ;; if the money needed to supplement all the animals selected for supplementation is greater than the savings of the livestock system (balance-historyXticks)...
+        set kg-supplement-DM (balance-historyXticks / count cows with [supplemented?]) / item current-season supplement-prices  ;; ...the kg of supplement to be purchased is calculated based on the current system's savings and divided among the animals selected for supplementation
         set USD-supplement-DM kg-supplement-DM * item current-season supplement-prices
-        set live-weight live-weight + (kg-supplement-DM / feed-sup-conversion-ratio)]
-                                                                                                ;; if the money needed is below than the savings of the livestock system (i.e., if the farmer has enough money)...
-       [set kg-supplement-DM difference-LW * feed-sup-conversion-ratio                          ;; ...the kg of supplement to be purchased is calculated based on the difference of kg below the threshold (threshold - live-weight) multiplied by the feed conversion ratio
-        set USD-supplement-DM item current-season supplement-prices * kg-supplement-DM
-        set live-weight live-weight + difference-LW]
+
+        set live-weight-gain-feed (kg-supplement-DM / feed-sup-conversion-ratio)
+        set live-weight live-weight + live-weight-gain-feed]
+
+      [                                                                                   ;; if the money needed is below than the savings of the livestock system (i.e., if the farmer has enough money)...
+        set live-weight-gain-feed live-weight-gain-max - live-weight-gain
+        set live-weight live-weight + live-weight-gain-feed]
+
+      if (heifer? = true) and live-weight > maxLWcow [set live-weight maxLWcow]
+      if (adult-cow? = true) and live-weight > maxLWcow [set live-weight maxLWcow]
+      if (steer? = true) and live-weight > maxLWbull [set live-weight maxLWbull]
+      if (bull? = true) and live-weight > maxLWbull [set live-weight maxLWbull]      ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+      if live-weight < 0 [set live-weight 0]
 
       set animal-units live-weight / set-1-AU
 
       set FS-cow sum [USD-supplement-DM] of cows with [cow?]                                    ;; once the animals have been supplemented, the daily cost of purchasing supplements is calculated for each age group
-
       set FS-bull sum [USD-supplement-DM] of cows with [bull?]             ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
       set FS-heifer sum [USD-supplement-DM] of cows with [heifer?]
       set FS-cow-with-calf sum [USD-supplement-DM] of cows with [cow-with-calf?]
       set FS-steer sum [USD-supplement-DM] of cows with [steer?]
-      set FS-weaned-calf sum [USD-supplement-DM] of cows with [weaned-calf?]]]
+      set FS-weaned-calf sum [USD-supplement-DM] of cows with [weaned-calf?]]
+
+  ]
 
   set supplement-cost FS-cow + FS-cow-with-calf + FS-heifer + FS-steer + FS-weaned-calf + FS-bull        ;; once the daily cost has been calculated for each age group, the TOTAL daily cost (i.e. the total cost to feed ALL animals in one day) is calculated
 
-
 end
+
+
+
+
+
+
 
 to feed-supplementation-for-controlled-breeding                                                 ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW ;; Feed supplementation for breeding cows
 
   set FSB-cow 0 ;; the daily cost of purchasing feed supplements is reset every tick. This allows to keep track of the amount of money spent on feed supplements each day.
 
-  if balance-historyXticks <= 0 [
-    ask cows with [cow? and pregnant? = false] [set supplemented? false set difference-LW-breeding 0 set kg-supplement-DM-breeding 0 set USD-supplement-DM-breeding 0]]
+  ask cows with [cow?] [set live-weight-gain-feed-breeding 0] ;; reseteamos el live-weight-gain-feed-breeding en cada tick
+  ask cows with [cow?] [if pregnant? = false [set kg-supplement-DM-breeding 0 set USD-supplement-DM-breeding 0]]
+  ask cows with [cow? and pregnant? = false] [
 
-  if balance-historyXticks > 0 [
+    if live-weight > cow-min-weight-for-feed-sup [
 
-  if current-season = controlled-breeding-season - 1 ;or controlled-breeding-season
-    [
-      ask cows with [cow? and pregnant? = false] [ifelse live-weight < min-weight-for-breeding [set supplemented? true] [set supplemented? false set difference-LW-breeding 0 set kg-supplement-DM-breeding 0 set USD-supplement-DM-breeding 0]]
-      ask cows with [cow? and pregnant? = false and supplemented?] [set difference-LW-breeding min-weight-for-breeding - live-weight]
-      ask cows with [cow? and pregnant? = false and supplemented?] [
-        set kg-supplement-DM-breeding difference-LW-breeding * feed-sup-conversion-ratio
-        set USD-supplement-DM-breeding item current-season supplement-prices * kg-supplement-DM-breeding]
+      if balance-historyXticks <= 0 [
+        ask cows with [cow? and pregnant? = false] [set supplemented? false set kg-supplement-DM-breeding 0 set USD-supplement-DM-breeding 0]]
 
-      ask cows with [cow? and pregnant? = false and supplemented?] [
-        ifelse sum [USD-supplement-DM-breeding] of cows with [cow? and pregnant? = false and supplemented?] > balance-historyXticks [
-          set kg-supplement-DM-breeding (balance-historyXticks / count cows with [cow? and pregnant? = false and supplemented?]) / item current-season supplement-prices
-          set USD-supplement-DM-breeding kg-supplement-DM-breeding * item current-season supplement-prices
-          set live-weight live-weight + (kg-supplement-DM-breeding / feed-sup-conversion-ratio)][
-          set kg-supplement-DM-breeding difference-LW-breeding * feed-sup-conversion-ratio
-          set USD-supplement-DM-breeding item current-season supplement-prices * kg-supplement-DM-breeding
-          set live-weight live-weight + difference-LW-breeding]
+      if balance-historyXticks > 0 [
+        ask cows with [cow? and pregnant? = false] [
+          ifelse live-weight < min-weight-for-breeding
+          [set supplemented? true]
+          [set supplemented? false set kg-supplement-DM-breeding 0 set USD-supplement-DM-breeding 0]]
+
+        ask cows with [cow? and pregnant? = false and supplemented?] [                                       ;; PRIMERO, ASUMIMOS EL PESO MAXIMO QUE PUEDE GANAR UNA VACA AL DIA
+          set live-weight-gain-max set-live-weight-gain-max
+          set live-weight-gain-feed-breeding live-weight-gain-max - live-weight-gain   ;; SEGUNDO, EN FUNCIÓN DEL PESO MAXIMO QUE PUEDE GANAR LA VACA, CALCULAMOS EL PESO RESTANTE QUE QUEDA PARA ALCANZAR ESE PESO MAXIMO PARTIENDO DE LO QUE YA HA GANADO LA VACA
+          set kg-supplement-DM-breeding live-weight-gain-feed-breeding * feed-sup-conversion-ratio  ;; TERCERO, CALCULAMOS LOS KG DE FORRAJE QUE HAY QUE COMPRAR PARA QUE LA VACA LLEGUE AL PESO MAXIMO DIARIO
+        ]
+
+        ask cows with [cow? and pregnant? = false and supplemented?] [
+          set USD-supplement-DM-breeding item current-season supplement-prices * kg-supplement-DM-breeding]           ;; the price of the feed supplement required to keep the animals above the threshold
+
+        ask cows with [cow? and pregnant? = false and supplemented?] [
+          ifelse sum [USD-supplement-DM-breeding] of cows with [cow? and pregnant? = false and supplemented?] > balance-historyXticks
+          [                                                                                       ;; if the money needed to supplement all the animals selected for supplementation is greater than the savings of the livestock system (balance-historyXticks)...
+            set kg-supplement-DM-breeding (balance-historyXticks / count cows with [cow? and pregnant? = false and supplemented?]) / item current-season supplement-prices  ;; ...the kg of supplement to be purchased is calculated based on the current system's savings and divided among the animals selected for supplementation
+            set USD-supplement-DM-breeding kg-supplement-DM-breeding * item current-season supplement-prices
+            set live-weight-gain-feed-breeding (kg-supplement-DM-breeding / feed-sup-conversion-ratio)
+            set live-weight live-weight + live-weight-gain-feed-breeding]
+          [                                                                                   ;; if the money needed is below than the savings of the livestock system (i.e., if the farmer has enough money)...
+            set live-weight-gain-feed-breeding live-weight-gain-max - live-weight-gain
+            set live-weight live-weight + live-weight-gain-feed-breeding]
+
+          if (adult-cow? = true) and live-weight > maxLWcow [set live-weight maxLWcow]
+
+          if live-weight < 0 [set live-weight 0]
 
           set animal-units live-weight / set-1-AU
 
-        set FSB-cow sum [USD-supplement-DM-breeding] of cows with [cow? and pregnant? = false and supplemented?]]]]
+          set FSB-cow sum [USD-supplement-DM-breeding] of cows with [cow? and pregnant? = false and supplemented?]]]]
+
+]
 
   set supplement-cost supplement-cost + FSB-cow
 
 end
-
-
 
 
 to grow-livestock-natural-weaning-none-profile                                                    ;;## EARLY/NATURAL WEANING MODULE ;; this procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactation period of animals in a NATURAL weaning scenario.
@@ -2812,6 +2902,11 @@ to-report ILWG                                                                  
   ;report mean [live-weight-gain] of cows with [born-calf? = false]
 end
 
+
+to-report ILWG_ACUMMULATED
+  report mean [live-weight-gain-historyXticks] of cows
+end
+
 to-report ILWG_SEASON                                                                ;; outputs the mean IWLG throughout the season
   report mean [live-weight-gain-historyXticks-season] of cows
 end
@@ -2953,12 +3048,17 @@ end
 
 
 
+
+
+
+
+
 to-report DDMC_SEASON                                                                ;; outputs the mean IWLG throughout the season
-  report mean [DDMC-historyXticks-season] of cows with [adult-cow?]
+  report mean [DDMC-historyXticks-season] of cows ;with [adult-cow?]
 end
 
 to-report DDMC_YEAR                                                                  ;; outputs the mean IWLG throughout the year
-  report mean [DDMC-historyXticks-year] of cows with [adult-cow?]
+  report mean [DDMC-historyXticks-year] of cows ;with [adult-cow?]
 end
 
 
@@ -3039,10 +3139,10 @@ NIL
 1
 
 SLIDER
-9
-860
-199
-893
+10
+864
+200
+897
 initial-num-cows
 initial-num-cows
 0
@@ -3069,10 +3169,10 @@ NIL
 HORIZONTAL
 
 PLOT
-808
-322
-1146
-502
+1414
+671
+1752
+851
 Average of grass-height (GH)
 Days
 cm
@@ -3087,10 +3187,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot grass-height-report"
 
 PLOT
-809
-734
-1189
-985
+816
+954
+1274
+1215
 Live-weight (LW)
 Days
 kg
@@ -3102,14 +3202,8 @@ true
 true
 "" ""
 PENS
-"Born-calf" 1.0 0 -13791810 true "" "plot mean [live-weight] of cows with [born-calf?]"
-"Weaned-calf" 1.0 0 -955883 true "" "plot mean [live-weight] of cows with [weaned-calf?]"
-"Heifer" 1.0 0 -2064490 true "" "plot mean [live-weight] of cows with [heifer?]"
-"Steer" 1.0 0 -2674135 true "" "plot mean [live-weight] of cows with [steer?]"
-"Cow" 1.0 0 -6459832 true "" "plot mean [live-weight] of cows with [cow?]"
-"Cow-with-calf" 1.0 0 -5825686 true "" "plot mean [live-weight] of cows with [cow-with-calf?]"
-"Bull" 1.0 0 -16777216 true "" "plot mean [live-weight] of cows with [bull?]"
-"Average LW" 1.0 0 -7500403 true "" "plot mean [live-weight] of cows"
+"Cows" 1.0 0 -6459832 true "" "plot mean [live-weight] of cows with [adult-cow?]"
+"Average LW (all age classes)" 1.0 0 -7500403 true "" "plot mean [live-weight] of cows"
 
 MONITOR
 659
@@ -3133,31 +3227,6 @@ stocking-rate
 1
 11
 
-PLOT
-809
-1481
-1183
-1654
-Cattle age classes population sizes
-Days
-Heads
-0.0
-92.0
-0.0
-0.0
-true
-true
-"" ""
-PENS
-"Born-calf" 1.0 0 -13791810 true "" "plot count cows with [born-calf?]"
-"Weaned-calf" 1.0 0 -955883 true "" "plot count cows with [weaned-calf?]"
-"Heifer" 1.0 0 -2064490 true "" "plot count cows with [heifer?]"
-"Steer" 1.0 0 -2674135 true "" "plot count cows with [steer?]"
-"Cow" 1.0 0 -6459832 true "" "plot count cows with [cow?]"
-"Cow-with-calf" 1.0 0 -5825686 true "" "plot count cows with [cow-with-calf?]"
-"Bull" 1.0 0 -16777216 true "" "plot count cows with [bull?]"
-"Total" 1.0 0 -7500403 true "" "plot count cows"
-
 SLIDER
 11
 1304
@@ -3174,11 +3243,11 @@ NIL
 HORIZONTAL
 
 MONITOR
-1103
-884
-1283
-929
-Average LW (kg/animal)
+1119
+1051
+1355
+1096
+Average LW (all age classes) (kg/animal)
 mean [live-weight] of cows
 3
 1
@@ -3200,10 +3269,10 @@ cm
 HORIZONTAL
 
 PLOT
-1147
-321
-1470
-502
+1753
+670
+2076
+851
 Dry-matter (DM) and DM consumption (DDMC)
 Days
 kg
@@ -3229,11 +3298,11 @@ TEXTBOX
 1
 
 MONITOR
-807
-275
-933
-320
-Average GH (cm/ha)
+1414
+856
+1540
+901
+Average GH (cm)
 grass-height-report
 3
 1
@@ -3285,7 +3354,7 @@ initial-weight-heifers
 initial-weight-heifers
 100
 1500
-250.0
+200.0
 1
 1
 kg
@@ -3303,10 +3372,10 @@ Area (ha)
 11
 
 PLOT
-809
-990
-1188
-1212
+816
+733
+1274
+959
 Daily individual-live-weight-gain (ILWG)
 Days
 kg
@@ -3318,20 +3387,14 @@ true
 true
 "" ""
 PENS
-"Born-calf" 1.0 0 -13791810 true "" "plot mean [live-weight-gain] of cows with [born-calf?]"
-"Weaned-calf" 1.0 0 -955883 true "" "plot mean [live-weight-gain] of cows with [weaned-calf?]"
-"Heifer" 1.0 0 -2064490 true "" "plot mean [live-weight-gain] of cows with [heifer?]"
-"Steer" 1.0 0 -2674135 true "" "plot mean [live-weight-gain] of cows with [steer?]"
-"Cow" 1.0 0 -6459832 true "" "plot mean [live-weight-gain] of cows with [cow?]"
-"Cow-with-calf" 1.0 0 -5825686 true "" "plot mean [live-weight-gain] of cows with [cow-with-calf?]"
-"Bull" 1.0 0 -16777216 true "" "plot mean [live-weight-gain] of cows with [bull?]"
-"Average LWG" 1.0 0 -7500403 true "" "plot mean [live-weight-gain] of cows"
+"Cows" 1.0 0 -6459832 true "" "plot mean [live-weight-gain] of cows with [adult-cow?] + mean [live-weight-gain-feed] of cows with [adult-cow?] + mean [live-weight-gain-feed-breeding] of cows with [adult-cow?]"
+"Average LWG (all age classes)" 1.0 0 -7500403 true "" "plot mean [live-weight-gain] of cows + mean [live-weight-gain-feed] of cows + mean [live-weight-gain-feed-breeding] of cows"
 
 MONITOR
-1145
-272
-1294
-317
+1754
+900
+1903
+945
 Total DDMC (kg)
 sum [DDMC] of cows
 3
@@ -3339,10 +3402,10 @@ sum [DDMC] of cows
 11
 
 MONITOR
-1294
-272
-1468
-317
+1903
+900
+2077
+945
 Average DDMC (kg/animal)
 mean [DDMC] of cows
 3
@@ -3367,25 +3430,25 @@ NIL
 1
 
 SLIDER
-9
-893
-199
-926
+10
+897
+200
+930
 initial-weight-cows
 initial-weight-cows
 100
-650
-300.0
+750
+280.0
 1
 1
 kg
 HORIZONTAL
 
 PLOT
-809
-1274
-1151
-1468
+3157
+1186
+3499
+1380
 Body condition ccore (BCS)
 Days
 points
@@ -3401,10 +3464,10 @@ PENS
 "Cow-with-calf" 1.0 0 -5825686 true "" "plot (mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40"
 
 MONITOR
-809
-1227
-939
-1272
+3157
+1139
+3287
+1184
 BCS of cows (points)
 ;(mean [live-weight] of cows with [cow?] - mean [min-weight] of cows with [cow?]) / 40\n;(mean [live-weight] of cows with [cow?] - (((mean [live-weight] of cows with [cow?]) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40
 2
@@ -3412,10 +3475,10 @@ BCS of cows (points)
 11
 
 PLOT
-1166
-1274
-1576
-1467
+3511
+1186
+3921
+1379
 Pregnancy rate (PR)
 Days
 %
@@ -3432,10 +3495,10 @@ PENS
 "Cow-with-calf" 1.0 0 -5825686 true "" "plot mean [pregnancy-rate] of cows with [cow-with-calf?] * 100"
 
 MONITOR
-1167
-1226
-1299
-1271
+3512
+1138
+3644
+1183
 PR of cows (%)
 mean [pregnancy-rate] of cows with [cow?] * 100
 2
@@ -3443,10 +3506,10 @@ mean [pregnancy-rate] of cows with [cow?] * 100
 11
 
 MONITOR
-1298
-1226
-1441
-1271
+3643
+1138
+3786
+1183
 PR of cows-with-calf (%)
 mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
 2
@@ -3454,10 +3517,10 @@ mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
 11
 
 MONITOR
-1441
-1226
-1578
-1271
+3786
+1138
+3923
+1183
 PR of heifers (%)
 mean [pregnancy-rate] of cows with [heifer?] * 100
 2
@@ -3465,32 +3528,21 @@ mean [pregnancy-rate] of cows with [heifer?] * 100
 11
 
 MONITOR
-1145
-231
-1294
-276
+1754
+855
+1903
+900
 Total DM (kg)
 dmgr
-3
+7
 1
 11
 
 MONITOR
-1104
-933
-1281
-978
-Average ILWG (kg/animal/day)
-;mean [live-weight-gain] of cows\nILWG
-3
-1
-11
-
-MONITOR
-940
-1227
-1095
-1272
+3288
+1139
+3443
+1184
 BCS of cows-with-calf (points)
 ;(mean [live-weight] of cows with [cow-with-calf?] - mean [min-weight] of cows with [cow-with-calf?]) / 40\n;(mean [live-weight] of cows with [cow-with-calf?] - (((mean [live-weight] of cows with [cow-with-calf?]) * set-MW-1-AU) / set-1-AU)) / 40\n\n(mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40
 2
@@ -3498,23 +3550,23 @@ BCS of cows-with-calf (points)
 11
 
 MONITOR
-1286
-884
-1516
-929
-Average LW of adult cows (kg/animal)
+1119
+1007
+1349
+1052
+Average LW (only cows) (kg/animal)
 mean [live-weight] of cows with [adult-cow?]
 3
 1
 11
 
 MONITOR
-1287
-932
-1516
-977
-Average ILWG of adult cows (kg/animal/day)
-mean [live-weight-gain] of cows with [adult-cow?]
+1109
+785
+1359
+830
+Average ILWG (only cows) (kg/animal/day)
+mean [live-weight-gain] of cows with [adult-cow?] + mean [live-weight-gain-feed] of cows with [adult-cow?] + mean [live-weight-gain-feed-breeding] of cows with [adult-cow?]
 3
 1
 11
@@ -3543,7 +3595,7 @@ initial-weight-steers
 initial-weight-steers
 100
 1500
-300.0
+200.0
 1
 1
 kg
@@ -3556,7 +3608,7 @@ SLIDER
 148
 set-X-size
 set-X-size
-2
+1
 100
 10.0
 1
@@ -3571,7 +3623,7 @@ SLIDER
 187
 set-Y-size
 set-Y-size
-2
+1
 100
 10.0
 1
@@ -3620,10 +3672,10 @@ kg
 HORIZONTAL
 
 PLOT
-1196
-1481
-1632
-1654
+816
+1215
+1349
+1388
 Stocking rate
 Days
 AU/ha
@@ -3663,10 +3715,10 @@ NIL
 1
 
 MONITOR
-5029
-664
-5331
-709
+5103
+855
+5405
+900
 Average annual live weight gain per hectare (ALWG, kg/ha)
 ;(sum [live-weight] of cows with [steer?] - sum [initial-weight] of cows with [steer?]) / count patches; para calcular el WGH de los steers\n;(sum [live-weight] of cows - sum [initial-weight] of cows) / count patches\nALWG
 3
@@ -3696,13 +3748,13 @@ season-days
 11
 
 MONITOR
-1294
-231
-1468
-276
+1903
+855
+2077
+900
 Total DM per ha (kg/ha)
 ;(DM-cm-ha * mean [grass-height] of patches) / DM-available-for-cattle\n(dmgr) / count patches
-3
+7
 1
 11
 
@@ -3715,7 +3767,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-50.0
+25.0
 1
 1
 years
@@ -3732,10 +3784,10 @@ soil-quality-distribution
 0
 
 PLOT
-5013
-309
-5348
-523
+5087
+500
+5422
+714
 Grass height distribution
 cm
 nº patches
@@ -3750,10 +3802,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [grass-height] of patches"
 
 MONITOR
-5014
-525
-5161
-570
+5088
+716
+5235
+761
 min grass-height of patches
 min [grass-height] of patches
 17
@@ -3761,10 +3813,10 @@ min [grass-height] of patches
 11
 
 MONITOR
-5180
-526
-5351
-571
+5254
+717
+5425
+762
 max grass-height of patches
 max [grass-height] of patches
 17
@@ -4070,10 +4122,10 @@ NIL
 1
 
 MONITOR
-1550
-232
-1733
-277
+1328
+221
+1511
+266
 Ordinary sales (OS) income (USD)
 ordinary-sales-income
 3
@@ -4081,10 +4133,10 @@ ordinary-sales-income
 11
 
 PLOT
-1551
-280
-1898
-430
+1329
+269
+1676
+419
 Daily income
 Days
 USD
@@ -4100,10 +4152,10 @@ PENS
 "ES income" 1.0 0 -2674135 true "" "plot extraordinary-sales-income"
 
 PLOT
-1906
-97
-2269
-224
+1690
+101
+2053
+228
 Daily balance
 Days
 USD
@@ -4155,7 +4207,7 @@ CHOOSER
 farmer-profile
 farmer-profile
 "none" "traditional" "market" "environmental"
-0
+2
 
 TEXTBOX
 238
@@ -4183,10 +4235,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-2291
-116
-2469
-161
+2063
+49
+2241
+94
 meat production (kg/ha)
 sum [live-weight] of cows / count patches
 3
@@ -4194,10 +4246,10 @@ sum [live-weight] of cows / count patches
 11
 
 PLOT
-2292
-168
-2657
-318
+2064
+101
+2429
+251
 meat production 
 days
 kg/ha
@@ -4220,16 +4272,16 @@ early-weaning-threshold
 early-weaning-threshold
 180
 800
-200.0
+240.0
 1
 1
 kg
 HORIZONTAL
 
 SLIDER
-4924
+4933
 210
-5107
+5116
 243
 controlled-breeding-season
 controlled-breeding-season
@@ -4252,10 +4304,10 @@ ordinary-sale-of-cows-with
 1
 
 MONITOR
-1549
-51
-1728
-96
+1330
+49
+1509
+94
 Accumulated balance (USD)
 accumulated-balance
 17
@@ -4263,10 +4315,10 @@ accumulated-balance
 11
 
 PLOT
-1549
-97
-1893
-217
+1330
+95
+1674
+215
 Accumulated balance
 Days
 USD
@@ -4281,10 +4333,10 @@ PENS
 "Balance" 1.0 0 -16777216 true "" "plot accumulated-balance"
 
 MONITOR
-1735
-232
-1895
-277
+1513
+221
+1673
+266
 Extraordinary sales (ES) income (USD)
 extraordinary-sales-income
 3
@@ -4310,7 +4362,7 @@ market-farmer-ES-min-weight
 market-farmer-ES-min-weight
 0
 1000
-180.0
+240.0
 1
 1
 kg
@@ -4340,7 +4392,7 @@ RG-market-farmer-live-weight-threshold
 RG-market-farmer-live-weight-threshold
 180
 300
-255.0
+270.0
 1
 1
 kg
@@ -4373,24 +4425,24 @@ days
 HORIZONTAL
 
 MONITOR
-1901
-432
-2120
-477
+1688
+424
+1907
+469
 Total daily kg-supplement-DM (kg)
 sum [kg-supplement-DM] of cows + sum [kg-supplement-DM-breeding] of cows
-17
+7
 1
 11
 
 MONITOR
-1903
-232
-2072
-277
+1690
+227
+1859
+272
 Daily supplement cost (USD)
 supplement-cost
-17
+7
 1
 11
 
@@ -4418,7 +4470,7 @@ cow-min-weight-for-feed-sup
 cow-min-weight-for-feed-sup
 0
 350
-250.0
+260.0
 1
 1
 kg
@@ -4432,8 +4484,8 @@ SLIDER
 cow-with-calf-min-weight-for-feed-sup
 cow-with-calf-min-weight-for-feed-sup
 0
-350
-250.0
+400
+260.0
 1
 1
 kg
@@ -4447,7 +4499,7 @@ SLIDER
 heifer/steer-min-weight-for-feed-sup
 heifer/steer-min-weight-for-feed-sup
 0
-300
+400
 200.0
 1
 1
@@ -4463,17 +4515,17 @@ weaned-calf-min-weight-for-feed-sup
 weaned-calf-min-weight-for-feed-sup
 0
 200
-180.0
+150.0
 1
 1
 kg
 HORIZONTAL
 
 PLOT
-1902
-279
-2268
-428
+1689
+274
+2055
+423
 Daily costs
 Days
 USD
@@ -4489,12 +4541,12 @@ PENS
 "Other" 1.0 0 -13791810 true "" "plot other-cost"
 
 BUTTON
-1308
-15
-1428
-49
-free 1000 USD
-set balance 1000
+1137
+53
+1257
+87
+free 100 USD
+set balance 100
 NIL
 1
 T
@@ -4528,19 +4580,19 @@ count cows
 11
 
 TEXTBOX
-809
-705
-1120
-749
+819
+696
+1130
+740
 LIVESTOCK RELATED OUTPUTS
 18
 34.0
 1
 
 TEXTBOX
-1549
+1329
 10
-1853
+1633
 54
 ECONOMIC RELATED OUTPUTS
 18
@@ -4548,20 +4600,20 @@ ECONOMIC RELATED OUTPUTS
 1
 
 TEXTBOX
-806
-236
-1104
-271
+1416
+465
+1714
+500
 RESOURCE RELATED OUTPUTS
 18
 64.0
 1
 
 MONITOR
-1906
-46
-2044
-91
+1690
+50
+1828
+95
 Daily balance (USD)
 balance
 17
@@ -4569,10 +4621,10 @@ balance
 11
 
 SLIDER
-404
-1200
-607
-1233
+5125
+297
+5328
+330
 set-other-monthly-costs
 set-other-monthly-costs
 0
@@ -4584,10 +4636,10 @@ USD
 HORIZONTAL
 
 MONITOR
-2074
-231
-2216
-276
+1913
+229
+2055
+274
 Daily other costs (USD)
 other-cost
 17
@@ -4595,10 +4647,10 @@ other-cost
 11
 
 MONITOR
-2061
-45
-2210
-90
+1845
+49
+1994
+94
 NIL
 accumulated-cost
 17
@@ -4606,10 +4658,10 @@ accumulated-cost
 11
 
 TEXTBOX
-361
-1236
-719
-1385
+5082
+333
+5440
+482
 Slider to simulate other costs related to the livestock system (maintenance, veterinary, vehicles, gas, etc.) and/or the farmer's personal (non-work related) costs (such as family costs, etc.).\n\nRight now, the only cost associated with the livestock system is feed supplementing.
 13
 0.0
@@ -4626,33 +4678,11 @@ supplement-effort
 1
 11
 
-MONITOR
-1287
-830
-1504
-875
-NIL
-min [live-weight] of cows with [cow?]
-17
-1
-11
-
-MONITOR
-1511
-830
-1798
-875
-NIL
-count cows with [cow?] with [live-weight <= 250]
-17
-1
-11
-
 SLIDER
-1954
-680
-2150
-713
+851
+566
+1047
+599
 sales-effort-time
 sales-effort-time
 1
@@ -4719,10 +4749,10 @@ accumulated-weaning-effort-year
 11
 
 MONITOR
-1775
-482
-1871
-527
+1068
+210
+1164
+255
 Total effort (h)
 total-effort / 60
 3
@@ -4730,10 +4760,10 @@ total-effort / 60
 11
 
 MONITOR
-1775
-525
-1945
-570
+1068
+253
+1238
+298
 TOTAL-EFFORT-SEASON (h)
 total-effort-history-season / 60
 3
@@ -4741,10 +4771,10 @@ total-effort-history-season / 60
 11
 
 MONITOR
-1775
-568
-1929
-613
+1068
+296
+1222
+341
 TOTAL-EFFORT-YEAR (h)
 total-effort-history-year / 60
 3
@@ -5192,10 +5222,10 @@ acummulated-rotational-effort-year
 11
 
 PLOT
-1558
-619
-1941
-776
+851
+347
+1234
+504
 total-effort (h)
 Days
 Effort (h)
@@ -5210,10 +5240,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot total-effort / 60"
 
 MONITOR
-1573
-567
-1767
-612
+866
+295
+1060
+340
 Accumulated effort over time (h)
 total-effort-history / 60
 3
@@ -5221,20 +5251,20 @@ total-effort-history / 60
 11
 
 TEXTBOX
-1537
-533
-1786
-566
+830
+261
+1079
+294
 EFFORT RELATED OUTPUTS
 18
 135.0
 1
 
 SLIDER
-1954
-640
-2150
-673
+851
+526
+1047
+559
 rotational-effort-time
 rotational-effort-time
 1
@@ -5246,10 +5276,10 @@ min
 HORIZONTAL
 
 SLIDER
-2158
-640
-2382
-673
+1055
+526
+1279
+559
 breeding-effort-time
 breeding-effort-time
 1
@@ -5261,10 +5291,10 @@ min
 HORIZONTAL
 
 SLIDER
-1955
-721
-2153
-754
+852
+607
+1050
+640
 weaning-effort-time
 weaning-effort-time
 1
@@ -5276,10 +5306,10 @@ min/calf
 HORIZONTAL
 
 SLIDER
-2158
-679
-2382
-712
+1055
+565
+1279
+598
 supplement-effort-time
 supplement-effort-time
 1
@@ -5291,10 +5321,10 @@ min/animal
 HORIZONTAL
 
 SLIDER
-531
-927
-715
-960
+527
+926
+711
+959
 min-weight-for-breeding
 min-weight-for-breeding
 0
@@ -5306,10 +5336,10 @@ NIL
 HORIZONTAL
 
 CHOOSER
-503
-882
-739
-927
+499
+881
+735
+926
 supplement-cows-before-breeding-season?
 supplement-cows-before-breeding-season?
 "Yes" "No"
@@ -5324,7 +5354,7 @@ initial-weight-bulls
 initial-weight-bulls
 0
 1000
-300.0
+280.0
 1
 1
 kg
@@ -5338,8 +5368,8 @@ SLIDER
 bull-min-weight-for-feed-sup
 bull-min-weight-for-feed-sup
 0
-350
-300.0
+400
+260.0
 1
 1
 kg
@@ -5479,7 +5509,7 @@ early-weaning-threshold
 early-weaning-threshold
 0
 800
-200.0
+240.0
 1
 1
 kg
@@ -5493,18 +5523,18 @@ SLIDER
 cow-min-weight-for-feed-sup
 cow-min-weight-for-feed-sup
 0
-350
-250.0
+400
+260.0
 1
 1
 kg
 HORIZONTAL
 
 SLIDER
-2392
-663
-2588
-696
+1057
+606
+1253
+639
 other-daily-effort-time
 other-daily-effort-time
 0
@@ -5560,32 +5590,10 @@ sum [animal-units] of cows
 11
 
 MONITOR
-4399
-209
-4633
-254
-NIL
-mean [DDMC] of cows with [adult-cow?]
-17
-1
-11
-
-MONITOR
-4224
-209
-4399
-254
-NIL
-mean [live-weight] of cows with [adult-cow?]
-17
-1
-11
-
-MONITOR
-4399
-297
-4555
-342
+4414
+374
+4570
+419
 NIL
 DDMC_SEASON
 17
@@ -5593,10 +5601,10 @@ DDMC_SEASON
 11
 
 MONITOR
-4399
-341
-4554
-386
+4414
+418
+4569
+463
 NIL
 DDMC_YEAR
 17
@@ -5664,10 +5672,10 @@ cm
 HORIZONTAL
 
 MONITOR
-4399
-253
-4554
-298
+4414
+330
+4569
+375
 DDMC_MONTH
 DDMC_SEASON / 3
 17
@@ -5675,21 +5683,21 @@ DDMC_SEASON / 3
 11
 
 MONITOR
-4554
-209
-4780
-254
+4414
+285
+4640
+330
 NIL
-sum [DDMC] of cows with [adult-cow?]
-17
+sum [DDMC] of cows
+3
 1
 11
 
 PLOT
-808
-503
-1469
-673
+1416
+494
+2077
+664
 Carrying capacity vs Livestock population
 Days
 Animal Units (AU)
@@ -5706,10 +5714,10 @@ PENS
 "Livestock population" 1.0 0 -13791810 true "" "plot sum [animal-units] of cows"
 
 SLIDER
-515
-1084
-740
-1117
+514
+1074
+739
+1107
 daily-DM-consumed-by-cattle
 daily-DM-consumed-by-cattle
 0.1
@@ -5719,17 +5727,6 @@ daily-DM-consumed-by-cattle
 1
 kg/head
 HORIZONTAL
-
-MONITOR
-234
-1017
-379
-1062
-NIL
-mean [live-weight] of cows
-17
-1
-11
 
 MONITOR
 661
@@ -5743,10 +5740,10 @@ estimated-carrying-capacity
 11
 
 TEXTBOX
-515
-1055
-739
-1081
+514
+1045
+738
+1071
 Parameter used by the environmental farmer to estimate the carrying capacity
 11
 0.0
@@ -5764,10 +5761,10 @@ carrying-capacity
 11
 
 SLIDER
-515
-1116
-740
-1149
+514
+1106
+739
+1139
 %-DM-available-for-cattle
 %-DM-available-for-cattle
 0
@@ -5777,6 +5774,43 @@ SLIDER
 1
 %
 HORIZONTAL
+
+MONITOR
+1109
+829
+1359
+874
+Average ILWG (all age classes) (kg/animal/day)
+mean [live-weight-gain] of cows + mean [live-weight-gain-feed] of cows + mean [live-weight-gain-feed-breeding] of cows
+17
+1
+11
+
+SLIDER
+5127
+247
+5350
+280
+set-live-weight-gain-max
+set-live-weight-gain-max
+0
+1.5
+0.6
+0.01
+1
+kg/day
+HORIZONTAL
+
+MONITOR
+4948
+160
+5112
+205
+NIL
+days-until-breeding-season
+17
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
