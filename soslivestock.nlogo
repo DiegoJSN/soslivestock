@@ -5358,7 +5358,7 @@ CHOOSER
 supplement-cows-before-breeding-season?
 supplement-cows-before-breeding-season?
 "Yes" "No"
-0
+1
 
 SLIDER
 11
