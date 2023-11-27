@@ -3125,7 +3125,7 @@ BUTTON
 84
 44
 Setup
-Setup\nset balance 1000
+Setup\n;set balance 1000
 NIL
 1
 T
@@ -5358,7 +5358,7 @@ CHOOSER
 supplement-cows-before-breeding-season?
 supplement-cows-before-breeding-season?
 "Yes" "No"
-1
+0
 
 SLIDER
 11
@@ -5836,28 +5836,6 @@ Slider to simulate the time dedicated to other activities related to the livesto
 13
 0.0
 1
-
-MONITOR
-1134
-119
-1230
-165
-NIL
-FSB-cow
-17
-1
-11
-
-MONITOR
-1184
-192
-1242
-238
-NIL
-FS-cow
-17
-1
-11
 
 @#$#@#$#@
 ## WHAT IS IT?

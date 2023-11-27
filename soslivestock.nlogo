@@ -3125,7 +3125,7 @@ BUTTON
 84
 44
 Setup
-Setup\nset balance 1000
+Setup\n;set balance 1000
 NIL
 1
 T
@@ -3718,7 +3718,7 @@ BUTTON
 1291
 48
 setup_seed-1070152876 
-setup_seed\nset balance 1000
+setup_seed\n;set balance 1000
 NIL
 1
 T
@@ -5358,7 +5358,7 @@ CHOOSER
 supplement-cows-before-breeding-season?
 supplement-cows-before-breeding-season?
 "Yes" "No"
-1
+0
 
 SLIDER
 11
