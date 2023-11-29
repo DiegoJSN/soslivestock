@@ -956,7 +956,8 @@ to become-weaned-calf-female
 
   set color yellow - 2
   set animal-units live-weight / set-1-AU
-  set min-weight 60
+  ;set min-weight 60
+  set min-weight 100
   set size 0.5
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.23
@@ -1005,7 +1006,8 @@ to become-weaned-calf-male
 
   set color orange
   set animal-units live-weight / set-1-AU
-  set min-weight 60
+  ;set min-weight 60
+  set min-weight 100
   set size 0.5
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.23
@@ -1059,7 +1061,8 @@ to become-heifer
 
   set color pink
   set animal-units live-weight / set-1-AU
-  set min-weight 100
+  ;set min-weight 100
+  set min-weight 150
   set size 0.7
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.23
@@ -1109,7 +1112,8 @@ to become-steer
 
   set color red
   set animal-units live-weight / set-1-AU
-  set min-weight 100
+  ;set min-weight 100
+  set min-weight 150
   set size 0.7
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.23
@@ -1158,7 +1162,8 @@ to become-bull
 
   set color black
   set animal-units live-weight / set-1-AU
-  set min-weight 180
+  ;set min-weight 180
+  set min-weight 220
   set size 1.2
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.15
@@ -1207,7 +1212,8 @@ to become-cow
 
   set color brown
   set animal-units live-weight / set-1-AU
-  set min-weight 180
+  ;set min-weight 180
+  set min-weight 220
   set size 1
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.15
@@ -1258,7 +1264,8 @@ to become-cow-with-calf
 
   set color magenta
   set animal-units live-weight / set-1-AU
-  set min-weight 180
+  ;set min-weight 180
+  set min-weight 220
   set size 1.1
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.3
@@ -1727,7 +1734,7 @@ to go
 
   if simulation-time / 368 = STOP-SIMULATION-AT [stop]                               ;; the observer can decide whether the simulation should run indefinitely (STOP-SIMULATION-AT 0 years) or after X years
 
-  if count cows = 0 [stop]
+  ;if count cows = 0 [stop]
 
   grow-grass
 
@@ -1737,11 +1744,18 @@ to go
 
   DM-consumption
 
-  if (farmer-profile = "market") [
+  set supplement-cost 0
+
+  if (farmer-profile = "market") or (farmer-profile = "market-fsb") [
 
     feed-supplementation                                                             ;;## FEED SUPPLEMENTATION MODULE
 
-    if (supplement-cows-before-breeding-season? = "Yes") [feed-supplementation-for-controlled-breeding]                                     ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ]
+
+
+  if (farmer-profile = "market-fsb") [
+
+    feed-supplementation-for-controlled-breeding                                     ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
   ]
 
@@ -1760,7 +1774,7 @@ to go
     if (farmer-profile = "environmental") [
     grow-livestock-natural-weaning                                                   ;;## EARLY/NATURAL WEANING MODULE
   ]
-  if (farmer-profile = "market") [
+  if (farmer-profile = "market") or (farmer-profile = "market-fsb") [
     grow-livestock-early-weaning                                                     ;;## EARLY/NATURAL WEANING MODULE
   ]
 
@@ -1770,7 +1784,7 @@ to go
   if (farmer-profile = "traditional") [
     uncontrolled-breeding                                                            ;;## CONTROLLED/NATURAL BREEDING MODULE
   ]
-  if (farmer-profile = "market") [
+  if (farmer-profile = "market") or (farmer-profile = "market-fsb") [
     controlled-breeding                                                              ;;## CONTROLLED/NATURAL BREEDING MODULE
   ]
   if (farmer-profile = "environmental") [
@@ -1785,7 +1799,7 @@ to go
     ordinary-sale-males                                                              ;;## ORDINARY SALES MODULE
   ]
 
-  if (farmer-profile = "market") [
+  if (farmer-profile = "market") or (farmer-profile = "market-fsb") [
     ordinary-sale-males                                                              ;;## ORDINARY SALES MODULE
     ordinary-sale-old-cows                                                           ;;## ORDINARY SALES MODULE
     ordinary-sale-old-bulls
@@ -1893,8 +1907,8 @@ to move                                                                         
               [let next-paddock one-of patches with [paddock-d = 1] move-to next-paddock]
               [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]]]]]]
 
-    if (farmer-profile = "market") [                                                                                     ;; Market-oriented farmers move cows from one plot to another when the average live weight of the cows is below a threshold (determined by the "RG-live-weight-threshold" slider in the interface).
-      if RG-market-farmer-live-weight-threshold > mean [live-weight] of cows and ticks-since-here > RG-days-in-paddock [ ;; Once the animals are moved to the next paddock because they have met the criteria, because the effects of the new paddock on the animals' live weight take several days, and to avoid animals moving continuously from one paddock to another during these first days (because they will still have a value below the threshold), the minimum number of days the animals have to adapt to the new paddock before moving to the next is set with the "RG-days-in-paddock" slider.
+    if (farmer-profile = "market") or (farmer-profile = "market-fsb") [                                                                                     ;; Market-oriented farmers move cows from one plot to another when the average live weight of the cows is below a threshold (determined by the "RG-live-weight-threshold" slider in the interface).
+      if RG-market-farmer-live-weight-threshold > mean [live-weight] of cows with [born-calf? = false] and ticks-since-here > RG-days-in-paddock [ ;; Once the animals are moved to the next paddock because they have met the criteria, because the effects of the new paddock on the animals' live weight take several days, and to avoid animals moving continuously from one paddock to another during these first days (because they will still have a value below the threshold), the minimum number of days the animals have to adapt to the new paddock before moving to the next is set with the "RG-days-in-paddock" slider.
         set ticks-since-here 0
         ask cows
         [ifelse paddock-a = 1
@@ -2501,7 +2515,7 @@ end
 to extraordinary-sale-males-market-farmer                                           ;;## EXTRAORDINARY SALES MODULE ;; Extraordinary sale of male animals for the market-oriented farmer. If the market-oriented farmer profile is selected, the extraordinary sale of male animals takes place when the average live weight of all animals in the system is below a threshold (minimum weight set by the user, "ES-market-farmer-min-weight" slider in the interface).
 
   if any? cows with [weaned-calf-male?] [
-    if mean [live-weight] of cows < market-farmer-ES-min-weight and count cows with [weaned-calf-male?] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [
+    if mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [weaned-calf-male?] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [
       if (extraordinary-sale-of-cows-with = "highest live weight") [
         ask max-n-of 1 cows with [weaned-calf-male? and sale? = false] [live-weight] [
           set sale? true
@@ -2512,7 +2526,7 @@ to extraordinary-sale-males-market-farmer                                       
           set ES-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]]]
 
   if any? cows with [steer?] [
-    if mean [live-weight] of cows < market-farmer-ES-min-weight [
+    if mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight [
       if (extraordinary-sale-of-cows-with = "highest live weight") [
         ask max-n-of 1 cows with [steer? and sale? = false] [live-weight] [
           set sale? true
@@ -2539,7 +2553,7 @@ to extraordinary-sale-old-cows-market-farmer                                    
     if any? cows with [cow? and old? = true] [
 
       ;if any? cows with [cow? and old? = true and pregnant? = false] [  ;;       alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
-      if mean [live-weight] of cows < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
+      if mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
         if (extraordinary-sale-of-cows-with = "highest live weight") [
           ;ask max-n-of 1 cows with [cow? and old? = true and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
 
@@ -2571,7 +2585,7 @@ to extraordinary-sale-non-replacement-females-market-farmer                     
 
   if any? cows with [weaned-calf-female?] [
 
-    if mean [live-weight] of cows < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
+    if mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
 
           if (ordinary-sale-of-cows-with = "highest live weight") [
             ask max-n-of 1 cows with [weaned-calf-female? and sale? = false] [live-weight] [
@@ -2587,7 +2601,7 @@ to extraordinary-sale-non-replacement-females-market-farmer                     
 
     if any? cows with [heifer?] [
 
-    if mean [live-weight] of cows < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
+    if mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
 
           if (ordinary-sale-of-cows-with = "highest live weight") [
             ;ask max-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight] [                                                                           ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
@@ -2605,7 +2619,7 @@ to extraordinary-sale-non-replacement-females-market-farmer                     
 
     if any? cows with [adult-cow?] [
 
-    if mean [live-weight] of cows < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
+    if mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
 
           if (ordinary-sale-of-cows-with = "highest live weight") [
             ;ask max-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight] [                                                                           ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
@@ -2638,10 +2652,10 @@ to extraordinary-sale-males-environmental-farmer                                
   ;if season-days = 2 [
 
     if any? cows with [weaned-calf-male?] [
-      if sum [animal-units] of cows > estimated-carrying-capacity and count cows with [weaned-calf-male?] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [
+    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [weaned-calf-male?] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [
 
 
-        while [any? cows with [weaned-calf-male? and sale? = false] and sum [animal-units] of cows with [sale? = false] > estimated-carrying-capacity and count cows with [weaned-calf-male? and sale? = false] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio)] [
+        while [any? cows with [weaned-calf-male? and sale? = false] and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity and count cows with [weaned-calf-male? and sale? = false] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio)] [
 
           if (extraordinary-sale-of-cows-with = "highest live weight") [
             ask max-n-of 1 cows with [weaned-calf-male? and sale? = false] [live-weight] [
@@ -2655,9 +2669,9 @@ to extraordinary-sale-males-environmental-farmer                                
 
     if any? cows with [steer?] [
 
-      if sum [animal-units] of cows > estimated-carrying-capacity [
+      if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity [
 
-          while [any? cows with [steer? and sale? = false] and sum [animal-units] of cows with [sale? = false] > estimated-carrying-capacity] [
+          while [any? cows with [steer? and sale? = false] and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity] [
 
           if (extraordinary-sale-of-cows-with = "highest live weight") [
             ask max-n-of 1 cows with [steer? and sale? = false] [live-weight] [
@@ -2696,10 +2710,10 @@ to extraordinary-sale-old-cows-environmental-farmer                             
   ;if season-days = 2 [
 
     if any? cows with [cow? and old? = true] [
-      if sum [animal-units] of cows > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
+      if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
         ;while [any? cows with [cow? and old? = true and sale? = false and pregnant? = false] and sum [animal-units] of cows with [sale? = false] / count patches > ES-env-farmer-SR] [      ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
 
-        while [any? cows with [cow? and old? = true and sale? = false] and count cows with [adult-cow? and sale? = false] > keep-MIN-n-breeding-cows and sum [animal-units] of cows with [sale? = false] > estimated-carrying-capacity] [
+        while [any? cows with [cow? and old? = true and sale? = false] and count cows with [adult-cow? and sale? = false] > keep-MIN-n-breeding-cows and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity] [
           if (extraordinary-sale-of-cows-with = "highest live weight") [
             ;ask max-n-of 1 cows with [cow? and old? = true and pregnant? = false and sale? = false] [live-weight] [          ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
 
@@ -2735,10 +2749,9 @@ to extraordinary-sale-non-replacement-females-environmental-farmer              
 
     if any? cows with [weaned-calf-female?] [
 
-        if sum [animal-units] of cows > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
+        if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
 
-        while [any? cows with [weaned-calf-female? and sale? = false] and count cows with [adult-cow? and sale? = false] > keep-MIN-n-breeding-cows and sum [animal-units] of cows with [sale? = false] > estimated-carrying-capacity] [
-
+        while [any? cows with [weaned-calf-female? and sale? = false] and count cows with [adult-cow? and sale? = false] > keep-MIN-n-breeding-cows and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity] [
 
           if (extraordinary-sale-of-cows-with = "highest live weight") [
             ask max-n-of 1 cows with [weaned-calf-female? and sale? = false] [live-weight] [
@@ -2754,9 +2767,9 @@ to extraordinary-sale-non-replacement-females-environmental-farmer              
 
     if any? cows with [heifer?] [
 
-    if sum [animal-units] of cows > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
+    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
 
-         while [any? cows with [heifer? and sale? = false] and count cows with [adult-cow? and sale? = false] > keep-MIN-n-breeding-cows and sum [animal-units] of cows with [sale? = false] > estimated-carrying-capacity] [
+         while [any? cows with [heifer? and sale? = false] and count cows with [adult-cow? and sale? = false] > keep-MIN-n-breeding-cows and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity] [
 
           if (extraordinary-sale-of-cows-with = "highest live weight") [
             ;ask max-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight] [                                                                           ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
@@ -2774,9 +2787,9 @@ to extraordinary-sale-non-replacement-females-environmental-farmer              
 
     if any? cows with [adult-cow?] [
 
-    if sum [animal-units] of cows > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
+    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
 
-        while [any? cows with [adult-cow? and sale? = false] and count cows with [adult-cow? and sale? = false] > keep-MIN-n-breeding-cows and sum [animal-units] of cows with [sale? = false] > estimated-carrying-capacity] [
+        while [any? cows with [adult-cow? and sale? = false] and count cows with [adult-cow? and sale? = false] > keep-MIN-n-breeding-cows and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity] [
 
           if (extraordinary-sale-of-cows-with = "highest live weight") [
             ;ask max-n-of 1 cows with [cow? or heifer? and pregnant? = false and sale? = false] [live-weight] [                                                                           ;; alternative version where pregnant cows are not sold. This version only makes sense if PR is divided by 368 (not the case in this current version of the model, but I will keep this line in case we decide to return to the previous PR version in the future).
@@ -2820,7 +2833,6 @@ to farm-balance                                                                 
   set OS-males-weaned-calf 0 set OS-males-steer 0 set OS-old-cow 0 set OS-heifer 0 set OS-cow 0 set OS-bull 0 set OS-old-bull 0 set OS-females-weaned-calf 0
   set ES-males-weaned-calf 0 set ES-males-steer 0 set ES-old-cow 0 set ES-heifer 0 set ES-cow 0 set ES-bull 0 set ES-females-weaned-calf 0
 
-  set supplement-cost 0
 
   if balance-historyXticks < 0 [set balance-historyXticks 0]
 
@@ -3125,7 +3137,7 @@ BUTTON
 84
 44
 Setup
-Setup\n;set balance 1000
+Setup\nset balance 1000
 NIL
 1
 T
@@ -3313,10 +3325,10 @@ TEXTBOX
 1
 
 MONITOR
-1414
-856
-1540
-901
+1416
+854
+1542
+899
 Average GH (cm)
 grass-height-report
 3
@@ -3369,7 +3381,7 @@ initial-weight-heifers
 initial-weight-heifers
 100
 1500
-200.0
+220.0
 1
 1
 kg
@@ -3453,7 +3465,7 @@ initial-weight-cows
 initial-weight-cows
 100
 750
-280.0
+260.0
 1
 1
 kg
@@ -3567,9 +3579,9 @@ BCS of cows-with-calf (points)
 MONITOR
 1124
 775
-1354
+1368
 820
-Average LW (only cows) (kg/animal)
+Average LW (only adult cows) (kg/animal)
 mean [live-weight] of cows with [adult-cow?]
 3
 1
@@ -3578,9 +3590,9 @@ mean [live-weight] of cows with [adult-cow?]
 MONITOR
 1115
 1036
-1365
+1397
 1081
-Average ILWG (only cows) (kg/animal/day)
+Average ILWG (only adult cows) (kg/animal/day)
 mean [live-weight-gain] of cows with [adult-cow?] + mean [live-weight-gain-feed] of cows with [adult-cow?] + mean [live-weight-gain-feed-breeding] of cows with [adult-cow?]
 3
 1
@@ -3610,7 +3622,7 @@ initial-weight-steers
 initial-weight-steers
 100
 1500
-200.0
+220.0
 1
 1
 kg
@@ -3718,7 +3730,7 @@ BUTTON
 1291
 48
 setup_seed-1070152876 
-setup_seed\n;set balance 1000
+setup_seed\nset balance 1000
 NIL
 1
 T
@@ -3782,7 +3794,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-25.0
+50.0
 1
 1
 years
@@ -4063,7 +4075,7 @@ climacoef
 NIL
 NIL
 0.0
-10.0
+92.0
 0.0
 1.5
 true
@@ -4156,7 +4168,7 @@ Daily income
 Days
 USD
 0.0
-368.0
+92.0
 0.0
 10.0
 true
@@ -4175,7 +4187,7 @@ Daily balance
 Days
 USD
 0.0
-368.0
+92.0
 0.0
 10.0
 true
@@ -4221,7 +4233,7 @@ CHOOSER
 727
 farmer-profile
 farmer-profile
-"none" "traditional" "market" "environmental"
+"none" "traditional" "market" "market-fsb" "environmental"
 2
 
 TEXTBOX
@@ -4287,7 +4299,7 @@ early-weaning-threshold
 early-weaning-threshold
 180
 800
-240.0
+230.0
 1
 1
 kg
@@ -4338,7 +4350,7 @@ Accumulated balance
 Days
 USD
 0.0
-368.0
+92.0
 0.0
 10.0
 true
@@ -4377,7 +4389,7 @@ market-farmer-ES-min-weight
 market-farmer-ES-min-weight
 0
 1000
-240.0
+225.0
 1
 1
 kg
@@ -4407,7 +4419,7 @@ RG-market-farmer-live-weight-threshold
 RG-market-farmer-live-weight-threshold
 180
 300
-270.0
+245.0
 1
 1
 kg
@@ -4485,7 +4497,7 @@ cow-min-weight-for-feed-sup
 cow-min-weight-for-feed-sup
 0
 350
-260.0
+240.0
 1
 1
 kg
@@ -4500,7 +4512,7 @@ cow-with-calf-min-weight-for-feed-sup
 cow-with-calf-min-weight-for-feed-sup
 0
 400
-260.0
+240.0
 1
 1
 kg
@@ -4515,7 +4527,7 @@ heifer/steer-min-weight-for-feed-sup
 heifer/steer-min-weight-for-feed-sup
 0
 400
-200.0
+220.0
 1
 1
 kg
@@ -5350,16 +5362,6 @@ min-weight-for-breeding
 NIL
 HORIZONTAL
 
-CHOOSER
-499
-881
-735
-926
-supplement-cows-before-breeding-season?
-supplement-cows-before-breeding-season?
-"Yes" "No"
-1
-
 SLIDER
 11
 1020
@@ -5369,7 +5371,7 @@ initial-weight-bulls
 initial-weight-bulls
 0
 1000
-280.0
+260.0
 1
 1
 kg
@@ -5384,7 +5386,7 @@ bull-min-weight-for-feed-sup
 bull-min-weight-for-feed-sup
 0
 400
-260.0
+240.0
 1
 1
 kg
@@ -5524,7 +5526,7 @@ early-weaning-threshold
 early-weaning-threshold
 0
 800
-240.0
+230.0
 1
 1
 kg
@@ -5539,7 +5541,7 @@ cow-min-weight-for-feed-sup
 cow-min-weight-for-feed-sup
 0
 400
-260.0
+240.0
 1
 1
 kg
@@ -10843,6 +10845,418 @@ NetLogo 6.2.2
     </enumeratedValueSet>
     <enumeratedValueSet variable="initial-weight-heifers">
       <value value="250"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="FINAL_experiment" repetitions="50" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="9200"/>
+    <metric>accumulated-balance</metric>
+    <metric>grass-height-report</metric>
+    <metric>mean [live-weight] of cows with [adult-cow?]</metric>
+    <metric>count cows</metric>
+    <enumeratedValueSet variable="initial-num-heifers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-bulls">
+      <value value="260"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-MAX-n-breeding-cows">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-weaned-calves">
+      <value value="150"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cow-min-weight-for-feed-sup">
+      <value value="240"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="min-weight-for-breeding">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="RG-market-farmer-live-weight-threshold">
+      <value value="245"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-1-AU">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="extraordinary-sale-of-cows-with">
+      <value value="&quot;lowest live weight&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="heifer/steer-min-weight-for-feed-sup">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="market-farmer-ES-min-weight">
+      <value value="225"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cow-with-calf-min-weight-for-feed-sup">
+      <value value="240"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="daily-DM-consumed-by-cattle">
+      <value value="8.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-steers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-steers">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="early-weaning-threshold">
+      <value value="230"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-cows">
+      <value value="260"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-other-monthly-costs">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-Y-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="sales-effort-time">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-winter">
+      <value value="7.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bull-min-weight-for-feed-sup">
+      <value value="240"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-direct-climacoef-control">
+      <value value="1"/>
+      <value value="0.27"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-DM-cm-ha">
+      <value value="180"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-grass-height">
+      <value value="7.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-MIN-n-breeding-cows">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rotational-effort-time">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="STOP-SIMULATION-AT">
+      <value value="25"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="climacoef-distribution">
+      <value value="&quot;direct-climacoef-control&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="age-sell-old-cow/bull">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="controlled-breeding-season">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="other-daily-effort-time">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="supplement-effort-time">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-X-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="%-DM-available-for-cattle">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="weaned-calf-min-weight-for-feed-sup">
+      <value value="150"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spatial-management">
+      <value value="&quot;free grazing&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="feed-sup-conversion-ratio">
+      <value value="7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="farmer-profile">
+      <value value="&quot;traditional&quot;"/>
+      <value value="&quot;market&quot;"/>
+      <value value="&quot;environmental&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="RG-days-in-paddock">
+      <value value="31"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-season">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="ordinary-sale-of-cows-with">
+      <value value="&quot;lowest live weight&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="breeding-effort-time">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="soil-quality-distribution">
+      <value value="&quot;homogeneus&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="starting-paddock">
+      <value value="&quot;paddock a&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="weaning-effort-time">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-weaned-calves">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-cows">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-MW-1-AU">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bull:cow-ratio">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="perception">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="supplement-cows-before-breeding-season?">
+      <value value="&quot;No&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-summer">
+      <value value="15.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-spring">
+      <value value="22.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-heifers">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-live-weight-gain-max">
+      <value value="0.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-fall">
+      <value value="11.1"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="FINAL_experiment_MARKET FSB_Yes" repetitions="200" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="9200"/>
+    <metric>accumulated-balance</metric>
+    <metric>grass-height-report</metric>
+    <metric>mean [live-weight] of cows with [adult-cow?]</metric>
+    <metric>count cows</metric>
+    <enumeratedValueSet variable="initial-num-heifers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-bulls">
+      <value value="260"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-MAX-n-breeding-cows">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-weaned-calves">
+      <value value="150"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cow-min-weight-for-feed-sup">
+      <value value="240"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="min-weight-for-breeding">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="RG-market-farmer-live-weight-threshold">
+      <value value="245"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-1-AU">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="extraordinary-sale-of-cows-with">
+      <value value="&quot;lowest live weight&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="heifer/steer-min-weight-for-feed-sup">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="market-farmer-ES-min-weight">
+      <value value="225"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cow-with-calf-min-weight-for-feed-sup">
+      <value value="240"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="daily-DM-consumed-by-cattle">
+      <value value="8.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-steers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-steers">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="early-weaning-threshold">
+      <value value="230"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-cows">
+      <value value="260"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-other-monthly-costs">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-Y-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="sales-effort-time">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-winter">
+      <value value="7.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bull-min-weight-for-feed-sup">
+      <value value="240"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-direct-climacoef-control">
+      <value value="1"/>
+      <value value="0.27"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-DM-cm-ha">
+      <value value="180"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-grass-height">
+      <value value="7.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-MIN-n-breeding-cows">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rotational-effort-time">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="STOP-SIMULATION-AT">
+      <value value="25"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="climacoef-distribution">
+      <value value="&quot;direct-climacoef-control&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="age-sell-old-cow/bull">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="controlled-breeding-season">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="other-daily-effort-time">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="supplement-effort-time">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-X-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="%-DM-available-for-cattle">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="weaned-calf-min-weight-for-feed-sup">
+      <value value="150"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spatial-management">
+      <value value="&quot;free grazing&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="feed-sup-conversion-ratio">
+      <value value="7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="farmer-profile">
+      <value value="&quot;market&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="RG-days-in-paddock">
+      <value value="31"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-season">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="ordinary-sale-of-cows-with">
+      <value value="&quot;lowest live weight&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="breeding-effort-time">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="soil-quality-distribution">
+      <value value="&quot;homogeneus&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="starting-paddock">
+      <value value="&quot;paddock a&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="weaning-effort-time">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-weaned-calves">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-cows">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-MW-1-AU">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bull:cow-ratio">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="perception">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="supplement-cows-before-breeding-season?">
+      <value value="&quot;Yes&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-summer">
+      <value value="15.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-spring">
+      <value value="22.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-heifers">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-live-weight-gain-max">
+      <value value="0.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-fall">
+      <value value="11.1"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
