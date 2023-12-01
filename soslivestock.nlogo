@@ -1780,7 +1780,7 @@ to go
 
   if simulation-time / 368 = STOP-SIMULATION-AT [stop]                               ;; the observer can decide whether the simulation should run indefinitely (STOP-SIMULATION-AT 0 years) or after X years
 
-  ;if count cows = 0 [stop]
+  if count cows = 0 [stop]
 
   grow-grass
 
@@ -1954,16 +1954,17 @@ to move                                                                         
               [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]]]]]]
 
     if (farmer-profile = "market") or (farmer-profile = "market-fsb") [                                                                                     ;; Market-oriented farmers move cows from one plot to another when the average live weight of the cows is below a threshold (determined by the "RG-live-weight-threshold" slider in the interface).
-      if RG-market-farmer-live-weight-threshold > mean [live-weight] of cows with [born-calf? = false] and ticks-since-here > RG-days-in-paddock [ ;; Once the animals are moved to the next paddock because they have met the criteria, because the effects of the new paddock on the animals' live weight take several days, and to avoid animals moving continuously from one paddock to another during these first days (because they will still have a value below the threshold), the minimum number of days the animals have to adapt to the new paddock before moving to the next is set with the "RG-days-in-paddock" slider.
-        set ticks-since-here 0
-        ask cows
-        [ifelse paddock-a = 1
-          [let next-paddock one-of patches with [paddock-b = 1] move-to next-paddock]
-          [ifelse paddock-b = 1
-            [let next-paddock one-of patches with [paddock-c = 1] move-to next-paddock]
-            [ifelse paddock-c = 1
-              [let next-paddock one-of patches with [paddock-d = 1] move-to next-paddock]
-              [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]]]]]]]
+      if any? cows [
+        if RG-market-farmer-live-weight-threshold > mean [live-weight] of cows with [born-calf? = false] and ticks-since-here > RG-days-in-paddock [ ;; Once the animals are moved to the next paddock because they have met the criteria, because the effects of the new paddock on the animals' live weight take several days, and to avoid animals moving continuously from one paddock to another during these first days (because they will still have a value below the threshold), the minimum number of days the animals have to adapt to the new paddock before moving to the next is set with the "RG-days-in-paddock" slider.
+          set ticks-since-here 0
+          ask cows
+          [ifelse paddock-a = 1
+            [let next-paddock one-of patches with [paddock-b = 1] move-to next-paddock]
+            [ifelse paddock-b = 1
+              [let next-paddock one-of patches with [paddock-c = 1] move-to next-paddock]
+              [ifelse paddock-c = 1
+                [let next-paddock one-of patches with [paddock-d = 1] move-to next-paddock]
+                [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]]]]]]]]
 
 end
 
@@ -2916,9 +2917,10 @@ to effort
 
   ;; Rotational grazing effort                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
   if (spatial-management = "rotational grazing") [
-    if farmer-profile = "traditional" [if season-days >= season-length [set rotational-effort rotational-effort-time]]
-    if farmer-profile = "market" [if RG-market-farmer-live-weight-threshold > mean [live-weight] of cows and ticks-since-here >= RG-days-in-paddock [set rotational-effort rotational-effort-time]]
-    if farmer-profile = "environmental" [if season-days >= season-length [set rotational-effort rotational-effort-time]]]
+    if any? cows [
+      if farmer-profile = "traditional" [if season-days >= season-length [set rotational-effort rotational-effort-time]]
+      if farmer-profile = "market" [if RG-market-farmer-live-weight-threshold > mean [live-weight] of cows and ticks-since-here >= RG-days-in-paddock [set rotational-effort rotational-effort-time]]
+      if farmer-profile = "environmental" [if season-days >= season-length [set rotational-effort rotational-effort-time]]]]
 
 
 
@@ -4450,7 +4452,7 @@ keep-MIN-n-breeding-cows
 keep-MIN-n-breeding-cows
 0
 500
-10.0
+2.0
 1
 1
 NIL
