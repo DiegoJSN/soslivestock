@@ -1792,7 +1792,7 @@ to go
 
   set supplement-cost 0
 
-  if (farmer-profile = "market") or (farmer-profile = "market-fsb") [
+  if (farmer-profile = "market") or (farmer-profile = "market-fsb") or (farmer-profile = "environmental") [
 
     feed-supplementation                                                             ;;## FEED SUPPLEMENTATION MODULE
 
@@ -1805,10 +1805,10 @@ to go
 
   ]
 
-  if (farmer-profile = "environmental") [
-    ;if count cows <= keep-MIN-n-breeding-cows [
+  if (farmer-profile = "environmental-fmincows") [
+    if count cows <= keep-MIN-n-breeding-cows [
     feed-supplementation
-  ;]                        ;;## FEED SUPPLEMENTATION MODULE ;; environmental farmers only supplement animals when the system meets or falls below the minimum herd size desired by the farmer ("keep-MIN-n-cattle" slider in the interface)
+  ]                        ;;## FEED SUPPLEMENTATION MODULE ;; environmental farmers only supplement animals when the system meets or falls below the minimum herd size desired by the farmer ("keep-MIN-n-cattle" slider in the interface)
   ]
 
   if (farmer-profile = "none") [
@@ -1817,7 +1817,7 @@ to go
     if (farmer-profile = "traditional") [
     grow-livestock-natural-weaning                                                   ;;## EARLY/NATURAL WEANING MODULE
   ]
-    if (farmer-profile = "environmental") [
+    if (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") [
     grow-livestock-natural-weaning                                                   ;;## EARLY/NATURAL WEANING MODULE
   ]
   if (farmer-profile = "market") or (farmer-profile = "market-fsb") [
@@ -1833,7 +1833,7 @@ to go
   if (farmer-profile = "market") or (farmer-profile = "market-fsb") [
     controlled-breeding                                                              ;;## CONTROLLED/NATURAL BREEDING MODULE
   ]
-  if (farmer-profile = "environmental") [
+  if (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") [
     controlled-breeding                                                              ;;## CONTROLLED/NATURAL BREEDING MODULE
   ]
 
@@ -1856,7 +1856,7 @@ to go
     extraordinary-sale-non-replacement-females-market-farmer                                    ;;## EXTRAORDINARY SALES MODULE
   ]
 
-  if (farmer-profile = "environmental") [                                            ;;## ORDINARY SALES MODULE
+  if (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") [                                            ;;## ORDINARY SALES MODULE
     ordinary-sale-males                                                              ;;## ORDINARY SALES MODULE
     ordinary-sale-old-cows                                                           ;;## ORDINARY SALES MODULE
     ordinary-sale-old-bulls
@@ -1941,7 +1941,7 @@ to move                                                                         
         [move-to target-d1]
         [move-to one-of neighbors with [paddock-d = 1]]]]
 
-    if (farmer-profile = "none") or (farmer-profile = "traditional") or (farmer-profile = "environmental") [             ;; Traditional and environmental farmers move cows at the end of each season
+    if (farmer-profile = "none") or (farmer-profile = "traditional") or (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") [             ;; Traditional and environmental farmers move cows at the end of each season
       if season-days >= season-length [
         set ticks-since-here 0
         ask cows
@@ -3842,7 +3842,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-50.0
+25.0
 1
 1
 years
@@ -3906,7 +3906,7 @@ CHOOSER
 spatial-management
 spatial-management
 "free grazing" "rotational grazing"
-1
+0
 
 CHOOSER
 10
@@ -4277,11 +4277,11 @@ HORIZONTAL
 CHOOSER
 237
 682
-389
-727
+419
+728
 farmer-profile
 farmer-profile
-"none" "traditional" "market" "market-fsb" "environmental"
+"none" "traditional" "market" "market-fsb" "environmental" "environmental-fmincows"
 4
 
 TEXTBOX
@@ -11447,6 +11447,7 @@ NetLogo 6.2.2
       <value value="&quot;traditional&quot;"/>
       <value value="&quot;market&quot;"/>
       <value value="&quot;environmental&quot;"/>
+      <value value="&quot;environmental-fmincows&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="RG-days-in-paddock">
       <value value="31"/>
