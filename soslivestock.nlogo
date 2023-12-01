@@ -1780,7 +1780,7 @@ to go
 
   if simulation-time / 368 = STOP-SIMULATION-AT [stop]                               ;; the observer can decide whether the simulation should run indefinitely (STOP-SIMULATION-AT 0 years) or after X years
 
-  if count cows = 0 [stop]
+  ;if count cows = 0 [stop]
 
   grow-grass
 
@@ -3842,7 +3842,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-25.0
+50.0
 1
 1
 years
