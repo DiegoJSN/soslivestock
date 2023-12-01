@@ -19,6 +19,7 @@ globals [
   climacoef                                                                         ;; climacoef relates the primary production in a season with the average for that season due to climate variations. Takes values from 0.1 to 1.5, and is set by the observer in the interface
   historic-climacoef                                                                ;; in case the observer wants to use historical values for climacoef. For the model to use "historic-climacoef" values, the observer must select the "historic-climacoef" option within the "climacoef-distribution" chooser in the interface.
   direct-climacoef-control                                                          ;; allows the user to change the climate coefficient in real time (i.e. while the simulation is running)
+  estimated-climacoef                                                               ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW variable usada por el environmental farmer para estimar la capacidad de carga del sistema
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Time related global variables
@@ -1684,57 +1685,67 @@ to go
 
   if season-days = 1 [   ;; CALCULO DEL ESTIMATED CARRYING CAPACITY (EL QUE USA EL ENVIRONMENTAL FARMER). ESTE CALCULO SE HACE AL INICIO DE CADA SEASON
 
-  if (spatial-management = "free grazing") [
 
-    set estimated-kmax mean [grass-height] of patches * mean [soil-quality] of patches                                         ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-    set estimated-DM-cm-ha DM-cm-ha]                                                                                           ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+    if (spatial-management = "free grazing") [
+      set estimated-kmax mean [grass-height] of patches * mean [soil-quality] of patches                                         ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+      set estimated-DM-cm-ha DM-cm-ha
+      set estimated-climacoef climacoef
+    ]                                                                                           ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
 
   if (spatial-management = "rotational grazing") [
 
       ask patches with [paddock-a = 1] [
         if any? cows-here [
           set estimated-kmax mean [grass-height] of patches with [paddock-a = 1] * mean [soil-quality] of patches with [paddock-a = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-          set estimated-DM-cm-ha DM-cm-ha]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-DM-cm-ha DM-cm-ha
+          set estimated-climacoef climacoef
+      ]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
 
       ask patches with [paddock-b = 1] [
         if any? cows-here [
           set estimated-kmax mean [grass-height] of patches with [paddock-b = 1] * mean [soil-quality] of patches with [paddock-b = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-          set estimated-DM-cm-ha DM-cm-ha]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-DM-cm-ha DM-cm-ha
+          set estimated-climacoef climacoef
+      ]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
 
       ask patches with [paddock-c = 1] [
         if any? cows-here [
           set estimated-kmax mean [grass-height] of patches with [paddock-c = 1] * mean [soil-quality] of patches with [paddock-c = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-          set estimated-DM-cm-ha DM-cm-ha]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-DM-cm-ha DM-cm-ha
+          set estimated-climacoef climacoef
+      ]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
 
       ask patches with [paddock-d = 1] [
         if any? cows-here [
           set estimated-kmax mean [grass-height] of patches with [paddock-d = 1] * mean [soil-quality] of patches with [paddock-d = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-          set estimated-DM-cm-ha DM-cm-ha]]
+          set estimated-DM-cm-ha DM-cm-ha
+          set estimated-climacoef climacoef
+      ]]
   ]]                                                                                                        ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
 
   ;; FORMULA DEL ESTIMATED CARRYING CAPACITY (EL QUE USA EL ENV. FARMER)
 
   if (spatial-management = "free grazing") [
 
-    set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * climacoef * count patches) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]         ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL.LA VARIABLE "%-DM-available-for-cattle" ES EL % DE DM QUE UTILIZARÁ EL GANADO
+    set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]         ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL.LA VARIABLE "%-DM-available-for-cattle" ES EL % DE DM QUE UTILIZARÁ EL GANADO
 
   if (spatial-management = "rotational grazing") [
 
     ask patches with [paddock-a = 1] [
       if any? cows-here [
-        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * climacoef * count patches with [paddock-a = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-a = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
 
     ask patches with [paddock-b = 1] [
       if any? cows-here [
-        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * climacoef * count patches with [paddock-b = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-b = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
 
     ask patches with [paddock-c = 1] [
       if any? cows-here [
-        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * climacoef * count patches with [paddock-c = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-c = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
 
     ask patches with [paddock-d = 1] [
       if any? cows-here [
-        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * climacoef * count patches with [paddock-d = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]]
+        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-d = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]]
 
   ;; FORMULA DEL REAL CARRYING CAPACITY DEL SISTEMA (A TITULO INFORMATIVO)
 
@@ -4278,7 +4289,7 @@ CHOOSER
 237
 682
 419
-728
+727
 farmer-profile
 farmer-profile
 "none" "traditional" "market" "market-fsb" "environmental" "environmental-fmincows"
