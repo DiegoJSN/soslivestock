@@ -11264,7 +11264,6 @@ NetLogo 6.2.2
     <go>go</go>
     <timeLimit steps="18400"/>
     <metric>count turtles</metric>
-    <metric>simulation-time / 368</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
     </enumeratedValueSet>
