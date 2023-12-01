@@ -1691,46 +1691,92 @@ to go
 
   if (spatial-management = "rotational grazing") [
 
+      ask patches with [paddock-a = 1] [
+        if any? cows-here [
+          set estimated-kmax mean [grass-height] of patches with [paddock-a = 1] * mean [soil-quality] of patches with [paddock-a = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-DM-cm-ha DM-cm-ha]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+
+      ask patches with [paddock-b = 1] [
+        if any? cows-here [
+          set estimated-kmax mean [grass-height] of patches with [paddock-b = 1] * mean [soil-quality] of patches with [paddock-b = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-DM-cm-ha DM-cm-ha]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+
+      ask patches with [paddock-c = 1] [
+        if any? cows-here [
+          set estimated-kmax mean [grass-height] of patches with [paddock-c = 1] * mean [soil-quality] of patches with [paddock-c = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-DM-cm-ha DM-cm-ha]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+
+      ask patches with [paddock-d = 1] [
+        if any? cows-here [
+          set estimated-kmax mean [grass-height] of patches with [paddock-d = 1] * mean [soil-quality] of patches with [paddock-d = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-DM-cm-ha DM-cm-ha]]
+  ]]                                                                                                        ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+
+  ;; FORMULA DEL ESTIMATED CARRYING CAPACITY (EL QUE USA EL ENV. FARMER)
+
+  if (spatial-management = "free grazing") [
+
+    set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * climacoef * count patches) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]         ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL.LA VARIABLE "%-DM-available-for-cattle" ES EL % DE DM QUE UTILIZARÁ EL GANADO
+
+  if (spatial-management = "rotational grazing") [
+
     ask patches with [paddock-a = 1] [
       if any? cows-here [
-        set estimated-kmax mean [grass-height] of patches with [paddock-a = 1] * mean [soil-quality] of patches with [paddock-a = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-        set estimated-DM-cm-ha DM-cm-ha]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * climacoef * count patches with [paddock-a = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
 
     ask patches with [paddock-b = 1] [
       if any? cows-here [
-        set estimated-kmax mean [grass-height] of patches with [paddock-b = 1] * mean [soil-quality] of patches with [paddock-b = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-        set estimated-DM-cm-ha DM-cm-ha]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * climacoef * count patches with [paddock-b = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
 
     ask patches with [paddock-c = 1] [
       if any? cows-here [
-        set estimated-kmax mean [grass-height] of patches with [paddock-c = 1] * mean [soil-quality] of patches with [paddock-c = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-        set estimated-DM-cm-ha DM-cm-ha]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * climacoef * count patches with [paddock-c = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
 
     ask patches with [paddock-d = 1] [
       if any? cows-here [
-        set estimated-kmax mean [grass-height] of patches with [paddock-d = 1] * mean [soil-quality] of patches with [paddock-d = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-          set estimated-DM-cm-ha DM-cm-ha]]]]                                                                                                        ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-
-
-  ;; FORMULA DEL ESTIMATED CARRYING CAPACITY (EL QUE USA EL ENV. FARMER)
-  set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * climacoef * count patches) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle         ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL.LA VARIABLE "%-DM-available-for-cattle" ES EL % DE DM QUE UTILIZARÁ EL GANADO
+        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * climacoef * count patches with [paddock-d = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]]
 
   ;; FORMULA DEL REAL CARRYING CAPACITY DEL SISTEMA (A TITULO INFORMATIVO)
-  if any? cows [
-    ifelse mean [DDMC] of cows = 0
-    [set carrying-capacity ((((mean [grass-height] of patches * DM-cm-ha) * climacoef * count patches) * 1) / season-length) / daily-DM-consumed-by-cattle]
-    [set carrying-capacity ((((mean [grass-height] of patches * DM-cm-ha) * climacoef * count patches) * 1) / season-length) / mean [DDMC] of cows]]
+
+  if (spatial-management = "free grazing") [
+
+    if any? cows [
+      ifelse mean [DDMC] of cows = 0
+      [set carrying-capacity ((((mean [grass-height] of patches * DM-cm-ha) * climacoef * count patches) * 1) / season-length) / daily-DM-consumed-by-cattle]
+      [set carrying-capacity ((((mean [grass-height] of patches * DM-cm-ha) * climacoef * count patches) * 1) / season-length) / mean [DDMC] of cows]]]
+
+    if (spatial-management = "rotational grazing") [
+
+      ask patches with [paddock-a = 1] [
+        if any? cows-here [
+          ifelse mean [DDMC] of cows = 0
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-a = 1] * mean [soil-quality] of patches with [paddock-a = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-a = 1]) / season-length) / daily-DM-consumed-by-cattle]
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-a = 1] * mean [soil-quality] of patches with [paddock-a = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-a = 1]) / season-length) / mean [DDMC] of cows]]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+
+
+      ask patches with [paddock-b = 1] [
+        if any? cows-here [
+          ifelse mean [DDMC] of cows = 0
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-b = 1] * mean [soil-quality] of patches with [paddock-b = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-b = 1]) / season-length) / daily-DM-consumed-by-cattle]
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-b = 1] * mean [soil-quality] of patches with [paddock-b = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-b = 1]) / season-length) / mean [DDMC] of cows]]]
+
+
+      ask patches with [paddock-c = 1] [
+        if any? cows-here [
+          ifelse mean [DDMC] of cows = 0
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-c = 1] * mean [soil-quality] of patches with [paddock-c = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-c = 1]) / season-length) / daily-DM-consumed-by-cattle]
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-c = 1] * mean [soil-quality] of patches with [paddock-c = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-c = 1]) / season-length) / mean [DDMC] of cows]]]
+
+
+      ask patches with [paddock-d = 1] [
+        if any? cows-here [
+          ifelse mean [DDMC] of cows = 0
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-d = 1] * mean [soil-quality] of patches with [paddock-d = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-d = 1]) / season-length) / daily-DM-consumed-by-cattle]
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-d = 1] * mean [soil-quality] of patches with [paddock-d = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-d = 1]) / season-length) / mean [DDMC] of cows]]]]
 
 ;; ###########################################################################################################################################################################################################################
 ;; ###########################################################################################################################################################################################################################
 ;; ###########################################################################################################################################################################################################################
-
-
-
-
-
-
-
 
   if simulation-time / 368 = STOP-SIMULATION-AT [stop]                               ;; the observer can decide whether the simulation should run indefinitely (STOP-SIMULATION-AT 0 years) or after X years
 
@@ -3635,10 +3681,10 @@ SLIDER
 148
 set-X-size
 set-X-size
-1
+2
 100
 10.0
-1
+2
 1
 hm
 HORIZONTAL
@@ -3650,10 +3696,10 @@ SLIDER
 187
 set-Y-size
 set-Y-size
-1
+2
 100
 10.0
-1
+2
 1
 hm
 HORIZONTAL
@@ -3858,7 +3904,7 @@ CHOOSER
 spatial-management
 spatial-management
 "free grazing" "rotational grazing"
-0
+1
 
 CHOOSER
 10
@@ -4234,7 +4280,7 @@ CHOOSER
 farmer-profile
 farmer-profile
 "none" "traditional" "market" "market-fsb" "environmental"
-2
+4
 
 TEXTBOX
 238
@@ -5711,10 +5757,10 @@ sum [DDMC] of cows
 11
 
 PLOT
-1416
+1414
 494
-2077
-664
+1976
+668
 Carrying capacity vs Livestock population
 Days
 Animal Units (AU)
@@ -11264,6 +11310,7 @@ NetLogo 6.2.2
     <go>go</go>
     <timeLimit steps="18400"/>
     <metric>count turtles</metric>
+    <metric>simulation-time / 368</metric>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
     </enumeratedValueSet>
