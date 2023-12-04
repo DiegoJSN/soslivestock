@@ -1687,7 +1687,7 @@ to go
 
 
     if (spatial-management = "free grazing") [
-      set estimated-kmax mean [grass-height] of patches * mean [soil-quality] of patches                                         ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+      set estimated-kmax mean [grass-height] of patches                                         ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
       set estimated-DM-cm-ha DM-cm-ha
       set estimated-climacoef climacoef
     ]                                                                                           ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
@@ -1696,28 +1696,28 @@ to go
 
       ask patches with [paddock-a = 1] [
         if any? cows-here [
-          set estimated-kmax mean [grass-height] of patches with [paddock-a = 1] * mean [soil-quality] of patches with [paddock-a = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-kmax mean [grass-height] of patches with [paddock-a = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
           set estimated-DM-cm-ha DM-cm-ha
           set estimated-climacoef climacoef
       ]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
 
       ask patches with [paddock-b = 1] [
         if any? cows-here [
-          set estimated-kmax mean [grass-height] of patches with [paddock-b = 1] * mean [soil-quality] of patches with [paddock-b = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-kmax mean [grass-height] of patches with [paddock-b = 1]                ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
           set estimated-DM-cm-ha DM-cm-ha
           set estimated-climacoef climacoef
       ]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
 
       ask patches with [paddock-c = 1] [
         if any? cows-here [
-          set estimated-kmax mean [grass-height] of patches with [paddock-c = 1] * mean [soil-quality] of patches with [paddock-c = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-kmax mean [grass-height] of patches with [paddock-c = 1]                ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
           set estimated-DM-cm-ha DM-cm-ha
           set estimated-climacoef climacoef
       ]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
 
       ask patches with [paddock-d = 1] [
         if any? cows-here [
-          set estimated-kmax mean [grass-height] of patches with [paddock-d = 1] * mean [soil-quality] of patches with [paddock-d = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-kmax mean [grass-height] of patches with [paddock-d = 1]               ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
           set estimated-DM-cm-ha DM-cm-ha
           set estimated-climacoef climacoef
       ]]
@@ -1753,37 +1753,43 @@ to go
 
     if any? cows [
       ifelse mean [DDMC] of cows = 0
-      [set carrying-capacity ((((mean [grass-height] of patches * DM-cm-ha) * climacoef * count patches) * 1) / season-length) / daily-DM-consumed-by-cattle]
-      [set carrying-capacity ((((mean [grass-height] of patches * DM-cm-ha) * climacoef * count patches) * 1) / season-length) / mean [DDMC] of cows]]]
+      [set carrying-capacity ((((mean [grass-height] of patches * DM-cm-ha) * climacoef * count patches)) / season-length) / daily-DM-consumed-by-cattle]
+      [set carrying-capacity ((((mean [grass-height] of patches * DM-cm-ha) * climacoef * count patches)) / season-length) / mean [DDMC] of cows]]]
 
-    if (spatial-management = "rotational grazing") [
+
+      if (spatial-management = "rotational grazing") [
 
       ask patches with [paddock-a = 1] [
         if any? cows-here [
           ifelse mean [DDMC] of cows = 0
-          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-a = 1] * mean [soil-quality] of patches with [paddock-a = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-a = 1]) / season-length) / daily-DM-consumed-by-cattle]
-          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-a = 1] * mean [soil-quality] of patches with [paddock-a = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-a = 1]) / season-length) / mean [DDMC] of cows]]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-a = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-a = 1]) / season-length) / daily-DM-consumed-by-cattle]
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-a = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-a = 1]) / season-length) / mean [DDMC] of cows]]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
 
 
       ask patches with [paddock-b = 1] [
         if any? cows-here [
           ifelse mean [DDMC] of cows = 0
-          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-b = 1] * mean [soil-quality] of patches with [paddock-b = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-b = 1]) / season-length) / daily-DM-consumed-by-cattle]
-          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-b = 1] * mean [soil-quality] of patches with [paddock-b = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-b = 1]) / season-length) / mean [DDMC] of cows]]]
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-b = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-b = 1]) / season-length) / daily-DM-consumed-by-cattle]
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-b = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-b = 1]) / season-length) / mean [DDMC] of cows]]]
 
 
       ask patches with [paddock-c = 1] [
         if any? cows-here [
           ifelse mean [DDMC] of cows = 0
-          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-c = 1] * mean [soil-quality] of patches with [paddock-c = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-c = 1]) / season-length) / daily-DM-consumed-by-cattle]
-          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-c = 1] * mean [soil-quality] of patches with [paddock-c = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-c = 1]) / season-length) / mean [DDMC] of cows]]]
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-c = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-c = 1]) / season-length) / daily-DM-consumed-by-cattle]
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-c = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-c = 1]) / season-length) / mean [DDMC] of cows]]]
 
 
       ask patches with [paddock-d = 1] [
         if any? cows-here [
           ifelse mean [DDMC] of cows = 0
-          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-d = 1] * mean [soil-quality] of patches with [paddock-d = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-d = 1]) / season-length) / daily-DM-consumed-by-cattle]
-          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-d = 1] * mean [soil-quality] of patches with [paddock-d = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-d = 1]) / season-length) / mean [DDMC] of cows]]]]
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-d = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-d = 1]) / season-length) / daily-DM-consumed-by-cattle]
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-d = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-d = 1]) / season-length) / mean [DDMC] of cows]]]]
+
+
+
+
+
 
 ;; ###########################################################################################################################################################################################################################
 ;; ###########################################################################################################################################################################################################################
@@ -1795,15 +1801,13 @@ to go
 
   grow-grass
 
-  move
-
   LWG
 
   DM-consumption
 
   set supplement-cost 0
 
-  if (farmer-profile = "market") or (farmer-profile = "market-fsb") or (farmer-profile = "environmental") [
+  if (farmer-profile = "market") or (farmer-profile = "market-fsb") or (farmer-profile = "environmental") or (farmer-profile = "environmental-rot2") [
 
     feed-supplementation                                                             ;;## FEED SUPPLEMENTATION MODULE
 
@@ -1828,7 +1832,7 @@ to go
     if (farmer-profile = "traditional") [
     grow-livestock-natural-weaning                                                   ;;## EARLY/NATURAL WEANING MODULE
   ]
-    if (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") [
+    if (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") or (farmer-profile = "environmental-rot2") [
     grow-livestock-natural-weaning                                                   ;;## EARLY/NATURAL WEANING MODULE
   ]
   if (farmer-profile = "market") or (farmer-profile = "market-fsb") [
@@ -1844,11 +1848,13 @@ to go
   if (farmer-profile = "market") or (farmer-profile = "market-fsb") [
     controlled-breeding                                                              ;;## CONTROLLED/NATURAL BREEDING MODULE
   ]
-  if (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") [
+  if (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") or (farmer-profile = "environmental-rot2") [
     controlled-breeding                                                              ;;## CONTROLLED/NATURAL BREEDING MODULE
   ]
 
   update-grass-height
+
+  move
 
   update-prices                                                                      ;;## SALES MODULE
 
@@ -1867,7 +1873,7 @@ to go
     extraordinary-sale-non-replacement-females-market-farmer                                    ;;## EXTRAORDINARY SALES MODULE
   ]
 
-  if (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") [                                            ;;## ORDINARY SALES MODULE
+  if (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") or (farmer-profile = "environmental-rot2") [                                            ;;## ORDINARY SALES MODULE
     ordinary-sale-males                                                              ;;## ORDINARY SALES MODULE
     ordinary-sale-old-cows                                                           ;;## ORDINARY SALES MODULE
     ordinary-sale-old-bulls
@@ -1913,71 +1919,6 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Cattle behavior
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-to move                                                                              ;; once the grass height of each patch is updated, if the grass height in a patch is minor than 5 cm (the minimum grass height that maintains the live weight of a cow), the cows moves to another patch. Whether the cows move to a neighboring random patch or to the neighboring patch with the highest grass height is determined by the "perception" slider in the interface.
-  if (spatial-management = "free grazing") [                                         ;; cow movement rules for the free grazing management strategy
-    ask cows [
-      if grass-height < 5
-      [ifelse random-float 1 < perception
-        [uphill grass-height]
-        [move-to one-of neighbors]]]]
-
-  if (spatial-management = "rotational grazing") [                                   ;; cow movement rules for the rotational grazing management strategy
-    ask cows [
-      let patches-a1 neighbors with [paddock-a = 1]
-      let target-a1 max-one-of patches-a1 [grass-height]
-      if grass-height < 5 and paddock-a = 1
-      [ifelse random-float 1 < perception and paddock-a = 1
-        [move-to target-a1]
-        [move-to one-of neighbors with [paddock-a = 1]]]]
-    ask cows [
-      let patches-b1 neighbors with [paddock-b = 1]
-      let target-b1 max-one-of patches-b1 [grass-height]
-      if grass-height < 5 and paddock-b = 1
-      [ifelse random-float 1 < perception and paddock-b = 1
-        [move-to target-b1]
-        [move-to one-of neighbors with [paddock-b = 1]]]]
-    ask cows [
-      let patches-c1 neighbors with [paddock-c = 1]
-      let target-c1 max-one-of patches-c1 [grass-height]
-      if grass-height < 5 and paddock-c = 1
-      [ifelse random-float 1 < perception and paddock-c = 1
-        [move-to target-c1]
-        [move-to one-of neighbors with [paddock-c = 1]]]]
-    ask cows [
-      let patches-d1 neighbors with [paddock-d = 1]
-      let target-d1 max-one-of patches-d1 [grass-height]
-      if grass-height < 5 and paddock-d = 1
-      [ifelse random-float 1 < perception and paddock-d = 1
-        [move-to target-d1]
-        [move-to one-of neighbors with [paddock-d = 1]]]]
-
-    if (farmer-profile = "none") or (farmer-profile = "traditional") or (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") [             ;; Traditional and environmental farmers move cows at the end of each season
-      if season-days >= season-length [
-        set ticks-since-here 0
-        ask cows
-        [ifelse paddock-a = 1
-          [let next-paddock one-of patches with [paddock-b = 1] move-to next-paddock]
-          [ifelse paddock-b = 1
-            [let next-paddock one-of patches with [paddock-c = 1] move-to next-paddock]
-            [ifelse paddock-c = 1
-              [let next-paddock one-of patches with [paddock-d = 1] move-to next-paddock]
-              [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]]]]]]
-
-    if (farmer-profile = "market") or (farmer-profile = "market-fsb") [                                                                                     ;; Market-oriented farmers move cows from one plot to another when the average live weight of the cows is below a threshold (determined by the "RG-live-weight-threshold" slider in the interface).
-      if any? cows [
-        if RG-market-farmer-live-weight-threshold > mean [live-weight] of cows with [born-calf? = false] and ticks-since-here > RG-days-in-paddock [ ;; Once the animals are moved to the next paddock because they have met the criteria, because the effects of the new paddock on the animals' live weight take several days, and to avoid animals moving continuously from one paddock to another during these first days (because they will still have a value below the threshold), the minimum number of days the animals have to adapt to the new paddock before moving to the next is set with the "RG-days-in-paddock" slider.
-          set ticks-since-here 0
-          ask cows
-          [ifelse paddock-a = 1
-            [let next-paddock one-of patches with [paddock-b = 1] move-to next-paddock]
-            [ifelse paddock-b = 1
-              [let next-paddock one-of patches with [paddock-c = 1] move-to next-paddock]
-              [ifelse paddock-c = 1
-                [let next-paddock one-of patches with [paddock-d = 1] move-to next-paddock]
-                [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]]]]]]]]
-
-end
 
 
 to LWG                                                                               ;; the live weight gain of each cow is calculated according to the number of centimeters of grass that correspond to each animal
@@ -2337,6 +2278,135 @@ ask patches [
 end
 
 
+
+
+to move                                                                              ;; once the grass height of each patch is updated, if the grass height in a patch is minor than 5 cm (the minimum grass height that maintains the live weight of a cow), the cows moves to another patch. Whether the cows move to a neighboring random patch or to the neighboring patch with the highest grass height is determined by the "perception" slider in the interface.
+  if (spatial-management = "free grazing") [                                         ;; cow movement rules for the free grazing management strategy
+    ask cows [
+      if grass-height < 5
+      [ifelse random-float 1 < perception
+        [uphill grass-height]
+        [move-to one-of neighbors]]]]
+
+  if (spatial-management = "rotational grazing") [                                   ;; cow movement rules for the rotational grazing management strategy
+    ask cows [
+      let patches-a1 neighbors with [paddock-a = 1]
+      let target-a1 max-one-of patches-a1 [grass-height]
+      if grass-height < 5 and paddock-a = 1
+      [ifelse random-float 1 < perception and paddock-a = 1
+        [move-to target-a1]
+        [move-to one-of neighbors with [paddock-a = 1]]]]
+    ask cows [
+      let patches-b1 neighbors with [paddock-b = 1]
+      let target-b1 max-one-of patches-b1 [grass-height]
+      if grass-height < 5 and paddock-b = 1
+      [ifelse random-float 1 < perception and paddock-b = 1
+        [move-to target-b1]
+        [move-to one-of neighbors with [paddock-b = 1]]]]
+    ask cows [
+      let patches-c1 neighbors with [paddock-c = 1]
+      let target-c1 max-one-of patches-c1 [grass-height]
+      if grass-height < 5 and paddock-c = 1
+      [ifelse random-float 1 < perception and paddock-c = 1
+        [move-to target-c1]
+        [move-to one-of neighbors with [paddock-c = 1]]]]
+    ask cows [
+      let patches-d1 neighbors with [paddock-d = 1]
+      let target-d1 max-one-of patches-d1 [grass-height]
+      if grass-height < 5 and paddock-d = 1
+      [ifelse random-float 1 < perception and paddock-d = 1
+        [move-to target-d1]
+        [move-to one-of neighbors with [paddock-d = 1]]]]
+
+
+    if (farmer-profile = "none") or (farmer-profile = "traditional") or (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") [             ;; Traditional and environmental farmers move cows at the end of each season
+      if season-days >= season-length [
+        set ticks-since-here 0
+        ask cows
+        [ifelse paddock-a = 1
+          [let next-paddock one-of patches with [paddock-b = 1] move-to next-paddock]
+          [ifelse paddock-b = 1
+            [let next-paddock one-of patches with [paddock-c = 1] move-to next-paddock]
+            [ifelse paddock-c = 1
+              [let next-paddock one-of patches with [paddock-d = 1] move-to next-paddock]
+              [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]]]]]]
+
+
+    if (farmer-profile = "environmental-rot2") [
+      if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity ;and ticks-since-here > RG-days-in-paddock
+      [
+        set ticks-since-here 0
+        ask cows
+        [ifelse paddock-a = 1
+          [let next-paddock one-of patches with [paddock-b = 1] move-to next-paddock]
+          [ifelse paddock-b = 1
+            [let next-paddock one-of patches with [paddock-c = 1] move-to next-paddock]
+            [ifelse paddock-c = 1
+              [let next-paddock one-of patches with [paddock-d = 1] move-to next-paddock]
+              [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]]]]]
+
+      if ticks-since-here = 0 [
+
+      ask patches with [paddock-a = 1] [
+        if any? cows-here [
+          set estimated-kmax mean [grass-height] of patches with [paddock-a = 1] * mean [soil-quality] of patches with [paddock-a = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-DM-cm-ha DM-cm-ha
+          set estimated-climacoef climacoef]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+
+      ask patches with [paddock-b = 1] [
+        if any? cows-here [
+          set estimated-kmax mean [grass-height] of patches with [paddock-b = 1] * mean [soil-quality] of patches with [paddock-b = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-DM-cm-ha DM-cm-ha
+          set estimated-climacoef climacoef]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+
+      ask patches with [paddock-c = 1] [
+        if any? cows-here [
+          set estimated-kmax mean [grass-height] of patches with [paddock-c = 1] * mean [soil-quality] of patches with [paddock-c = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-DM-cm-ha DM-cm-ha
+          set estimated-climacoef climacoef]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+
+      ask patches with [paddock-d = 1] [
+        if any? cows-here [
+          set estimated-kmax mean [grass-height] of patches with [paddock-d = 1] * mean [soil-quality] of patches with [paddock-d = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-DM-cm-ha DM-cm-ha
+          set estimated-climacoef climacoef]]
+
+
+    ask patches with [paddock-a = 1] [
+      if any? cows-here [
+        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-a = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+
+    ask patches with [paddock-b = 1] [
+      if any? cows-here [
+        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-b = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+
+    ask patches with [paddock-c = 1] [
+      if any? cows-here [
+        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-c = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+
+    ask patches with [paddock-d = 1] [
+      if any? cows-here [
+        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-d = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]]]
+
+
+    if (farmer-profile = "market") or (farmer-profile = "market-fsb") [                                                                                     ;; Market-oriented farmers move cows from one plot to another when the average live weight of the cows is below a threshold (determined by the "RG-live-weight-threshold" slider in the interface).
+      if any? cows with [born-calf? = false] [
+        if RG-market-farmer-live-weight-threshold > mean [live-weight] of cows with [born-calf? = false] ;and ticks-since-here > RG-days-in-paddock
+        [ ;; Once the animals are moved to the next paddock because they have met the criteria, because the effects of the new paddock on the animals' live weight take several days, and to avoid animals moving continuously from one paddock to another during these first days (because they will still have a value below the threshold), the minimum number of days the animals have to adapt to the new paddock before moving to the next is set with the "RG-days-in-paddock" slider.
+          set ticks-since-here 0
+          ask cows
+          [ifelse paddock-a = 1
+            [let next-paddock one-of patches with [paddock-b = 1] move-to next-paddock]
+            [ifelse paddock-b = 1
+              [let next-paddock one-of patches with [paddock-c = 1] move-to next-paddock]
+              [ifelse paddock-c = 1
+                [let next-paddock one-of patches with [paddock-d = 1] move-to next-paddock]
+                [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]]]]]]]]
+
+end
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ECONOMIC SUBMODEL PROCEDURES: Cattle prices, cattle sales (ordinary and extraordinary sales) and farm balance
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2557,12 +2627,6 @@ to ordinary-sale-non-replacement-females                                        
 end
 
 
-
-
-
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Cattle sales: extraordinary sales
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2631,9 +2695,6 @@ to extraordinary-sale-old-cows-market-farmer                                    
   ask cows with [sale?] [die]
 
  end
-
-
-
 
 
 
@@ -2932,11 +2993,6 @@ to effort
       if farmer-profile = "traditional" [if season-days >= season-length [set rotational-effort rotational-effort-time]]
       if farmer-profile = "market" [if RG-market-farmer-live-weight-threshold > mean [live-weight] of cows and ticks-since-here >= RG-days-in-paddock [set rotational-effort rotational-effort-time]]
       if farmer-profile = "environmental" [if season-days >= season-length [set rotational-effort rotational-effort-time]]]]
-
-
-
-
-
 
 
   ;; Total effort                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -3853,7 +3909,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-50.0
+40.0
 1
 1
 years
@@ -4292,8 +4348,8 @@ CHOOSER
 727
 farmer-profile
 farmer-profile
-"none" "traditional" "market" "market-fsb" "environmental" "environmental-fmincows"
-4
+"none" "traditional" "market" "market-fsb" "environmental" "environmental-rot2" "environmental-fmincows"
+2
 
 TEXTBOX
 238
@@ -4365,10 +4421,10 @@ kg
 HORIZONTAL
 
 SLIDER
-4933
-210
-5116
-243
+4898
+213
+5081
+246
 controlled-breeding-season
 controlled-breeding-season
 0
@@ -4496,10 +4552,10 @@ paddock-SR
 11
 
 SLIDER
-234
-951
-423
-984
+5128
+162
+5328
+196
 RG-days-in-paddock
 RG-days-in-paddock
 0
@@ -5770,10 +5826,10 @@ sum [DDMC] of cows
 11
 
 PLOT
-1414
-494
-1976
-668
+1415
+495
+2077
+670
 Carrying capacity vs Livestock population
 Days
 Animal Units (AU)
@@ -5878,10 +5934,10 @@ kg/day
 HORIZONTAL
 
 MONITOR
-4948
-160
-5112
-205
+4914
+163
+5078
+208
 NIL
 days-until-breeding-season
 17
