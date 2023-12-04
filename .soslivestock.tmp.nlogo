@@ -19,6 +19,7 @@ globals [
   climacoef                                                                         ;; climacoef relates the primary production in a season with the average for that season due to climate variations. Takes values from 0.1 to 1.5, and is set by the observer in the interface
   historic-climacoef                                                                ;; in case the observer wants to use historical values for climacoef. For the model to use "historic-climacoef" values, the observer must select the "historic-climacoef" option within the "climacoef-distribution" chooser in the interface.
   direct-climacoef-control                                                          ;; allows the user to change the climate coefficient in real time (i.e. while the simulation is running)
+  estimated-climacoef                                                               ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW variable usada por el environmental farmer para estimar la capacidad de carga del sistema
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Time related global variables
@@ -1684,57 +1685,67 @@ to go
 
   if season-days = 1 [   ;; CALCULO DEL ESTIMATED CARRYING CAPACITY (EL QUE USA EL ENVIRONMENTAL FARMER). ESTE CALCULO SE HACE AL INICIO DE CADA SEASON
 
-  if (spatial-management = "free grazing") [
 
-    set estimated-kmax mean [grass-height] of patches * mean [soil-quality] of patches                                         ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-    set estimated-DM-cm-ha DM-cm-ha]                                                                                           ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+    if (spatial-management = "free grazing") [
+      set estimated-kmax mean [grass-height] of patches                                         ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+      set estimated-DM-cm-ha DM-cm-ha
+      set estimated-climacoef climacoef
+    ]                                                                                           ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
 
   if (spatial-management = "rotational grazing") [
 
       ask patches with [paddock-a = 1] [
         if any? cows-here [
-          set estimated-kmax mean [grass-height] of patches with [paddock-a = 1] * mean [soil-quality] of patches with [paddock-a = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-          set estimated-DM-cm-ha DM-cm-ha]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-kmax mean [grass-height] of patches with [paddock-a = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-DM-cm-ha DM-cm-ha
+          set estimated-climacoef climacoef
+      ]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
 
       ask patches with [paddock-b = 1] [
         if any? cows-here [
-          set estimated-kmax mean [grass-height] of patches with [paddock-b = 1] * mean [soil-quality] of patches with [paddock-b = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-          set estimated-DM-cm-ha DM-cm-ha]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-kmax mean [grass-height] of patches with [paddock-b = 1]                ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-DM-cm-ha DM-cm-ha
+          set estimated-climacoef climacoef
+      ]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
 
       ask patches with [paddock-c = 1] [
         if any? cows-here [
-          set estimated-kmax mean [grass-height] of patches with [paddock-c = 1] * mean [soil-quality] of patches with [paddock-c = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-          set estimated-DM-cm-ha DM-cm-ha]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-kmax mean [grass-height] of patches with [paddock-c = 1]                ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-DM-cm-ha DM-cm-ha
+          set estimated-climacoef climacoef
+      ]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
 
       ask patches with [paddock-d = 1] [
         if any? cows-here [
-          set estimated-kmax mean [grass-height] of patches with [paddock-d = 1] * mean [soil-quality] of patches with [paddock-d = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-          set estimated-DM-cm-ha DM-cm-ha]]
+          set estimated-kmax mean [grass-height] of patches with [paddock-d = 1]               ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-DM-cm-ha DM-cm-ha
+          set estimated-climacoef climacoef
+      ]]
   ]]                                                                                                        ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
 
   ;; FORMULA DEL ESTIMATED CARRYING CAPACITY (EL QUE USA EL ENV. FARMER)
 
   if (spatial-management = "free grazing") [
 
-    set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * climacoef * count patches) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]         ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL.LA VARIABLE "%-DM-available-for-cattle" ES EL % DE DM QUE UTILIZARÁ EL GANADO
+    set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]         ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL.LA VARIABLE "%-DM-available-for-cattle" ES EL % DE DM QUE UTILIZARÁ EL GANADO
 
   if (spatial-management = "rotational grazing") [
 
     ask patches with [paddock-a = 1] [
       if any? cows-here [
-        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * climacoef * count patches with [paddock-a = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-a = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
 
     ask patches with [paddock-b = 1] [
       if any? cows-here [
-        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * climacoef * count patches with [paddock-b = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-b = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
 
     ask patches with [paddock-c = 1] [
       if any? cows-here [
-        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * climacoef * count patches with [paddock-c = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-c = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
 
     ask patches with [paddock-d = 1] [
       if any? cows-here [
-        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * climacoef * count patches with [paddock-d = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]]
+        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-d = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]]
 
   ;; FORMULA DEL REAL CARRYING CAPACITY DEL SISTEMA (A TITULO INFORMATIVO)
 
@@ -1742,37 +1753,43 @@ to go
 
     if any? cows [
       ifelse mean [DDMC] of cows = 0
-      [set carrying-capacity ((((mean [grass-height] of patches * DM-cm-ha) * climacoef * count patches) * 1) / season-length) / daily-DM-consumed-by-cattle]
-      [set carrying-capacity ((((mean [grass-height] of patches * DM-cm-ha) * climacoef * count patches) * 1) / season-length) / mean [DDMC] of cows]]]
+      [set carrying-capacity ((((mean [grass-height] of patches * DM-cm-ha) * climacoef * count patches)) / season-length) / daily-DM-consumed-by-cattle]
+      [set carrying-capacity ((((mean [grass-height] of patches * DM-cm-ha) * climacoef * count patches)) / season-length) / mean [DDMC] of cows]]]
 
-    if (spatial-management = "rotational grazing") [
+
+      if (spatial-management = "rotational grazing") [
 
       ask patches with [paddock-a = 1] [
         if any? cows-here [
           ifelse mean [DDMC] of cows = 0
-          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-a = 1] * mean [soil-quality] of patches with [paddock-a = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-a = 1]) / season-length) / daily-DM-consumed-by-cattle]
-          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-a = 1] * mean [soil-quality] of patches with [paddock-a = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-a = 1]) / season-length) / mean [DDMC] of cows]]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-a = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-a = 1]) / season-length) / daily-DM-consumed-by-cattle]
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-a = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-a = 1]) / season-length) / mean [DDMC] of cows]]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
 
 
       ask patches with [paddock-b = 1] [
         if any? cows-here [
           ifelse mean [DDMC] of cows = 0
-          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-b = 1] * mean [soil-quality] of patches with [paddock-b = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-b = 1]) / season-length) / daily-DM-consumed-by-cattle]
-          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-b = 1] * mean [soil-quality] of patches with [paddock-b = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-b = 1]) / season-length) / mean [DDMC] of cows]]]
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-b = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-b = 1]) / season-length) / daily-DM-consumed-by-cattle]
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-b = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-b = 1]) / season-length) / mean [DDMC] of cows]]]
 
 
       ask patches with [paddock-c = 1] [
         if any? cows-here [
           ifelse mean [DDMC] of cows = 0
-          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-c = 1] * mean [soil-quality] of patches with [paddock-c = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-c = 1]) / season-length) / daily-DM-consumed-by-cattle]
-          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-c = 1] * mean [soil-quality] of patches with [paddock-c = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-c = 1]) / season-length) / mean [DDMC] of cows]]]
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-c = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-c = 1]) / season-length) / daily-DM-consumed-by-cattle]
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-c = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-c = 1]) / season-length) / mean [DDMC] of cows]]]
 
 
       ask patches with [paddock-d = 1] [
         if any? cows-here [
           ifelse mean [DDMC] of cows = 0
-          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-d = 1] * mean [soil-quality] of patches with [paddock-d = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-d = 1]) / season-length) / daily-DM-consumed-by-cattle]
-          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-d = 1] * mean [soil-quality] of patches with [paddock-d = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-d = 1]) / season-length) / mean [DDMC] of cows]]]]
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-d = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-d = 1]) / season-length) / daily-DM-consumed-by-cattle]
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-d = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-d = 1]) / season-length) / mean [DDMC] of cows]]]]
+
+
+
+
+
 
 ;; ###########################################################################################################################################################################################################################
 ;; ###########################################################################################################################################################################################################################
@@ -1784,15 +1801,13 @@ to go
 
   grow-grass
 
-  move
-
   LWG
 
   DM-consumption
 
   set supplement-cost 0
 
-  if (farmer-profile = "market") or (farmer-profile = "market-fsb") [
+  if (farmer-profile = "market") or (farmer-profile = "market-fsb") or (farmer-profile = "environmental") or (farmer-profile = "environmental-rot2") [
 
     feed-supplementation                                                             ;;## FEED SUPPLEMENTATION MODULE
 
@@ -1805,10 +1820,10 @@ to go
 
   ]
 
-  if (farmer-profile = "environmental") [
-    ;if count cows <= keep-MIN-n-breeding-cows [
+  if (farmer-profile = "environmental-fmincows") [
+    if count cows <= keep-MIN-n-breeding-cows [
     feed-supplementation
-  ;]                        ;;## FEED SUPPLEMENTATION MODULE ;; environmental farmers only supplement animals when the system meets or falls below the minimum herd size desired by the farmer ("keep-MIN-n-cattle" slider in the interface)
+  ]                        ;;## FEED SUPPLEMENTATION MODULE ;; environmental farmers only supplement animals when the system meets or falls below the minimum herd size desired by the farmer ("keep-MIN-n-cattle" slider in the interface)
   ]
 
   if (farmer-profile = "none") [
@@ -1817,7 +1832,7 @@ to go
     if (farmer-profile = "traditional") [
     grow-livestock-natural-weaning                                                   ;;## EARLY/NATURAL WEANING MODULE
   ]
-    if (farmer-profile = "environmental") [
+    if (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") or (farmer-profile = "environmental-rot2") [
     grow-livestock-natural-weaning                                                   ;;## EARLY/NATURAL WEANING MODULE
   ]
   if (farmer-profile = "market") or (farmer-profile = "market-fsb") [
@@ -1833,11 +1848,13 @@ to go
   if (farmer-profile = "market") or (farmer-profile = "market-fsb") [
     controlled-breeding                                                              ;;## CONTROLLED/NATURAL BREEDING MODULE
   ]
-  if (farmer-profile = "environmental") [
+  if (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") or (farmer-profile = "environmental-rot2") [
     controlled-breeding                                                              ;;## CONTROLLED/NATURAL BREEDING MODULE
   ]
 
   update-grass-height
+
+  move
 
   update-prices                                                                      ;;## SALES MODULE
 
@@ -1856,7 +1873,7 @@ to go
     extraordinary-sale-non-replacement-females-market-farmer                                    ;;## EXTRAORDINARY SALES MODULE
   ]
 
-  if (farmer-profile = "environmental") [                                            ;;## ORDINARY SALES MODULE
+  if (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") or (farmer-profile = "environmental-rot2") [                                            ;;## ORDINARY SALES MODULE
     ordinary-sale-males                                                              ;;## ORDINARY SALES MODULE
     ordinary-sale-old-cows                                                           ;;## ORDINARY SALES MODULE
     ordinary-sale-old-bulls
@@ -1902,70 +1919,6 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Cattle behavior
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-to move                                                                              ;; once the grass height of each patch is updated, if the grass height in a patch is minor than 5 cm (the minimum grass height that maintains the live weight of a cow), the cows moves to another patch. Whether the cows move to a neighboring random patch or to the neighboring patch with the highest grass height is determined by the "perception" slider in the interface.
-  if (spatial-management = "free grazing") [                                         ;; cow movement rules for the free grazing management strategy
-    ask cows [
-      if grass-height < 5
-      [ifelse random-float 1 < perception
-        [uphill grass-height]
-        [move-to one-of neighbors]]]]
-
-  if (spatial-management = "rotational grazing") [                                   ;; cow movement rules for the rotational grazing management strategy
-    ask cows [
-      let patches-a1 neighbors with [paddock-a = 1]
-      let target-a1 max-one-of patches-a1 [grass-height]
-      if grass-height < 5 and paddock-a = 1
-      [ifelse random-float 1 < perception and paddock-a = 1
-        [move-to target-a1]
-        [move-to one-of neighbors with [paddock-a = 1]]]]
-    ask cows [
-      let patches-b1 neighbors with [paddock-b = 1]
-      let target-b1 max-one-of patches-b1 [grass-height]
-      if grass-height < 5 and paddock-b = 1
-      [ifelse random-float 1 < perception and paddock-b = 1
-        [move-to target-b1]
-        [move-to one-of neighbors with [paddock-b = 1]]]]
-    ask cows [
-      let patches-c1 neighbors with [paddock-c = 1]
-      let target-c1 max-one-of patches-c1 [grass-height]
-      if grass-height < 5 and paddock-c = 1
-      [ifelse random-float 1 < perception and paddock-c = 1
-        [move-to target-c1]
-        [move-to one-of neighbors with [paddock-c = 1]]]]
-    ask cows [
-      let patches-d1 neighbors with [paddock-d = 1]
-      let target-d1 max-one-of patches-d1 [grass-height]
-      if grass-height < 5 and paddock-d = 1
-      [ifelse random-float 1 < perception and paddock-d = 1
-        [move-to target-d1]
-        [move-to one-of neighbors with [paddock-d = 1]]]]
-
-    if (farmer-profile = "none") or (farmer-profile = "traditional") or (farmer-profile = "environmental") [             ;; Traditional and environmental farmers move cows at the end of each season
-      if season-days >= season-length [
-        set ticks-since-here 0
-        ask cows
-        [ifelse paddock-a = 1
-          [let next-paddock one-of patches with [paddock-b = 1] move-to next-paddock]
-          [ifelse paddock-b = 1
-            [let next-paddock one-of patches with [paddock-c = 1] move-to next-paddock]
-            [ifelse paddock-c = 1
-              [let next-paddock one-of patches with [paddock-d = 1] move-to next-paddock]
-              [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]]]]]]
-
-    if (farmer-profile = "market") or (farmer-profile = "market-fsb") [                                                                                     ;; Market-oriented farmers move cows from one plot to another when the average live weight of the cows is below a threshold (determined by the "RG-live-weight-threshold" slider in the interface).
-      if RG-market-farmer-live-weight-threshold > mean [live-weight] of cows with [born-calf? = false] and ticks-since-here > RG-days-in-paddock [ ;; Once the animals are moved to the next paddock because they have met the criteria, because the effects of the new paddock on the animals' live weight take several days, and to avoid animals moving continuously from one paddock to another during these first days (because they will still have a value below the threshold), the minimum number of days the animals have to adapt to the new paddock before moving to the next is set with the "RG-days-in-paddock" slider.
-        set ticks-since-here 0
-        ask cows
-        [ifelse paddock-a = 1
-          [let next-paddock one-of patches with [paddock-b = 1] move-to next-paddock]
-          [ifelse paddock-b = 1
-            [let next-paddock one-of patches with [paddock-c = 1] move-to next-paddock]
-            [ifelse paddock-c = 1
-              [let next-paddock one-of patches with [paddock-d = 1] move-to next-paddock]
-              [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]]]]]]]
-
-end
 
 
 to LWG                                                                               ;; the live weight gain of each cow is calculated according to the number of centimeters of grass that correspond to each animal
@@ -2325,6 +2278,135 @@ ask patches [
 end
 
 
+
+
+to move                                                                              ;; once the grass height of each patch is updated, if the grass height in a patch is minor than 5 cm (the minimum grass height that maintains the live weight of a cow), the cows moves to another patch. Whether the cows move to a neighboring random patch or to the neighboring patch with the highest grass height is determined by the "perception" slider in the interface.
+  if (spatial-management = "free grazing") [                                         ;; cow movement rules for the free grazing management strategy
+    ask cows [
+      if grass-height < 5
+      [ifelse random-float 1 < perception
+        [uphill grass-height]
+        [move-to one-of neighbors]]]]
+
+  if (spatial-management = "rotational grazing") [                                   ;; cow movement rules for the rotational grazing management strategy
+    ask cows [
+      let patches-a1 neighbors with [paddock-a = 1]
+      let target-a1 max-one-of patches-a1 [grass-height]
+      if grass-height < 5 and paddock-a = 1
+      [ifelse random-float 1 < perception and paddock-a = 1
+        [move-to target-a1]
+        [move-to one-of neighbors with [paddock-a = 1]]]]
+    ask cows [
+      let patches-b1 neighbors with [paddock-b = 1]
+      let target-b1 max-one-of patches-b1 [grass-height]
+      if grass-height < 5 and paddock-b = 1
+      [ifelse random-float 1 < perception and paddock-b = 1
+        [move-to target-b1]
+        [move-to one-of neighbors with [paddock-b = 1]]]]
+    ask cows [
+      let patches-c1 neighbors with [paddock-c = 1]
+      let target-c1 max-one-of patches-c1 [grass-height]
+      if grass-height < 5 and paddock-c = 1
+      [ifelse random-float 1 < perception and paddock-c = 1
+        [move-to target-c1]
+        [move-to one-of neighbors with [paddock-c = 1]]]]
+    ask cows [
+      let patches-d1 neighbors with [paddock-d = 1]
+      let target-d1 max-one-of patches-d1 [grass-height]
+      if grass-height < 5 and paddock-d = 1
+      [ifelse random-float 1 < perception and paddock-d = 1
+        [move-to target-d1]
+        [move-to one-of neighbors with [paddock-d = 1]]]]
+
+
+    if (farmer-profile = "none") or (farmer-profile = "traditional") or (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") [             ;; Traditional and environmental farmers move cows at the end of each season
+      if season-days >= season-length [
+        set ticks-since-here 0
+        ask cows
+        [ifelse paddock-a = 1
+          [let next-paddock one-of patches with [paddock-b = 1] move-to next-paddock]
+          [ifelse paddock-b = 1
+            [let next-paddock one-of patches with [paddock-c = 1] move-to next-paddock]
+            [ifelse paddock-c = 1
+              [let next-paddock one-of patches with [paddock-d = 1] move-to next-paddock]
+              [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]]]]]]
+
+
+    if (farmer-profile = "environmental-rot2") [
+      if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity ;and ticks-since-here > RG-days-in-paddock
+      [
+        set ticks-since-here 0
+        ask cows
+        [ifelse paddock-a = 1
+          [let next-paddock one-of patches with [paddock-b = 1] move-to next-paddock]
+          [ifelse paddock-b = 1
+            [let next-paddock one-of patches with [paddock-c = 1] move-to next-paddock]
+            [ifelse paddock-c = 1
+              [let next-paddock one-of patches with [paddock-d = 1] move-to next-paddock]
+              [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]]]]]
+
+      if ticks-since-here = 0 [
+
+      ask patches with [paddock-a = 1] [
+        if any? cows-here [
+          set estimated-kmax mean [grass-height] of patches with [paddock-a = 1] * mean [soil-quality] of patches with [paddock-a = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-DM-cm-ha DM-cm-ha
+          set estimated-climacoef climacoef]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+
+      ask patches with [paddock-b = 1] [
+        if any? cows-here [
+          set estimated-kmax mean [grass-height] of patches with [paddock-b = 1] * mean [soil-quality] of patches with [paddock-b = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-DM-cm-ha DM-cm-ha
+          set estimated-climacoef climacoef]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+
+      ask patches with [paddock-c = 1] [
+        if any? cows-here [
+          set estimated-kmax mean [grass-height] of patches with [paddock-c = 1] * mean [soil-quality] of patches with [paddock-c = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-DM-cm-ha DM-cm-ha
+          set estimated-climacoef climacoef]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+
+      ask patches with [paddock-d = 1] [
+        if any? cows-here [
+          set estimated-kmax mean [grass-height] of patches with [paddock-d = 1] * mean [soil-quality] of patches with [paddock-d = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-DM-cm-ha DM-cm-ha
+          set estimated-climacoef climacoef]]
+
+
+    ask patches with [paddock-a = 1] [
+      if any? cows-here [
+        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-a = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+
+    ask patches with [paddock-b = 1] [
+      if any? cows-here [
+        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-b = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+
+    ask patches with [paddock-c = 1] [
+      if any? cows-here [
+        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-c = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+
+    ask patches with [paddock-d = 1] [
+      if any? cows-here [
+        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-d = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]]]
+
+
+    if (farmer-profile = "market") or (farmer-profile = "market-fsb") [                                                                                     ;; Market-oriented farmers move cows from one plot to another when the average live weight of the cows is below a threshold (determined by the "RG-live-weight-threshold" slider in the interface).
+      if any? cows with [born-calf? = false] [
+        if RG-market-farmer-live-weight-threshold > mean [live-weight] of cows with [born-calf? = false] ;and ticks-since-here > RG-days-in-paddock
+        [ ;; Once the animals are moved to the next paddock because they have met the criteria, because the effects of the new paddock on the animals' live weight take several days, and to avoid animals moving continuously from one paddock to another during these first days (because they will still have a value below the threshold), the minimum number of days the animals have to adapt to the new paddock before moving to the next is set with the "RG-days-in-paddock" slider.
+          set ticks-since-here 0
+          ask cows
+          [ifelse paddock-a = 1
+            [let next-paddock one-of patches with [paddock-b = 1] move-to next-paddock]
+            [ifelse paddock-b = 1
+              [let next-paddock one-of patches with [paddock-c = 1] move-to next-paddock]
+              [ifelse paddock-c = 1
+                [let next-paddock one-of patches with [paddock-d = 1] move-to next-paddock]
+                [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]]]]]]]]
+
+end
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ECONOMIC SUBMODEL PROCEDURES: Cattle prices, cattle sales (ordinary and extraordinary sales) and farm balance
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2545,12 +2627,6 @@ to ordinary-sale-non-replacement-females                                        
 end
 
 
-
-
-
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Cattle sales: extraordinary sales
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2619,9 +2695,6 @@ to extraordinary-sale-old-cows-market-farmer                                    
   ask cows with [sale?] [die]
 
  end
-
-
-
 
 
 
@@ -2916,14 +2989,10 @@ to effort
 
   ;; Rotational grazing effort                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
   if (spatial-management = "rotational grazing") [
-    if farmer-profile = "traditional" [if season-days >= season-length [set rotational-effort rotational-effort-time]]
-    if farmer-profile = "market" [if RG-market-farmer-live-weight-threshold > mean [live-weight] of cows and ticks-since-here >= RG-days-in-paddock [set rotational-effort rotational-effort-time]]
-    if farmer-profile = "environmental" [if season-days >= season-length [set rotational-effort rotational-effort-time]]]
-
-
-
-
-
+    if any? cows [
+      if farmer-profile = "traditional" [if season-days >= season-length [set rotational-effort rotational-effort-time]]
+      if farmer-profile = "market" [if RG-market-farmer-live-weight-threshold > mean [live-weight] of cows and ticks-since-here >= RG-days-in-paddock [set rotational-effort rotational-effort-time]]
+      if farmer-profile = "environmental" [if season-days >= season-length [set rotational-effort rotational-effort-time]]]]
 
 
   ;; Total effort                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -3275,7 +3344,7 @@ true
 true
 "" ""
 PENS
-"Cows" 1.0 0 -6459832 true "" "plot mean [live-weight] of cows with [adult-cow?]"
+"Adult cows" 1.0 0 -6459832 true "" "plot mean [live-weight] of cows with [adult-cow?]"
 "Average LW (all age classes)" 1.0 0 -7500403 true "" "plot mean [live-weight] of cows"
 
 MONITOR
@@ -3460,7 +3529,7 @@ true
 true
 "" ""
 PENS
-"Cows" 1.0 0 -6459832 true "" "plot mean [live-weight-gain] of cows with [adult-cow?] + mean [live-weight-gain-feed] of cows with [adult-cow?] + mean [live-weight-gain-feed-breeding] of cows with [adult-cow?]"
+"Adult cows" 1.0 0 -6459832 true "" "plot mean [live-weight-gain] of cows with [adult-cow?] + mean [live-weight-gain-feed] of cows with [adult-cow?] + mean [live-weight-gain-feed-breeding] of cows with [adult-cow?]"
 "Average LWG (all age classes)" 1.0 0 -7500403 true "" "plot mean [live-weight-gain] of cows + mean [live-weight-gain-feed] of cows + mean [live-weight-gain-feed-breeding] of cows"
 
 MONITOR
@@ -3840,7 +3909,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-50.0
+40.0
 1
 1
 years
@@ -3904,7 +3973,7 @@ CHOOSER
 spatial-management
 spatial-management
 "free grazing" "rotational grazing"
-1
+0
 
 CHOOSER
 10
@@ -4275,12 +4344,12 @@ HORIZONTAL
 CHOOSER
 237
 682
-389
+419
 727
 farmer-profile
 farmer-profile
-"none" "traditional" "market" "market-fsb" "environmental"
-4
+"none" "traditional" "market" "market-fsb" "environmental" "environmental-rot2" "environmental-fmincows"
+2
 
 TEXTBOX
 238
@@ -4352,10 +4421,10 @@ kg
 HORIZONTAL
 
 SLIDER
-4933
-210
-5116
-243
+4898
+213
+5081
+246
 controlled-breeding-season
 controlled-breeding-season
 0
@@ -4450,7 +4519,7 @@ keep-MIN-n-breeding-cows
 keep-MIN-n-breeding-cows
 0
 500
-10.0
+2.0
 1
 1
 NIL
@@ -4483,10 +4552,10 @@ paddock-SR
 11
 
 SLIDER
-234
-951
-423
-984
+5128
+162
+5328
+195
 RG-days-in-paddock
 RG-days-in-paddock
 0
@@ -5757,10 +5826,10 @@ sum [DDMC] of cows
 11
 
 PLOT
-1414
-494
-1976
-668
+1415
+495
+2077
+670
 Carrying capacity vs Livestock population
 Days
 Animal Units (AU)
@@ -5865,10 +5934,10 @@ kg/day
 HORIZONTAL
 
 MONITOR
-4948
-160
-5112
-205
+4914
+163
+5078
+208
 NIL
 days-until-breeding-season
 17
@@ -11305,10 +11374,10 @@ NetLogo 6.2.2
       <value value="11.1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="How-many-runs" repetitions="400" runMetricsEveryStep="true">
+  <experiment name="How-many-runs" repetitions="600" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
-    <timeLimit steps="18400"/>
+    <timeLimit steps="14720"/>
     <metric>count turtles</metric>
     <metric>simulation-time / 368</metric>
     <enumeratedValueSet variable="initial-num-heifers">
@@ -11402,7 +11471,7 @@ NetLogo 6.2.2
       <value value="30"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="STOP-SIMULATION-AT">
-      <value value="50"/>
+      <value value="40"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="climacoef-distribution">
       <value value="&quot;direct-climacoef-control&quot;"/>
@@ -11481,6 +11550,495 @@ NetLogo 6.2.2
     </enumeratedValueSet>
     <enumeratedValueSet variable="set-MW-1-AU">
       <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bull:cow-ratio">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="perception">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-summer">
+      <value value="15.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-spring">
+      <value value="22.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-heifers">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-live-weight-gain-max">
+      <value value="0.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-fall">
+      <value value="11.1"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="EXP_DIRECT_CLIMACOEF" repetitions="200" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="14720"/>
+    <metric>income</metric>
+    <metric>ordinary-sales-income</metric>
+    <metric>extraordinary-sales-income</metric>
+    <metric>cost</metric>
+    <metric>balance</metric>
+    <metric>total-effort / 60</metric>
+    <metric>total-effort-history-year / 60 ;; por confirmar el total-effort / 60</metric>
+    <metric>sum [kg-supplement-DM] of cows + sum [kg-supplement-DM-breeding] of cows ;; Total daily kg-supplement-DM (kg)</metric>
+    <metric>grass-height-report</metric>
+    <metric>carrying-capacity</metric>
+    <metric>estimated-carrying-capacity</metric>
+    <metric>sum [animal-units] of cows ;; Animal Units (AU)</metric>
+    <metric>stocking-rate</metric>
+    <metric>paddock-SR</metric>
+    <metric>count cows</metric>
+    <metric>count cows with [born-calf?]</metric>
+    <metric>count cows with [born-calf-female?]</metric>
+    <metric>count cows with [born-calf-male?]</metric>
+    <metric>count cows with [weaned-calf?]</metric>
+    <metric>count cows with [weaned-calf-female?]</metric>
+    <metric>count cows with [weaned-calf-male?]</metric>
+    <metric>count cows with [heifer?]</metric>
+    <metric>count cows with [steer?]</metric>
+    <metric>count cows with [cow?]</metric>
+    <metric>count cows with [cow-with-calf?]</metric>
+    <metric>count cows with [pregnant?]</metric>
+    <metric>count cows with [adult-cow?]</metric>
+    <metric>count cows with [bull?]</metric>
+    <metric>mean [live-weight] of cows</metric>
+    <metric>mean [live-weight] of cows with [born-calf?]</metric>
+    <metric>mean [live-weight] of cows with [born-calf-female?]</metric>
+    <metric>mean [live-weight] of cows with [born-calf-male?]</metric>
+    <metric>mean [live-weight] of cows with [weaned-calf?]</metric>
+    <metric>mean [live-weight] of cows with [weaned-calf-female?]</metric>
+    <metric>mean [live-weight] of cows with [weaned-calf-male?]</metric>
+    <metric>mean [live-weight] of cows with [heifer?]</metric>
+    <metric>mean [live-weight] of cows with [steer?]</metric>
+    <metric>mean [live-weight] of cows with [cow?]</metric>
+    <metric>mean [live-weight] of cows with [cow-with-calf?]</metric>
+    <metric>mean [live-weight] of cows with [pregnant?]</metric>
+    <metric>mean [live-weight] of cows with [adult-cow?]</metric>
+    <metric>mean [live-weight] of cows with [bull?]</metric>
+    <enumeratedValueSet variable="initial-weight-bulls">
+      <value value="260"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-MAX-n-breeding-cows">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-heifers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-weaned-calves">
+      <value value="150"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-1-AU">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="RG-market-farmer-live-weight-threshold">
+      <value value="245"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cow-min-weight-for-feed-sup">
+      <value value="240"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="min-weight-for-breeding">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="extraordinary-sale-of-cows-with">
+      <value value="&quot;lowest live weight&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="heifer/steer-min-weight-for-feed-sup">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="market-farmer-ES-min-weight">
+      <value value="225"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cow-with-calf-min-weight-for-feed-sup">
+      <value value="240"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="daily-DM-consumed-by-cattle">
+      <value value="8.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-steers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-steers">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="early-weaning-threshold">
+      <value value="230"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-cows">
+      <value value="260"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-other-monthly-costs">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-Y-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="sales-effort-time">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-winter">
+      <value value="7.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bull-min-weight-for-feed-sup">
+      <value value="240"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <steppedValueSet variable="set-direct-climacoef-control" first="0" step="0.01" last="1.5"/>
+    <enumeratedValueSet variable="set-DM-cm-ha">
+      <value value="180"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-grass-height">
+      <value value="7.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-MIN-n-breeding-cows">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rotational-effort-time">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="STOP-SIMULATION-AT">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="climacoef-distribution">
+      <value value="&quot;direct-climacoef-control&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="age-sell-old-cow/bull">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="controlled-breeding-season">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="other-daily-effort-time">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="supplement-effort-time">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-X-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="%-DM-available-for-cattle">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="weaned-calf-min-weight-for-feed-sup">
+      <value value="150"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spatial-management">
+      <value value="&quot;free grazing&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="feed-sup-conversion-ratio">
+      <value value="7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="farmer-profile">
+      <value value="&quot;traditional&quot;"/>
+      <value value="&quot;market&quot;"/>
+      <value value="&quot;market-fsb&quot;"/>
+      <value value="&quot;environmental&quot;"/>
+      <value value="&quot;environmental-rot2&quot;"/>
+      <value value="&quot;environmental-fmincows&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="RG-days-in-paddock">
+      <value value="31"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-season">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="ordinary-sale-of-cows-with">
+      <value value="&quot;lowest live weight&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="breeding-effort-time">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="soil-quality-distribution">
+      <value value="&quot;homogeneus&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="starting-paddock">
+      <value value="&quot;paddock a&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="weaning-effort-time">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-weaned-calves">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-cows">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-MW-1-AU">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bull:cow-ratio">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="perception">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-summer">
+      <value value="15.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-spring">
+      <value value="22.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-heifers">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-live-weight-gain-max">
+      <value value="0.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-fall">
+      <value value="11.1"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="EXP_CLIMACOEF_DTRB" repetitions="200" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="14720"/>
+    <metric>income</metric>
+    <metric>ordinary-sales-income</metric>
+    <metric>extraordinary-sales-income</metric>
+    <metric>cost</metric>
+    <metric>balance</metric>
+    <metric>total-effort / 60</metric>
+    <metric>total-effort-history-year / 60 ;; por confirmar el total-effort / 60</metric>
+    <metric>sum [kg-supplement-DM] of cows + sum [kg-supplement-DM-breeding] of cows ;; Total daily kg-supplement-DM (kg)</metric>
+    <metric>grass-height-report</metric>
+    <metric>carrying-capacity</metric>
+    <metric>estimated-carrying-capacity</metric>
+    <metric>sum [animal-units] of cows ;; Animal Units (AU)</metric>
+    <metric>stocking-rate</metric>
+    <metric>paddock-SR</metric>
+    <metric>count cows</metric>
+    <metric>count cows with [born-calf?]</metric>
+    <metric>count cows with [born-calf-female?]</metric>
+    <metric>count cows with [born-calf-male?]</metric>
+    <metric>count cows with [weaned-calf?]</metric>
+    <metric>count cows with [weaned-calf-female?]</metric>
+    <metric>count cows with [weaned-calf-male?]</metric>
+    <metric>count cows with [heifer?]</metric>
+    <metric>count cows with [steer?]</metric>
+    <metric>count cows with [cow?]</metric>
+    <metric>count cows with [cow-with-calf?]</metric>
+    <metric>count cows with [pregnant?]</metric>
+    <metric>count cows with [adult-cow?]</metric>
+    <metric>count cows with [bull?]</metric>
+    <metric>mean [live-weight] of cows</metric>
+    <metric>mean [live-weight] of cows with [born-calf?]</metric>
+    <metric>mean [live-weight] of cows with [born-calf-female?]</metric>
+    <metric>mean [live-weight] of cows with [born-calf-male?]</metric>
+    <metric>mean [live-weight] of cows with [weaned-calf?]</metric>
+    <metric>mean [live-weight] of cows with [weaned-calf-female?]</metric>
+    <metric>mean [live-weight] of cows with [weaned-calf-male?]</metric>
+    <metric>mean [live-weight] of cows with [heifer?]</metric>
+    <metric>mean [live-weight] of cows with [steer?]</metric>
+    <metric>mean [live-weight] of cows with [cow?]</metric>
+    <metric>mean [live-weight] of cows with [cow-with-calf?]</metric>
+    <metric>mean [live-weight] of cows with [pregnant?]</metric>
+    <metric>mean [live-weight] of cows with [adult-cow?]</metric>
+    <metric>mean [live-weight] of cows with [bull?]</metric>
+    <enumeratedValueSet variable="initial-weight-bulls">
+      <value value="260"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-MAX-n-breeding-cows">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-heifers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-weaned-calves">
+      <value value="150"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-1-AU">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="RG-market-farmer-live-weight-threshold">
+      <value value="245"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cow-min-weight-for-feed-sup">
+      <value value="240"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="min-weight-for-breeding">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="extraordinary-sale-of-cows-with">
+      <value value="&quot;lowest live weight&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="heifer/steer-min-weight-for-feed-sup">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="market-farmer-ES-min-weight">
+      <value value="225"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cow-with-calf-min-weight-for-feed-sup">
+      <value value="240"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="daily-DM-consumed-by-cattle">
+      <value value="8.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-steers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-steers">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="early-weaning-threshold">
+      <value value="230"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-cows">
+      <value value="260"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-other-monthly-costs">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-Y-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="sales-effort-time">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-winter">
+      <value value="7.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bull-min-weight-for-feed-sup">
+      <value value="240"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-direct-climacoef-control">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-DM-cm-ha">
+      <value value="180"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-grass-height">
+      <value value="7.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-MIN-n-breeding-cows">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rotational-effort-time">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="STOP-SIMULATION-AT">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="climacoef-distribution">
+      <value value="&quot;uniform&quot;"/>
+      <value value="&quot;normal&quot;"/>
+      <value value="&quot;exponential_low&quot;"/>
+      <value value="&quot;exponential_high&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="age-sell-old-cow/bull">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="controlled-breeding-season">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="other-daily-effort-time">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="supplement-effort-time">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-X-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="%-DM-available-for-cattle">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="weaned-calf-min-weight-for-feed-sup">
+      <value value="150"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spatial-management">
+      <value value="&quot;free grazing&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="feed-sup-conversion-ratio">
+      <value value="7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="farmer-profile">
+      <value value="&quot;traditional&quot;"/>
+      <value value="&quot;market&quot;"/>
+      <value value="&quot;market-fsb&quot;"/>
+      <value value="&quot;environmental&quot;"/>
+      <value value="&quot;environmental-rot2&quot;"/>
+      <value value="&quot;environmental-fmincows&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="RG-days-in-paddock">
+      <value value="31"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-season">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="ordinary-sale-of-cows-with">
+      <value value="&quot;lowest live weight&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="breeding-effort-time">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="soil-quality-distribution">
+      <value value="&quot;homogeneus&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="starting-paddock">
+      <value value="&quot;paddock a&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="weaning-effort-time">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-weaned-calves">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-cows">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-MW-1-AU">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-length">
+      <value value="92"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="bull:cow-ratio">
       <value value="30"/>
