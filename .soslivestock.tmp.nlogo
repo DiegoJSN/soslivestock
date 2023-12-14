@@ -11580,6 +11580,7 @@ NetLogo 6.2.2
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="14720"/>
+    <metric>simulation-time / 368</metric>
     <metric>income</metric>
     <metric>ordinary-sales-income</metric>
     <metric>extraordinary-sales-income</metric>
@@ -11697,7 +11698,7 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="fall-climacoef-homogeneus">
       <value value="1"/>
     </enumeratedValueSet>
-    <steppedValueSet variable="set-direct-climacoef-control" first="0" step="0.05" last="1.5"/>
+    <steppedValueSet variable="set-direct-climacoef-control" first="0.1" step="0.05" last="1.5"/>
     <enumeratedValueSet variable="set-DM-cm-ha">
       <value value="180"/>
     </enumeratedValueSet>
@@ -11819,10 +11820,11 @@ NetLogo 6.2.2
       <value value="11.1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="EXP_DIRECT_CLIMACOEF_market+market-fsb" repetitions="200" runMetricsEveryStep="true">
+  <experiment name="EXP_DIRECT_CLIMACOEF_traditional" repetitions="200" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="14720"/>
+    <metric>simulation-time / 368</metric>
     <metric>income</metric>
     <metric>ordinary-sales-income</metric>
     <metric>extraordinary-sales-income</metric>
@@ -11940,7 +11942,246 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="fall-climacoef-homogeneus">
       <value value="1"/>
     </enumeratedValueSet>
-    <steppedValueSet variable="set-direct-climacoef-control" first="0" step="0.05" last="1.5"/>
+    <steppedValueSet variable="set-direct-climacoef-control" first="0.1" step="0.05" last="1.5"/>
+    <enumeratedValueSet variable="set-DM-cm-ha">
+      <value value="180"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-grass-height">
+      <value value="7.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-MIN-n-breeding-cows">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rotational-effort-time">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="STOP-SIMULATION-AT">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="climacoef-distribution">
+      <value value="&quot;direct-climacoef-control&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="age-sell-old-cow/bull">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="controlled-breeding-season">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="other-daily-effort-time">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="supplement-effort-time">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-X-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="%-DM-available-for-cattle">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="weaned-calf-min-weight-for-feed-sup">
+      <value value="150"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spatial-management">
+      <value value="&quot;free grazing&quot;"/>
+      <value value="&quot;rotational grazing&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="feed-sup-conversion-ratio">
+      <value value="7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="farmer-profile">
+      <value value="&quot;traditional&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="RG-days-in-paddock">
+      <value value="31"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-season">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="ordinary-sale-of-cows-with">
+      <value value="&quot;lowest live weight&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="breeding-effort-time">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="soil-quality-distribution">
+      <value value="&quot;homogeneus&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="starting-paddock">
+      <value value="&quot;paddock a&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="weaning-effort-time">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-weaned-calves">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-cows">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-MW-1-AU">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bull:cow-ratio">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="perception">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-summer">
+      <value value="15.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-spring">
+      <value value="22.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-heifers">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-live-weight-gain-max">
+      <value value="0.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-fall">
+      <value value="11.1"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="EXP_DIRECT_CLIMACOEF_market" repetitions="200" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="14720"/>
+    <metric>simulation-time / 368</metric>
+    <metric>income</metric>
+    <metric>ordinary-sales-income</metric>
+    <metric>extraordinary-sales-income</metric>
+    <metric>cost</metric>
+    <metric>balance</metric>
+    <metric>total-effort / 60</metric>
+    <metric>total-effort-history-year / 60 ;; por confirmar el total-effort / 60</metric>
+    <metric>sum [kg-supplement-DM] of cows + sum [kg-supplement-DM-breeding] of cows ;; Total daily kg-supplement-DM (kg)</metric>
+    <metric>grass-height-report</metric>
+    <metric>carrying-capacity</metric>
+    <metric>estimated-carrying-capacity</metric>
+    <metric>sum [animal-units] of cows ;; Animal Units (AU)</metric>
+    <metric>stocking-rate</metric>
+    <metric>paddock-SR</metric>
+    <metric>count cows</metric>
+    <metric>count cows with [born-calf?]</metric>
+    <metric>count cows with [born-calf-female?]</metric>
+    <metric>count cows with [born-calf-male?]</metric>
+    <metric>count cows with [weaned-calf?]</metric>
+    <metric>count cows with [weaned-calf-female?]</metric>
+    <metric>count cows with [weaned-calf-male?]</metric>
+    <metric>count cows with [heifer?]</metric>
+    <metric>count cows with [steer?]</metric>
+    <metric>count cows with [cow?]</metric>
+    <metric>count cows with [cow-with-calf?]</metric>
+    <metric>count cows with [pregnant?]</metric>
+    <metric>count cows with [adult-cow?]</metric>
+    <metric>count cows with [bull?]</metric>
+    <metric>mean [live-weight] of cows</metric>
+    <metric>mean [live-weight] of cows with [born-calf?]</metric>
+    <metric>mean [live-weight] of cows with [born-calf-female?]</metric>
+    <metric>mean [live-weight] of cows with [born-calf-male?]</metric>
+    <metric>mean [live-weight] of cows with [weaned-calf?]</metric>
+    <metric>mean [live-weight] of cows with [weaned-calf-female?]</metric>
+    <metric>mean [live-weight] of cows with [weaned-calf-male?]</metric>
+    <metric>mean [live-weight] of cows with [heifer?]</metric>
+    <metric>mean [live-weight] of cows with [steer?]</metric>
+    <metric>mean [live-weight] of cows with [cow?]</metric>
+    <metric>mean [live-weight] of cows with [cow-with-calf?]</metric>
+    <metric>mean [live-weight] of cows with [pregnant?]</metric>
+    <metric>mean [live-weight] of cows with [adult-cow?]</metric>
+    <metric>mean [live-weight] of cows with [bull?]</metric>
+    <enumeratedValueSet variable="initial-weight-bulls">
+      <value value="260"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-MAX-n-breeding-cows">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-heifers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-weaned-calves">
+      <value value="150"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-1-AU">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="RG-market-farmer-live-weight-threshold">
+      <value value="245"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cow-min-weight-for-feed-sup">
+      <value value="240"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="min-weight-for-breeding">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="extraordinary-sale-of-cows-with">
+      <value value="&quot;lowest live weight&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="heifer/steer-min-weight-for-feed-sup">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="market-farmer-ES-min-weight">
+      <value value="225"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cow-with-calf-min-weight-for-feed-sup">
+      <value value="240"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="daily-DM-consumed-by-cattle">
+      <value value="8.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-steers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-steers">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="early-weaning-threshold">
+      <value value="230"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-cows">
+      <value value="260"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-other-monthly-costs">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-Y-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="sales-effort-time">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-winter">
+      <value value="7.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bull-min-weight-for-feed-sup">
+      <value value="240"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <steppedValueSet variable="set-direct-climacoef-control" first="0.1" step="0.05" last="1.5"/>
     <enumeratedValueSet variable="set-DM-cm-ha">
       <value value="180"/>
     </enumeratedValueSet>
@@ -11995,6 +12236,244 @@ NetLogo 6.2.2
     </enumeratedValueSet>
     <enumeratedValueSet variable="farmer-profile">
       <value value="&quot;market&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="RG-days-in-paddock">
+      <value value="31"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-season">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="ordinary-sale-of-cows-with">
+      <value value="&quot;lowest live weight&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="breeding-effort-time">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="soil-quality-distribution">
+      <value value="&quot;homogeneus&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="starting-paddock">
+      <value value="&quot;paddock a&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="weaning-effort-time">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-weaned-calves">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-cows">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-MW-1-AU">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bull:cow-ratio">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="perception">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-summer">
+      <value value="15.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-spring">
+      <value value="22.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-heifers">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-live-weight-gain-max">
+      <value value="0.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-fall">
+      <value value="11.1"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="EXP_DIRECT_CLIMACOEF_market-fsb" repetitions="200" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="14720"/>
+    <metric>simulation-time / 368</metric>
+    <metric>income</metric>
+    <metric>ordinary-sales-income</metric>
+    <metric>extraordinary-sales-income</metric>
+    <metric>cost</metric>
+    <metric>balance</metric>
+    <metric>total-effort / 60</metric>
+    <metric>total-effort-history-year / 60 ;; por confirmar el total-effort / 60</metric>
+    <metric>sum [kg-supplement-DM] of cows + sum [kg-supplement-DM-breeding] of cows ;; Total daily kg-supplement-DM (kg)</metric>
+    <metric>grass-height-report</metric>
+    <metric>carrying-capacity</metric>
+    <metric>estimated-carrying-capacity</metric>
+    <metric>sum [animal-units] of cows ;; Animal Units (AU)</metric>
+    <metric>stocking-rate</metric>
+    <metric>paddock-SR</metric>
+    <metric>count cows</metric>
+    <metric>count cows with [born-calf?]</metric>
+    <metric>count cows with [born-calf-female?]</metric>
+    <metric>count cows with [born-calf-male?]</metric>
+    <metric>count cows with [weaned-calf?]</metric>
+    <metric>count cows with [weaned-calf-female?]</metric>
+    <metric>count cows with [weaned-calf-male?]</metric>
+    <metric>count cows with [heifer?]</metric>
+    <metric>count cows with [steer?]</metric>
+    <metric>count cows with [cow?]</metric>
+    <metric>count cows with [cow-with-calf?]</metric>
+    <metric>count cows with [pregnant?]</metric>
+    <metric>count cows with [adult-cow?]</metric>
+    <metric>count cows with [bull?]</metric>
+    <metric>mean [live-weight] of cows</metric>
+    <metric>mean [live-weight] of cows with [born-calf?]</metric>
+    <metric>mean [live-weight] of cows with [born-calf-female?]</metric>
+    <metric>mean [live-weight] of cows with [born-calf-male?]</metric>
+    <metric>mean [live-weight] of cows with [weaned-calf?]</metric>
+    <metric>mean [live-weight] of cows with [weaned-calf-female?]</metric>
+    <metric>mean [live-weight] of cows with [weaned-calf-male?]</metric>
+    <metric>mean [live-weight] of cows with [heifer?]</metric>
+    <metric>mean [live-weight] of cows with [steer?]</metric>
+    <metric>mean [live-weight] of cows with [cow?]</metric>
+    <metric>mean [live-weight] of cows with [cow-with-calf?]</metric>
+    <metric>mean [live-weight] of cows with [pregnant?]</metric>
+    <metric>mean [live-weight] of cows with [adult-cow?]</metric>
+    <metric>mean [live-weight] of cows with [bull?]</metric>
+    <enumeratedValueSet variable="initial-weight-bulls">
+      <value value="260"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-MAX-n-breeding-cows">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-heifers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-weaned-calves">
+      <value value="150"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-1-AU">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="RG-market-farmer-live-weight-threshold">
+      <value value="245"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cow-min-weight-for-feed-sup">
+      <value value="240"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="min-weight-for-breeding">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="extraordinary-sale-of-cows-with">
+      <value value="&quot;lowest live weight&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="heifer/steer-min-weight-for-feed-sup">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="market-farmer-ES-min-weight">
+      <value value="225"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cow-with-calf-min-weight-for-feed-sup">
+      <value value="240"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="daily-DM-consumed-by-cattle">
+      <value value="8.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-steers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-steers">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="early-weaning-threshold">
+      <value value="230"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-cows">
+      <value value="260"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-other-monthly-costs">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-Y-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="sales-effort-time">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-winter">
+      <value value="7.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bull-min-weight-for-feed-sup">
+      <value value="240"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <steppedValueSet variable="set-direct-climacoef-control" first="0.1" step="0.05" last="1.5"/>
+    <enumeratedValueSet variable="set-DM-cm-ha">
+      <value value="180"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-grass-height">
+      <value value="7.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-MIN-n-breeding-cows">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rotational-effort-time">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="STOP-SIMULATION-AT">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="climacoef-distribution">
+      <value value="&quot;direct-climacoef-control&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="age-sell-old-cow/bull">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="controlled-breeding-season">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="other-daily-effort-time">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="supplement-effort-time">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-X-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="%-DM-available-for-cattle">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="weaned-calf-min-weight-for-feed-sup">
+      <value value="150"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spatial-management">
+      <value value="&quot;free grazing&quot;"/>
+      <value value="&quot;rotational grazing&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="feed-sup-conversion-ratio">
+      <value value="7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="farmer-profile">
       <value value="&quot;market-fsb&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="RG-days-in-paddock">
@@ -12058,10 +12537,11 @@ NetLogo 6.2.2
       <value value="11.1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="EXP_DIRECT_CLIMACOEF_env+env-rot2" repetitions="200" runMetricsEveryStep="true">
+  <experiment name="EXP_DIRECT_CLIMACOEF_environmental" repetitions="200" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="14720"/>
+    <metric>simulation-time / 368</metric>
     <metric>income</metric>
     <metric>ordinary-sales-income</metric>
     <metric>extraordinary-sales-income</metric>
@@ -12179,7 +12659,7 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="fall-climacoef-homogeneus">
       <value value="1"/>
     </enumeratedValueSet>
-    <steppedValueSet variable="set-direct-climacoef-control" first="0" step="0.05" last="1.5"/>
+    <steppedValueSet variable="set-direct-climacoef-control" first="0.1" step="0.05" last="1.5"/>
     <enumeratedValueSet variable="set-DM-cm-ha">
       <value value="180"/>
     </enumeratedValueSet>
@@ -12234,6 +12714,244 @@ NetLogo 6.2.2
     </enumeratedValueSet>
     <enumeratedValueSet variable="farmer-profile">
       <value value="&quot;environmental&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="RG-days-in-paddock">
+      <value value="31"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-season">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="ordinary-sale-of-cows-with">
+      <value value="&quot;lowest live weight&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="breeding-effort-time">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="soil-quality-distribution">
+      <value value="&quot;homogeneus&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="starting-paddock">
+      <value value="&quot;paddock a&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="weaning-effort-time">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-weaned-calves">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-cows">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-MW-1-AU">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="winter-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bull:cow-ratio">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="perception">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-summer">
+      <value value="15.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-spring">
+      <value value="22.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-heifers">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-live-weight-gain-max">
+      <value value="0.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-fall">
+      <value value="11.1"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="EXP_DIRECT_CLIMACOEF_environmental-rot2" repetitions="200" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="14720"/>
+    <metric>simulation-time / 368</metric>
+    <metric>income</metric>
+    <metric>ordinary-sales-income</metric>
+    <metric>extraordinary-sales-income</metric>
+    <metric>cost</metric>
+    <metric>balance</metric>
+    <metric>total-effort / 60</metric>
+    <metric>total-effort-history-year / 60 ;; por confirmar el total-effort / 60</metric>
+    <metric>sum [kg-supplement-DM] of cows + sum [kg-supplement-DM-breeding] of cows ;; Total daily kg-supplement-DM (kg)</metric>
+    <metric>grass-height-report</metric>
+    <metric>carrying-capacity</metric>
+    <metric>estimated-carrying-capacity</metric>
+    <metric>sum [animal-units] of cows ;; Animal Units (AU)</metric>
+    <metric>stocking-rate</metric>
+    <metric>paddock-SR</metric>
+    <metric>count cows</metric>
+    <metric>count cows with [born-calf?]</metric>
+    <metric>count cows with [born-calf-female?]</metric>
+    <metric>count cows with [born-calf-male?]</metric>
+    <metric>count cows with [weaned-calf?]</metric>
+    <metric>count cows with [weaned-calf-female?]</metric>
+    <metric>count cows with [weaned-calf-male?]</metric>
+    <metric>count cows with [heifer?]</metric>
+    <metric>count cows with [steer?]</metric>
+    <metric>count cows with [cow?]</metric>
+    <metric>count cows with [cow-with-calf?]</metric>
+    <metric>count cows with [pregnant?]</metric>
+    <metric>count cows with [adult-cow?]</metric>
+    <metric>count cows with [bull?]</metric>
+    <metric>mean [live-weight] of cows</metric>
+    <metric>mean [live-weight] of cows with [born-calf?]</metric>
+    <metric>mean [live-weight] of cows with [born-calf-female?]</metric>
+    <metric>mean [live-weight] of cows with [born-calf-male?]</metric>
+    <metric>mean [live-weight] of cows with [weaned-calf?]</metric>
+    <metric>mean [live-weight] of cows with [weaned-calf-female?]</metric>
+    <metric>mean [live-weight] of cows with [weaned-calf-male?]</metric>
+    <metric>mean [live-weight] of cows with [heifer?]</metric>
+    <metric>mean [live-weight] of cows with [steer?]</metric>
+    <metric>mean [live-weight] of cows with [cow?]</metric>
+    <metric>mean [live-weight] of cows with [cow-with-calf?]</metric>
+    <metric>mean [live-weight] of cows with [pregnant?]</metric>
+    <metric>mean [live-weight] of cows with [adult-cow?]</metric>
+    <metric>mean [live-weight] of cows with [bull?]</metric>
+    <enumeratedValueSet variable="initial-weight-bulls">
+      <value value="260"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-MAX-n-breeding-cows">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-heifers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-weaned-calves">
+      <value value="150"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-1-AU">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="RG-market-farmer-live-weight-threshold">
+      <value value="245"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cow-min-weight-for-feed-sup">
+      <value value="240"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="min-weight-for-breeding">
+      <value value="380"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="extraordinary-sale-of-cows-with">
+      <value value="&quot;lowest live weight&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="heifer/steer-min-weight-for-feed-sup">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="market-farmer-ES-min-weight">
+      <value value="225"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cow-with-calf-min-weight-for-feed-sup">
+      <value value="240"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="daily-DM-consumed-by-cattle">
+      <value value="8.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-num-steers">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-steers">
+      <value value="220"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-length">
+      <value value="92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="early-weaning-threshold">
+      <value value="230"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-weight-cows">
+      <value value="260"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-other-monthly-costs">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-Y-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="sales-effort-time">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="K-winter">
+      <value value="7.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bull-min-weight-for-feed-sup">
+      <value value="240"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fall-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <steppedValueSet variable="set-direct-climacoef-control" first="0.1" step="0.05" last="1.5"/>
+    <enumeratedValueSet variable="set-DM-cm-ha">
+      <value value="180"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-grass-height">
+      <value value="7.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="keep-MIN-n-breeding-cows">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rotational-effort-time">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="STOP-SIMULATION-AT">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="climacoef-distribution">
+      <value value="&quot;direct-climacoef-control&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="age-sell-old-cow/bull">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="summer-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="controlled-breeding-season">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="other-daily-effort-time">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="supplement-effort-time">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-X-size">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="%-DM-available-for-cattle">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="weaned-calf-min-weight-for-feed-sup">
+      <value value="150"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spring-climacoef-homogeneus">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spatial-management">
+      <value value="&quot;free grazing&quot;"/>
+      <value value="&quot;rotational grazing&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="feed-sup-conversion-ratio">
+      <value value="7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="farmer-profile">
       <value value="&quot;environmental-rot2&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="RG-days-in-paddock">
@@ -12297,10 +13015,11 @@ NetLogo 6.2.2
       <value value="11.1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="EXP_DIRECT_CLIMACOEF_tradit+env-fmincows" repetitions="200" runMetricsEveryStep="true">
+  <experiment name="EXP_DIRECT_CLIMACOEF_environmental-fmincows" repetitions="200" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="14720"/>
+    <metric>simulation-time / 368</metric>
     <metric>income</metric>
     <metric>ordinary-sales-income</metric>
     <metric>extraordinary-sales-income</metric>
@@ -12418,7 +13137,7 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="fall-climacoef-homogeneus">
       <value value="1"/>
     </enumeratedValueSet>
-    <steppedValueSet variable="set-direct-climacoef-control" first="0" step="0.05" last="1.5"/>
+    <steppedValueSet variable="set-direct-climacoef-control" first="0.1" step="0.05" last="1.5"/>
     <enumeratedValueSet variable="set-DM-cm-ha">
       <value value="180"/>
     </enumeratedValueSet>
@@ -12472,7 +13191,6 @@ NetLogo 6.2.2
       <value value="7"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="farmer-profile">
-      <value value="&quot;traditional&quot;"/>
       <value value="&quot;environmental-fmincows&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="RG-days-in-paddock">
