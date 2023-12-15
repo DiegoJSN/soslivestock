@@ -17,355 +17,217 @@ globals [
   current-season-name                                                               ;; translates the numbers "0, 1, 2, 3" to "winter, spring, summer, fall"
   season-coef                                                                       ;; affects the live weight gain of animals in relation with the grass quality according to the season: winter = 1, spring = 1.15, summer = 1.05, fall = 1
   climacoef                                                                         ;; climacoef relates the primary production in a season with the average for that season due to climate variations. Takes values from 0.1 to 1.5, and is set by the observer in the interface
-  historic-climacoef                                                                ;; in case the observer wants to use historical values for climacoef. For the model to use "historic-climacoef" values, the observer must select the "historic-climacoef" option within the "climacoef-distribution" chooser in the interface.
-  direct-climacoef-control                                                          ;; allows the user to change the climate coefficient in real time (i.e. while the simulation is running)
-  estimated-climacoef                                                               ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW variable usada por el environmental farmer para estimar la capacidad de carga del sistema
+  historic-climacoef                                                                ;; in case the observer wants to use historical values for climacoef. For the model to use "historic-climacoef" values, the observer must select the "historic-climacoef" option within the "climacoef-distribution" chooser in the interface, and enter the historic climacoef values within the "setup-globals" procedure
+  direct-climacoef-control                                                          ;; in case the observer wants to change the climate coefficient in real time (i.e. while the simulation is running), the observer must select the "direct-climacoef-control" option within the "climacoef-distribution" chooser in the interface, and select the desired climacoef value using the "set-direct-climacoef-control" slider in the interface
+  estimated-climacoef                                                               ;; the environmental farmer uses the climacoef value present at the beginning of the season to estimate the carrying capacity of the system during that season
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Time related global variables
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   days-per-tick                                                                     ;; simulate time
   number-of-season                                                                  ;; keep track of the number of seasons that have passed since the start of the simulation
-  simulation-time                                                                   ;; keep track of the days of the simulation
-  season-days                                                                       ;; keep track of the days that have passed since the start of the season
+  season-length                                                                     ;; determines season length (from 1 to 368 days. 92 days by default). Set by the observer in the interface
+  simulation-time                                                                   ;; keep track of the days that have passed since the start of the simulation
+  season-days                                                                       ;; keep track of the days that have passed since the start of the season (values from 1 to 92 by default)
   year-days                                                                         ;; keep track of the days that have passed since the start of a year (values from 1 to 368)
-  season-length                                                                     ;; determines season length (from 1 to 368). Set by the observer in the interface
+  days-until-breeding-season                                                        ;; it measures the number of days left until the start of the breeding season. The breeding season is set using the "controlled-breeding-season" slider in the interface.
+  ticks-since-here                                                                  ;; DEACTIVATED ;; only for the rotational grazing strategy. It measures the number of days since the animals were moved to a new paddock. This variable is important to prevent animals from continuously moving from one paddock to another once they have met the criteria to move to the next paddock. Once animals have met the criteria, they will move to the next paddock and wait X days (defined by the "RG-days-in-paddock" slider in the interface) to acclimate to the new paddock. Once those days have passed, if the animals still meet the criteria to move between paddocks, they will move.
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Grass related global variables
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  kmax                                                                              ;; maximum carrying capacity (maximum grass height), it varies according to the season: winter= 7.4 cm, spring= 22.2 cm, summer= 15.6 cm, fall= 11.1 cm
-  DM-cm-ha                                                                          ;; quantity of dry matter contained in one centimeter per hectare. Set by the observer in the interface
+  kmax                                                                              ;; maximum carrying capacity (maximum grass height), it varies according to the season. Values by default: winter= 7.4 cm, spring= 22.2 cm, summer= 15.6 cm, fall= 11.1 cm. These values can be changed by the observer using the "k-winter, k-spring, k-summer, k-fall" sliders in the interface
+  DM-cm-ha                                                                          ;; quantity of dry matter contained in one centimeter per hectare. Set by the observer using the "set-DM-cm-ha" slider in the interface
   grass-energy                                                                      ;; metabolizable energy per Kg of dry matter: 1.8 Mcal/Kg of DM
-
-  carrying-capacity                                                                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  estimated-kmax                                                                    ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW variable usada por el environmental farmer para estimar la K (en cm) del sistema
-  estimated-DM-cm-ha                                                                ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW variable usada por el environmental farmer para estimar los kgMS del sistema
-  estimated-carrying-capacity                                                       ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW variable usada por el environmental farmer para estimar la capacidad de carga del sistema
+  carrying-capacity                                                                 ;; system current carrying capacity expressed in animal units (AU)
+  estimated-carrying-capacity                                                       ;; carrying capacity of the system (expressed in AU) as estimated by the environmental farmer
+  estimated-kmax                                                                    ;; the environmental farmer uses the grass height present at the beginning of the season to estimate the carrying capacity of the system during that season
+  estimated-DM-cm-ha                                                                ;; the environmental farmer uses the DM-cm-ha value present at the beginning of the season to estimate the carrying capacity of the system during that season
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Livestock related global variables
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   maxLWG                                                                            ;; defines the maximum live weight gain per animal according to the season: spring = 60 Kg/animal; winter, summer and fall = 40 Kg/animal.
-
   maxLWcow                                                                          ;; defines the maximum live weight for cows (650 kg)
   maxLWbull                                                                         ;; defines the maximum live weight for steers and bulls (1000 kg)
-
-  ni                                                                                ;; defines the live weight gain per animal: 0.24 1/cm
-  xi                                                                                ;; defines the live weight gain per animal: 132 kg
+  ni                                                                                ;; affects the live weight gain per animal: 0.24 1/cm
+  xi                                                                                ;; affects the live weight gain per animal: 132 kg
   weaned-calf-age-min                                                               ;; beginning of the “weaned-calf” age class of the livestock life cycle: 246 days
-  heifer-age-min                                                                    ;; beginning of the “heifer” (for female calves) or “steer” (for male calves) age class of the livestock life cycle: 369 days
+  heifer-age-min                                                                    ;; beginning of the “heifer” (for female calves), “steer” and "bull" (for male calves) age class of the livestock life cycle: 369 days
   cow-age-min                                                                       ;; beginning of the “cow” age class for heifers: 737 days
   cow-age-max                                                                       ;; life expectancy of cattle: 5520 days
   gestation-period                                                                  ;; gestation period of pregnant cows: 276 days
   lactation-period                                                                  ;; lactating period of cows with calves: 246 days
   weight-gain-lactation                                                             ;; affects the live weight gain of lactating animals (i.e., “born-calf” age class): 0.61 Kg/day
 
-  ticks-since-here                                                                  ;; for rotational grazing strategies only, it measures the number of days since the animals were moved to a new paddock. This variable is important to prevent animals from continuously moving from one paddock to another once they have met the criteria to move to the next paddock. Once animals have met the criteria, they will move to the next paddock and wait X days (defined by the RG-days-in-paddock slider in the interface) to acclimate to the new paddock. Once those days have passed, if the animals still meet the criteria to move between paddocks, they will move.
-
-  days-until-breeding-season                                                        ;; NEWWWWWWWWWWWWWWW;; FEED SUPPLEMENTATION (FOR BREEDING) MODULE
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Market prices & economic balance global variables
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  supplement-prices                                                                 ;;## SALES MODULE ;; costs for feeding the animals with food supplements (grains, USD/Kg).
-  born-calf-prices                                                                  ;;## SALES MODULE ;; market prices per kg for born calves (USD/Kg).
-  weaned-calf-prices                                                                ;;## SALES MODULE ;; market prices per kg for weaned calves (USD/Kg).
-  steer-prices                                                                      ;;## SALES MODULE ;; market prices per kg for steers (USD/Kg).
-  heifer-prices                                                                     ;;## SALES MODULE ;; market prices per kg for empty heifers (USD/Kg).
-  cow-prices                                                                        ;;## SALES MODULE ;; market prices per kg for empty cows (USD/Kg).
-  cow-with-calf-prices                                                              ;;## SALES MODULE ;; market prices per kg for lactating cows (USD/Kg).
-  pregnant-prices                                                                   ;;## SALES MODULE ;; market prices per kg for pregnant cows (USD/Kg).
+  supplement-prices                                                                 ;; costs for feeding the animals with food supplements (USD/Kg)
+  born-calf-prices                                                                  ;; market prices per kg for born calves (USD/Kg)
+  weaned-calf-prices                                                                ;; market prices per kg for weaned calves (USD/Kg)
+  steer-prices                                                                      ;; market prices per kg for steers (USD/Kg)
+  heifer-prices                                                                     ;; market prices per kg for empty heifers (USD/Kg)
+  cow-prices                                                                        ;; market prices per kg for empty cows (USD/Kg)
+  cow-with-calf-prices                                                              ;; market prices per kg for lactating cows (USD/Kg)
+  pregnant-prices                                                                   ;; market prices per kg for pregnant cows (USD/Kg)
+  bull-prices                                                                       ;; market prices per kg for bulls (USD/Kg)
 
-  bull-prices                                                                       ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  OS-females-weaned-calf                                                            ;; income from the sale of female weaned calves during ordinary sales
+  OS-males-weaned-calf                                                              ;; income from the sale of male weaned calves during ordinary sales
+  OS-males-steer                                                                    ;; income from the sale of steers during ordinary sales
+  OS-old-cow                                                                        ;; income from the sale of old cows during ordinary sales
+  OS-heifer                                                                         ;; income from the sale of heifers during ordinary sales
+  OS-cow                                                                            ;; income from the sale of cows during ordinary sales
+  OS-bull                                                                           ;; income from the sale of bulls during ordinary sales
+  OS-old-bull                                                                       ;; income from the sale of old bulls during ordinary sales
 
+  ES-females-weaned-calf                                                            ;; income from the sale of female weaned calves during extraordinary sales
+  ES-males-weaned-calf                                                              ;; income from the sale of male weaned calves during extraordinary sales
+  ES-males-steer                                                                    ;; income from the sale of steers during extraordinary sales
+  ES-old-cow                                                                        ;; income from the sale of old cows during extraordinary sales
+  ES-heifer                                                                         ;; income from the sale of heifers during extraordinary sales
+  ES-cow                                                                            ;; income from the sale of empty cows during extraordinary sales
+  ES-bull                                                                           ;; DEACTIVATED ;; income from the sale of bulls during extraordinary sales
 
-  OS-females-weaned-calf                                                            ;;FEMALESALESNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ordinary-sales-income                                                             ;; total income from ordinary sales
+  extraordinary-sales-income                                                        ;; total income from extraordinary sales
 
+  FS-cow                                                                            ;; cost of supplementing adult cows
+  FSB-cow                                                                           ;; the market farmer gives extra supplements to adult cows when the breeding season is approaching
+  FS-cow-with-calf                                                                  ;; cost of supplementing cows with calves
+  FS-heifer                                                                         ;; cost of supplementing heifers
+  FS-steer                                                                          ;; cost of supplementing steers
+  FS-weaned-calf                                                                    ;; cost of supplementing weaned calves
+  FS-bull                                                                           ;; cost of supplementing bulls
 
-  OS-males-weaned-calf                                                              ;;## ORDINARY SALES MODULE ;; income from the sale of male weaned calves during ordinary sales.
-  OS-males-steer                                                                    ;;## ORDINARY SALES MODULE ;; income from the sale of steers during ordinary sales.
-  OS-old-cow                                                                        ;;## ORDINARY SALES MODULE ;; income from the sale of old cows during ordinary sales.
-  OS-heifer                                                                         ;;## ORDINARY SALES MODULE ;; income from the sale of heifers during ordinary sales.
-  OS-cow                                                                            ;;## ORDINARY SALES MODULE ;; income from the sale of cows during ordinary sales.
+  supplement-cost                                                                   ;; total cost of feed supplementation
+  other-cost                                                                        ;; DEACTIVATED ;; other costs associated with the livestock system
 
-  OS-bull                                                                           ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  OS-old-bull
+  cost                                                                              ;; total costs resulting from the livestock system (supplement cost + other cost)
+  income                                                                            ;; total income (ordinary + extraordinary sales)
+  balance                                                                           ;; balance (income - cost)
 
-
-
-
-  ES-females-weaned-calf                                                            ;;FEMALESALESNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  ES-males-weaned-calf                                                              ;;## EXTRAORDINARY SALES MODULE ;; income from the sale of male weaned calves during extraordinary sales.
-  ES-males-steer                                                                    ;;## EXTRAORDINARY SALES MODULE ;; income from the sale of steers during extraordinary sales.
-  ES-old-cow                                                                        ;;## EXTRAORDINARY SALES MODULE ;; income from the sale of old cows during extraordinary sales.
-  ES-heifer                                                                         ;;## EXTRAORDINARY SALES MODULE ;; income from the sale of heifers during extraordinary sales.
-  ES-cow                                                                            ;;## EXTRAORDINARY SALES MODULE ;; income from the sale of empty cows during extraordinary sales.
-
-  ES-bull                                                                           ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  ordinary-sales-income                                                             ;;## ORDINARY SALES MODULE ;; total income from ordinary sales
-  extraordinary-sales-income                                                        ;;## EXTRAORDINARY SALES MODULE ;; total income from extraordinary sales
-
-  FS-cow                                                                            ;;## FEED SUPPLEMENTATION MODULE ;; cost of supplementing adult cows
-  FS-cow-with-calf                                                                  ;;## FEED SUPPLEMENTATION MODULE ;; cost of supplementing cows with calves
-  FS-heifer                                                                         ;;## FEED SUPPLEMENTATION MODULE ;; cost of supplementing heifers
-  FS-steer                                                                          ;;## FEED SUPPLEMENTATION MODULE ;; cost of supplementing steers
-  FS-weaned-calf                                                                    ;;## FEED SUPPLEMENTATION MODULE ;; cost of supplementing weaned calves
-
-  FS-bull                                                                           ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  supplement-cost                                                                   ;;## FEED SUPPLEMENTATION MODULE ;; total cost of feed supplementation
-
-  FSB-cow                                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW ;; Feed supplementation for breeding cows
-
-  other-cost                                                                        ;;## SALES MODULE ;; other costs associated with the livestock system
-
-  cost                                                                              ;;## SALES MODULE ;; total costs resulting from the livestock system (supplement cost + other cost)
-  income                                                                            ;;## SALES MODULE ;; total income (ordinary + extraordinary sales)
-  balance                                                                           ;;## SALES MODULE ;; balance (income - cost)
-
-  cost-history                                                                      ;;## SALES MODULE ;; variable to store the cost history of the system
-  cost-historyXticks                                                                ;;## SALES MODULE ;; costs of the system since the start of the simulation
-
-  income-history                                                                    ;;## SALES MODULE ;; variable to store the income history of the system
-  income-historyXticks                                                              ;;## SALES MODULE ;; income of the system since the start of the simulation
-
-  balance-history                                                                   ;;## SALES MODULE ;; variable to store the balance history of the system
-  balance-historyXticks                                                             ;;## SALES MODULE ;; balance of the system since the start of the simulation (i.e., savings)
-
+  cost-history                                                                      ;; variable to store the cost history of the system
+  cost-historyXticks                                                                ;; costs of the system since the start of the simulation
+  income-history                                                                    ;; variable to store the income history of the system
+  income-historyXticks                                                              ;; income of the system since the start of the simulation
+  balance-history                                                                   ;; variable to store the balance history of the system
+  balance-historyXticks                                                             ;; balance (i.e., savings) of the system since the start of the simulation
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Wellbeing related global variables                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+;; Wellbeing related global variables
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  supplement-effort                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  supplement-effort-history
-  supplement-effort-historyXticks
-
-  supplement-effort-history-season                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  supplement-effort-historyXticks-season                                         ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  supplement-effort-history-year                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  supplement-effort-historyXticks-year                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-  weaning-effort
-
-  weaning-effort-history                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  weaning-effort-historyXticks
-
-  weaning-effort-history-season                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  weaning-effort-historyXticks-season                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  weaning-effort-history-year                                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  weaning-effort-historyXticks-year                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
-  OS-males-effort                                                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  OS-males-effort-history                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  OS-males-effort-historyXticks
-
-  OS-males-effort-history-season                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  OS-males-effort-historyXticks-season                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  OS-males-effort-history-year                                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  OS-males-effort-historyXticks-year                                             ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
-  OS-old-cow-effort                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  OS-old-cow-effort-history                                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  OS-old-cow-effort-historyXticks
-
-  OS-old-cow-effort-history-season                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  OS-old-cow-effort-historyXticks-season                                         ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  OS-old-cow-effort-history-year                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  OS-old-cow-effort-historyXticks-year                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
-
-  OS-old-bull-effort
-
-  OS-old-bull-effort-history
-  OS-old-bull-effort-historyXticks
-
-  OS-old-bull-effort-history-season
-  OS-old-bull-effort-historyXticks-season
-  OS-old-bull-effort-history-year
-  OS-old-bull-effort-historyXticks-year
-
-
-
-
-
-
-
-
-
-
-  OS-females-effort                                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  OS-females-effort-history                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  OS-females-effort-historyXticks
-
-  OS-females-effort-history-season                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  OS-females-effort-historyXticks-season                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  OS-females-effort-history-year                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  OS-females-effort-historyXticks-year                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
-  OS-total-effort                                                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  OS-total-effort-history
-
-  OS-total-effort-history-season                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  OS-total-effort-history-year                                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
-  ES-males-effort                                                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  ES-males-effort-history                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  ES-males-effort-historyXticks
-
-  ES-males-effort-history-season                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  ES-males-effort-historyXticks-season                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  ES-males-effort-history-year                                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  ES-males-effort-historyXticks-year                                             ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
-  ES-old-cow-effort                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  ES-old-cow-effort-history                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  ES-old-cow-effort-historyXticks
-
-  ES-old-cow-effort-history-season                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  ES-old-cow-effort-historyXticks-season                                         ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  ES-old-cow-effort-history-year                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  ES-old-cow-effort-historyXticks-year                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
-  ES-females-effort                                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  ES-females-effort-history                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  ES-females-effort-historyXticks
-
-  ES-females-effort-history-season                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  ES-females-effort-historyXticks-season                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  ES-females-effort-history-year                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  ES-females-effort-historyXticks-year                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
-  ES-total-effort                                                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  ES-total-effort-history                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  ES-total-effort-history-season                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  ES-total-effort-history-year                                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
-  breeding-effort
-
-  breeding-effort-history                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  breeding-effort-historyXticks
-
-  breeding-effort-history-season                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  breeding-effort-historyXticks-season                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  breeding-effort-history-year                                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  breeding-effort-historyXticks-year                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
-
-
-  rotational-effort                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  rotational-effort-history                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  rotational-effort-historyXticks
-
-  rotational-effort-history-season                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  rotational-effort-historyXticks-season                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  rotational-effort-history-year                                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  rotational-effort-historyXticks-year                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-  other-daily-effort                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  other-daily-effort-history                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  other-daily-effort-historyXticks                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  other-daily-effort-history-season                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  other-daily-effort-historyXticks-season                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  other-daily-effort-history-year                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  other-daily-effort-historyXticks-year                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-  total-effort                                                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  total-effort-history
-
-  total-effort-history-season                                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  total-effort-history-year                                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  supplement-effort                                                                 ;; it measures the amount of time (in minutes) it takes the farmer to supplement animals
+  supplement-effort-history                                                         ;; variable to store the supplement-effort history of the system for the entire duration of the simulation
+  supplement-effort-historyXticks                                                   ;; amount of time the farmer has spent on supplementing animals since the start of the simulation
+  supplement-effort-history-season                                                  ;; variable to store the supplement-effort history of the system for the entire duration of the season
+  supplement-effort-historyXticks-season                                            ;; amount of time the farmer has spent on supplementing animals since the start of the season
+  supplement-effort-history-year                                                    ;; variable to store the supplement-effort history of the system for the entire duration of the year
+  supplement-effort-historyXticks-year                                              ;; amount of time the farmer has spent on supplementing animals since the start of the year
+
+  weaning-effort                                                                    ;; it measures the amount of time (in minutes) it takes the farmer to wean calves
+  weaning-effort-history                                                            ;; variable to store the weaning-effort history of the system for the entire duration of the simulation
+  weaning-effort-historyXticks                                                      ;; amount of time the farmer has spent weaning calves since the start of the simulation
+  weaning-effort-history-season                                                     ;; variable to store the weaning-effort history of the system for the entire duration of the season
+  weaning-effort-historyXticks-season                                               ;; amount of time the farmer has spent weaning calves since the start of the season
+  weaning-effort-history-year                                                       ;; variable to store the weaning-effort history of the system for the entire duration of the year
+  weaning-effort-historyXticks-year                                                 ;; amount of time the farmer has spent weaning calves since the start of the year
+
+  OS-males-effort                                                                   ;; it measures the amount of time (in minutes) it takes the farmer to sell males during the ordinary sales
+  OS-males-effort-history                                                           ;; variable to store the OS-males-effort history of the system for the entire duration of the simulation
+  OS-males-effort-historyXticks                                                     ;; amount of time the farmer has spent selling males since the start of the simulation during the ordinary sales
+  OS-males-effort-history-season                                                    ;; variable to store the OS-males-effort history of the system for the entire duration of the season
+  OS-males-effort-historyXticks-season                                              ;; amount of time the farmer has spent selling males since the start of the season during the ordinary sales
+  OS-males-effort-history-year                                                      ;; variable to store the OS-males-effort history of the system for the entire duration of the year
+  OS-males-effort-historyXticks-year                                                ;; amount of time the farmer has spent selling males since the start of the year during the ordinary sales
+
+  OS-old-cow-effort                                                                 ;; it measures the amount of time (in minutes) it takes the farmer to sell old cows during the ordinary sales
+  OS-old-cow-effort-history                                                         ;; variable to store the OS-old-cow-effort history of the system for the entire duration of the simulation
+  OS-old-cow-effort-historyXticks                                                   ;; amount of time the farmer has spent selling old cows since the start of the simulation during the ordinary sales
+  OS-old-cow-effort-history-season                                                  ;; variable to store the OS-old-cow-effort history of the system for the entire duration of the season
+  OS-old-cow-effort-historyXticks-season                                            ;; amount of time the farmer has spent selling old cows since the start of the season during the ordinary sales
+  OS-old-cow-effort-history-year                                                    ;; variable to store the OS-old-cow-effort history of the system for the entire duration of the year
+  OS-old-cow-effort-historyXticks-year                                              ;; amount of time the farmer has spent selling old cows since the start of the year during the ordinary sales
+
+  OS-old-bull-effort                                                                ;; it measures the amount of time (in minutes) it takes the farmer to sell old bulls during the ordinary sales
+  OS-old-bull-effort-history                                                        ;; variable to store the OS-old-bull-effort history of the system for the entire duration of the simulation
+  OS-old-bull-effort-historyXticks                                                  ;; amount of time the farmer has spent selling old bulls since the start of the simulation during the ordinary sales
+  OS-old-bull-effort-history-season                                                 ;; variable to store the OS-old-bull-effort history of the system for the entire duration of the season
+  OS-old-bull-effort-historyXticks-season                                           ;; amount of time the farmer has spent selling old bulls since the start of the season during the ordinary sales
+  OS-old-bull-effort-history-year                                                   ;; variable to store the OS-old-bull-effort history of the system for the entire duration of the year
+  OS-old-bull-effort-historyXticks-year                                             ;; amount of time the farmer has spent selling old bulls since the start of the year during the ordinary sales
+
+  OS-females-effort                                                                ;; it measures the amount of time (in minutes) it takes the farmer to sell females during the ordinary sales
+  OS-females-effort-history                                                        ;; variable to store the OS-females-effort history of the system for the entire duration of the simulation
+  OS-females-effort-historyXticks                                                  ;; amount of time the farmer has spent selling females since the start of the simulation during the ordinary sales
+  OS-females-effort-history-season                                                 ;; variable to store the OS-females-effort history of the system for the entire duration of the season
+  OS-females-effort-historyXticks-season                                           ;; amount of time the farmer has spent selling females since the start of the season during the ordinary sales
+  OS-females-effort-history-year                                                   ;; variable to store the OS-females-effort history of the system for the entire duration of the year
+  OS-females-effort-historyXticks-year                                             ;; amount of time the farmer has spent selling females since the start of the year during the ordinary sales
+
+  OS-total-effort                                                                  ;; total time spent by the farmer selling animals during ordinary sales (i.e., sum of OS-males-effort, OS-old-cow-effort, OS-old-bull-effort, OS-females-effort)
+  OS-total-effort-history                                                          ;; variable to store the OS-total-effort history of the system for the entire duration of the simulation
+  OS-total-effort-history-season                                                   ;; variable to store the OS-total-effort history of the system for the entire duration of the season
+  OS-total-effort-history-year                                                     ;; variable to store the OS-total-effort history of the system for the entire duration of the year
+
+  ES-males-effort                                                                ;; it measures the amount of time (in minutes) it takes the farmer to sell males during the extraordinary sales
+  ES-males-effort-history                                                        ;; variable to store the ES-males-effort history of the system for the entire duration of the simulation
+  ES-males-effort-historyXticks                                                  ;; amount of time the farmer has spent selling males since the start of the simulation during the extraordinary sales
+  ES-males-effort-history-season                                                 ;; variable to store the ES-males-effort history of the system for the entire duration of the season
+  ES-males-effort-historyXticks-season                                           ;; amount of time the farmer has spent selling males since the start of the season during the extraordinary sales
+  ES-males-effort-history-year                                                   ;; variable to store the ES-males-effort history of the system for the entire duration of the year
+  ES-males-effort-historyXticks-year                                             ;; amount of time the farmer has spent selling males since the start of the year during the extraordinary sales
+
+  ES-old-cow-effort                                                              ;; it measures the amount of time (in minutes) it takes the farmer to sell old cows during the extraordinary sales
+  ES-old-cow-effort-history                                                      ;; variable to store the ES-old-cow-effort history of the system for the entire duration of the simulation
+  ES-old-cow-effort-historyXticks                                                ;; amount of time the farmer has spent selling old cows since the start of the simulation during the extraordinary sales
+  ES-old-cow-effort-history-season                                               ;; variable to store the ES-old-cow-effort history of the system for the entire duration of the season
+  ES-old-cow-effort-historyXticks-season                                         ;; amount of time the farmer has spent selling old cows since the start of the season during the extraordinary sales
+  ES-old-cow-effort-history-year                                                 ;; variable to store the ES-old-cow-effort history of the system for the entire duration of the year
+  ES-old-cow-effort-historyXticks-year                                           ;; amount of time the farmer has spent selling old cows since the start of the year during the extraordinary sales
+
+  ES-females-effort                                                              ;; it measures the amount of time (in minutes) it takes the farmer to sell females during the extraordinary sales
+  ES-females-effort-history                                                      ;; variable to store the ES-females-effort history of the system for the entire duration of the simulation
+  ES-females-effort-historyXticks                                                ;; amount of time the farmer has spent selling females since the start of the simulation during the extraordinary sales
+  ES-females-effort-history-season                                               ;; variable to store the ES-females-effort history of the system for the entire duration of the season
+  ES-females-effort-historyXticks-season                                         ;; amount of time the farmer has spent selling females since the start of the season during the extraordinary sales
+  ES-females-effort-history-year                                                 ;; variable to store the ES-females-effort history of the system for the entire duration of the year
+  ES-females-effort-historyXticks-year                                           ;; amount of time the farmer has spent selling females since the start of the year during the extraordinary sales
+
+  ES-total-effort                                                                ;; total time spent by the farmer selling animals during extraordinary sales (i.e., sum of ES-males-effort, ES-old-cow-effort, ES-females-effort)
+  ES-total-effort-history                                                        ;; variable to store the ES-total-effort history of the system for the entire duration of the simulation
+  ES-total-effort-history-season                                                 ;; variable to store the ES-total-effort history of the system for the entire duration of the season
+  ES-total-effort-history-year                                                   ;; variable to store the ES-total-effort history of the system for the entire duration of the year
+
+  breeding-effort                                                                ;; it measures the amount of time (in minutes) it takes the farmer to move bulls into the paddock where the breeding cows are
+  breeding-effort-history                                                        ;; variable to store the breeding-effort history of the system for the entire duration of the simulation
+  breeding-effort-historyXticks                                                  ;; amount of time the farmer has spent moving bulls since the start of the simulation
+  breeding-effort-history-season                                                 ;; variable to store the breeding-effort history of the system for the entire duration of the season
+  breeding-effort-historyXticks-season                                           ;; amount of time the farmer has spent moving bulls since the start of the season
+  breeding-effort-history-year                                                   ;; variable to store the breeding-effort history of the system for the entire duration of the year
+  breeding-effort-historyXticks-year                                             ;; amount of time the farmer has spent moving bulls since the start of the year
+
+  rotational-effort                                                              ;; only when rotational grazing is in effect, it measures the amount of time (in minutes) it takes the farmer to move cattle from one paddock to another
+  rotational-effort-history                                                      ;; variable to store the rotational-effort history of the system for the entire duration of the simulation
+  rotational-effort-historyXticks                                                ;; amount of time the farmer has spent moving cattle from one paddock to another since the start of the simulation
+  rotational-effort-history-season                                               ;; variable to store the rotational-effort history of the system for the entire duration of the season
+  rotational-effort-historyXticks-season                                         ;; amount of time the farmer has spent moving cattle from one paddock to another since the start of the season
+  rotational-effort-history-year                                                 ;; variable to store the rotational-effort history of the system for the entire duration of the year
+  rotational-effort-historyXticks-year                                           ;; amount of time the farmer has spent moving cattle from one paddock to another since the start of the year
+
+  other-daily-effort                                                             ;; it measures the time (in minutes) that the farmer spends on other unspecified activities.
+  other-daily-effort-history                                                     ;; variable to store the other-daily-effort history of the system for the entire duration of the simulation
+  other-daily-effort-historyXticks                                               ;; amount of time the farmer has spent doing other unspecified activities since the start of the simulation
+  other-daily-effort-history-season                                              ;; variable to store the other-daily-effort history of the system for the entire duration of the season
+  other-daily-effort-historyXticks-season                                        ;; amount of time the farmer has spent doing other unspecified activities since the start of the season
+  other-daily-effort-history-year                                                ;; variable to store the other-daily-effort history of the system for the entire duration of the year
+  other-daily-effort-historyXticks-year                                          ;; amount of time the farmer has spent doing other unspecified activities since the start of the year
+
+  total-effort                                                                   ;; total time spent by the farmer on all of the management strategies described above
+  total-effort-history                                                           ;; variable to store the total-effort history of the system for the entire duration of the simulation
+  total-effort-history-season                                                    ;; variable to store the total-effort history of the system for the entire duration of the season
+  total-effort-history-year                                                      ;; variable to store the total-effort history of the system for the entire duration of the year
 
 ]
 
@@ -402,50 +264,16 @@ cows-own [
   cow?                                                                              ;; boolean variable that determines the "cow" age class of the livestock life cycle
   cow-with-calf?                                                                    ;; boolean variable that determines the "cow-withcalf" age class of the livestock life cycle
   pregnant?                                                                         ;; boolean variable that determines the "pregnant" age class of the livestock life cycle
+  bull?                                                                             ;; boolean variable that determines the "bull" age class of the livestock life cycle
 
-  bull?                                                                             ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  old?                                                                              ;; boolean variable that indicates whether the animal is considered old by the farmer or not
+  sale?                                                                             ;; boolean variable that determines whether the animal is selected for sale (and subsequently removed from the system)
+  weaning-calf?                                                                     ;; boolean variable indicating whether or not the cow-with-calf agent (parent) has been selected by the farmer for early weaning of its born-calf agent (child)
+  supplemented?                                                                     ;; boolean variable that indicates whether or not the animal has been selected by the farmer for feed supplementation
 
-  old?                                                                              ;; OLDNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  animal-units                                                                      ;; variable used to calculate the stocking rate. AU = LW / 380
   category-coef                                                                     ;; coefficient that varies with age class and affects the grass consumption of animals. Equal to 1 in all age classes, except for cow-with-calf = 1.1
-  initial-weight                                                                    ;; initial weight of the animal at the beginning of the simulation. Set by the observer in the interface
   min-weight                                                                        ;; defines the critical weight which below the animal can die by forage crisis
-
-  live-weight                                                                       ;; variable that defines the state of the animals in terms of live weight
-
-
-  live-weight-gain                                                                  ;; defines the increment of weight.
-
-  live-weight-gain-feed                                                             ;;NEWWWWWWWWWWWWW ;;FEED SUPPLEMENTATION MODULE ;; define el incremento de peso
-  live-weight-gain-feed-breeding
-
-  live-weight-gain-max                                                              ;;NEWWWWWWWWWWWWW ;;FEED SUPPLEMENTATION MODULE ;; con esta variable calculamos el LWG máximo que puede ganar el animal en un día.
-
-  live-weight-gain-history                                                          ;;NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  live-weight-gain-historyXticks                                                    ;;NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  live-weight-gain-history-season                                                   ;; variable to store the live weight gain during a season
-  live-weight-gain-historyXticks-season                                             ;; live weight gain since start of season
-  live-weight-gain-history-year                                                     ;; variable to store the live weight gain during 368 days (a year)
-  live-weight-gain-historyXticks-year                                               ;; live weight gain since start of year
-  DM-kg-cow                                                                         ;; biomass available (not consumed!) for one cow
-
-  DDMC                                                                              ;; Daily Dry Matter Consumption. Is the biomass consumed by one cow
-
-  DDMC-history
-  DDMC-historyXticks
-
-  DDMC-history-season
-  DDMC-historyXticks-season
-  DDMC-history-year
-  DDMC-historyXticks-year
-
-
-
   metabolic-body-size                                                               ;; Metabolic Body Size (MBS) = LW^(3/4)
-
-
   mortality-rate                                                                    ;; mortality rate can be natural or exceptional
   natural-mortality-rate                                                            ;; annual natural mortality = 2%
   except-mort-rate                                                                  ;; exceptional mortality rates increases to 15% in cows, 30% in pregnant cows, and 23% in the rest of age classes when animal LW falls below the minimum weight
@@ -455,27 +283,38 @@ cows-own [
   pregnancy-time                                                                    ;; variable to keep track of which day of pregnancy the cow is in (from 0 to 276)
   lactating-time                                                                    ;; variable to keep track of which day of the lactation period the cow is in (from 0 to 246)
 
-  price                                                                             ;;## SALES MODULE ;; market prices per kg for one animal (USD/kg)
-  sale?                                                                             ;;## SALES MODULE ;; boolean variable that determines whether the animal is selected for sale (and subsequently removed from the system)
-  value                                                                             ;;## SALES MODULE ;; live weight price for one animal (market prices per kg * live weight of the animal) (USD)
+  initial-weight                                                                    ;; initial weight of the animal at the beginning of the simulation. Set by the observer using the different sliders found in the "INITIAL LIVESTOCK NUMBER AND WEIGHT" section of the interface
+  live-weight                                                                       ;; variable that defines the state of the animals in terms of live weight
+  live-weight-gain-max                                                              ;; defines the maximum weight an animal can gain in one day. 0.60 kg/day by default (can be changed by using the "set-live-weight-gain-max" slider in the interface)
+  live-weight-gain                                                                  ;; defines the increment of weight gained from grazing only
+  live-weight-gain-feed                                                             ;; defines the increment of weight gained from feed supplements
+  live-weight-gain-feed-breeding                                                    ;; the market farmer gives extra supplements to adult cows when the breeding season is approaching. It defines the increment of weight gained from feed supplements
+  live-weight-gain-history                                                          ;; variable to store the live-weight-gain history of the animal for the entire duration of the simulation
+  live-weight-gain-historyXticks                                                    ;; live weight gained by the animal since the start of the simulation
+  live-weight-gain-history-season                                                   ;; variable to store the live-weight-gain history of the animal for the entire duration of the simulation
+  live-weight-gain-historyXticks-season                                             ;; live weight gain since start of season
+  live-weight-gain-history-year                                                     ;; variable to store the live weight gain during 368 days (a year)
+  live-weight-gain-historyXticks-year                                               ;; live weight gain since start of year
 
-  parent                                                                            ;;## EARLY/NATURAL WEANING MODULE
-  child                                                                             ;;## EARLY/NATURAL WEANING MODULE
+  DDMC                                                                              ;; Daily Dry Matter Consumption. Is the biomass consumed by one cow
+  DDMC-history                                                                      ;; variable to store the DDMC history of the animal for the entire duration of the simulation
+  DDMC-historyXticks                                                                ;; Daily Dry Matter Consumed (DDMC) by the animal since the start of the simulation
+  DDMC-history-season                                                               ;; variable to store the DDMC history of the animal for the entire duration of the simulation
+  DDMC-historyXticks-season                                                         ;; DDMC since start of season
+  DDMC-history-year                                                                 ;; variable to store the DDMC gain during 368 days (a year)
+  DDMC-historyXticks-year                                                           ;; DDMC since start of year
 
-  supplemented?                                                                     ;;## FEED SUPPLEMENTATION MODULE ;; boolean variable that indicates whether or not the animal has been selected for feed supplementation
-  difference-LW                                                                     ;;## FEED SUPPLEMENTATION MODULE ;; variable to know how many kilos the animal selected for supplementation is below the threshold ("xxxx-min-weight-for-feed-sup" sliders in the interface) at which it will be supplemented.
+  animal-units                                                                      ;; variable used to calculate the stocking rate. AU = LW / 380
+  price                                                                             ;; market prices per kg for one animal (USD/kg)
+  value                                                                             ;; live weight price for one animal (market prices per kg * live weight of the animal) (USD)
 
-  difference-LW-breeding                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  parent                                                                            ;; variable used to bind the cow-with-calf agent (parent) to its new generated born-calf agent (child)
+  child                                                                             ;; variable used to bind the new generated agent born-calf (child) to its cow-with-calf agent (parent)
 
-  kg-supplement-DM                                                                  ;;## FEED SUPPLEMENTATION MODULE ;; kg of supplementary feed required by the animal
-  USD-supplement-DM                                                                 ;;## FEED SUPPLEMENTATION MODULE ;; the price of the feed supplement that is required by the animal(USD)
-
-  kg-supplement-DM-breeding                                                         ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  USD-supplement-DM-breeding                                                        ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-  weaning-calf?                                                                     ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
+  kg-supplement-DM                                                                  ;; kg of supplementary feed required by the animal
+  USD-supplement-DM                                                                 ;; the price of the feed supplement that is required by the animal (USD)
+  kg-supplement-DM-breeding                                                         ;; the market farmer gives extra supplements to adult cows when the breeding season is approaching. It defines kg of supplementary feed required by the animal
+  USD-supplement-DM-breeding                                                        ;; the market farmer gives extra supplements to adult cows when the breeding season is approaching. It defines the price of the feed supplement that is required by the animal (USD)
 ]
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -518,7 +357,9 @@ to setup-globals
   set days-per-tick 1
   set number-of-season 0
   set current-season-name ["winter" "spring" "summer" "fall"]
+  set current-season initial-season                                                 ;; the initial season is set by the observer in the interface
   set simulation-time 0
+
   set weaned-calf-age-min 246
   set heifer-age-min 369
   set cow-age-min 737
@@ -531,11 +372,9 @@ to setup-globals
   set grass-energy 1.8
   set season-coef [1 1.15 1.05 1]
   set maxLWG [40 60 40 40]
-
   set maxLWcow 650
   set maxLWbull 1000
 
-  set current-season initial-season                                                 ;; the initial season is set by the observer in the interface
   set historic-climacoef [0.48 0.3 0.72 0.12 0.71 0.65 1.1]                         ;; historic climacoef values. One value = 1 season (for example, 7 values = 7 seasons, the simulation will stop after season 7). Replace these values with historical values. For the model to use "historic-climacoef" values, the observer must select the "historic-climacoef" option within the "climacoef-distribution" chooser in the interface.
 
   set supplement-prices [0.113 0.121 0.123 0.115]
@@ -546,90 +385,55 @@ to setup-globals
   set cow-prices [0.561 0.611 0.573 0.581]
   set pregnant-prices [0.561 0.611 0.573 0.581]
   set cow-with-calf-prices [0.61 0.664 0.665 0.617]
-
-  set bull-prices [0.856 0.917 0.881 0.873]                                         ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set bull-prices [0.856 0.917 0.881 0.873]
 
   set cost 0
   set income 0
-  set balance 0
+  set balance 1000
+
   set supplement-effort 0
   set weaning-effort 0
-  set OS-males-effort 0                                                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set OS-old-cow-effort 0                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set OS-females-effort 0                                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set ES-males-effort 0                                                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set ES-old-cow-effort 0                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set ES-females-effort 0                                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-males-effort 0
+  set OS-old-cow-effort 0
+  set OS-females-effort 0
+  set OS-old-bull-effort 0
+  set ES-males-effort 0
+  set ES-old-cow-effort 0
+  set ES-females-effort 0
   set breeding-effort 0
   set rotational-effort 0
-
   set other-daily-effort 0
-
-
-
-
-
-
-  set OS-old-bull-effort 0
 
   set cost-history []
   set cost-historyXticks []
-
   set income-history []
   set income-historyXticks []
-
   set balance-history []
   set balance-historyXticks []
 
-
-
-
-
   set supplement-effort-history []
-  set supplement-effort-history-season []                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set supplement-effort-historyXticks-season []                                         ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set supplement-effort-history-year []                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set supplement-effort-historyXticks-year []                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
+  set supplement-effort-history-season []
+  set supplement-effort-historyXticks-season []
+  set supplement-effort-history-year []
+  set supplement-effort-historyXticks-year []
 
   set weaning-effort-history []
-  set weaning-effort-history-season []                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set weaning-effort-historyXticks-season []                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set weaning-effort-history-year []                                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set weaning-effort-historyXticks-year []                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
+  set weaning-effort-history-season []
+  set weaning-effort-historyXticks-season []
+  set weaning-effort-history-year []
+  set weaning-effort-historyXticks-year []
 
   set OS-males-effort-history []
-  set OS-males-effort-history-season []                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set OS-males-effort-historyXticks-season []                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set OS-males-effort-history-year []                                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set OS-males-effort-historyXticks-year []                                             ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
+  set OS-males-effort-history-season []
+  set OS-males-effort-historyXticks-season []
+  set OS-males-effort-history-year []
+  set OS-males-effort-historyXticks-year []
 
   set OS-old-cow-effort-history []
-  set OS-old-cow-effort-history-season []                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set OS-old-cow-effort-historyXticks-season []                                         ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set OS-old-cow-effort-history-year []                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set OS-old-cow-effort-historyXticks-year []                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
+  set OS-old-cow-effort-history-season []
+  set OS-old-cow-effort-historyXticks-season []
+  set OS-old-cow-effort-history-year []
+  set OS-old-cow-effort-historyXticks-year []
 
   set OS-old-bull-effort-history []
   set OS-old-bull-effort-history-season []
@@ -637,77 +441,41 @@ to setup-globals
   set OS-old-bull-effort-history-year []
   set OS-old-bull-effort-historyXticks-year []
 
-
-
-
-
-
-
   set OS-females-effort-history []
-  set OS-females-effort-history-season []                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set OS-females-effort-historyXticks-season []                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set OS-females-effort-history-year []                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set OS-females-effort-historyXticks-year []                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
-
+  set OS-females-effort-history-season []
+  set OS-females-effort-historyXticks-season []
+  set OS-females-effort-history-year []
+  set OS-females-effort-historyXticks-year []
 
   set ES-males-effort-history []
-  set ES-males-effort-history-season []                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set ES-males-effort-historyXticks-season []                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set ES-males-effort-history-year []                                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set ES-males-effort-historyXticks-year []                                             ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
-
-
+  set ES-males-effort-history-season []
+  set ES-males-effort-historyXticks-season []
+  set ES-males-effort-history-year []
+  set ES-males-effort-historyXticks-year []
 
   set ES-old-cow-effort-history []
-  set ES-old-cow-effort-history-season []                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set ES-old-cow-effort-historyXticks-season []                                         ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set ES-old-cow-effort-history-year []                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set ES-old-cow-effort-historyXticks-year []                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
-
+  set ES-old-cow-effort-history-season []
+  set ES-old-cow-effort-historyXticks-season []
+  set ES-old-cow-effort-history-year []
+  set ES-old-cow-effort-historyXticks-year []
 
   set ES-females-effort-history []
-  set ES-females-effort-history-season []                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set ES-females-effort-historyXticks-season []                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set ES-females-effort-history-year []                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set ES-females-effort-historyXticks-year []                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
+  set ES-females-effort-history-season []
+  set ES-females-effort-historyXticks-season []
+  set ES-females-effort-history-year []
+  set ES-females-effort-historyXticks-year []
 
   set breeding-effort-history []
-  set breeding-effort-history-season []                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set breeding-effort-historyXticks-season []                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set breeding-effort-history-year []                                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set breeding-effort-historyXticks-year []                                             ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
+  set breeding-effort-history-season []
+  set breeding-effort-historyXticks-season []
+  set breeding-effort-history-year []
+  set breeding-effort-historyXticks-year []
 
   set rotational-effort-history []
-  set rotational-effort-history-season []                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set rotational-effort-historyXticks-season []                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set rotational-effort-history-year []                                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set rotational-effort-historyXticks-year []                                             ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
+  set rotational-effort-history-season []
+  set rotational-effort-historyXticks-season []
+  set rotational-effort-history-year []
+  set rotational-effort-historyXticks-year []
 
   set other-daily-effort-history []
   set other-daily-effort-history-season []
@@ -718,7 +486,7 @@ to setup-globals
 end
 
 to setup-grassland
-  if (spatial-management = "rotational grazing") [                                  ;; this section of code is used to set up the paddocks for the rotational grazing management strategy.
+  if (spatial-management = "rotational grazing") [                                  ;; this section of code is used to set up the paddocks for the rotational grazing management strategy
     ask patches with [ (pxcor < (set-x-size) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor > (set-y-size - 1) / 2 or pycor = (set-y-size) / 2)] [set paddock-a 1]
     ask patches with [ (pxcor > (set-x-size - 1) / 2 or pxcor = (set-x-size - 1) / 2) and (pycor > (set-y-size) / 2 or pycor = (set-y-size) / 2)]  [set paddock-b 1]
     ask patches with [ (pxcor > (set-x-size) / 2 or pxcor = (set-x-size) / 2) and (pycor < (set-y-size) / 2 or pycor = (set-y-size - 1) / 2)] [set paddock-c 1]
@@ -726,25 +494,22 @@ to setup-grassland
   ]
 
   ask patches [
-    set soil-quality 1
-                                                                                    ;; coding of different soil quality distributions
+    set soil-quality 1                                                              ;; coding of different soil quality distributions
     if (soil-quality-distribution = "uniform") [set soil-quality random-float 1]
-
     if (soil-quality-distribution = "normal") [
       set soil-quality random-normal 0.5 0.15
       if soil-quality < 0 [set soil-quality 0]
       if soil-quality > 1 [set soil-quality 1]]
-
     if (soil-quality-distribution = "exponential_low") [
       set soil-quality random-exponential 0.2
       while [soil-quality > 1] [set soil-quality random-exponential 0.2]]
-
     if (soil-quality-distribution = "exponential_high") [
       set soil-quality 1 - random-exponential 0.2
       while [soil-quality < 0] [set soil-quality 1 - random-exponential 0.2]]
 
     set grass-height initial-grass-height * soil-quality                            ;; the initial grass height is set by the observer in the interface
     set GH-consumed 0
+
     ifelse grass-height < 2                                                         ;; patches with grass height less than 2 cm are colored light green. This is based on the assumption that cows cannot eat grass less than 2 cm high
     [set pcolor 37]
     [set pcolor scale-color green grass-height 23 0]
@@ -755,78 +520,169 @@ end
 to setup-livestock
   if (spatial-management = "free grazing") [                                        ;; livestock setup for the free grazing management strategy
     create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0
-      ;set age random (cow-age-max - cow-age-min) + cow-age-min
-      set age cow-age-min
+      set age random (cow-age-max - cow-age-min) + cow-age-min
+      ;set age cow-age-min
       setxy random-pxcor random-pycor become-cow ]
 
     if bull:cow-ratio > 0 [                                                                                                                                           ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
     create-cows round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio)
     [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0
-      ;set age random (cow-age-max - heifer-age-min) + heifer-age-min
-      set age heifer-age-min
+      set age random (cow-age-max - heifer-age-min) + heifer-age-min
+      ;set age heifer-age-min
       setxy random-pxcor random-pycor become-bull ]
     if count cows with [bull?] < 1 [
       create-cows 1
       [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0
-      ;set age random (cow-age-max - heifer-age-min) + heifer-age-min
-      set age heifer-age-min
+      set age random (cow-age-max - heifer-age-min) + heifer-age-min
+      ;set age heifer-age-min
       setxy random-pxcor random-pycor become-bull]]]
 
     create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0
-      ;set age random (cow-age-min - heifer-age-min) + heifer-age-min
-      set age heifer-age-min
+      set age random (cow-age-min - heifer-age-min) + heifer-age-min
+      ;set age heifer-age-min
       setxy random-pxcor random-pycor become-heifer ]
+
     create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0
-      ;set age random (cow-age-min - heifer-age-min) + heifer-age-min
-      set age heifer-age-min
+      set age random (cow-age-min - heifer-age-min) + heifer-age-min
+      ;set age heifer-age-min
       setxy random-pxcor random-pycor become-steer ]
+
     create-cows initial-num-weaned-calves [set shape "cow" set live-weight initial-weight-weaned-calves set initial-weight initial-weight-weaned-calves set mortality-rate natural-mortality-rate set DDMC 0
-      ;set age random (heifer-age-min - weaned-calf-age-min) + weaned-calf-age-min
-      set age weaned-calf-age-min
+      set age random (heifer-age-min - weaned-calf-age-min) + weaned-calf-age-min
+      ;set age weaned-calf-age-min
       setxy random-pxcor random-pycor
-      ;become-weaned-calf-male]
       ifelse random-float 1 < 0.5 [become-weaned-calf-female] [become-weaned-calf-male]]
   ]
 
   if (spatial-management = "rotational grazing") [                                  ;; livestock setup for the rotational grazing management strategy
-    if (starting-paddock = "paddock a") [create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min ask cows [move-to one-of patches with [paddock-a = 1]] become-cow]]
-    if (starting-paddock = "paddock a") [if bull:cow-ratio > 0 [create-cows round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-a = 1]] become-bull] if count cows with [bull?] < 1 [create-cows 1 [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-a = 1]] become-bull]]]]                                  ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-    if (starting-paddock = "paddock a") [create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-a = 1]] become-heifer]]
-    if (starting-paddock = "paddock a") [create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-a = 1]] become-steer]]
-    if (starting-paddock = "paddock a") [create-cows initial-num-weaned-calves [set shape "cow" set live-weight initial-weight-weaned-calves set initial-weight initial-weight-weaned-calves set mortality-rate natural-mortality-rate set DDMC 0 set age random (heifer-age-min - weaned-calf-age-min) + weaned-calf-age-min ask cows [move-to one-of patches with [paddock-a = 1]] ifelse random-float 1 < 0.5 [become-weaned-calf-female] [become-weaned-calf-male]]]
+    if (starting-paddock = "paddock a") [create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0
+      set age random (cow-age-max - cow-age-min) + cow-age-min
+      ;set age cow-age-min
+      ask cows [move-to one-of patches with [paddock-a = 1]] become-cow]]
 
-    if (starting-paddock = "paddock b") [create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min ask cows [move-to one-of patches with [paddock-b = 1]] become-cow]]
-    if (starting-paddock = "paddock b") [if bull:cow-ratio > 0 [create-cows round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-b = 1]] become-bull] if count cows with [bull?] < 1 [create-cows 1 [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-b = 1]] become-bull]]]]                                  ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-    if (starting-paddock = "paddock b") [create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-b = 1]] become-heifer]]
-    if (starting-paddock = "paddock b") [create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-b = 1]] become-steer]]
-    if (starting-paddock = "paddock b") [create-cows initial-num-weaned-calves [set shape "cow" set live-weight initial-weight-weaned-calves set initial-weight initial-weight-weaned-calves set mortality-rate natural-mortality-rate set DDMC 0 set age random (heifer-age-min - weaned-calf-age-min) + weaned-calf-age-min ask cows [move-to one-of patches with [paddock-b = 1]] ifelse random-float 1 < 0.5 [become-weaned-calf-female] [become-weaned-calf-male]]]
+    if (starting-paddock = "paddock a") [if bull:cow-ratio > 0 [create-cows round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0
+      set age random (cow-age-max - heifer-age-min) + heifer-age-min
+      ;set age heifer-age-min
+      ask cows [move-to one-of patches with [paddock-a = 1]] become-bull]
 
-    if (starting-paddock = "paddock c") [create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min ask cows [move-to one-of patches with [paddock-c = 1]] become-cow]]
-    if (starting-paddock = "paddock c") [if bull:cow-ratio > 0 [create-cows round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-c = 1]] become-bull] if count cows with [bull?] < 1 [create-cows 1 [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-c = 1]] become-bull]]]]                                  ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-    if (starting-paddock = "paddock c") [create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-c = 1]] become-heifer]]
-    if (starting-paddock = "paddock c") [create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-c = 1]] become-steer]]
-    if (starting-paddock = "paddock c") [create-cows initial-num-weaned-calves [set shape "cow" set live-weight initial-weight-weaned-calves set initial-weight initial-weight-weaned-calves set mortality-rate natural-mortality-rate set DDMC 0 set age random (heifer-age-min - weaned-calf-age-min) + weaned-calf-age-min ask cows [move-to one-of patches with [paddock-c = 1]] ifelse random-float 1 < 0.5 [become-weaned-calf-female] [become-weaned-calf-male]]]
+      if count cows with [bull?] < 1 [create-cows 1 [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0
+        set age random (cow-age-max - heifer-age-min) + heifer-age-min
+        ;set age heifer-age-min
+        ask cows [move-to one-of patches with [paddock-a = 1]] become-bull]]]]
 
-    if (starting-paddock = "paddock d") [create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0 set age cow-age-min ask cows [move-to one-of patches with [paddock-d = 1]] become-cow]]
-    if (starting-paddock = "paddock d") [if bull:cow-ratio > 0 [create-cows round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-d = 1]] become-bull] if count cows with [bull?] < 1 [create-cows 1 [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-d = 1]] become-bull]]]]                                  ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-    if (starting-paddock = "paddock d") [create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-d = 1]] become-heifer]]
-    if (starting-paddock = "paddock d") [create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0 set age heifer-age-min ask cows [move-to one-of patches with [paddock-d = 1]] become-steer]]
-    if (starting-paddock = "paddock d") [create-cows initial-num-weaned-calves [set shape "cow" set live-weight initial-weight-weaned-calves set initial-weight initial-weight-weaned-calves set mortality-rate natural-mortality-rate set DDMC 0 set age random (heifer-age-min - weaned-calf-age-min) + weaned-calf-age-min ask cows [move-to one-of patches with [paddock-d = 1]] ifelse random-float 1 < 0.5 [become-weaned-calf-female] [become-weaned-calf-male]]]
+    if (starting-paddock = "paddock a") [create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0
+      set age random (cow-age-min - heifer-age-min) + heifer-age-min
+      ;set age heifer-age-min
+      ask cows [move-to one-of patches with [paddock-a = 1]] become-heifer]]
+
+    if (starting-paddock = "paddock a") [create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0
+      set age random (cow-age-min - heifer-age-min) + heifer-age-min
+      ;set age heifer-age-min
+      ask cows [move-to one-of patches with [paddock-a = 1]] become-steer]]
+
+    if (starting-paddock = "paddock a") [create-cows initial-num-weaned-calves [set shape "cow" set live-weight initial-weight-weaned-calves set initial-weight initial-weight-weaned-calves set mortality-rate natural-mortality-rate set DDMC 0
+      set age random (heifer-age-min - weaned-calf-age-min) + weaned-calf-age-min
+      ;set age weaned-calf-age-min
+      ask cows [move-to one-of patches with [paddock-a = 1]] ifelse random-float 1 < 0.5 [become-weaned-calf-female] [become-weaned-calf-male]]]
+
+    if (starting-paddock = "paddock b") [create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0
+      set age random (cow-age-max - cow-age-min) + cow-age-min
+      ;set age cow-age-min
+      ask cows [move-to one-of patches with [paddock-b = 1]] become-cow]]
+
+    if (starting-paddock = "paddock b") [if bull:cow-ratio > 0 [create-cows round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0
+      set age random (cow-age-max - heifer-age-min) + heifer-age-min
+      ;set age heifer-age-min
+      ask cows [move-to one-of patches with [paddock-b = 1]] become-bull]
+      if count cows with [bull?] < 1 [create-cows 1 [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0
+        set age random (cow-age-max - heifer-age-min) + heifer-age-min
+        ;set age heifer-age-min
+        ask cows [move-to one-of patches with [paddock-b = 1]] become-bull]]]]
+
+    if (starting-paddock = "paddock b") [create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0
+      set age random (cow-age-min - heifer-age-min) + heifer-age-min
+      ;set age heifer-age-min
+      ask cows [move-to one-of patches with [paddock-b = 1]] become-heifer]]
+
+    if (starting-paddock = "paddock b") [create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0
+      set age random (cow-age-min - heifer-age-min) + heifer-age-min
+      ;set age heifer-age-min
+      ask cows [move-to one-of patches with [paddock-b = 1]] become-steer]]
+
+    if (starting-paddock = "paddock b") [create-cows initial-num-weaned-calves [set shape "cow" set live-weight initial-weight-weaned-calves set initial-weight initial-weight-weaned-calves set mortality-rate natural-mortality-rate set DDMC 0
+      set age random (heifer-age-min - weaned-calf-age-min) + weaned-calf-age-min
+      ;set age weaned-calf-age-min
+      ask cows [move-to one-of patches with [paddock-b = 1]] ifelse random-float 1 < 0.5 [become-weaned-calf-female] [become-weaned-calf-male]]]
+
+    if (starting-paddock = "paddock c") [create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0
+      set age random (cow-age-max - cow-age-min) + cow-age-min
+      ;set age cow-age-min
+      ask cows [move-to one-of patches with [paddock-c = 1]] become-cow]]
+
+    if (starting-paddock = "paddock c") [if bull:cow-ratio > 0 [create-cows round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0
+      set age random (cow-age-max - heifer-age-min) + heifer-age-min
+      ;set age heifer-age-min
+      ask cows [move-to one-of patches with [paddock-c = 1]] become-bull]
+      if count cows with [bull?] < 1 [create-cows 1 [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0
+        set age random (cow-age-max - heifer-age-min) + heifer-age-min
+        ;set age heifer-age-min
+        ask cows [move-to one-of patches with [paddock-c = 1]] become-bull]]]]
+
+    if (starting-paddock = "paddock c") [create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0
+      set age random (cow-age-min - heifer-age-min) + heifer-age-min
+      ;set age heifer-age-min
+      ask cows [move-to one-of patches with [paddock-c = 1]] become-heifer]]
+
+    if (starting-paddock = "paddock c") [create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0
+      set age random (cow-age-min - heifer-age-min) + heifer-age-min
+      ;set age heifer-age-min
+      ask cows [move-to one-of patches with [paddock-c = 1]] become-steer]]
+
+    if (starting-paddock = "paddock c") [create-cows initial-num-weaned-calves [set shape "cow" set live-weight initial-weight-weaned-calves set initial-weight initial-weight-weaned-calves set mortality-rate natural-mortality-rate set DDMC 0
+      set age random (heifer-age-min - weaned-calf-age-min) + weaned-calf-age-min
+      ;set age weaned-calf-age-min
+      ask cows [move-to one-of patches with [paddock-c = 1]] ifelse random-float 1 < 0.5 [become-weaned-calf-female] [become-weaned-calf-male]]]
+
+    if (starting-paddock = "paddock d") [create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0
+      set age random (cow-age-max - cow-age-min) + cow-age-min
+      ;set age cow-age-min
+      ask cows [move-to one-of patches with [paddock-d = 1]] become-cow]]
+
+    if (starting-paddock = "paddock d") [if bull:cow-ratio > 0 [create-cows round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0
+      set age random (cow-age-max - heifer-age-min) + heifer-age-min
+      ;set age heifer-age-min
+      ask cows [move-to one-of patches with [paddock-d = 1]] become-bull]
+      if count cows with [bull?] < 1 [create-cows 1 [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0
+        set age random (cow-age-max - heifer-age-min) + heifer-age-min
+        ;set age heifer-age-min
+        ask cows [move-to one-of patches with [paddock-d = 1]] become-bull]]]]
+
+    if (starting-paddock = "paddock d") [create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0
+      set age random (cow-age-min - heifer-age-min) + heifer-age-min
+      ;set age heifer-age-min
+      ask cows [move-to one-of patches with [paddock-d = 1]] become-heifer]]
+
+    if (starting-paddock = "paddock d") [create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0
+      set age random (cow-age-min - heifer-age-min) + heifer-age-min
+      ;set age heifer-age-min
+      ask cows [move-to one-of patches with [paddock-d = 1]] become-steer]]
+
+    if (starting-paddock = "paddock d") [create-cows initial-num-weaned-calves [set shape "cow" set live-weight initial-weight-weaned-calves set initial-weight initial-weight-weaned-calves set mortality-rate natural-mortality-rate set DDMC 0
+      set age random (heifer-age-min - weaned-calf-age-min) + weaned-calf-age-min
+      ;set age weaned-calf-age-min
+      ask cows [move-to one-of patches with [paddock-d = 1]] ifelse random-float 1 < 0.5 [become-weaned-calf-female] [become-weaned-calf-male]]]
   ]
 
-  ask cows [                                                                        ;; setup of the variables used to output the average live weight gained during a season (see report "ILWG_SEASON" and "Average SEASONAL ILWG" monitor) or during a year (see report "ILWG_YEAR" and "Average YEARLY ILWG" monitor)
-
+  ask cows [                                                                        ;; setup of the variables used to output the average live weight gained during a season (see report "ILWG_SEASON") or during a year (see report "ILWG_YEAR")
     set live-weight-gain-history []
     set live-weight-gain-historyXticks []
-
     set live-weight-gain-history-season []
     set live-weight-gain-historyXticks-season []
     set live-weight-gain-history-year []
     set live-weight-gain-historyXticks-year []
   ]
 
-
-  ask cows [                                                                         ;; ;; CALCULA EL DRY MATTER CONSUMPTION A LO LARGO DE UNA ESTACIÓN (DDMC-history-season), DE UN AÑO (DDMC-history-year), Y DESDE QUE EMPEZÓ LA SIMULACIÓN (DDMC-history)
+  ask cows [                                                                        ;; setup of the variables used to output the average DDMC since the start of the simulation (DDMC-history), during a season (DDMC-history-season) or during a year (DDMC-history-year)
     set DDMC-history []
     set DDMC-historyXticks []
     set DDMC-history-season []
@@ -836,6 +692,18 @@ to setup-livestock
   ]
 
 end
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;SEGUIR LIMPIANDO A PARTIR DE AQUI;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; This section of the code sets up the parameters that define each of the age classes
@@ -855,7 +723,7 @@ to become-born-calf-female
   set cow-with-calf? false
   set pregnant? false
 
-  set bull? false                                                                             ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set bull? false
 
   set color cyan
   set age 0
@@ -872,23 +740,23 @@ to become-born-calf-female
   set pregnancy-time 0
   set lactating-time 0
 
-  set price item current-season born-calf-prices                                    ;;## SALES MODULE
-  set sale? false                                                                   ;;## SALES MODULE
-  set value price * live-weight                                                     ;;## SALES MODULE
+  set price item current-season born-calf-prices
+  set sale? false
+  set value price * live-weight
 
-  set supplemented? false                                                           ;;## FEED SUPPLEMENTATION MODULE
-  set kg-supplement-DM 0                                                            ;;## FEED SUPPLEMENTATION MODULE
-  set USD-supplement-DM 0                                                           ;;## FEED SUPPLEMENTATION MODULE
-
-
-
-  set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set supplemented? false
+  set kg-supplement-DM 0
+  set USD-supplement-DM 0
 
 
 
+  set kg-supplement-DM-breeding 0
+  set USD-supplement-DM-breeding 0
 
-  set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+
+  set weaning-calf? false
 end
 
 to become-born-calf-male
@@ -905,7 +773,7 @@ to become-born-calf-male
   set cow-with-calf? false
   set pregnant? false
 
-  set bull? false                                                                             ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set bull? false
 
   set color sky
   set age 0
@@ -922,21 +790,21 @@ to become-born-calf-male
   set pregnancy-time 0
   set lactating-time 0
 
-  set price item current-season born-calf-prices                                    ;;## SALES MODULE
-  set sale? false                                                                   ;;## SALES MODULE
-  set value price * live-weight                                                     ;;## SALES MODULE
+  set price item current-season born-calf-prices
+  set sale? false
+  set value price * live-weight
 
-  set supplemented? false                                                           ;;## FEED SUPPLEMENTATION MODULE
-  set kg-supplement-DM 0                                                            ;;## FEED SUPPLEMENTATION MODULE
-  set USD-supplement-DM 0                                                           ;;## FEED SUPPLEMENTATION MODULE
-
-
-  set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set supplemented? false
+  set kg-supplement-DM 0
+  set USD-supplement-DM 0
 
 
+  set kg-supplement-DM-breeding 0
+  set USD-supplement-DM-breeding 0
 
-  set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+  set weaning-calf? false
 end
 
 to become-weaned-calf-female
@@ -953,7 +821,7 @@ to become-weaned-calf-female
   set cow-with-calf? false
   set pregnant? false
 
-  set bull? false                                                                             ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set bull? false
 
   set color yellow - 2
   set animal-units live-weight / set-1-AU
@@ -969,24 +837,23 @@ to become-weaned-calf-female
   set pregnancy-time 0
   set lactating-time 0
 
-  set price item current-season weaned-calf-prices                                  ;;## SALES MODULE
-  set sale? false                                                                   ;;## SALES MODULE
-  set value price * live-weight                                                     ;;## SALES MODULE
+  set price item current-season weaned-calf-prices
+  set sale? false
+  set value price * live-weight
 
-  set supplemented? false                                                                               ;;## FEED SUPPLEMENTATION MODULE
-  if supplemented? = true [set difference-LW weaned-calf-min-weight-for-feed-sup - live-weight]         ;;## FEED SUPPLEMENTATION MODULE
-  set kg-supplement-DM 0                                                                                ;;## FEED SUPPLEMENTATION MODULE
-  set USD-supplement-DM 0                                                                               ;;## FEED SUPPLEMENTATION MODULE
+  set supplemented? false
+  set kg-supplement-DM 0
+  set USD-supplement-DM 0
 
-  ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
-
-
-  set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]
 
 
+  set kg-supplement-DM-breeding 0
+  set USD-supplement-DM-breeding 0
 
-  set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+
+  set weaning-calf? false
 end
 
 to become-weaned-calf-male
@@ -1003,7 +870,7 @@ to become-weaned-calf-male
   set cow-with-calf? false
   set pregnant? false
 
-  set bull? false                                                                             ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set bull? false
 
   set color orange
   set animal-units live-weight / set-1-AU
@@ -1019,29 +886,28 @@ to become-weaned-calf-male
   set pregnancy-time 0
   set lactating-time 0
 
-  set price item current-season weaned-calf-prices                                  ;;## SALES MODULE
-  set sale? false                                                                   ;;## SALES MODULE
-  set value price * live-weight                                                     ;;## SALES MODULE
+  set price item current-season weaned-calf-prices
+  set sale? false
+  set value price * live-weight
 
-  set supplemented? false                                                                                          ;;## FEED SUPPLEMENTATION MODULE
-  if supplemented? = true [set difference-LW weaned-calf-min-weight-for-feed-sup - live-weight]                    ;;## FEED SUPPLEMENTATION MODULE
-  set kg-supplement-DM 0                                                                                           ;;## FEED SUPPLEMENTATION MODULE
-  set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
-
-
-  set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set supplemented? false
+  set kg-supplement-DM 0
+  set USD-supplement-DM 0
 
 
-  ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
+  set kg-supplement-DM-breeding 0
+  set USD-supplement-DM-breeding 0
 
 
-  set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]
+
+
+  set kg-supplement-DM-breeding 0
+  set USD-supplement-DM-breeding 0
 
 
 
-  set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set weaning-calf? false
 end
 
 to become-heifer
@@ -1058,7 +924,7 @@ to become-heifer
   set cow-with-calf? false
   set pregnant? false
 
-  set bull? false                                                                             ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set bull? false
 
   set color pink
   set animal-units live-weight / set-1-AU
@@ -1074,25 +940,24 @@ to become-heifer
   set pregnancy-time 0
   set lactating-time 0
 
-  ifelse pregnant? = true [set price item current-season pregnant-prices] [set price item current-season heifer-prices]                 ;;## SALES MODULE
-  set sale? false                                                                                                                       ;;## SALES MODULE
-  set value price * live-weight                                                                                                         ;;## SALES MODULE
+  ifelse pregnant? = true [set price item current-season pregnant-prices] [set price item current-season heifer-prices]
+  set sale? false
+  set value price * live-weight
 
-  set supplemented? false                                                                                          ;;## FEED SUPPLEMENTATION MODULE
-  if supplemented? = true [set difference-LW heifer/steer-min-weight-for-feed-sup - live-weight]                   ;;## FEED SUPPLEMENTATION MODULE
-  set kg-supplement-DM 0                                                                                           ;;## FEED SUPPLEMENTATION MODULE
-  set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
-
-
-  ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
+  set supplemented? false
+  set kg-supplement-DM 0
+  set USD-supplement-DM 0
 
 
-  set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]
+
+
+  set kg-supplement-DM-breeding 0
+  set USD-supplement-DM-breeding 0
 
 
 
-  set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set weaning-calf? false
 end
 
 to become-steer
@@ -1109,7 +974,7 @@ to become-steer
   set cow-with-calf? false
   set pregnant? false
 
-  set bull? false                                                                             ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set bull? false
 
   set color red
   set animal-units live-weight / set-1-AU
@@ -1125,24 +990,23 @@ to become-steer
   set pregnancy-time 0
   set lactating-time 0
 
-  set price item current-season steer-prices                                        ;;## SALES MODULE
-  set sale? false                                                                   ;;## SALES MODULE
-  set value price * live-weight                                                     ;;## SALES MODULE
+  set price item current-season steer-prices
+  set sale? false
+  set value price * live-weight
 
-  set supplemented? false                                                                                          ;;## FEED SUPPLEMENTATION MODULE
-  if supplemented? = true [set difference-LW heifer/steer-min-weight-for-feed-sup - live-weight]                   ;;## FEED SUPPLEMENTATION MODULE
-  set kg-supplement-DM 0                                                                                           ;;## FEED SUPPLEMENTATION MODULE
-  set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
-
-
-  ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
+  set supplemented? false
+  set kg-supplement-DM 0
+  set USD-supplement-DM 0
 
 
-  set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]
 
 
-  set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set kg-supplement-DM-breeding 0
+  set USD-supplement-DM-breeding 0
+
+
+  set weaning-calf? false
 end
 
 to become-bull
@@ -1159,7 +1023,7 @@ to become-bull
   set cow-with-calf? false
   set pregnant? false
 
-  set bull? true                                                                             ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set bull? true
 
   set color black
   set animal-units live-weight / set-1-AU
@@ -1175,24 +1039,23 @@ to become-bull
   set pregnancy-time 0
   set lactating-time 0
 
-  set price item current-season bull-prices                                        ;;## SALES MODULE
-  set sale? false                                                                   ;;## SALES MODULE
-  set value price * live-weight                                                     ;;## SALES MODULE
+  set price item current-season bull-prices
+  set sale? false
+  set value price * live-weight
 
-  set supplemented? false                                                                                          ;;## FEED SUPPLEMENTATION MODULE
-  if supplemented? = true [set difference-LW bull-min-weight-for-feed-sup - live-weight]                   ;;## FEED SUPPLEMENTATION MODULE
-  set kg-supplement-DM 0                                                                                           ;;## FEED SUPPLEMENTATION MODULE
-  set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
-
-
-  ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
+  set supplemented? false
+  set kg-supplement-DM 0
+  set USD-supplement-DM 0
 
 
-  set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]
 
 
-  set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set kg-supplement-DM-breeding 0
+  set USD-supplement-DM-breeding 0
+
+
+  set weaning-calf? false
 end
 
 to become-cow
@@ -1209,7 +1072,7 @@ to become-cow
   set cow-with-calf? false
   set pregnant? false
 
-  set bull? false                                                                             ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set bull? false
 
   set color brown
   set animal-units live-weight / set-1-AU
@@ -1225,26 +1088,24 @@ to become-cow
   set pregnancy-time 0
   set lactating-time 0
 
-  ifelse pregnant? = true  [set price item current-season pregnant-prices] [set price item current-season cow-prices]                   ;;## SALES MODULE
-  set sale? false                                                                                                                       ;;## SALES MODULE
-  set value price * live-weight                                                                                                         ;;## SALES MODULE
+  ifelse pregnant? = true  [set price item current-season pregnant-prices] [set price item current-season cow-prices]
+  set sale? false
+  set value price * live-weight
 
-  set supplemented? false                                                                                          ;;## FEED SUPPLEMENTATION MODULE
-  if supplemented? = true [set difference-LW cow-min-weight-for-feed-sup - live-weight]                            ;;## FEED SUPPLEMENTATION MODULE
-  set kg-supplement-DM 0                                                                                           ;;## FEED SUPPLEMENTATION MODULE
-  set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
+  set supplemented? false
+  set kg-supplement-DM 0
+  set USD-supplement-DM 0
 
 
-  if supplemented? = true [set difference-LW-breeding min-weight-for-breeding - live-weight] ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set kg-supplement-DM-breeding 0
+  set USD-supplement-DM-breeding 0
 
 
 
-  ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
+  ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]
 
 
-  set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set weaning-calf? false
 end
 
 to become-cow-with-calf
@@ -1261,7 +1122,7 @@ to become-cow-with-calf
   set cow-with-calf? true
   set pregnant? false
 
-  set bull? false                                                                             ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set bull? false
 
   set color magenta
   set animal-units live-weight / set-1-AU
@@ -1277,24 +1138,23 @@ to become-cow-with-calf
   set pregnancy-time 0
   set lactating-time 0
 
-  ifelse pregnant? = true  [set price item current-season pregnant-prices] [set price item current-season cow-with-calf-prices]         ;;## SALES MODULE
-  set sale? false                                                                                                                       ;;## SALES MODULE
-  set value price * live-weight                                                                                                         ;;## SALES MODULE
+  ifelse pregnant? = true  [set price item current-season pregnant-prices] [set price item current-season cow-with-calf-prices]
+  set sale? false
+  set value price * live-weight
 
-  set supplemented? false                                                                                          ;;## FEED SUPPLEMENTATION MODULE
-  if supplemented? = true [set difference-LW cow-with-calf-min-weight-for-feed-sup - live-weight]                  ;;## FEED SUPPLEMENTATION MODULE
-  set kg-supplement-DM 0                                                                                           ;;## FEED SUPPLEMENTATION MODULE
-  set USD-supplement-DM 0                                                                                          ;;## FEED SUPPLEMENTATION MODULE
-
-
-  set kg-supplement-DM-breeding 0                                                            ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set USD-supplement-DM-breeding 0                                                           ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set supplemented? false
+  set kg-supplement-DM 0
+  set USD-supplement-DM 0
 
 
-  ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
+  set kg-supplement-DM-breeding 0
+  set USD-supplement-DM-breeding 0
 
 
-  set weaning-calf? false                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]
+
+
+  set weaning-calf? false
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -3252,7 +3112,7 @@ BUTTON
 84
 44
 Setup
-Setup\nset balance 1000
+Setup
 NIL
 1
 T
@@ -3840,12 +3700,12 @@ OUTPUT
 12
 
 BUTTON
-1136
-15
-1291
-48
+1143
+13
+1298
+46
 setup_seed-1070152876 
-setup_seed\nset balance 1000
+setup_seed
 NIL
 1
 T
@@ -3909,7 +3769,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-40.0
+15.0
 1
 1
 years
@@ -4683,10 +4543,10 @@ PENS
 "Other" 1.0 0 -13791810 true "" "plot other-cost"
 
 BUTTON
-1137
-53
-1257
-87
+4912
+110
+5032
+144
 free 1000 USD
 set balance 1000
 NIL
