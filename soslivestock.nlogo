@@ -17,7 +17,7 @@ globals [
   current-season-name                                                               ;; translates the numbers "0, 1, 2, 3" to "winter, spring, summer, fall"
   season-coef                                                                       ;; affects the live weight gain of animals in relation with the grass quality according to the season: winter = 1, spring = 1.15, summer = 1.05, fall = 1
   climacoef                                                                         ;; climacoef relates the primary production in a season with the average for that season due to climate variations. Takes values from 0.1 to 1.5, and is set by the observer in the interface
-  historic-climacoef                                                                ;; in case the observer wants to use historical values for climacoef. For the model to use "historic-climacoef" values, the observer must select the "historic-climacoef" option within the "climacoef-distribution" chooser in the interface, and enter the historic climacoef values within the "setup-globals" procedure
+  historical-climacoef                                                                ;; in case the observer wants to use historical values for climacoef. For the model to use "historical-climacoef" values, the observer must select the "historical-climacoef" option within the "climacoef-distribution" chooser in the interface, and enter the historic climacoef values within the "setup-globals" procedure
   direct-climacoef-control                                                          ;; in case the observer wants to change the climate coefficient in real time (i.e. while the simulation is running), the observer must select the "direct-climacoef-control" option within the "climacoef-distribution" chooser in the interface, and select the desired climacoef value using the "set-direct-climacoef-control" slider in the interface
   estimated-climacoef                                                               ;; the environmental farmer uses the climacoef value present at the beginning of the season to estimate the carrying capacity of the system during that season
 
@@ -375,7 +375,7 @@ to setup-globals
   set maxLWcow 650
   set maxLWbull 1000
 
-  set historic-climacoef [0.48 0.3 0.72 0.12 0.71 0.65 1.1]                         ;; historic climacoef values. One value = 1 season (for example, 7 values = 7 seasons, the simulation will stop after season 7). Replace these values with historical values. For the model to use "historic-climacoef" values, the observer must select the "historic-climacoef" option within the "climacoef-distribution" chooser in the interface.
+  set historical-climacoef [0.48 0.3 0.72 0.12 0.71 0.65 1.1]                         ;; historic climacoef values. One value = 1 season (for example, 7 values = 7 seasons, the simulation will stop after season 7). Replace these values with historical values. For the model to use "historical-climacoef" values, the observer must select the "historical-climacoef" option within the "climacoef-distribution" chooser in the interface.
 
   set supplement-prices [0.113 0.121 0.123 0.115]
   set born-calf-prices [0.94 1 0.97 0.961]
@@ -524,7 +524,7 @@ to setup-livestock
       ;set age cow-age-min
       setxy random-pxcor random-pycor become-cow ]
 
-    if bull:cow-ratio > 0 [                                                                                                                                           ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    if bull:cow-ratio > 0 [
     create-cows round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio)
     [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0
       set age random (cow-age-max - heifer-age-min) + heifer-age-min
@@ -673,7 +673,7 @@ to setup-livestock
       ask cows [move-to one-of patches with [paddock-d = 1]] ifelse random-float 1 < 0.5 [become-weaned-calf-female] [become-weaned-calf-male]]]
   ]
 
-  ask cows [                                                                        ;; setup of the variables used to output the average live weight gained during a season (see report "ILWG_SEASON") or during a year (see report "ILWG_YEAR")
+  ask cows [                                                                        ;; setup of the variables used to output the average live weight gained since the start of the simulation (live-weight-gain-history), during a season (live-weight-gain-history-season) or during a year (live-weight-gain-history-year)
     set live-weight-gain-history []
     set live-weight-gain-historyXticks []
     set live-weight-gain-history-season []
@@ -693,18 +693,6 @@ to setup-livestock
 
 end
 
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;SEGUIR LIMPIANDO A PARTIR DE AQUI;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; This section of the code sets up the parameters that define each of the age classes
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -722,9 +710,7 @@ to become-born-calf-female
   set cow? false
   set cow-with-calf? false
   set pregnant? false
-
   set bull? false
-
   set color cyan
   set age 0
   set initial-weight 40
@@ -739,23 +725,14 @@ to become-born-calf-female
   set coefB 0
   set pregnancy-time 0
   set lactating-time 0
-
   set price item current-season born-calf-prices
   set sale? false
   set value price * live-weight
-
   set supplemented? false
   set kg-supplement-DM 0
   set USD-supplement-DM 0
-
-
-
   set kg-supplement-DM-breeding 0
   set USD-supplement-DM-breeding 0
-
-
-
-
   set weaning-calf? false
 end
 
@@ -772,9 +749,7 @@ to become-born-calf-male
   set cow? false
   set cow-with-calf? false
   set pregnant? false
-
   set bull? false
-
   set color sky
   set age 0
   set initial-weight 40
@@ -789,21 +764,14 @@ to become-born-calf-male
   set coefB 0
   set pregnancy-time 0
   set lactating-time 0
-
   set price item current-season born-calf-prices
   set sale? false
   set value price * live-weight
-
   set supplemented? false
   set kg-supplement-DM 0
   set USD-supplement-DM 0
-
-
   set kg-supplement-DM-breeding 0
   set USD-supplement-DM-breeding 0
-
-
-
   set weaning-calf? false
 end
 
@@ -820,12 +788,9 @@ to become-weaned-calf-female
   set cow? false
   set cow-with-calf? false
   set pregnant? false
-
   set bull? false
-
   set color yellow - 2
   set animal-units live-weight / set-1-AU
-  ;set min-weight 60
   set min-weight 100
   set size 0.5
   set natural-mortality-rate 0.000054
@@ -836,23 +801,15 @@ to become-weaned-calf-female
   set coefB 0
   set pregnancy-time 0
   set lactating-time 0
-
   set price item current-season weaned-calf-prices
   set sale? false
   set value price * live-weight
-
   set supplemented? false
   set kg-supplement-DM 0
   set USD-supplement-DM 0
-
   ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]
-
-
   set kg-supplement-DM-breeding 0
   set USD-supplement-DM-breeding 0
-
-
-
   set weaning-calf? false
 end
 
@@ -869,12 +826,9 @@ to become-weaned-calf-male
   set cow? false
   set cow-with-calf? false
   set pregnant? false
-
   set bull? false
-
   set color orange
   set animal-units live-weight / set-1-AU
-  ;set min-weight 60
   set min-weight 100
   set size 0.5
   set natural-mortality-rate 0.000054
@@ -885,28 +839,17 @@ to become-weaned-calf-male
   set coefB 0
   set pregnancy-time 0
   set lactating-time 0
-
   set price item current-season weaned-calf-prices
   set sale? false
   set value price * live-weight
-
   set supplemented? false
   set kg-supplement-DM 0
   set USD-supplement-DM 0
-
-
   set kg-supplement-DM-breeding 0
   set USD-supplement-DM-breeding 0
-
-
   ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]
-
-
   set kg-supplement-DM-breeding 0
   set USD-supplement-DM-breeding 0
-
-
-
   set weaning-calf? false
 end
 
@@ -923,13 +866,10 @@ to become-heifer
   set cow? false
   set cow-with-calf? false
   set pregnant? false
-
   set bull? false
-
   set color pink
   set animal-units live-weight / set-1-AU
-  ;set min-weight 100
-  set min-weight 150
+  set min-weight 140
   set size 0.7
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.23
@@ -939,24 +879,15 @@ to become-heifer
   set coefB 0.029
   set pregnancy-time 0
   set lactating-time 0
-
   ifelse pregnant? = true [set price item current-season pregnant-prices] [set price item current-season heifer-prices]
   set sale? false
   set value price * live-weight
-
   set supplemented? false
   set kg-supplement-DM 0
   set USD-supplement-DM 0
-
-
   ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]
-
-
   set kg-supplement-DM-breeding 0
   set USD-supplement-DM-breeding 0
-
-
-
   set weaning-calf? false
 end
 
@@ -973,13 +904,10 @@ to become-steer
   set cow? false
   set cow-with-calf? false
   set pregnant? false
-
   set bull? false
-
   set color red
   set animal-units live-weight / set-1-AU
-  ;set min-weight 100
-  set min-weight 150
+  set min-weight 140
   set size 0.7
   set natural-mortality-rate 0.000054
   set except-mort-rate 0.23
@@ -989,23 +917,15 @@ to become-steer
   set coefB 0
   set pregnancy-time 0
   set lactating-time 0
-
   set price item current-season steer-prices
   set sale? false
   set value price * live-weight
-
   set supplemented? false
   set kg-supplement-DM 0
   set USD-supplement-DM 0
-
-
   ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]
-
-
   set kg-supplement-DM-breeding 0
   set USD-supplement-DM-breeding 0
-
-
   set weaning-calf? false
 end
 
@@ -1022,12 +942,9 @@ to become-bull
   set cow? false
   set cow-with-calf? false
   set pregnant? false
-
   set bull? true
-
   set color black
   set animal-units live-weight / set-1-AU
-  ;set min-weight 180
   set min-weight 220
   set size 1.2
   set natural-mortality-rate 0.000054
@@ -1038,23 +955,15 @@ to become-bull
   set coefB 0
   set pregnancy-time 0
   set lactating-time 0
-
   set price item current-season bull-prices
   set sale? false
   set value price * live-weight
-
   set supplemented? false
   set kg-supplement-DM 0
   set USD-supplement-DM 0
-
-
   ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]
-
-
   set kg-supplement-DM-breeding 0
   set USD-supplement-DM-breeding 0
-
-
   set weaning-calf? false
 end
 
@@ -1071,12 +980,9 @@ to become-cow
   set cow? true
   set cow-with-calf? false
   set pregnant? false
-
   set bull? false
-
   set color brown
   set animal-units live-weight / set-1-AU
-  ;set min-weight 180
   set min-weight 220
   set size 1
   set natural-mortality-rate 0.000054
@@ -1087,24 +993,15 @@ to become-cow
   set coefB 0.0285
   set pregnancy-time 0
   set lactating-time 0
-
   ifelse pregnant? = true  [set price item current-season pregnant-prices] [set price item current-season cow-prices]
   set sale? false
   set value price * live-weight
-
   set supplemented? false
   set kg-supplement-DM 0
   set USD-supplement-DM 0
-
-
   set kg-supplement-DM-breeding 0
   set USD-supplement-DM-breeding 0
-
-
-
   ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]
-
-
   set weaning-calf? false
 end
 
@@ -1121,12 +1018,9 @@ to become-cow-with-calf
   set cow? false
   set cow-with-calf? true
   set pregnant? false
-
   set bull? false
-
   set color magenta
   set animal-units live-weight / set-1-AU
-  ;set min-weight 180
   set min-weight 220
   set size 1.1
   set natural-mortality-rate 0.000054
@@ -1137,23 +1031,15 @@ to become-cow-with-calf
   set coefB 0.0265
   set pregnancy-time 0
   set lactating-time 0
-
   ifelse pregnant? = true  [set price item current-season pregnant-prices] [set price item current-season cow-with-calf-prices]
   set sale? false
   set value price * live-weight
-
   set supplemented? false
   set kg-supplement-DM 0
   set USD-supplement-DM 0
-
-
   set kg-supplement-DM-breeding 0
   set USD-supplement-DM-breeding 0
-
-
   ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]
-
-
   set weaning-calf? false
 end
 
@@ -1163,61 +1049,57 @@ end
 
 to go
 
-  set DM-cm-ha set-DM-cm-ha                                                          ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PONER UNA DESCRIPCION AQUI TAMBIEN
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Update of global variables related to grassland (DM-cm-ha; kmax) and seasons (season-length; climacoef-distribution)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  set DM-cm-ha set-DM-cm-ha                                                          ;; setting the quantity of dry matter contained in one centimeter per hectare (using the "set-DM-cm-ha" slider on the interface)
 
   if current-season = 0 [                                                            ;; setting the Kmax, length of the season and climate distribution for the winter
-    ;set kmax 7.4
-    set kmax K-winter
-    set season-length winter-length
-    if (climacoef-distribution = "homogeneus") and (season-days = 0 or season-days = 1) [set climacoef winter-climacoef-homogeneus]
+    set kmax K-winter                                                                ;; the maximum grass height that can be achieved during winter is set by the "K-winter" slider on the interface
+    set season-length winter-length                                                  ;; the length of the winter season is set using the "winter-length" slider on the interface
+    if (climacoef-distribution = "homogeneus") and (season-days = 0 or season-days = 1) [set climacoef winter-climacoef-homogeneus] ;; the distribution followed by the climate coefficient variable is set by the "climacoef-distribution" chooser on the interface
     if (climacoef-distribution = "uniform") and (season-days = 0 or season-days = 1) [set climacoef random-float 1.5]
     if (climacoef-distribution = "normal") and (season-days = 0 or season-days = 1) [set climacoef random-normal 1 0.15 if climacoef < 0 [set climacoef 0.1] if climacoef > 1.5 [set climacoef 1.5]]
     if (climacoef-distribution = "exponential_low") and (season-days = 0 or season-days = 1) [set climacoef random-exponential 0.5 while [climacoef > 1.5] [set climacoef random-exponential 0.5]]
-    if (climacoef-distribution = "exponential_high") and (season-days = 0 or season-days = 1) [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]
-  ]
+    if (climacoef-distribution = "exponential_high") and (season-days = 0 or season-days = 1) [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]]
 
   if current-season = 1 [                                                            ;; setting the Kmax, length of the season and climate distribution for the spring
-    ;set kmax 22.2
-    set kmax K-spring
-    set season-length spring-length
-    if (climacoef-distribution = "homogeneus") and (season-days = 0 or season-days = 1) [set climacoef spring-climacoef-homogeneus]
+    set kmax K-spring                                                                ;; the maximum grass height that can be achieved during spring is set by the "K-spring" slider on the interface
+    set season-length spring-length                                                  ;; the length of the spring season is set using the "spring-length" slider on the interface
+    if (climacoef-distribution = "homogeneus") and (season-days = 0 or season-days = 1) [set climacoef spring-climacoef-homogeneus] ;; the distribution followed by the climate coefficient variable is set by the "climacoef-distribution" chooser on the interface
     if (climacoef-distribution = "uniform") and (season-days = 0 or season-days = 1) [set climacoef random-float 1.5]
     if (climacoef-distribution = "normal") and (season-days = 0 or season-days = 1) [set climacoef random-normal 1 0.15 if climacoef < 0 [set climacoef 0.1] if climacoef > 1.5 [set climacoef 1.5]]
     if (climacoef-distribution = "exponential_low") and (season-days = 0 or season-days = 1) [set climacoef random-exponential 0.2 while [climacoef > 1.5] [set climacoef random-exponential 0.2]]
-    if (climacoef-distribution = "exponential_high") and (season-days = 0 or season-days = 1) [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]
-  ]
+    if (climacoef-distribution = "exponential_high") and (season-days = 0 or season-days = 1) [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]]
 
   if current-season = 2 [                                                            ;; setting the Kmax, length of the season and climate distribution for the summer
-    ;set kmax 15.6
-    set kmax K-summer
-    set season-length summer-length
-    if (climacoef-distribution = "homogeneus") and (season-days = 0 or season-days = 1) [set climacoef summer-climacoef-homogeneus]
+    set kmax K-summer                                                                ;; the maximum grass height that can be achieved during summer is set by the "K-summer" slider on the interface
+    set season-length summer-length                                                  ;; the length of the summer season is set using the "summer-length" slider on the interface
+    if (climacoef-distribution = "homogeneus") and (season-days = 0 or season-days = 1) [set climacoef summer-climacoef-homogeneus] ;; the distribution followed by the climate coefficient variable is set by the "climacoef-distribution" chooser on the interface
     if (climacoef-distribution = "uniform") and (season-days = 0 or season-days = 1) [set climacoef random-float 1.5]
     if (climacoef-distribution = "normal") and (season-days = 0 or season-days = 1) [set climacoef random-normal 1 0.15 if climacoef < 0 [set climacoef 0.1] if climacoef > 1.5 [set climacoef 1.5]]
     if (climacoef-distribution = "exponential_low") and (season-days = 0 or season-days = 1) [set climacoef random-exponential 0.5 while [climacoef > 1.5] [set climacoef random-exponential 0.5]]
-    if (climacoef-distribution = "exponential_high") and (season-days = 0 or season-days = 1) [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]
-  ]
+    if (climacoef-distribution = "exponential_high") and (season-days = 0 or season-days = 1) [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]]
 
   if current-season = 3 [                                                            ;; setting the Kmax, length of the season and climate distribution for the fall
-    ;set kmax 11.1
-    set kmax K-fall
-    set season-length fall-length
-    if (climacoef-distribution = "homogeneus") and (season-days = 0 or season-days = 1) [set climacoef fall-climacoef-homogeneus]
+    set kmax K-fall                                                                  ;; the maximum grass height that can be achieved during fall is set by the "K-fall" slider on the interface
+    set season-length fall-length                                                    ;; the length of the fall season is set using the "fall-length" slider on the interface
+    if (climacoef-distribution = "homogeneus") and (season-days = 0 or season-days = 1) [set climacoef fall-climacoef-homogeneus] ;; the distribution followed by the climate coefficient variable is set by the "climacoef-distribution" chooser on the interface
     if (climacoef-distribution = "uniform") and (season-days = 0 or season-days = 1) [set climacoef random-float 1.5]
     if (climacoef-distribution = "normal") and (season-days = 0 or season-days = 1) [set climacoef random-normal 1 0.15 if climacoef < 0 [set climacoef 0.1] if climacoef > 1.5 [set climacoef 1.5]]
     if (climacoef-distribution = "exponential_low") and (season-days = 0 or season-days = 1) [set climacoef random-exponential 0.5 while [climacoef > 1.5] [set climacoef random-exponential 0.5]]
-    if (climacoef-distribution = "exponential_high") and (season-days = 0 or season-days = 1) [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]
-  ]
+    if (climacoef-distribution = "exponential_high") and (season-days = 0 or season-days = 1) [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]]
 
   if current-season = 0 [if season-days >= winter-length [set current-season 1 set season-days 0]] ;; the season change is defined in these lines
   if current-season = 1 [if season-days >= spring-length [set current-season 2 set season-days 0]]
   if current-season = 2 [if season-days >= summer-length [set current-season 3 set season-days 0]]
   if current-season = 3 [if season-days >= fall-length [set current-season 0 set season-days 0]]
 
-  if (climacoef-distribution = "historic-climacoef") [if current-season = 0 [set climacoef item (simulation-time / winter-length) historic-climacoef]]  ;; if "historic-climacoef" is selected, historic values for climacoef are used instead
-  if (climacoef-distribution = "historic-climacoef") [if current-season = 1 [set climacoef item (simulation-time / spring-length) historic-climacoef]]
-  if (climacoef-distribution = "historic-climacoef") [if current-season = 2 [set climacoef item (simulation-time / summer-length) historic-climacoef]]
-  if (climacoef-distribution = "historic-climacoef") [if current-season = 3 [set climacoef item (simulation-time / fall-length) historic-climacoef]]
+  if (climacoef-distribution = "historical-climacoef") [if current-season = 0 [set climacoef item (simulation-time / winter-length) historical-climacoef]]  ;; if "historical-climacoef" is selected with the "climacoef-distribution" chooser, historical values for climacoef are used instead
+  if (climacoef-distribution = "historical-climacoef") [if current-season = 1 [set climacoef item (simulation-time / spring-length) historical-climacoef]]
+  if (climacoef-distribution = "historical-climacoef") [if current-season = 2 [set climacoef item (simulation-time / summer-length) historical-climacoef]]
+  if (climacoef-distribution = "historical-climacoef") [if current-season = 3 [set climacoef item (simulation-time / fall-length) historical-climacoef]]
 
   set direct-climacoef-control set-direct-climacoef-control                                                               ;; if "direct-climacoef-control" is selected, the user can change the climate coefficient in real time (i.e. while the simulation is running)
   if (climacoef-distribution = "direct-climacoef-control") [if current-season = 0 [set climacoef direct-climacoef-control]]
@@ -1225,439 +1107,238 @@ to go
   if (climacoef-distribution = "direct-climacoef-control") [if current-season = 2 [set climacoef direct-climacoef-control]]
   if (climacoef-distribution = "direct-climacoef-control") [if current-season = 3 [set climacoef direct-climacoef-control]]
 
-  set simulation-time simulation-time + days-per-tick
-  set season-days season-days + days-per-tick
-  set year-days year-days + days-per-tick
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Setting of different clocks for measurement of different time scales (days since the start of simulation; since the start of the season; since the start of the year; since animals moved to a new paddock; days left until the start of the breeding season)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-  if year-days >= 369 [set year-days 1]                                              ;; This reset is important to make sure that the "live-weight-gain-history-year" variable works, which is used in the "ILWG_YEAR" report
+  set simulation-time simulation-time + days-per-tick                               ;; to keep track of how many days have passed since the start of the simulation
+  set season-days season-days + days-per-tick                                       ;; to keep track of how many days have passed since the start of the season
+  set year-days year-days + days-per-tick                                           ;; to keep track of how many days have passed since the start of the year
+  if year-days >= 369 [set year-days 1]
 
-  if (spatial-management = "rotational grazing") [set ticks-since-here ticks-since-here + days-per-tick]                              ;; for rotational grazing strategies only, it measures the number of days since the animals were moved to a new paddock. This variable is important to prevent animals from continuously moving from one paddock to another once they have met the criteria to move to the next paddock. Once animals have met the criteria, they will move to the next paddock and wait X days (defined by the RG-days-in-paddock slider in the interface) to acclimate to the new paddock. Once those days have passed, if the animals still meet the criteria to move between paddocks, they will move.
+  if (spatial-management = "rotational grazing") [set ticks-since-here ticks-since-here + days-per-tick]                  ;; DEACTIVATED ;; for rotational grazing strategies only, it measures the number of days since the animals were moved to a new paddock. This variable is important to prevent animals from continuously moving from one paddock to another once they have met the criteria to move to the next paddock. Once animals have met the criteria, they will move to the next paddock and wait X days (defined by the RG-days-in-paddock slider in the interface) to acclimate to the new paddock. Once those days have passed, if the animals still meet the criteria to move between paddocks, they will move
 
-
-
-  ;; DÍAS HASTA QUE EMPIECE LA BREEDING-SEASON.
-
-  if controlled-breeding-season = 0 [
+  if controlled-breeding-season = 0 [                                               ;; to keep track of how many days are left until the start of the breeding season
     if current-season = 0 [set days-until-breeding-season 0]
     if current-season = 1 [set days-until-breeding-season (spring-length + summer-length + fall-length) - season-days]
     if current-season = 2 [set days-until-breeding-season (summer-length + fall-length) - season-days]
     if current-season = 3 [set days-until-breeding-season (fall-length) - season-days]]
-
   if controlled-breeding-season = 1 [
     if current-season = 0 [set days-until-breeding-season (winter-length) - season-days]
     if current-season = 1 [set days-until-breeding-season 0]
     if current-season = 2 [set days-until-breeding-season (summer-length + fall-length + winter-length) - season-days]
     if current-season = 3 [set days-until-breeding-season (fall-length + winter-length) - season-days]]
-
   if controlled-breeding-season = 2 [
     if current-season = 0 [set days-until-breeding-season (winter-length + spring-length) - season-days]
     if current-season = 1 [set days-until-breeding-season (spring-length) - season-days]
     if current-season = 2 [set days-until-breeding-season 0]
     if current-season = 3 [set days-until-breeding-season (fall-length + winter-length + spring-length) - season-days]]
-
   if controlled-breeding-season = 3 [
     if current-season = 0 [set days-until-breeding-season (winter-length + spring-length + summer-length) - season-days]
     if current-season = 1 [set days-until-breeding-season (spring-length + summer-length) - season-days]
     if current-season = 2 [set days-until-breeding-season (summer-length) - season-days]
     if current-season = 3 [set days-until-breeding-season 0]]
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Using clocks to record different variables on different time scales
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-
-
-
-
-  ask cows [
+  ask cows [                                                                         ;; average live weight gain of the cows since the start of the simulation
     set live-weight-gain-history fput live-weight-gain live-weight-gain-history
-    set live-weight-gain-historyXticks sum (sublist live-weight-gain-history 0 simulation-time)
-  ]
-
-  ask cows [                                                                         ;; in this line, the average live weight gain of the cows during the season is calculated
+    set live-weight-gain-historyXticks sum (sublist live-weight-gain-history 0 simulation-time)]
+  ask cows [                                                                         ;; average live weight gain of the cows during the season
     set live-weight-gain-history-season fput live-weight-gain live-weight-gain-history-season
     if season-days > 0 [set live-weight-gain-historyXticks-season mean (sublist live-weight-gain-history-season 0 season-days)]
-    if season-days = season-length [set live-weight-gain-history-season []]
-    ;if season-days = 92 [set live-weight-gain-history-season []]
-  ]
-
-  ask cows [                                                                         ;; in this line, the average live weight gain of the cows during the year (from day 1 to day 368 and in between) is calculated
+    if season-days = season-length [set live-weight-gain-history-season []]]
+  ask cows [                                                                         ;; average live weight gain of the cows during the year
     set live-weight-gain-history-year fput live-weight-gain live-weight-gain-history-year
     if year-days > 0 [set live-weight-gain-historyXticks-year mean (sublist live-weight-gain-history-year 0 year-days)]
-    if year-days = 368 [set live-weight-gain-history-year []]
-  ]
+    if year-days = 368 [set live-weight-gain-history-year []]]
 
-
-;; ------------------------------------------------------------------------------------------------- ;; CALCULA EL DRY MATTER CONSUMPTION A LO LARGO DE UNA ESTACIÓN (DDMC-history-season), DE UN AÑO (DDMC-history-year), Y DESDE QUE EMPEZÓ LA SIMULACIÓN (DDMC-history)
-  ask cows [
+  ask cows [                                                                         ;; average DDMC of cows since the start pf the simulation
     set DDMC-history fput DDMC DDMC-history
-    set DDMC-historyXticks sum (sublist DDMC-history 0 simulation-time)
-  ]
-
-  ask cows [
+    set DDMC-historyXticks sum (sublist DDMC-history 0 simulation-time)]
+  ask cows [                                                                         ;; average DDMC of cows during the season
     set DDMC-history-season fput DDMC DDMC-history-season
     set DDMC-historyXticks-season sum (sublist DDMC-history-season 0 season-days)
-    if season-days = season-length [set DDMC-history-season []]
-    ;if season-days = 92 [set supplement-effort-history-season []]
-  ]
-
-  ask cows [
+    if season-days = season-length [set DDMC-history-season []]]
+  ask cows [                                                                         ;; average DDMC of cows during the year
     set DDMC-history-year fput DDMC DDMC-history-year
     set DDMC-historyXticks-year sum (sublist DDMC-history-year 0 year-days)
-    if year-days = 368 [set DDMC-history-year []]
-  ]
-;; -------------------------------------------------------------------------------------------------
+    if year-days = 368 [set DDMC-history-year []]]
 
+  set cost-history fput cost cost-history                                                             ;; cost of the livestock system since the start of the simulation
+  set cost-historyXticks sum (sublist cost-history 0 simulation-time)
+  set income-history fput income income-history                                                       ;; income of the livestock system since the start of the simulation
+  set income-historyXticks sum (sublist income-history 0 simulation-time)
+  set balance-history fput balance balance-history                                                    ;; balance of the livestock system since the start of the simulation
+  set balance-historyXticks sum (sublist balance-history 0 simulation-time)
 
-
-  set cost-history fput cost cost-history                                                             ;;## SALES MODULE
-  set cost-historyXticks sum (sublist cost-history 0 simulation-time)                                 ;;## SALES MODULE
-
-  set income-history fput income income-history                                                       ;;## SALES MODULE
-  set income-historyXticks sum (sublist income-history 0 simulation-time)                             ;;## SALES MODULE
-
-  set balance-history fput balance balance-history                                                    ;;## SALES MODULE
-  set balance-historyXticks sum (sublist balance-history 0 simulation-time)                           ;;## SALES MODULE
-
-
-
-
-  set supplement-effort-history fput supplement-effort supplement-effort-history                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set supplement-effort-historyXticks sum (sublist supplement-effort-history 0 simulation-time)                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-  set supplement-effort-history-season fput supplement-effort supplement-effort-history-season                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set supplement-effort-historyXticks-season sum (sublist supplement-effort-history-season 0 season-days)                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set supplement-effort-history fput supplement-effort supplement-effort-history                      ;; time spent by the farmer (effort, in minutes) on feed supplementation since the start of the simulation
+  set supplement-effort-historyXticks sum (sublist supplement-effort-history 0 simulation-time)
+  set supplement-effort-history-season fput supplement-effort supplement-effort-history-season        ;; time spent by the farmer (effort, in minutes) on feed supplementation during the season
+  set supplement-effort-historyXticks-season sum (sublist supplement-effort-history-season 0 season-days)
   if season-days = season-length [set supplement-effort-history-season []]
-  ;if season-days = 92 [set supplement-effort-history-season []]                                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set supplement-effort-history-year fput supplement-effort supplement-effort-history-year            ;; time spent by the farmer (effort, in minutes) on feed supplementation during the year
+  set supplement-effort-historyXticks-year sum (sublist supplement-effort-history-year 0 year-days)
+  if year-days = 368 [set supplement-effort-history-year []]
 
-  set supplement-effort-history-year fput supplement-effort supplement-effort-history-year                                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set supplement-effort-historyXticks-year sum (sublist supplement-effort-history-year 0 year-days)                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  if year-days = 368 [set supplement-effort-history-year []]                                                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
-  set weaning-effort-history fput weaning-effort weaning-effort-history                                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set weaning-effort-historyXticks sum (sublist weaning-effort-history 0 simulation-time)                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  set weaning-effort-history-season fput weaning-effort weaning-effort-history-season                                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set weaning-effort-historyXticks-season sum (sublist weaning-effort-history-season 0 season-days)                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set weaning-effort-history fput weaning-effort weaning-effort-history                      ;; time spent by the farmer (effort, in minutes) on weaning calves since the start of the simulation
+  set weaning-effort-historyXticks sum (sublist weaning-effort-history 0 simulation-time)
+  set weaning-effort-history-season fput weaning-effort weaning-effort-history-season        ;; time spent by the farmer (effort, in minutes) on weaning calves during the season
+  set weaning-effort-historyXticks-season sum (sublist weaning-effort-history-season 0 season-days)
   if season-days = season-length [set weaning-effort-history-season []]
-  ;if season-days = 92 [set weaning-effort-history-season []]                                                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set weaning-effort-history-year fput weaning-effort weaning-effort-history-year            ;; time spent by the farmer (effort, in minutes) on weaning calves during the year
+  set weaning-effort-historyXticks-year sum (sublist weaning-effort-history-year 0 year-days)
+  if year-days = 368 [set weaning-effort-history-year []]
 
-  set weaning-effort-history-year fput weaning-effort weaning-effort-history-year                                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set weaning-effort-historyXticks-year sum (sublist weaning-effort-history-year 0 year-days)                                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  if year-days = 368 [set weaning-effort-history-year []]                                                                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
-
-
-  set OS-males-effort-history fput OS-males-effort OS-males-effort-history                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-males-effort-history fput OS-males-effort OS-males-effort-history                      ;; time spent by the farmer (effort, in minutes) on the ordinary sale of males since the start of the simulation
   set OS-males-effort-historyXticks sum (sublist OS-males-effort-history 0 simulation-time)
-
-  set OS-males-effort-history-season fput OS-males-effort OS-males-effort-history-season                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set OS-males-effort-historyXticks-season sum (sublist OS-males-effort-history-season 0 season-days)                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-males-effort-history-season fput OS-males-effort OS-males-effort-history-season         ;; time spent by the farmer (effort, in minutes) on the ordinary sale of males during the season
+  set OS-males-effort-historyXticks-season sum (sublist OS-males-effort-history-season 0 season-days)
   if season-days = season-length [set OS-males-effort-history-season []]
-  ;if season-days = 92 [set OS-males-effort-history-season []]
-
-  set OS-males-effort-history-year fput OS-males-effort OS-males-effort-history-year                                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set OS-males-effort-historyXticks-year sum (sublist OS-males-effort-history-year 0 year-days)                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-males-effort-history-year fput OS-males-effort OS-males-effort-history-year             ;; time spent by the farmer (effort, in minutes) on the ordinary sale of males during the year
+  set OS-males-effort-historyXticks-year sum (sublist OS-males-effort-history-year 0 year-days)
   if year-days = 368 [set OS-males-effort-history-year []]
 
-
-
-
-
-
-
-
-  set OS-old-cow-effort-history fput OS-old-cow-effort OS-old-cow-effort-history                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-old-cow-effort-history fput OS-old-cow-effort OS-old-cow-effort-history                     ;; time spent by the farmer (effort, in minutes) on the ordinary sale of old cows since the start of the simulation
   set OS-old-cow-effort-historyXticks sum (sublist OS-old-cow-effort-history 0 simulation-time)
-
-  set OS-old-cow-effort-history-season fput OS-old-cow-effort OS-old-cow-effort-history-season                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set OS-old-cow-effort-historyXticks-season sum (sublist OS-old-cow-effort-history-season 0 season-days)                                         ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-old-cow-effort-history-season fput OS-old-cow-effort OS-old-cow-effort-history-season       ;; time spent by the farmer (effort, in minutes) on the ordinary sale of old cows during the season
+  set OS-old-cow-effort-historyXticks-season sum (sublist OS-old-cow-effort-history-season 0 season-days)
   if season-days = season-length [set OS-old-cow-effort-history-season []]
-  ;if season-days = 92 [set OS-old-cow-effort-history-season []]
-
-  set OS-old-cow-effort-history-year fput OS-old-cow-effort OS-old-cow-effort-history-year                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set OS-old-cow-effort-historyXticks-year sum (sublist OS-old-cow-effort-history-year 0 year-days)                                         ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-old-cow-effort-history-year fput OS-old-cow-effort OS-old-cow-effort-history-year           ;; time spent by the farmer (effort, in minutes) on the ordinary sale of old cows during the year
+  set OS-old-cow-effort-historyXticks-year sum (sublist OS-old-cow-effort-history-year 0 year-days)
   if year-days = 368 [set OS-old-cow-effort-history-year []]
 
-
-
-
-  set OS-old-bull-effort-history fput OS-old-bull-effort OS-old-bull-effort-history
+  set OS-old-bull-effort-history fput OS-old-bull-effort OS-old-bull-effort-history                 ;; time spent by the farmer (effort, in minutes) on the ordinary sale of old bulls since the start of the simulation
   set OS-old-bull-effort-historyXticks sum (sublist OS-old-bull-effort-history 0 simulation-time)
-
-  set OS-old-bull-effort-history-season fput OS-old-bull-effort OS-old-bull-effort-history-season
+  set OS-old-bull-effort-history-season fput OS-old-bull-effort OS-old-bull-effort-history-season   ;; time spent by the farmer (effort, in minutes) on the ordinary sale of old bulls during the season
   set OS-old-bull-effort-historyXticks-season sum (sublist OS-old-bull-effort-history-season 0 season-days)
   if season-days = season-length [set OS-old-bull-effort-history-season []]
-  ;if season-days = 92 [set OS-old-bull-effort-history-season []]
-
-  set OS-old-bull-effort-history-year fput OS-old-bull-effort OS-old-bull-effort-history-year
+  set OS-old-bull-effort-history-year fput OS-old-bull-effort OS-old-bull-effort-history-year       ;; time spent by the farmer (effort, in minutes) on the ordinary sale of old bulls during the year
   set OS-old-bull-effort-historyXticks-year sum (sublist OS-old-bull-effort-history-year 0 year-days)
   if year-days = 368 [set OS-old-bull-effort-history-year []]
 
-
-
-
-
-
-
-
-
-
-
-
-
-  set OS-females-effort-history fput OS-females-effort OS-females-effort-history                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-females-effort-history fput OS-females-effort OS-females-effort-history              ;; time spent by the farmer (effort, in minutes) on the ordinary sale of females since the start of the simulation
   set OS-females-effort-historyXticks sum (sublist OS-females-effort-history 0 simulation-time)
-
-  set OS-females-effort-history-season fput OS-females-effort OS-females-effort-history-season                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set OS-females-effort-historyXticks-season sum (sublist OS-females-effort-history-season 0 season-days)                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-females-effort-history-season fput OS-females-effort OS-females-effort-history-season    ;; time spent by the farmer (effort, in minutes) on the ordinary sale of females during the season
+  set OS-females-effort-historyXticks-season sum (sublist OS-females-effort-history-season 0 season-days)
   if season-days = season-length [set OS-females-effort-history-season []]
-  ;if season-days = 92 [set OS-females-effort-history-season []]
-
-  set OS-females-effort-history-year fput OS-females-effort OS-females-effort-history-year                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set OS-females-effort-historyXticks-year sum (sublist OS-females-effort-history-year 0 year-days)                                  ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set OS-females-effort-history-year fput OS-females-effort OS-females-effort-history-year           ;; time spent by the farmer (effort, in minutes) on the ordinary sale of females during the year
+  set OS-females-effort-historyXticks-year sum (sublist OS-females-effort-history-year 0 year-days)
   if year-days = 368 [set OS-females-effort-history-year []]
 
-
-
-
-
-
-
-
-
-
-  set ES-males-effort-history fput ES-males-effort ES-males-effort-history                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-males-effort-history fput ES-males-effort ES-males-effort-history                      ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of males since the start of the simulation
   set ES-males-effort-historyXticks sum (sublist ES-males-effort-history 0 simulation-time)
-
-  set ES-males-effort-history-season fput ES-males-effort ES-males-effort-history-season                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set ES-males-effort-historyXticks-season sum (sublist ES-males-effort-history-season 0 season-days)                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-males-effort-history-season fput ES-males-effort ES-males-effort-history-season           ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of males during the season
+  set ES-males-effort-historyXticks-season sum (sublist ES-males-effort-history-season 0 season-days)
   if season-days = season-length [set ES-males-effort-history-season []]
-  ;if season-days = 92 [set ES-males-effort-history-season []]
-
-  set ES-males-effort-history-year fput ES-males-effort ES-males-effort-history-year                                                 ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set ES-males-effort-historyXticks-year sum (sublist ES-males-effort-history-year 0 year-days)                                           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-males-effort-history-year fput ES-males-effort ES-males-effort-history-year                    ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of males during the year
+  set ES-males-effort-historyXticks-year sum (sublist ES-males-effort-history-year 0 year-days)
   if year-days = 368 [set ES-males-effort-history-year []]
 
-
-
-
-
-
-
-
-
-
-  set ES-old-cow-effort-history fput ES-old-cow-effort ES-old-cow-effort-history                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-old-cow-effort-history fput ES-old-cow-effort ES-old-cow-effort-history                             ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of old cows since the start of the simulation
   set ES-old-cow-effort-historyXticks sum (sublist ES-old-cow-effort-history 0 simulation-time)
-
-  set ES-old-cow-effort-history-season fput ES-old-cow-effort ES-old-cow-effort-history-season                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set ES-old-cow-effort-historyXticks-season sum (sublist ES-old-cow-effort-history-season 0 season-days)                                         ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-old-cow-effort-history-season fput ES-old-cow-effort ES-old-cow-effort-history-season                      ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of old cows during the season
+  set ES-old-cow-effort-historyXticks-season sum (sublist ES-old-cow-effort-history-season 0 season-days)
   if season-days = season-length [set ES-old-cow-effort-history-season []]
-  ;if season-days = 92 [set ES-old-cow-effort-history-season []]
-
-  set ES-old-cow-effort-history-year fput ES-old-cow-effort ES-old-cow-effort-history-year                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set ES-old-cow-effort-historyXticks-year sum (sublist ES-old-cow-effort-history-year 0 year-days)                                         ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-old-cow-effort-history-year fput ES-old-cow-effort ES-old-cow-effort-history-year                           ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of old cows during the year
+  set ES-old-cow-effort-historyXticks-year sum (sublist ES-old-cow-effort-history-year 0 year-days)
   if year-days = 368 [set ES-old-cow-effort-history-year []]
 
-
-
-
-
-
-
-
-
-  set ES-females-effort-history fput ES-females-effort ES-females-effort-history                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-females-effort-history fput ES-females-effort ES-females-effort-history                                  ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of females since the start of the simulation
   set ES-females-effort-historyXticks sum (sublist ES-females-effort-history 0 simulation-time)
-
-  set ES-females-effort-history-season fput ES-females-effort ES-females-effort-history-season                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set ES-females-effort-historyXticks-season sum (sublist ES-females-effort-history-season 0 season-days)                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-females-effort-history-season fput ES-females-effort ES-females-effort-history-season                       ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of females during the season
+  set ES-females-effort-historyXticks-season sum (sublist ES-females-effort-history-season 0 season-days)
   if season-days = season-length [set ES-females-effort-history-season []]
-  ;if season-days = 92 [set ES-females-effort-history-season []]
-
-  set ES-females-effort-history-year fput ES-females-effort ES-females-effort-history-year                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set ES-females-effort-historyXticks-year sum (sublist ES-females-effort-history-year 0 year-days)                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set ES-females-effort-history-year fput ES-females-effort ES-females-effort-history-year                              ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of females during the year
+  set ES-females-effort-historyXticks-year sum (sublist ES-females-effort-history-year 0 year-days)
   if year-days = 368 [set ES-females-effort-history-year []]
 
-
-
-
-
-
-
-
-  set breeding-effort-history fput breeding-effort breeding-effort-history                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set breeding-effort-history fput breeding-effort breeding-effort-history                         ;; time spent by the farmer since the start of the simulation (effort, in minutes) to move bulls into the paddock where the breeding cows are
   set breeding-effort-historyXticks sum (sublist breeding-effort-history 0 simulation-time)
-
-  set breeding-effort-history-season fput breeding-effort breeding-effort-history-season                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set breeding-effort-historyXticks-season sum (sublist breeding-effort-history-season 0 season-days)                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  set breeding-effort-history-year fput breeding-effort breeding-effort-history-year                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set breeding-effort-historyXticks-year sum (sublist breeding-effort-history-year 0 year-days)                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
+  set breeding-effort-history-season fput breeding-effort breeding-effort-history-season             ;; time spent by the farmer during the season (effort, in minutes) to move bulls into the paddock where the breeding cows are
+  set breeding-effort-historyXticks-season sum (sublist breeding-effort-history-season 0 season-days)
+  set breeding-effort-history-year fput breeding-effort breeding-effort-history-year                                 ;; time spent by the farmer since during the year (effort, in minutes) to move bulls into the paddock where the breeding cows are
+  set breeding-effort-historyXticks-year sum (sublist breeding-effort-history-year 0 year-days)
   set breeding-effort 0
 
+  set rotational-effort-history fput rotational-effort rotational-effort-history                           ;; only when rotational grazing is in effect: time spent by the farmer since the start of the simulation (effort, in minutes) to move cattle from one paddock to another
+  set rotational-effort-historyXticks sum (sublist rotational-effort-history 0 simulation-time)
+  set rotational-effort-history-season fput rotational-effort rotational-effort-history-season              ;; only when rotational grazing is in effect: time spent by the farmer during the season (effort, in minutes) to move cattle from one paddock to another
+  set rotational-effort-historyXticks-season sum (sublist rotational-effort-history-season 0 season-days)
+  set rotational-effort-history-year fput rotational-effort rotational-effort-history-year                  ;; only when rotational grazing is in effect: time spent by the farmer during the year (effort, in minutes) to move cattle from one paddock to another
+  set rotational-effort-historyXticks-year sum (sublist rotational-effort-history-year 0 year-days)
+  if ticks-since-here = 1 [set rotational-effort 0]
 
-
-
-  set rotational-effort-history fput rotational-effort rotational-effort-history                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set rotational-effort-historyXticks sum (sublist rotational-effort-history 0 simulation-time)                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  set rotational-effort-history-season fput rotational-effort rotational-effort-history-season                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set rotational-effort-historyXticks-season sum (sublist rotational-effort-history-season 0 season-days)                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  set rotational-effort-history-year fput rotational-effort rotational-effort-history-year                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set rotational-effort-historyXticks-year sum (sublist rotational-effort-history-year 0 year-days)                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  if ticks-since-here = 1 [set rotational-effort 0]                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-  set other-daily-effort-history fput other-daily-effort other-daily-effort-history                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  set other-daily-effort-history fput other-daily-effort other-daily-effort-history                     ;; time spent by the farmer (effort, in minutes) on other (undetermined) activities since the start of the simulation
   set other-daily-effort-historyXticks sum (sublist other-daily-effort-history 0 simulation-time)
-
-  set other-daily-effort-history-season fput other-daily-effort other-daily-effort-history-season                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set other-daily-effort-historyXticks-season sum (sublist other-daily-effort-history-season 0 season-days)                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  set other-daily-effort-history-year fput other-daily-effort other-daily-effort-history-year                                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  set other-daily-effort-historyXticks-year sum (sublist other-daily-effort-history-year 0 year-days)                                               ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
+  set other-daily-effort-history-season fput other-daily-effort other-daily-effort-history-season          ;; time spent by the farmer (effort, in minutes) on other (undetermined) activities during the season
+  set other-daily-effort-historyXticks-season sum (sublist other-daily-effort-history-season 0 season-days)
+  set other-daily-effort-history-year fput other-daily-effort other-daily-effort-history-year              ;; time spent by the farmer (effort, in minutes) on other (undetermined) activities during the year
+  set other-daily-effort-historyXticks-year sum (sublist other-daily-effort-history-year 0 year-days)
   set other-daily-effort 0
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Determination of the estimated carrying capacity of the system (in Animal Units). The estimated carrying capacity is used exclusively by the environmental farmer to make decisions about when to make exceptional sales
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-;; ###########################################################################################################################################################################################################################
-;; ####################################### CALCULO DEL CARRYING CAPACITY (REAL Y ESTIMADO) QUE USARÁ EL ENVIRONMENTAL FARMER PARA TOMAR DECISIONES DURANTE EL EXTRAORDINARY SALES ############################################
-;; ###########################################################################################################################################################################################################################
-
-  if season-days = 1 [   ;; CALCULO DEL ESTIMATED CARRYING CAPACITY (EL QUE USA EL ENVIRONMENTAL FARMER). ESTE CALCULO SE HACE AL INICIO DE CADA SEASON
-
-
-    if (spatial-management = "free grazing") [
-      set estimated-kmax mean [grass-height] of patches                                         ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-      set estimated-DM-cm-ha DM-cm-ha
-      set estimated-climacoef climacoef
-    ]                                                                                           ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+  if season-days = 1 [                                                                                     ;; the estimated carrying capacity is always updated at the beginning of the new season. It is estimated because the farmer doesn't have perfect knowledge of all the variables in the system that determines it
+    if (spatial-management = "free grazing") [set estimated-kmax mean [grass-height] of patches set estimated-DM-cm-ha DM-cm-ha set estimated-climacoef climacoef]
 
   if (spatial-management = "rotational grazing") [
+      ask patches with [paddock-a = 1] [if any? cows-here [set estimated-kmax mean [grass-height] of patches with [paddock-a = 1] set estimated-DM-cm-ha DM-cm-ha set estimated-climacoef climacoef]]
+      ask patches with [paddock-b = 1] [if any? cows-here [set estimated-kmax mean [grass-height] of patches with [paddock-b = 1] set estimated-DM-cm-ha DM-cm-ha set estimated-climacoef climacoef]]
+      ask patches with [paddock-c = 1] [if any? cows-here [set estimated-kmax mean [grass-height] of patches with [paddock-c = 1] set estimated-DM-cm-ha DM-cm-ha set estimated-climacoef climacoef]]
+      ask patches with [paddock-d = 1] [if any? cows-here [set estimated-kmax mean [grass-height] of patches with [paddock-d = 1] set estimated-DM-cm-ha DM-cm-ha set estimated-climacoef climacoef]]
+  ]]
 
-      ask patches with [paddock-a = 1] [
-        if any? cows-here [
-          set estimated-kmax mean [grass-height] of patches with [paddock-a = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-          set estimated-DM-cm-ha DM-cm-ha
-          set estimated-climacoef climacoef
-      ]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-
-      ask patches with [paddock-b = 1] [
-        if any? cows-here [
-          set estimated-kmax mean [grass-height] of patches with [paddock-b = 1]                ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-          set estimated-DM-cm-ha DM-cm-ha
-          set estimated-climacoef climacoef
-      ]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-
-      ask patches with [paddock-c = 1] [
-        if any? cows-here [
-          set estimated-kmax mean [grass-height] of patches with [paddock-c = 1]                ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-          set estimated-DM-cm-ha DM-cm-ha
-          set estimated-climacoef climacoef
-      ]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-
-      ask patches with [paddock-d = 1] [
-        if any? cows-here [
-          set estimated-kmax mean [grass-height] of patches with [paddock-d = 1]               ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-          set estimated-DM-cm-ha DM-cm-ha
-          set estimated-climacoef climacoef
-      ]]
-  ]]                                                                                                        ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-
-  ;; FORMULA DEL ESTIMATED CARRYING CAPACITY (EL QUE USA EL ENV. FARMER)
-
-  if (spatial-management = "free grazing") [
-
-    set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]         ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL.LA VARIABLE "%-DM-available-for-cattle" ES EL % DE DM QUE UTILIZARÁ EL GANADO
+  if (spatial-management = "free grazing") [                                                              ;; once all the variables used to determine carrying capacity have been set (based on their values on the first day of the season), the estimated carrying capacity can now be determined
+    set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]   ;; "%-DM-available-for-cattle" and "daily-DM-consumed-by-cattle" are assumptions made by the farmer and can be set with the sliders of the same name found on the interface
 
   if (spatial-management = "rotational grazing") [
+    ask patches with [paddock-a = 1] [if any? cows-here [set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-a = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+    ask patches with [paddock-b = 1] [if any? cows-here [set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-b = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+    ask patches with [paddock-c = 1] [if any? cows-here [set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-c = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+    ask patches with [paddock-d = 1] [if any? cows-here [set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-d = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]]
 
-    ask patches with [paddock-a = 1] [
-      if any? cows-here [
-        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-a = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
-
-    ask patches with [paddock-b = 1] [
-      if any? cows-here [
-        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-b = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
-
-    ask patches with [paddock-c = 1] [
-      if any? cows-here [
-        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-c = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
-
-    ask patches with [paddock-d = 1] [
-      if any? cows-here [
-        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-d = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]]
-
-  ;; FORMULA DEL REAL CARRYING CAPACITY DEL SISTEMA (A TITULO INFORMATIVO)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Determination the real carrying capacity of the system
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
   if (spatial-management = "free grazing") [
-
-    if any? cows [
-      ifelse mean [DDMC] of cows = 0
+    if any? cows [ifelse mean [DDMC] of cows = 0
       [set carrying-capacity ((((mean [grass-height] of patches * DM-cm-ha) * climacoef * count patches)) / season-length) / daily-DM-consumed-by-cattle]
       [set carrying-capacity ((((mean [grass-height] of patches * DM-cm-ha) * climacoef * count patches)) / season-length) / mean [DDMC] of cows]]]
 
-
       if (spatial-management = "rotational grazing") [
-
       ask patches with [paddock-a = 1] [
         if any? cows-here [
           ifelse mean [DDMC] of cows = 0
           [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-a = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-a = 1]) / season-length) / daily-DM-consumed-by-cattle]
-          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-a = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-a = 1]) / season-length) / mean [DDMC] of cows]]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
-
-
+          [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-a = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-a = 1]) / season-length) / mean [DDMC] of cows]]]
       ask patches with [paddock-b = 1] [
         if any? cows-here [
           ifelse mean [DDMC] of cows = 0
           [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-b = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-b = 1]) / season-length) / daily-DM-consumed-by-cattle]
           [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-b = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-b = 1]) / season-length) / mean [DDMC] of cows]]]
-
-
       ask patches with [paddock-c = 1] [
         if any? cows-here [
           ifelse mean [DDMC] of cows = 0
           [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-c = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-c = 1]) / season-length) / daily-DM-consumed-by-cattle]
           [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-c = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-c = 1]) / season-length) / mean [DDMC] of cows]]]
-
-
       ask patches with [paddock-d = 1] [
         if any? cows-here [
           ifelse mean [DDMC] of cows = 0
           [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-d = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-d = 1]) / season-length) / daily-DM-consumed-by-cattle]
           [set carrying-capacity  ((((mean [grass-height] of patches with [paddock-d = 1]) * DM-cm-ha) * climacoef * count patches with [paddock-d = 1]) / season-length) / mean [DDMC] of cows]]]]
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Simulation termination rules and model procedures
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-
-
-
-;; ###########################################################################################################################################################################################################################
-;; ###########################################################################################################################################################################################################################
-;; ###########################################################################################################################################################################################################################
-
-  if simulation-time / 368 = STOP-SIMULATION-AT [stop]                               ;; the observer can decide whether the simulation should run indefinitely (STOP-SIMULATION-AT 0 years) or after X years
-
-  ;if count cows = 0 [stop]
+  if simulation-time / 368 = STOP-SIMULATION-AT [stop]                               ;; the observer can decide whether the simulation should run indefinitely (setting the "STOP-SIMULATION-AT" slider in the interface to 0 years) or after X years
+  if count cows = 0 [stop]                                                           ;; if the system collapses (number of animals = 0), the simulation stops
 
   grow-grass
 
@@ -1665,90 +1346,39 @@ to go
 
   DM-consumption
 
-  set supplement-cost 0
+  set supplement-cost 0                                                              ;; supplement-cost are reset every tick
 
-  if (farmer-profile = "market") or (farmer-profile = "market-fsb") or (farmer-profile = "environmental") or (farmer-profile = "environmental-rot2") [
+  if (farmer-profile = "market") or (farmer-profile = "market-fsb") or (farmer-profile = "environmental") or (farmer-profile = "environmental-rot2") [feed-supplementation]
+  if (farmer-profile = "market-fsb") [feed-supplementation-for-controlled-breeding]
+  if (farmer-profile = "environmental-fmincows") [if count cows <= keep-MIN-n-breeding-cows [feed-supplementation]]
 
-    feed-supplementation                                                             ;;## FEED SUPPLEMENTATION MODULE
+  if (farmer-profile = "none") [grow-livestock-natural-weaning-none-profile]
+  if (farmer-profile = "traditional") [grow-livestock-natural-weaning]
+  if (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") or (farmer-profile = "environmental-rot2") [grow-livestock-natural-weaning]
+  if (farmer-profile = "market") or (farmer-profile = "market-fsb") [grow-livestock-early-weaning]
 
-  ]
-
-
-  if (farmer-profile = "market-fsb") [
-
-    feed-supplementation-for-controlled-breeding                                     ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-  ]
-
-  if (farmer-profile = "environmental-fmincows") [
-    if count cows <= keep-MIN-n-breeding-cows [
-    feed-supplementation
-  ]                        ;;## FEED SUPPLEMENTATION MODULE ;; environmental farmers only supplement animals when the system meets or falls below the minimum herd size desired by the farmer ("keep-MIN-n-cattle" slider in the interface)
-  ]
-
-  if (farmer-profile = "none") [
-    grow-livestock-natural-weaning-none-profile                                      ;;## EARLY/NATURAL WEANING MODULE
-  ]
-    if (farmer-profile = "traditional") [
-    grow-livestock-natural-weaning                                                   ;;## EARLY/NATURAL WEANING MODULE
-  ]
-    if (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") or (farmer-profile = "environmental-rot2") [
-    grow-livestock-natural-weaning                                                   ;;## EARLY/NATURAL WEANING MODULE
-  ]
-  if (farmer-profile = "market") or (farmer-profile = "market-fsb") [
-    grow-livestock-early-weaning                                                     ;;## EARLY/NATURAL WEANING MODULE
-  ]
-
-  if (farmer-profile = "none") [
-    uncontrolled-breeding                                                            ;;## CONTROLLED/NATURAL BREEDING MODULE
-  ]
-  if (farmer-profile = "traditional") [
-    uncontrolled-breeding                                                            ;;## CONTROLLED/NATURAL BREEDING MODULE
-  ]
-  if (farmer-profile = "market") or (farmer-profile = "market-fsb") [
-    controlled-breeding                                                              ;;## CONTROLLED/NATURAL BREEDING MODULE
-  ]
-  if (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") or (farmer-profile = "environmental-rot2") [
-    controlled-breeding                                                              ;;## CONTROLLED/NATURAL BREEDING MODULE
-  ]
+  if (farmer-profile = "none") [uncontrolled-breeding]
+  if (farmer-profile = "traditional") [uncontrolled-breeding]
+  if (farmer-profile = "market") or (farmer-profile = "market-fsb") [controlled-breeding]
+  if (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") or (farmer-profile = "environmental-rot2") [controlled-breeding]
 
   update-grass-height
 
   move
 
-  update-prices                                                                      ;;## SALES MODULE
+  update-prices
 
-  if (farmer-profile = "traditional") [
-    ordinary-sale-males                                                              ;;## ORDINARY SALES MODULE
-  ]
-
+  if (farmer-profile = "traditional") [ordinary-sale-males]
   if (farmer-profile = "market") or (farmer-profile = "market-fsb") [
-    ordinary-sale-males                                                              ;;## ORDINARY SALES MODULE
-    ordinary-sale-old-cows                                                           ;;## ORDINARY SALES MODULE
-    ordinary-sale-old-bulls
-    ordinary-sale-non-replacement-females                                                       ;;## ORDINARY SALES MODULE
+    ordinary-sale-males ordinary-sale-old-cows ordinary-sale-old-bulls ordinary-sale-non-replacement-females
+    extraordinary-sale-males-market-farmer extraordinary-sale-old-cows-market-farmer extraordinary-sale-non-replacement-females-market-farmer]
+  if (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") or (farmer-profile = "environmental-rot2") [
+    ordinary-sale-males ordinary-sale-old-cows ordinary-sale-old-bulls ordinary-sale-non-replacement-females
+    extraordinary-sale-males-environmental-farmer extraordinary-sale-old-cows-environmental-farmer extraordinary-sale-non-replacement-females-environmental-farmer]
 
-    extraordinary-sale-males-market-farmer                                           ;;## EXTRAORDINARY SALES MODULE
-    extraordinary-sale-old-cows-market-farmer                                        ;;## EXTRAORDINARY SALES MODULE
-    extraordinary-sale-non-replacement-females-market-farmer                                    ;;## EXTRAORDINARY SALES MODULE
-  ]
+  farm-balance
 
-  if (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") or (farmer-profile = "environmental-rot2") [                                            ;;## ORDINARY SALES MODULE
-    ordinary-sale-males                                                              ;;## ORDINARY SALES MODULE
-    ordinary-sale-old-cows                                                           ;;## ORDINARY SALES MODULE
-    ordinary-sale-old-bulls
-    ordinary-sale-non-replacement-females                                                       ;;## ORDINARY SALES MODULE
-
-    extraordinary-sale-males-environmental-farmer                                    ;;## EXTRAORDINARY SALES MODULE
-    extraordinary-sale-old-cows-environmental-farmer                                 ;;## EXTRAORDINARY SALES MODULE
-    extraordinary-sale-non-replacement-females-environmental-farmer                             ;;## EXTRAORDINARY SALES MODULE
-  ]
-
-  farm-balance                                                                       ;;## SALES MODULE
-
-  effort                                                                             ;;## WELLBEING MODULE
-
-
+  effort
 
   tick
 end
@@ -1765,15 +1395,10 @@ to grow-grass                                                                   
   ask patches [
     set grass-height (grass-height + r * grass-height * (1 - grass-height / ((kmax * soil-quality) * climacoef))) - GH-consumed
     if grass-height <= 0 [set grass-height 0.1]                                      ;; to avoid negative values. If grass-height = 0, no grass would grow in a patch. To fix this, we use 0.1 instead.
-
     ifelse grass-height < 2                                                          ;; patches with grass height less than 2 cm are colored light green. This is based on the assumption that cows cannot eat grass less than 2 cm high
     [set pcolor 37]
     [set pcolor scale-color green grass-height 23 0]
   ]
-
-
-
-
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1781,9 +1406,19 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-to LWG                                                                               ;; the live weight gain of each cow is calculated according to the number of centimeters of grass that correspond to each animal
-ask cows [
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;   SEGUIR A PARTIR DE AQUI   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+to LWG                                                                               ;; the live weight gain of each cow is calculated
+ask cows [
     ifelse born-calf? = true
     [set live-weight-gain weight-gain-lactation]
     [ifelse grass-height >= 2                                                        ;; cows cannot eat grass less than 2 cm high
@@ -4086,7 +3721,7 @@ CHOOSER
 378
 climacoef-distribution
 climacoef-distribution
-"homogeneus" "uniform" "normal" "exponential_low" "exponential_high" "historic-climacoef" "direct-climacoef-control"
+"homogeneus" "uniform" "normal" "exponential_low" "exponential_high" "historical-climacoef" "direct-climacoef-control"
 6
 
 BUTTON
