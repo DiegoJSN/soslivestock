@@ -1492,7 +1492,7 @@ to feed-supplementation                                                         
   set supplement-cost FS-cow + FS-cow-with-calf + FS-heifer + FS-steer + FS-weaned-calf + FS-bull              ;; once the daily cost has been calculated for each age group, the TOTAL daily cost (i.e. the total cost to feed ALL animals in one day) is calculated
 end
 
-to feed-supplementation-for-controlled-breeding                                                                ;; feed supplementation for breeding cows. It follows exactly the same logic as the "feed-supplementation" procedure, but in this case it only affects cows that are not pregnant
+to feed-supplementation-for-controlled-breeding                                                                ;; feed supplementation for breeding cows (non-pregnant cows). It follows exactly the same logic as the "feed-supplementation" procedure, but in this case it only affects cows that are not pregnant
 
   set FSB-cow 0                                                                                                ;; the daily cost of purchasing feed supplements for breeding cows is reset every tick. This allows to keep track of the amount of money spent on feed supplements for breeding cows each day
   ask cows with [cow?] [set live-weight-gain-feed-breeding 0]                                                  ;; in addition, the live weight gained from feed supplements for each animal is reset each day
@@ -1540,7 +1540,7 @@ to feed-supplementation-for-controlled-breeding                                 
   set supplement-cost supplement-cost + FSB-cow                                                                        ;; the daily cost of purchasing feed supplements is updated
 end
 
-to grow-livestock-natural-weaning-none-profile                                                    ;; only for when no farmer profile is selected ("farmer-profile = none"). This procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactation period of animals in a NATURAL weaning scenario.
+to grow-livestock-natural-weaning-none-profile                                                    ;; only for when no farmer profile is selected ("farmer-profile = none"). This procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactation period of animals in a NATURAL weaning scenario
 ask cows [
     set age age + days-per-tick                                                                   ;; animals update their age
     if age > cow-age-max [die]                                                                    ;; if the animal is older than the life expectancy (set by the "cow-age-max" variable), the animal dies
@@ -1551,23 +1551,23 @@ ask cows [
 
     ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]                     ;; if the animal is older than the value set by the "age-sell-old-cow/bull" slider on the interface, the animal is considered to be old
 
-    ask cows with [cow-with-calf? and not any? my-links] [become-cow]                                                      ;; if the link with the child (an agent with the state "born-calf") is lost (this happens when the child dies), the mother changes from the state "cow-with-calf" to the state "cow".
-    ask cows with [born-calf-female? and not any? my-links ] [ become-weaned-calf-female ]                                 ;; if the link with the mother (an agent with a "cow-with-calf?" state) is lost (this happens when the mother dies, or when the mother switches from a "cow-with-calf?" state to a "cow?" state), the calf weans prematurely.
+    ask cows with [cow-with-calf? and not any? my-links] [become-cow]                                                      ;; if the link with the child (an agent with the state "born-calf") is lost (this happens when the child dies), the mother changes from the state "cow-with-calf" to the state "cow"
+    ask cows with [born-calf-female? and not any? my-links ] [ become-weaned-calf-female ]                                 ;; if the link with the mother (an agent with a "cow-with-calf?" state) is lost (this happens when the mother dies, or when the mother switches from a "cow-with-calf?" state to a "cow?" state), the calf weans prematurely
     ask cows with [born-calf-male? and not any? my-links ] [ become-weaned-calf-male ]
 
-    if (born-calf-female? = true) and (age >= weaned-calf-age-min) [become-weaned-calf-female ask my-out-links [die]]       ;; when the lactating calf moves on to the next age group (weaned-calf), the link (dependency) with its parent is terminated
+    if (born-calf-female? = true) and (age >= weaned-calf-age-min) [become-weaned-calf-female ask my-out-links [die]]       ;; lactating calves (i.e., "born-calf?" age class) become weaned calves at 246 days old (set by the "weaned-calf-age-min" variable). When the lactating calf moves on to the next age group (weaned-calf), the link (dependency) with its parent is terminated
     if (born-calf-male? = true) and (age >= weaned-calf-age-min) [become-weaned-calf-male ask my-out-links [die]]
-    if (weaned-calf-female? = true) and (age >= heifer-age-min) [become-heifer]
+    if (weaned-calf-female? = true) and (age >= heifer-age-min) [become-heifer]                                             ;; female weaned calves become heifers at 369 days old (set by the "heifer-age-min" variable)
 
-    if (weaned-calf-male? = true) and (age >= heifer-age-min) [become-bull]
+    if (weaned-calf-male? = true) and (age >= heifer-age-min) [become-bull]                                                 ;; when no farmer profile is selected, male weaned calves become bulls at 369 days old (set by the "heifer-age-min" variable)
 
-    if (heifer? = true) and (age >= cow-age-min) and (live-weight >= 280 ) [become-cow]
-    if cow-with-calf? = true [set lactating-time lactating-time + days-per-tick]
-    if lactating-time >= lactation-period [become-cow]
+    if (heifer? = true) and (age >= cow-age-min) and (live-weight >= 280 ) [become-cow]                                     ;; heifers become adult cows when they are 737 days old (as determined by the "cow-age-min" variable) and weigh more than 280 kg
+    if cow-with-calf? = true [set lactating-time lactating-time + days-per-tick]                                            ;; cows with calves (i.e., "cow-with-calf?" age class) has a lactating period of 246 days
+    if lactating-time >= lactation-period [become-cow]                                                                      ;; after 246 days, cows in the "cow-with-calf?" age class return to cows without calves (i.e., "cow?" age class)
   ]
 end
 
-to grow-livestock-natural-weaning                                                    ;; only for when traditional or environmental farmer profile are selected ("farmer-profile = traditional / environmental"). This procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactation period of animals in a NATURAL weaning scenario.
+to grow-livestock-natural-weaning                                                    ;; only for when traditional or environmental farmer profile are selected ("farmer-profile = traditional / environmental"). This procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactation period of animals in a NATURAL weaning scenario
 ask cows [
     set age age + days-per-tick                                                                   ;; animals update their age
     if age > cow-age-max [die]                                                                    ;; if the animal is older than the life expectancy (set by the "cow-age-max" variable), the animal dies
@@ -1578,130 +1578,117 @@ ask cows [
 
     ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]                     ;; if the animal is older than the value set by the "age-sell-old-cow/bull" slider on the interface, the animal is considered to be old
 
-    ask cows with [cow-with-calf? and not any? my-links] [become-cow]                                                      ;; if the link with the child (an agent with the state "born-calf") is lost (this happens when the child dies), the mother changes from the state "cow-with-calf" to the state "cow".
-    ask cows with [born-calf-female? and not any? my-links ] [ become-weaned-calf-female ]                                 ;; if the link with the mother (an agent with a "cow-with-calf?" state) is lost (this happens when the mother dies, or when the mother switches from a "cow-with-calf?" state to a "cow?" state), the calf weans prematurely.
+    ask cows with [cow-with-calf? and not any? my-links] [become-cow]                                                      ;; if the link with the child (an agent with the state "born-calf") is lost (this happens when the child dies), the mother changes from the state "cow-with-calf" to the state "cow"
+    ask cows with [born-calf-female? and not any? my-links ] [ become-weaned-calf-female ]                                 ;; if the link with the mother (an agent with a "cow-with-calf?" state) is lost (this happens when the mother dies, or when the mother switches from a "cow-with-calf?" state to a "cow?" state), the calf weans prematurely
     ask cows with [born-calf-male? and not any? my-links ] [ become-weaned-calf-male ]
 
-    if (born-calf-female? = true) and (age >= weaned-calf-age-min) [become-weaned-calf-female ask my-out-links [die]]       ;; when the lactating calf moves on to the next age group (weaned-calf), the link (dependency) with its parent is terminated
+    if (born-calf-female? = true) and (age >= weaned-calf-age-min) [become-weaned-calf-female ask my-out-links [die]]       ;; lactating calves (i.e., "born-calf?" age class) become weaned calves at 246 days old (set by the "weaned-calf-age-min" variable). When the lactating calf moves on to the next age group (weaned-calf), the link (dependency) with its parent is terminated
     if (born-calf-male? = true) and (age >= weaned-calf-age-min) [become-weaned-calf-male ask my-out-links [die]]
-    if (weaned-calf-female? = true) and (age >= heifer-age-min) [become-heifer]
+    if (weaned-calf-female? = true) and (age >= heifer-age-min) [become-heifer]                                             ;; female weaned calves become heifers at 369 days old (set by the "heifer-age-min" variable)
 
-    if (weaned-calf-male? = true) and (age >= heifer-age-min) [                                                             ;; in this line, a number of weaned male calves are selected to become bulls (this number is determined by the "bull:cow-ratio" slider on the interface). The rest are selected to be sold as steers
+    if (weaned-calf-male? = true) and (age >= heifer-age-min) [                                                             ;; in this line, when the male weaned calf is 369 days old (set by the "heifer-age-min" variable), if there are not enough number of bulls in the system (this number is determined by the "bull:cow-ratio" slider on the interface), the male weaned calf becomes a bull. If there are enough number of bulls, it becomes a steer
       ifelse count cows with [bull?] > 0
       [if bull:cow-ratio > 0 [if count cows with [bull?] <= round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [ask up-to-n-of (round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) - count cows with [bull?]) cows with [(weaned-calf-male? = true) and (age >= heifer-age-min)] [become-bull]]]]
       [ask n-of 1 cows with [(weaned-calf-male? = true) and (age >= heifer-age-min)] [become-bull]]]
 
-    if (weaned-calf-male? = true) and (age >= heifer-age-min) [become-steer]
+    if (weaned-calf-male? = true) and (age >= heifer-age-min) [become-steer]                                                ;; if there are enough number of bulls, the male weaned calf becomes a steer
 
-    if (heifer? = true) and (age >= cow-age-min) and (live-weight >= 280 ) [become-cow]
-    if cow-with-calf? = true [set lactating-time lactating-time + days-per-tick]
-    if lactating-time >= lactation-period [become-cow]
+    if (heifer? = true) and (age >= cow-age-min) and (live-weight >= 280 ) [become-cow]                                     ;; heifers become adult cows when they are 737 days old (as determined by the "cow-age-min" variable) and weigh more than 280 kg
+    if cow-with-calf? = true [set lactating-time lactating-time + days-per-tick]                                            ;; cows with calves (i.e., "cow-with-calf?" age class) has a lactating period of 246 days
+    if lactating-time >= lactation-period [become-cow]                                                                      ;; after 246 days, cows in the "cow-with-calf?" age class return to cows without calves (i.e., "cow?" age class)
   ]
 end
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;   SEGUIR A PARTIR DE AQUI   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+to grow-livestock-early-weaning                                                                   ;; only for when the market farmer profile is selected ("farmer-profile = market"). This procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactation period of animals in a EARLY weaning scenario
 
-to grow-livestock-early-weaning                                                      ;;## EARLY/NATURAL WEANING MODULE ;; this procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactation period of animals in a EARLY weaning scenario.
-
-  ask cows with [weaning-calf? = true] [set weaning-calf? false]                                                                                ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ask cows with [weaning-calf? = true] [set weaning-calf? false]                                  ;; at the beginning of this procedure, we reset the "weaning-calf?" variable, which determines whether a cow-with-calf agent is selected for early weaning (true) or not (false)
 
   ask cows [
-    set age age + days-per-tick
-    if age > cow-age-max [die]
-    ifelse live-weight < min-weight
-    [set mortality-rate except-mort-rate]
-    [set mortality-rate natural-mortality-rate]
-    if random-float 1 < mortality-rate [die]
+    set age age + days-per-tick                                                                   ;; animals update their age
+    if age > cow-age-max [die]                                                                    ;; if the animal is older than the life expectancy (set by the "cow-age-max" variable), the animal dies
+    ifelse live-weight < min-weight                                                               ;; if the live weight of the animal is below the minimum survival weight (set by the "min-weight" variable)...
+    [set mortality-rate except-mort-rate]                                                         ;; alternative A: if it is true (the live weight is below the minimum weight), the mortality rate will update its value to a high mortality rate ("except-mort-rate")
+    [set mortality-rate natural-mortality-rate]                                                   ;; alternative B: if it is false (the live weight is above the minimum weight), the mortality rate updates its value to a normal mortality rate ("natural-mortality-rate")
+    if random-float 1 < mortality-rate [die]                                                      ;; a random number between 0 and 1 is generated. If this random number is less than the mortality rate, the animal dies
 
-    ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
+    ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]                     ;; if the animal is older than the value set by the "age-sell-old-cow/bull" slider on the interface, the animal is considered to be old
 
-    if (cow-with-calf? = true and live-weight < early-weaning-threshold) [become-cow set weaning-calf? true ask my-out-links [die]]               ;; ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWW if the mother (an agent with a "cow-with-calf?" state) is below a certain weight, it will switch to the "cow?" state and will kill the link with its child (an agent with a "born-calf" state). This weight is determined by the "early-weaning-threshold" slider in the interface.
+    if (cow-with-calf? = true and live-weight < early-weaning-threshold) [become-cow set weaning-calf? true ask my-out-links [die]]         ;; if the mother (an agent with a "cow-with-calf?" state) is below a certain weight, it will switch to the "cow?" state and will kill the link with its child (an agent with a "born-calf" state). This weight is determined by the "early-weaning-threshold" slider on the interface
 
     ask cows with [cow-with-calf? and not any? my-links] [become-cow]                                                      ;; if the link with the child (an agent with the state "born-calf") is lost (this happens when the child dies), the mother changes from the state "cow-with-calf" to the state "cow".
     ask cows with [born-calf-female? and not any? my-links ] [ become-weaned-calf-female ]                                 ;; if the link with the mother (an agent with a "cow-with-calf?" state) is lost (this happens when the mother dies, or when the mother switches from a "cow-with-calf?" state to a "cow?" state), the calf weans prematurely.
     ask cows with [born-calf-male? and not any? my-links ] [ become-weaned-calf-male ]
 
-    if (born-calf-female? = true) and (age >= weaned-calf-age-min) [become-weaned-calf-female ask my-out-links [die]]       ;; when the lactating calf moves on to the next age group (weaned-calf), the link (dependency) with its parent is terminated
+    if (born-calf-female? = true) and (age >= weaned-calf-age-min) [become-weaned-calf-female ask my-out-links [die]]       ;; lactating calves (i.e., "born-calf?" age class) become weaned calves at 246 days old (set by the "weaned-calf-age-min" variable). When the lactating calf moves on to the next age group (weaned-calf), the link (dependency) with its parent is terminated
     if (born-calf-male? = true) and (age >= weaned-calf-age-min) [become-weaned-calf-male ask my-out-links [die]]
-    if (weaned-calf-female? = true) and (age >= heifer-age-min) [become-heifer]
+    if (weaned-calf-female? = true) and (age >= heifer-age-min) [become-heifer]                                             ;; female weaned calves become heifers at 369 days old(set by the "heifer-age-min" variable)
 
-    if (weaned-calf-male? = true) and (age >= heifer-age-min) [
+    if (weaned-calf-male? = true) and (age >= heifer-age-min) [                                                             ;; in this line, when the male weaned calf is 369 days old (set by the "heifer-age-min" variable), if there are not enough number of bulls in the system (this number is determined by the "bull:cow-ratio" slider on the interface), the male weaned calf becomes a bull. If there are enough number of bulls, it becomes a steer
       ifelse count cows with [bull?] > 0
-      [if bull:cow-ratio > 0 [if count cows with [bull?] <= round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [ask up-to-n-of (round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) - count cows with [bull?]) cows with [(weaned-calf-male? = true) and (age >= heifer-age-min)] [become-bull]]]]                 ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+      [if bull:cow-ratio > 0 [if count cows with [bull?] <= round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [ask up-to-n-of (round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) - count cows with [bull?]) cows with [(weaned-calf-male? = true) and (age >= heifer-age-min)] [become-bull]]]]
       [ask n-of 1 cows with [(weaned-calf-male? = true) and (age >= heifer-age-min)] [become-bull]]]
 
-    if (weaned-calf-male? = true) and (age >= heifer-age-min) [become-steer]
+    if (weaned-calf-male? = true) and (age >= heifer-age-min) [become-steer]                                                ;; if there are enough number of bulls, the male weaned calf becomes a steer
 
-    if (heifer? = true) and (age >= cow-age-min) and (live-weight >= 280 ) [become-cow]
-    if cow-with-calf? = true [set lactating-time lactating-time + days-per-tick]
-    if lactating-time >= lactation-period [become-cow]
+    if (heifer? = true) and (age >= cow-age-min) and (live-weight >= 280 ) [become-cow]                                     ;; heifers become adult cows when they are 737 days old (as determined by the "cow-age-min" variable) and weigh more than 280 kg
+    if cow-with-calf? = true [set lactating-time lactating-time + days-per-tick]                                            ;; cows with calves (i.e., "cow-with-calf?" age class) has a lactating period of 246 days
+    if lactating-time >= lactation-period [become-cow]                                                                      ;; after 246 days, cows in the "cow-with-calf?" age class return to cows without calves (i.e., "cow?" age class)
   ]
 end
 
-
-to uncontrolled-breeding                                                             ;;## CONTROLLED/NATURAL BREEDING MODULE ;; this procedure dictates the rules for which each of the reproductive age classes (i.e., heifer, cow, cow-with-calf) can become pregnant in an UNCONTROLLED breeding scenario, as well as the gestation period of animals
+to uncontrolled-breeding                                                                                                                   ;; only for when none or traditional farmer profiles are selected ("farmer-profile = none / traditional"). This procedure dictates the rules for which each of the reproductive age classes (i.e., heifer, cow, cow-with-calf) can become pregnant in an UNCONTROLLED breeding scenario, as well as the gestation period of animals
   ask cows [
-    if (heifer? = true) or (cow? = true) or (cow-with-calf? = true) [set pregnancy-rate (1 / (1 + coefA * e ^ (- coefB * live-weight)))]
-    ;;;if (heifer? = true) or (cow? = true) or (cow-with-calf? = true) [set pregnancy-rate (1 / (1 + coefA * e ^ (- coefB * live-weight))) / 368]  ;; alternative version, in which the PR is divided by 368.
+    if (heifer? = true) or (cow? = true) or (cow-with-calf? = true) [set pregnancy-rate (1 / (1 + coefA * e ^ (- coefB * live-weight)))]   ;; pregnancy rate is calculated here (a number between 0 and 1)
 
-    if random-float 1 < pregnancy-rate [set pregnant? true]
+    if random-float 1 < pregnancy-rate [set pregnant? true]                                                                                ;; a random number between 0 and 1 is generated. If this random number is less than the pregnancy rate, the cow becomes pregnant ("pregnant? = true")
     if pregnant? = true [
-      set pregnancy-time pregnancy-time + days-per-tick
-      set except-mort-rate 0.3]
+      set pregnancy-time pregnancy-time + days-per-tick                                                                                    ;; once a cow becomes pregnant, the gestation period starts
+      set except-mort-rate 0.3]                                                                                                            ;; the mortality rate for pregnants cows increased to 0.3
 
-    if pregnancy-time = gestation-period [                                           ;; when the gestation period ends (276 days), a new agent (born-calf) is introduced into the system.
+    if pregnancy-time = gestation-period [                                                                                                 ;; when the gestation period ends (276 days), a new agent (born-calf) is introduced into the system.
       hatch-cows 1 [
         let new-child nobody
         set new-child self
         set parent myself
         set child nobody
-        create-link-with myself                                                      ;; this new agent is linked with its parent agent
+        create-link-with myself                                                                                                            ;; this new agent is linked with its parent agent
         if (spatial-management = "rotational grazing") [if paddock-a = 1 [move-to one-of patches with [paddock-a = 1]] if paddock-b = 1 [move-to one-of patches with [paddock-b = 1]] if paddock-c = 1 [move-to one-of patches with [paddock-c = 1]] if paddock-d = 1 [move-to one-of patches with [paddock-d = 1]]]
         if  (spatial-management = "free grazing") [setxy random-pxcor random-pycor]
-        ifelse random-float 1 < 0.5                                                  ;; 50% chance of being born as a male or female calf
+        ifelse random-float 1 < 0.5                                                                                                        ;; 50% chance of being born as a male or female calf
         [become-born-calf-female]
         [become-born-calf-male]]
-      set pregnant? false
+      set pregnant? false                                                                                                                  ;; after giving birth, the cow becomes empty ("pregnant? = false")
       set pregnancy-time 0
-      become-cow-with-calf]
+      become-cow-with-calf]                                                                                                                ;; and becomes a cow in the "cow-with-calf?" age class
   ]
 end
 
-
-to controlled-breeding                                                               ;;## CONTROLLED/NATURAL BREEDING MODULE ;; this procedure dictates the rules for which each of the reproductive age classes (i.e., heifer, cow, cow-with-calf) can become pregnant in an CONTROLLED breeding scenario, as well as the gestation period of animals
+to controlled-breeding                                                                                                                     ;; only for when the market or environmental farmer profiles are selected ("farmer-profile = market / environmental"). this procedure dictates the rules for which each of the reproductive age classes (i.e., heifer, cow, cow-with-calf) can become pregnant in an CONTROLLED breeding scenario, as well as the gestation period of animals
   ask cows [
-    if (heifer? = true) or (cow? = true) or (cow-with-calf? = true) [set pregnancy-rate (1 / (1 + coefA * e ^ (- coefB * live-weight)))]
-    ;if (heifer? = true) or (cow? = true) or (cow-with-calf? = true) [set pregnancy-rate (1 / (1 + coefA * e ^ (- coefB * live-weight))) / 368] ;; alternative version, in which the PR is divided by 368.
+    if (heifer? = true) or (cow? = true) or (cow-with-calf? = true) [set pregnancy-rate (1 / (1 + coefA * e ^ (- coefB * live-weight)))]   ;; pregnancy rate is calculated here (a number between 0 and 1)
 
-    if current-season = controlled-breeding-season [if random-float 1 < pregnancy-rate [set pregnant? true]]  ;; in a controlled breeding scenario, reproductive age classes can only get pregnant during the season selected by the "controlled-breeding-season" slider in the interface. By default, the breeding season is summer.
-    if pregnant? = true [
-      set pregnancy-time pregnancy-time + days-per-tick
-      set except-mort-rate 0.3]
+    if current-season = controlled-breeding-season [if random-float 1 < pregnancy-rate [set pregnant? true]]                               ;; in a controlled breeding scenario, reproductive age classes can only get pregnant during the season selected by the "controlled-breeding-season" slider on the interface. By default, the breeding season is summer
+    if pregnant? = true [                                                                                                                  ;; a random number between 0 and 1 is generated. If this random number is less than the pregnancy rate, the cow becomes pregnant ("pregnant? = true")
+      set pregnancy-time pregnancy-time + days-per-tick                                                                                    ;; once a cow becomes pregnant, the gestation period starts
+      set except-mort-rate 0.3]                                                                                                            ;; the mortality rate for pregnants cows increased to 0.3
 
-    if pregnancy-time = gestation-period [                                           ;; when the gestation period ends (276 days), a new agent (born-calf) is introduced into the system.
+    if pregnancy-time = gestation-period [                                                                                                 ;; when the gestation period ends (276 days), a new agent (born-calf) is introduced into the system.
       hatch-cows 1 [
         let new-child nobody
         set new-child self
         set parent myself
         set child nobody
-        create-link-with myself                                                      ;; this new agent is linked with its parent agent
+        create-link-with myself                                                                                                            ;; this new agent is linked with its parent agent
         if (spatial-management = "rotational grazing") [if paddock-a = 1 [move-to one-of patches with [paddock-a = 1]] if paddock-b = 1 [move-to one-of patches with [paddock-b = 1]] if paddock-c = 1 [move-to one-of patches with [paddock-c = 1]] if paddock-d = 1 [move-to one-of patches with [paddock-d = 1]]]
         if  (spatial-management = "free grazing") [setxy random-pxcor random-pycor]
-        ifelse random-float 1 < 0.5                                                  ;; 50% chance of being born as a male or female calf
+        ifelse random-float 1 < 0.5                                                                                                        ;; 50% chance of being born as a male or female calf
         [become-born-calf-female]
         [become-born-calf-male]]
-      set pregnant? false
+      set pregnant? false                                                                                                                  ;; after giving birth, the cow becomes empty ("pregnant? = false")
       set pregnancy-time 0
-      become-cow-with-calf]
+      become-cow-with-calf]                                                                                                                ;; and becomes a cow in the "cow-with-calf?" age class
   ]
 end
-
 
 to update-grass-height                                                               ;; the DDMC of all cows (total DDMC, in kg) in each patch is calculated and converted back to grass height (cm) to calculate the grass height consumed in each patch (GH-consumed)
 ask patches [
@@ -1712,10 +1699,7 @@ ask patches [
   ]
 end
 
-
-
-
-to move                                                                              ;; once the grass height of each patch is updated, if the grass height in a patch is minor than 5 cm (the minimum grass height that maintains the live weight of a cow), the cows moves to another patch. Whether the cows move to a neighboring random patch or to the neighboring patch with the highest grass height is determined by the "perception" slider in the interface.
+to move                                                                              ;; once the grass height of each patch is updated, if the grass height in a patch is minor than 5 cm (the minimum grass height that maintains the live weight of a cow), the cows moves to another patch. Whether the cows move to a neighboring random patch or to the neighboring patch with the highest grass height is determined by the "perception" slider on the interface
   if (spatial-management = "free grazing") [                                         ;; cow movement rules for the free grazing management strategy
     ask cows [
       if grass-height < 5
@@ -1784,25 +1768,25 @@ to move                                                                         
 
       ask patches with [paddock-a = 1] [
         if any? cows-here [
-          set estimated-kmax mean [grass-height] of patches with [paddock-a = 1] * mean [soil-quality] of patches with [paddock-a = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-kmax mean [grass-height] of patches with [paddock-a = 1] * mean [soil-quality] of patches with [paddock-a = 1]
           set estimated-DM-cm-ha DM-cm-ha
-          set estimated-climacoef climacoef]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-climacoef climacoef]]
 
       ask patches with [paddock-b = 1] [
         if any? cows-here [
-          set estimated-kmax mean [grass-height] of patches with [paddock-b = 1] * mean [soil-quality] of patches with [paddock-b = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-kmax mean [grass-height] of patches with [paddock-b = 1] * mean [soil-quality] of patches with [paddock-b = 1]
           set estimated-DM-cm-ha DM-cm-ha
-          set estimated-climacoef climacoef]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-climacoef climacoef]]
 
       ask patches with [paddock-c = 1] [
         if any? cows-here [
-          set estimated-kmax mean [grass-height] of patches with [paddock-c = 1] * mean [soil-quality] of patches with [paddock-c = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-kmax mean [grass-height] of patches with [paddock-c = 1] * mean [soil-quality] of patches with [paddock-c = 1]
           set estimated-DM-cm-ha DM-cm-ha
-          set estimated-climacoef climacoef]]                                                                                                            ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-climacoef climacoef]]
 
       ask patches with [paddock-d = 1] [
         if any? cows-here [
-          set estimated-kmax mean [grass-height] of patches with [paddock-d = 1] * mean [soil-quality] of patches with [paddock-d = 1]                 ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWW ES-ENVIRONMENTAL
+          set estimated-kmax mean [grass-height] of patches with [paddock-d = 1] * mean [soil-quality] of patches with [paddock-d = 1]
           set estimated-DM-cm-ha DM-cm-ha
           set estimated-climacoef climacoef]]
 
@@ -1826,8 +1810,8 @@ to move                                                                         
 
     if (farmer-profile = "market") or (farmer-profile = "market-fsb") [                                                                                     ;; Market-oriented farmers move cows from one plot to another when the average live weight of the cows is below a threshold (determined by the "RG-live-weight-threshold" slider in the interface).
       if any? cows with [born-calf? = false] [
-        if RG-market-farmer-live-weight-threshold > mean [live-weight] of cows with [born-calf? = false] ;and ticks-since-here > RG-days-in-paddock
-        [ ;; Once the animals are moved to the next paddock because they have met the criteria, because the effects of the new paddock on the animals' live weight take several days, and to avoid animals moving continuously from one paddock to another during these first days (because they will still have a value below the threshold), the minimum number of days the animals have to adapt to the new paddock before moving to the next is set with the "RG-days-in-paddock" slider.
+        if RG-market-farmer-live-weight-threshold > mean [live-weight] of cows with [born-calf? = false] ; and ticks-since-here > RG-days-in-paddock
+        [                                                                                                                                                   ;; Once the animals are moved to the next paddock because they have met the criteria, because the effects of the new paddock on the animals' live weight take several days, and to avoid animals moving continuously from one paddock to another during these first days (because they will still have a value below the threshold), the minimum number of days the animals have to adapt to the new paddock before moving to the next is set with the "RG-days-in-paddock" slider.
           set ticks-since-here 0
           ask cows
           [ifelse paddock-a = 1
@@ -1837,8 +1821,27 @@ to move                                                                         
               [ifelse paddock-c = 1
                 [let next-paddock one-of patches with [paddock-d = 1] move-to next-paddock]
                 [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]]]]]]]]
-
 end
+
+
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;   SEGUIR A PARTIR DE AQUI   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+
+
+
 
 
 
