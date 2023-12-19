@@ -564,7 +564,6 @@ to setup-livestock
       set age random (cow-age-max - heifer-age-min) + heifer-age-min
       ;set age heifer-age-min
       ask cows [move-to one-of patches with [paddock-a = 1]] become-bull]
-
       if count cows with [bull?] < 1 [create-cows 1 [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0
         set age random (cow-age-max - heifer-age-min) + heifer-age-min
         ;set age heifer-age-min
@@ -1405,40 +1404,26 @@ end
 ;; Cattle behavior
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;   SEGUIR A PARTIR DE AQUI   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
-to LWG                                                                               ;; the live weight gain of each cow is calculated
+to LWG                                                                               ;; the live weight and live weight gain of each cow is calculated in this procedure
 ask cows [
     ifelse born-calf? = true
     [set live-weight-gain weight-gain-lactation]
     [ifelse grass-height >= 2                                                        ;; cows cannot eat grass less than 2 cm high
       [set live-weight-gain ( item current-season maxLWG - ( xi * e ^ ( - ni * grass-height ) ) ) / ( season-length * item current-season season-coef )]
-      [set live-weight-gain live-weight * -0.005]]
+      [set live-weight-gain live-weight * -0.005]]                                   ;; when cows are in an patch where the grass is less than 2 cm high, they lose weight
 
-    set live-weight live-weight + live-weight-gain
-    if (heifer? = true) and live-weight > maxLWcow [set live-weight maxLWcow]
+    set live-weight live-weight + live-weight-gain                                   ;; updating live weight of each cow
+    if (heifer? = true) and live-weight > maxLWcow [set live-weight maxLWcow]        ;; females can't weight more than 650 kg (determined by the "maxLWcow" variable)
     if (adult-cow? = true) and live-weight > maxLWcow [set live-weight maxLWcow]
-    if (steer? = true) and live-weight > maxLWbull [set live-weight maxLWbull]
-    if (bull? = true) and live-weight > maxLWbull [set live-weight maxLWbull]                                                ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    if (steer? = true) and live-weight > maxLWbull [set live-weight maxLWbull]       ;; males can't weight more than 1000 kg (determined by the "malLWbull" variable)
+    if (bull? = true) and live-weight > maxLWbull [set live-weight maxLWbull]
     if live-weight < 0 [set live-weight 0]
 
     set animal-units live-weight / set-1-AU                                          ;; updating the AU of each cow used to calculate the total Stocking Rate (SR) of the system
   ]
 end
 
-
-
-to DM-consumption                                                                    ;; the DDMC consumed by each cow (in kg) is calculated in this procedure
+to DM-consumption                                                                    ;; the DDMC of each cow (in kg) is calculated in this procedure
 ask cows [
     set metabolic-body-size live-weight ^ (3 / 4)
     ifelse born-calf? = true
@@ -1448,114 +1433,76 @@ ask cows [
          [set DDMC 0]]
     if DDMC < 0 [set DDMC 0]
   ]
-
 end
 
+to feed-supplementation                                                                                        ;; if the animal is below a minimum weight (set by the user in the interface using the "xxx-min-weight-for-feed-sup" slider), the farmer (only market and environmental farmers), if he has enough money, supplements the animal's nutrition by buying feed
+  set FS-cow 0 set FS-cow-with-calf 0 set FS-heifer 0 set FS-steer 0 set FS-weaned-calf 0 set FS-bull 0        ;; the daily cost of purchasing feed supplements is reset every tick. This allows to keep track of the amount of money spent on feed supplements each day
+  ask cows [set live-weight-gain-feed 0]                                                                       ;; in addition, the live weight gained from feed supplements for each animal is reset each day
 
+  if balance-historyXticks <= 0 [
+    ask cows with [cow?] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]
+    ask cows with [bull?] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]
+    ask cows with [heifer?] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]
+    ask cows with [steer?] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]
+    ask cows with [weaned-calf?] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]
+    ask cows with [cow-with-calf?] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]]
 
-
-
-
-
-
-
-to feed-supplementation                                                             ;;## FEED SUPPLEMENTATION MODULE
-
-  set FS-cow 0 set FS-cow-with-calf 0 set FS-heifer 0 set FS-steer 0 set FS-weaned-calf 0 set FS-bull 0      ;; the daily cost of purchasing feed supplements is reset every tick. This allows to keep track of the amount of money spent on feed supplements each day.
-
-  ask cows [set live-weight-gain-feed 0] ;; reseteamos el live-weight-gain-feed en cada tick
-
-  if balance-historyXticks <= 0 [                                                                              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-    ask cows with [cow?] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]              ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-    ask cows with [bull?] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]             ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-    ask cows with [heifer?] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]           ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-    ask cows with [steer?] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-    ask cows with [weaned-calf?] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-    ask cows with [cow-with-calf?] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  ]
-
-
-  if balance-historyXticks > 0 [                                                                ;; the farmer can buy feed for the animals if the balance of the system is positive (i.e. if there are savings).
+  if balance-historyXticks > 0 [                                                                               ;; the farmer can buy feed for the animals if the balance of the system is positive (i.e. if there are savings).
     ask cows with [cow?] [ifelse live-weight < cow-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]] ;; animals below the threshold set by the farmer (the "xxxx-min-weight-for-feed-sup" slider in the interface) are selected for feed supplementation
-    ask cows with [bull?] [ifelse live-weight < bull-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]]             ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    ask cows with [bull?] [ifelse live-weight < bull-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]]
     ask cows with [heifer?] [ifelse live-weight < heifer/steer-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]]
     ask cows with [steer?] [ifelse live-weight < heifer/steer-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]]
     ask cows with [weaned-calf?] [ifelse live-weight < weaned-calf-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]]
     ask cows with [cow-with-calf?] [ifelse live-weight < cow-with-calf-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]]
 
-
-    ask cows with [supplemented?] [                                       ;; PRIMERO, ASUMIMOS EL PESO MAXIMO QUE PUEDE GANAR UNA VACA AL DIA
-      set live-weight-gain-max set-live-weight-gain-max
-
-      set live-weight-gain-feed live-weight-gain-max - live-weight-gain   ;; SEGUNDO, EN FUNCIÓN DEL PESO MAXIMO QUE PUEDE GANAR LA VACA, CALCULAMOS EL PESO RESTANTE QUE QUEDA PARA ALCANZAR ESE PESO MAXIMO PARTIENDO DE LO QUE YA HA GANADO LA VACA
-
-      set kg-supplement-DM live-weight-gain-feed * feed-sup-conversion-ratio  ;; TERCERO, CALCULAMOS LOS KG DE FORRAJE QUE HAY QUE COMPRAR PARA QUE LA VACA LLEGUE AL PESO MAXIMO DIARIO
-
-    ]
-
+    ask cows with [supplemented?] [                                                                            ;; for all of the animals that have been selected for supplementation, the model calculates the following variables:
+      set live-weight-gain-max set-live-weight-gain-max                                                        ;; first, in order for the farmer to know how many kilograms of supplement to buy, we have to assume what is the maximum weight a cow can gain in a day. This assumption is set by the "set-live-weight-gain-max" slider in the interface, which has a default value of 0.6 kg/day
+      set live-weight-gain-feed live-weight-gain-max - live-weight-gain                                        ;; second, we calculate the difference between the theoretical maximum weight the animal can gain in one day and the weight the animal gained in one day by grazing
+      set kg-supplement-DM live-weight-gain-feed * feed-sup-conversion-ratio]                                   ;; third, this difference is then multiplied by the ratio of kg of feed to kg of cow set by the "feed-sup-conversion-ratio" slider to get the kg of feed the farmer needs to buy for the cow to gain the maximum live weight it can gain in a day (0.6 kg/day by default). By default, this "feed-sup-conversion-ratio" slider has a value of 7 kg, which means that in order for a cow to gain 1 kg of live weight, she must eat 7 kg of supplement
 
     ask cows with [supplemented?] [
-      set USD-supplement-DM item current-season supplement-prices * kg-supplement-DM]           ;; the price of the feed supplement required to keep the animals above the threshold
-
+      set USD-supplement-DM item current-season supplement-prices * kg-supplement-DM]                          ;; once the farmer knows how many kg of supplement he needs to keep the animals above the threshold (minimum weight set by the "xxx-min-weight-for-feed-sup" slider), it is time to calculate how much it will cost the farmer to buy that amount of feed
 
     ask cows with [supplemented?] [
-      ifelse sum [USD-supplement-DM] of cows with [supplemented?] > balance-historyXticks
-      [                                                                                       ;; if the money needed to supplement all the animals selected for supplementation is greater than the savings of the livestock system (balance-historyXticks)...
+      ifelse sum [USD-supplement-DM] of cows with [supplemented?] > balance-historyXticks [                    ;; alternative A: if the money needed to supplement all the animals selected for supplementation is greater than the savings of the livestock system (balance-historyXticks)...
         set kg-supplement-DM (balance-historyXticks / count cows with [supplemented?]) / item current-season supplement-prices  ;; ...the kg of supplement to be purchased is calculated based on the current system's savings and divided among the animals selected for supplementation
         set USD-supplement-DM kg-supplement-DM * item current-season supplement-prices
+        set live-weight-gain-feed (kg-supplement-DM / feed-sup-conversion-ratio)                               ;; the live weight gained from feed supplementation is calculated
+        set live-weight live-weight + live-weight-gain-feed]                                                   ;; and the live weight is updated
 
-        set live-weight-gain-feed (kg-supplement-DM / feed-sup-conversion-ratio)
-        set live-weight live-weight + live-weight-gain-feed]
-
-      [                                                                                   ;; if the money needed is below than the savings of the livestock system (i.e., if the farmer has enough money)...
-        set live-weight-gain-feed live-weight-gain-max - live-weight-gain
-        set live-weight live-weight + live-weight-gain-feed]
+        [set live-weight-gain-feed live-weight-gain-max - live-weight-gain                                     ;; alternative B: if the money needed is less than the savings from the livestock system (i.e., if the farmer has enough money), the live weight gained from feed supplementation is the difference between the theoretical maximum weight the animal can gain in one day and the weight the animal gained in one day by grazing
+         set live-weight live-weight + live-weight-gain-feed]                                                  ;; and the live weight is updated (in this case, the animal gained 0.6 kg of live weight (or the value that have been selected in the "set-live-weight-gain-max" slider in the interface)
 
       if (heifer? = true) and live-weight > maxLWcow [set live-weight maxLWcow]
       if (adult-cow? = true) and live-weight > maxLWcow [set live-weight maxLWcow]
       if (steer? = true) and live-weight > maxLWbull [set live-weight maxLWbull]
-      if (bull? = true) and live-weight > maxLWbull [set live-weight maxLWbull]      ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+      if (bull? = true) and live-weight > maxLWbull [set live-weight maxLWbull]
 
       if live-weight < 0 [set live-weight 0]
 
       set animal-units live-weight / set-1-AU
 
-      set FS-cow sum [USD-supplement-DM] of cows with [cow?]                                    ;; once the animals have been supplemented, the daily cost of purchasing supplements is calculated for each age group
-      set FS-bull sum [USD-supplement-DM] of cows with [bull?]             ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+      set FS-cow sum [USD-supplement-DM] of cows with [cow?]                                                   ;; once the animals have been supplemented, the daily cost of purchasing supplements is calculated for each age group
+      set FS-bull sum [USD-supplement-DM] of cows with [bull?]
       set FS-heifer sum [USD-supplement-DM] of cows with [heifer?]
       set FS-cow-with-calf sum [USD-supplement-DM] of cows with [cow-with-calf?]
       set FS-steer sum [USD-supplement-DM] of cows with [steer?]
-      set FS-weaned-calf sum [USD-supplement-DM] of cows with [weaned-calf?]]
+      set FS-weaned-calf sum [USD-supplement-DM] of cows with [weaned-calf?]]]
 
-  ]
-
-  set supplement-cost FS-cow + FS-cow-with-calf + FS-heifer + FS-steer + FS-weaned-calf + FS-bull        ;; once the daily cost has been calculated for each age group, the TOTAL daily cost (i.e. the total cost to feed ALL animals in one day) is calculated
-
+  set supplement-cost FS-cow + FS-cow-with-calf + FS-heifer + FS-steer + FS-weaned-calf + FS-bull              ;; once the daily cost has been calculated for each age group, the TOTAL daily cost (i.e. the total cost to feed ALL animals in one day) is calculated
 end
 
+to feed-supplementation-for-controlled-breeding                                                                ;; feed supplementation for breeding cows. It follows exactly the same logic as the "feed-supplementation" procedure, but in this case it only affects cows that are not pregnant
 
-
-
-
-
-
-to feed-supplementation-for-controlled-breeding                                                 ;;## NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW ;; Feed supplementation for breeding cows
-
-  set FSB-cow 0 ;; the daily cost of purchasing feed supplements is reset every tick. This allows to keep track of the amount of money spent on feed supplements each day.
-
-  ask cows with [cow?] [set live-weight-gain-feed-breeding 0] ;; reseteamos el live-weight-gain-feed-breeding en cada tick
-
+  set FSB-cow 0                                                                                                ;; the daily cost of purchasing feed supplements for breeding cows is reset every tick. This allows to keep track of the amount of money spent on feed supplements for breeding cows each day
+  ask cows with [cow?] [set live-weight-gain-feed-breeding 0]                                                  ;; in addition, the live weight gained from feed supplements for each animal is reset each day
   ask cows with [cow?] [if pregnant? = false [set kg-supplement-DM-breeding 0 set USD-supplement-DM-breeding 0]]
-  ;ask cows with [cow?] [set kg-supplement-DM-breeding 0 set USD-supplement-DM-breeding 0]
 
   ask cows with [cow? and pregnant? = false] [
-  ;ask cows with [cow?] [
-
     if live-weight > cow-min-weight-for-feed-sup [
-
       if balance-historyXticks <= 0 [
+
         ask cows with [cow? and pregnant? = false] [set supplemented? false set kg-supplement-DM-breeding 0 set USD-supplement-DM-breeding 0]]
-        ;ask cows with [cow?] [set supplemented? false set kg-supplement-DM-breeding 0 set USD-supplement-DM-breeding 0]]
 
       if balance-historyXticks > 0 [
         ask cows with [cow? and pregnant? = false] [
@@ -1563,24 +1510,23 @@ to feed-supplementation-for-controlled-breeding                                 
           [set supplemented? true]
           [set supplemented? false set kg-supplement-DM-breeding 0 set USD-supplement-DM-breeding 0]]
 
-        ask cows with [cow? and pregnant? = false and supplemented?] [                                       ;; PRIMERO, ASUMIMOS EL PESO MAXIMO QUE PUEDE GANAR UNA VACA AL DIA
+        ask cows with [cow? and pregnant? = false and supplemented?] [
           set live-weight-gain-max set-live-weight-gain-max
-          set live-weight-gain-feed-breeding live-weight-gain-max - live-weight-gain   ;; SEGUNDO, EN FUNCIÓN DEL PESO MAXIMO QUE PUEDE GANAR LA VACA, CALCULAMOS EL PESO RESTANTE QUE QUEDA PARA ALCANZAR ESE PESO MAXIMO PARTIENDO DE LO QUE YA HA GANADO LA VACA
-          set kg-supplement-DM-breeding live-weight-gain-feed-breeding * feed-sup-conversion-ratio  ;; TERCERO, CALCULAMOS LOS KG DE FORRAJE QUE HAY QUE COMPRAR PARA QUE LA VACA LLEGUE AL PESO MAXIMO DIARIO
-        ]
+          set live-weight-gain-feed-breeding live-weight-gain-max - live-weight-gain
+          set kg-supplement-DM-breeding live-weight-gain-feed-breeding * feed-sup-conversion-ratio]
 
         ask cows with [cow? and pregnant? = false and supplemented?] [
           set USD-supplement-DM-breeding item current-season supplement-prices * kg-supplement-DM-breeding]           ;; the price of the feed supplement required to keep the animals above the threshold
 
         ask cows with [cow? and pregnant? = false and supplemented?] [
           ifelse sum [USD-supplement-DM-breeding] of cows with [cow? and pregnant? = false and supplemented?] > balance-historyXticks
-          [                                                                                       ;; if the money needed to supplement all the animals selected for supplementation is greater than the savings of the livestock system (balance-historyXticks)...
+          [                                                                                                           ;; alternative A: if the money needed to supplement all the animals selected for supplementation is greater than the savings of the livestock system (balance-historyXticks)...
             set kg-supplement-DM-breeding (balance-historyXticks / count cows with [cow? and pregnant? = false and supplemented?]) / item current-season supplement-prices  ;; ...the kg of supplement to be purchased is calculated based on the current system's savings and divided among the animals selected for supplementation
-            set USD-supplement-DM-breeding kg-supplement-DM-breeding * item current-season supplement-prices
-            set live-weight-gain-feed-breeding (kg-supplement-DM-breeding / feed-sup-conversion-ratio)
+            set USD-supplement-DM-breeding kg-supplement-DM-breeding * item current-season supplement-prices                                                                ;; the live weight gained from feed supplementation is calculated
+            set live-weight-gain-feed-breeding (kg-supplement-DM-breeding / feed-sup-conversion-ratio)                                                                      ;; and the live weight is updated
             set live-weight live-weight + live-weight-gain-feed-breeding]
-          [                                                                                   ;; if the money needed is below than the savings of the livestock system (i.e., if the farmer has enough money)...
-            set live-weight-gain-feed-breeding live-weight-gain-max - live-weight-gain
+          [                                                                                                            ;; alternative B: if the money needed is below than the savings of the livestock system (i.e., if the farmer has enough money)...
+            set live-weight-gain-feed-breeding live-weight-gain-max - live-weight-gain                                 ;; and the live weight is updated (in this case, the animal gained 0.6 kg of live weight (or the value that have been selected in the "set-live-weight-gain-max" slider in the interface)
             set live-weight live-weight + live-weight-gain-feed-breeding]
 
           if (adult-cow? = true) and live-weight > maxLWcow [set live-weight maxLWcow]
@@ -1589,31 +1535,21 @@ to feed-supplementation-for-controlled-breeding                                 
 
           set animal-units live-weight / set-1-AU
 
-          set FSB-cow sum [USD-supplement-DM-breeding] of cows with [cow? and pregnant? = false and supplemented?]]]]
+          set FSB-cow sum [USD-supplement-DM-breeding] of cows with [cow? and pregnant? = false and supplemented?]]]]] ;; once the breeding cows have been supplemented, the daily cost of purchasing supplements is calculated for this specific group (non-pregnant cows)
 
-          ;set FSB-cow sum [USD-supplement-DM-breeding] of cows with [cow?]]]]
-
-]
-
-  set supplement-cost supplement-cost + FSB-cow
-
+  set supplement-cost supplement-cost + FSB-cow                                                                        ;; the daily cost of purchasing feed supplements is updated
 end
 
-
-
-
-
-
-to grow-livestock-natural-weaning-none-profile                                                    ;;## EARLY/NATURAL WEANING MODULE ;; this procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactation period of animals in a NATURAL weaning scenario.
+to grow-livestock-natural-weaning-none-profile                                                    ;; only for when no farmer profile is selected ("farmer-profile = none"). This procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactation period of animals in a NATURAL weaning scenario.
 ask cows [
-    set age age + days-per-tick
-    if age > cow-age-max [die]
-    ifelse live-weight < min-weight
-    [set mortality-rate except-mort-rate]
-    [set mortality-rate natural-mortality-rate]
-    if random-float 1 < mortality-rate [die]
+    set age age + days-per-tick                                                                   ;; animals update their age
+    if age > cow-age-max [die]                                                                    ;; if the animal is older than the life expectancy (set by the "cow-age-max" variable), the animal dies
+    ifelse live-weight < min-weight                                                               ;; if the live weight of the animal is below the minimum survival weight (set by the "min-weight" variable)...
+    [set mortality-rate except-mort-rate]                                                         ;; alternative A: if it is true (the live weight is below the minimum weight), the mortality rate will update its value to a high mortality rate ("except-mort-rate")
+    [set mortality-rate natural-mortality-rate]                                                   ;; alternative B: if it is false (the live weight is above the minimum weight), the mortality rate updates its value to a normal mortality rate ("natural-mortality-rate")
+    if random-float 1 < mortality-rate [die]                                                      ;; a random number between 0 and 1 is generated. If this random number is less than the mortality rate, the animal dies
 
-    ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
+    ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]                     ;; if the animal is older than the value set by the "age-sell-old-cow/bull" slider on the interface, the animal is considered to be old
 
     ask cows with [cow-with-calf? and not any? my-links] [become-cow]                                                      ;; if the link with the child (an agent with the state "born-calf") is lost (this happens when the child dies), the mother changes from the state "cow-with-calf" to the state "cow".
     ask cows with [born-calf-female? and not any? my-links ] [ become-weaned-calf-female ]                                 ;; if the link with the mother (an agent with a "cow-with-calf?" state) is lost (this happens when the mother dies, or when the mother switches from a "cow-with-calf?" state to a "cow?" state), the calf weans prematurely.
@@ -1623,7 +1559,7 @@ ask cows [
     if (born-calf-male? = true) and (age >= weaned-calf-age-min) [become-weaned-calf-male ask my-out-links [die]]
     if (weaned-calf-female? = true) and (age >= heifer-age-min) [become-heifer]
 
-    if (weaned-calf-male? = true) and (age >= heifer-age-min) [become-bull]                                                                                              ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    if (weaned-calf-male? = true) and (age >= heifer-age-min) [become-bull]
 
     if (heifer? = true) and (age >= cow-age-min) and (live-weight >= 280 ) [become-cow]
     if cow-with-calf? = true [set lactating-time lactating-time + days-per-tick]
@@ -1631,19 +1567,16 @@ ask cows [
   ]
 end
 
-
-
-
-to grow-livestock-natural-weaning                                                    ;;## EARLY/NATURAL WEANING MODULE ;; this procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactation period of animals in a NATURAL weaning scenario.
+to grow-livestock-natural-weaning                                                    ;; only for when traditional or environmental farmer profile are selected ("farmer-profile = traditional / environmental"). This procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactation period of animals in a NATURAL weaning scenario.
 ask cows [
-    set age age + days-per-tick
-    if age > cow-age-max [die]
-    ifelse live-weight < min-weight
-    [set mortality-rate except-mort-rate]
-    [set mortality-rate natural-mortality-rate]
-    if random-float 1 < mortality-rate [die]
+    set age age + days-per-tick                                                                   ;; animals update their age
+    if age > cow-age-max [die]                                                                    ;; if the animal is older than the life expectancy (set by the "cow-age-max" variable), the animal dies
+    ifelse live-weight < min-weight                                                               ;; if the live weight of the animal is below the minimum survival weight (set by the "min-weight" variable)...
+    [set mortality-rate except-mort-rate]                                                         ;; alternative A: if it is true (the live weight is below the minimum weight), the mortality rate will update its value to a high mortality rate ("except-mort-rate")
+    [set mortality-rate natural-mortality-rate]                                                   ;; alternative B: if it is false (the live weight is above the minimum weight), the mortality rate updates its value to a normal mortality rate ("natural-mortality-rate")
+    if random-float 1 < mortality-rate [die]                                                      ;; a random number between 0 and 1 is generated. If this random number is less than the mortality rate, the animal dies
 
-    ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]                                                       ;;OLDNEW###################################################
+    ifelse age / 368 > age-sell-old-cow/bull [set old? true] [set old? false]                     ;; if the animal is older than the value set by the "age-sell-old-cow/bull" slider on the interface, the animal is considered to be old
 
     ask cows with [cow-with-calf? and not any? my-links] [become-cow]                                                      ;; if the link with the child (an agent with the state "born-calf") is lost (this happens when the child dies), the mother changes from the state "cow-with-calf" to the state "cow".
     ask cows with [born-calf-female? and not any? my-links ] [ become-weaned-calf-female ]                                 ;; if the link with the mother (an agent with a "cow-with-calf?" state) is lost (this happens when the mother dies, or when the mother switches from a "cow-with-calf?" state to a "cow?" state), the calf weans prematurely.
@@ -1653,9 +1586,9 @@ ask cows [
     if (born-calf-male? = true) and (age >= weaned-calf-age-min) [become-weaned-calf-male ask my-out-links [die]]
     if (weaned-calf-female? = true) and (age >= heifer-age-min) [become-heifer]
 
-    if (weaned-calf-male? = true) and (age >= heifer-age-min) [
+    if (weaned-calf-male? = true) and (age >= heifer-age-min) [                                                             ;; in this line, a number of weaned male calves are selected to become bulls (this number is determined by the "bull:cow-ratio" slider on the interface). The rest are selected to be sold as steers
       ifelse count cows with [bull?] > 0
-      [if bull:cow-ratio > 0 [if count cows with [bull?] <= round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [ask up-to-n-of (round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) - count cows with [bull?]) cows with [(weaned-calf-male? = true) and (age >= heifer-age-min)] [become-bull]]]]                 ;;BULLNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+      [if bull:cow-ratio > 0 [if count cows with [bull?] <= round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [ask up-to-n-of (round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) - count cows with [bull?]) cows with [(weaned-calf-male? = true) and (age >= heifer-age-min)] [become-bull]]]]
       [ask n-of 1 cows with [(weaned-calf-male? = true) and (age >= heifer-age-min)] [become-bull]]]
 
     if (weaned-calf-male? = true) and (age >= heifer-age-min) [become-steer]
@@ -1666,6 +1599,13 @@ ask cows [
   ]
 end
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;   SEGUIR A PARTIR DE AQUI   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to grow-livestock-early-weaning                                                      ;;## EARLY/NATURAL WEANING MODULE ;; this procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactation period of animals in a EARLY weaning scenario.
 
