@@ -3550,7 +3550,7 @@ SLIDER
 328
 set-direct-climacoef-control
 set-direct-climacoef-control
-0.05
+0.1
 1.5
 1.0
 0.01
