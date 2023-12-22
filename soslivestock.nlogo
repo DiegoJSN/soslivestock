@@ -17,7 +17,7 @@ globals [
   current-season-name                                                               ;; translates the numbers "0, 1, 2, 3" to "winter, spring, summer, fall"
   season-coef                                                                       ;; affects the live weight gain of animals in relation with the grass quality according to the season: winter = 1, spring = 1.15, summer = 1.05, fall = 1
   climacoef                                                                         ;; climacoef relates the primary production in a season with the average for that season due to climate variations. Takes values from 0.1 to 1.5, and is set by the observer in the interface
-  historical-climacoef                                                                ;; in case the observer wants to use historical values for climacoef. For the model to use "historical-climacoef" values, the observer must select the "historical-climacoef" option within the "climacoef-distribution" chooser in the interface, and enter the historic climacoef values within the "setup-globals" procedure
+  historical-climacoef                                                              ;; in case the observer wants to use historical values for climacoef. For the model to use "historical-climacoef" values, the observer must select the "historical-climacoef" option within the "climacoef-distribution" chooser in the interface, and enter the historic climacoef values within the "setup-globals" procedure
   direct-climacoef-control                                                          ;; in case the observer wants to change the climate coefficient in real time (i.e. while the simulation is running), the observer must select the "direct-climacoef-control" option within the "climacoef-distribution" chooser in the interface, and select the desired climacoef value using the "set-direct-climacoef-control" slider in the interface
   estimated-climacoef                                                               ;; the environmental farmer uses the climacoef value present at the beginning of the season to estimate the carrying capacity of the system during that season
 
@@ -88,13 +88,12 @@ globals [
   ES-old-cow                                                                        ;; income from the sale of old cows during extraordinary sales
   ES-heifer                                                                         ;; income from the sale of heifers during extraordinary sales
   ES-cow                                                                            ;; income from the sale of empty cows during extraordinary sales
-  ES-bull                                                                           ;; DEACTIVATED ;; income from the sale of bulls during extraordinary sales
 
   ordinary-sales-income                                                             ;; total income from ordinary sales
   extraordinary-sales-income                                                        ;; total income from extraordinary sales
 
   FS-cow                                                                            ;; cost of supplementing adult cows
-  FSB-cow                                                                           ;; the market farmer gives extra supplements to adult cows when the breeding season is approaching
+  FSB-cow                                                                           ;; the commercial farmer gives extra supplements to adult cows when the breeding season is approaching
   FS-cow-with-calf                                                                  ;; cost of supplementing cows with calves
   FS-heifer                                                                         ;; cost of supplementing heifers
   FS-steer                                                                          ;; cost of supplementing steers
@@ -158,77 +157,76 @@ globals [
   OS-old-bull-effort-history-year                                                   ;; variable to store the OS-old-bull-effort history of the system for the entire duration of the year
   OS-old-bull-effort-historyXticks-year                                             ;; amount of time the farmer has spent selling old bulls since the start of the year during the ordinary sales
 
-  OS-females-effort                                                                ;; it measures the amount of time (in minutes) it takes the farmer to sell females during the ordinary sales
-  OS-females-effort-history                                                        ;; variable to store the OS-females-effort history of the system for the entire duration of the simulation
-  OS-females-effort-historyXticks                                                  ;; amount of time the farmer has spent selling females since the start of the simulation during the ordinary sales
-  OS-females-effort-history-season                                                 ;; variable to store the OS-females-effort history of the system for the entire duration of the season
-  OS-females-effort-historyXticks-season                                           ;; amount of time the farmer has spent selling females since the start of the season during the ordinary sales
-  OS-females-effort-history-year                                                   ;; variable to store the OS-females-effort history of the system for the entire duration of the year
-  OS-females-effort-historyXticks-year                                             ;; amount of time the farmer has spent selling females since the start of the year during the ordinary sales
+  OS-females-effort                                                                 ;; it measures the amount of time (in minutes) it takes the farmer to sell females during the ordinary sales
+  OS-females-effort-history                                                         ;; variable to store the OS-females-effort history of the system for the entire duration of the simulation
+  OS-females-effort-historyXticks                                                   ;; amount of time the farmer has spent selling females since the start of the simulation during the ordinary sales
+  OS-females-effort-history-season                                                  ;; variable to store the OS-females-effort history of the system for the entire duration of the season
+  OS-females-effort-historyXticks-season                                            ;; amount of time the farmer has spent selling females since the start of the season during the ordinary sales
+  OS-females-effort-history-year                                                    ;; variable to store the OS-females-effort history of the system for the entire duration of the year
+  OS-females-effort-historyXticks-year                                              ;; amount of time the farmer has spent selling females since the start of the year during the ordinary sales
 
-  OS-total-effort                                                                  ;; total time spent by the farmer selling animals during ordinary sales (i.e., sum of OS-males-effort, OS-old-cow-effort, OS-old-bull-effort, OS-females-effort)
-  OS-total-effort-history                                                          ;; variable to store the OS-total-effort history of the system for the entire duration of the simulation
-  OS-total-effort-history-season                                                   ;; variable to store the OS-total-effort history of the system for the entire duration of the season
-  OS-total-effort-history-year                                                     ;; variable to store the OS-total-effort history of the system for the entire duration of the year
+  OS-total-effort                                                                   ;; total time spent by the farmer selling animals during ordinary sales (i.e., sum of OS-males-effort, OS-old-cow-effort, OS-old-bull-effort, OS-females-effort)
+  OS-total-effort-history                                                           ;; variable to store the OS-total-effort history of the system for the entire duration of the simulation
+  OS-total-effort-history-season                                                    ;; variable to store the OS-total-effort history of the system for the entire duration of the season
+  OS-total-effort-history-year                                                      ;; variable to store the OS-total-effort history of the system for the entire duration of the year
 
-  ES-males-effort                                                                ;; it measures the amount of time (in minutes) it takes the farmer to sell males during the extraordinary sales
-  ES-males-effort-history                                                        ;; variable to store the ES-males-effort history of the system for the entire duration of the simulation
-  ES-males-effort-historyXticks                                                  ;; amount of time the farmer has spent selling males since the start of the simulation during the extraordinary sales
-  ES-males-effort-history-season                                                 ;; variable to store the ES-males-effort history of the system for the entire duration of the season
-  ES-males-effort-historyXticks-season                                           ;; amount of time the farmer has spent selling males since the start of the season during the extraordinary sales
-  ES-males-effort-history-year                                                   ;; variable to store the ES-males-effort history of the system for the entire duration of the year
-  ES-males-effort-historyXticks-year                                             ;; amount of time the farmer has spent selling males since the start of the year during the extraordinary sales
+  ES-males-effort                                                                   ;; it measures the amount of time (in minutes) it takes the farmer to sell males during the extraordinary sales
+  ES-males-effort-history                                                           ;; variable to store the ES-males-effort history of the system for the entire duration of the simulation
+  ES-males-effort-historyXticks                                                     ;; amount of time the farmer has spent selling males since the start of the simulation during the extraordinary sales
+  ES-males-effort-history-season                                                    ;; variable to store the ES-males-effort history of the system for the entire duration of the season
+  ES-males-effort-historyXticks-season                                              ;; amount of time the farmer has spent selling males since the start of the season during the extraordinary sales
+  ES-males-effort-history-year                                                      ;; variable to store the ES-males-effort history of the system for the entire duration of the year
+  ES-males-effort-historyXticks-year                                                ;; amount of time the farmer has spent selling males since the start of the year during the extraordinary sales
 
-  ES-old-cow-effort                                                              ;; it measures the amount of time (in minutes) it takes the farmer to sell old cows during the extraordinary sales
-  ES-old-cow-effort-history                                                      ;; variable to store the ES-old-cow-effort history of the system for the entire duration of the simulation
-  ES-old-cow-effort-historyXticks                                                ;; amount of time the farmer has spent selling old cows since the start of the simulation during the extraordinary sales
-  ES-old-cow-effort-history-season                                               ;; variable to store the ES-old-cow-effort history of the system for the entire duration of the season
-  ES-old-cow-effort-historyXticks-season                                         ;; amount of time the farmer has spent selling old cows since the start of the season during the extraordinary sales
-  ES-old-cow-effort-history-year                                                 ;; variable to store the ES-old-cow-effort history of the system for the entire duration of the year
-  ES-old-cow-effort-historyXticks-year                                           ;; amount of time the farmer has spent selling old cows since the start of the year during the extraordinary sales
+  ES-old-cow-effort                                                                 ;; it measures the amount of time (in minutes) it takes the farmer to sell old cows during the extraordinary sales
+  ES-old-cow-effort-history                                                         ;; variable to store the ES-old-cow-effort history of the system for the entire duration of the simulation
+  ES-old-cow-effort-historyXticks                                                   ;; amount of time the farmer has spent selling old cows since the start of the simulation during the extraordinary sales
+  ES-old-cow-effort-history-season                                                  ;; variable to store the ES-old-cow-effort history of the system for the entire duration of the season
+  ES-old-cow-effort-historyXticks-season                                            ;; amount of time the farmer has spent selling old cows since the start of the season during the extraordinary sales
+  ES-old-cow-effort-history-year                                                    ;; variable to store the ES-old-cow-effort history of the system for the entire duration of the year
+  ES-old-cow-effort-historyXticks-year                                              ;; amount of time the farmer has spent selling old cows since the start of the year during the extraordinary sales
 
-  ES-females-effort                                                              ;; it measures the amount of time (in minutes) it takes the farmer to sell females during the extraordinary sales
-  ES-females-effort-history                                                      ;; variable to store the ES-females-effort history of the system for the entire duration of the simulation
-  ES-females-effort-historyXticks                                                ;; amount of time the farmer has spent selling females since the start of the simulation during the extraordinary sales
-  ES-females-effort-history-season                                               ;; variable to store the ES-females-effort history of the system for the entire duration of the season
-  ES-females-effort-historyXticks-season                                         ;; amount of time the farmer has spent selling females since the start of the season during the extraordinary sales
-  ES-females-effort-history-year                                                 ;; variable to store the ES-females-effort history of the system for the entire duration of the year
-  ES-females-effort-historyXticks-year                                           ;; amount of time the farmer has spent selling females since the start of the year during the extraordinary sales
+  ES-females-effort                                                                 ;; it measures the amount of time (in minutes) it takes the farmer to sell females during the extraordinary sales
+  ES-females-effort-history                                                         ;; variable to store the ES-females-effort history of the system for the entire duration of the simulation
+  ES-females-effort-historyXticks                                                   ;; amount of time the farmer has spent selling females since the start of the simulation during the extraordinary sales
+  ES-females-effort-history-season                                                  ;; variable to store the ES-females-effort history of the system for the entire duration of the season
+  ES-females-effort-historyXticks-season                                            ;; amount of time the farmer has spent selling females since the start of the season during the extraordinary sales
+  ES-females-effort-history-year                                                    ;; variable to store the ES-females-effort history of the system for the entire duration of the year
+  ES-females-effort-historyXticks-year                                              ;; amount of time the farmer has spent selling females since the start of the year during the extraordinary sales
 
-  ES-total-effort                                                                ;; total time spent by the farmer selling animals during extraordinary sales (i.e., sum of ES-males-effort, ES-old-cow-effort, ES-females-effort)
-  ES-total-effort-history                                                        ;; variable to store the ES-total-effort history of the system for the entire duration of the simulation
-  ES-total-effort-history-season                                                 ;; variable to store the ES-total-effort history of the system for the entire duration of the season
-  ES-total-effort-history-year                                                   ;; variable to store the ES-total-effort history of the system for the entire duration of the year
+  ES-total-effort                                                                   ;; total time spent by the farmer selling animals during extraordinary sales (i.e., sum of ES-males-effort, ES-old-cow-effort, ES-females-effort)
+  ES-total-effort-history                                                           ;; variable to store the ES-total-effort history of the system for the entire duration of the simulation
+  ES-total-effort-history-season                                                    ;; variable to store the ES-total-effort history of the system for the entire duration of the season
+  ES-total-effort-history-year                                                      ;; variable to store the ES-total-effort history of the system for the entire duration of the year
 
-  breeding-effort                                                                ;; it measures the amount of time (in minutes) it takes the farmer to move bulls into the paddock where the breeding cows are
-  breeding-effort-history                                                        ;; variable to store the breeding-effort history of the system for the entire duration of the simulation
-  breeding-effort-historyXticks                                                  ;; amount of time the farmer has spent moving bulls since the start of the simulation
-  breeding-effort-history-season                                                 ;; variable to store the breeding-effort history of the system for the entire duration of the season
-  breeding-effort-historyXticks-season                                           ;; amount of time the farmer has spent moving bulls since the start of the season
-  breeding-effort-history-year                                                   ;; variable to store the breeding-effort history of the system for the entire duration of the year
-  breeding-effort-historyXticks-year                                             ;; amount of time the farmer has spent moving bulls since the start of the year
+  breeding-effort                                                                   ;; it measures the amount of time (in minutes) it takes the farmer to move bulls into the paddock where the breeding cows are
+  breeding-effort-history                                                           ;; variable to store the breeding-effort history of the system for the entire duration of the simulation
+  breeding-effort-historyXticks                                                     ;; amount of time the farmer has spent moving bulls since the start of the simulation
+  breeding-effort-history-season                                                    ;; variable to store the breeding-effort history of the system for the entire duration of the season
+  breeding-effort-historyXticks-season                                              ;; amount of time the farmer has spent moving bulls since the start of the season
+  breeding-effort-history-year                                                      ;; variable to store the breeding-effort history of the system for the entire duration of the year
+  breeding-effort-historyXticks-year                                                ;; amount of time the farmer has spent moving bulls since the start of the year
 
-  rotational-effort                                                              ;; only when rotational grazing is in effect, it measures the amount of time (in minutes) it takes the farmer to move cattle from one paddock to another
-  rotational-effort-history                                                      ;; variable to store the rotational-effort history of the system for the entire duration of the simulation
-  rotational-effort-historyXticks                                                ;; amount of time the farmer has spent moving cattle from one paddock to another since the start of the simulation
-  rotational-effort-history-season                                               ;; variable to store the rotational-effort history of the system for the entire duration of the season
-  rotational-effort-historyXticks-season                                         ;; amount of time the farmer has spent moving cattle from one paddock to another since the start of the season
-  rotational-effort-history-year                                                 ;; variable to store the rotational-effort history of the system for the entire duration of the year
-  rotational-effort-historyXticks-year                                           ;; amount of time the farmer has spent moving cattle from one paddock to another since the start of the year
+  rotational-effort                                                                 ;; only when rotational grazing is in effect, it measures the amount of time (in minutes) it takes the farmer to move cattle from one paddock to another
+  rotational-effort-history                                                         ;; variable to store the rotational-effort history of the system for the entire duration of the simulation
+  rotational-effort-historyXticks                                                   ;; amount of time the farmer has spent moving cattle from one paddock to another since the start of the simulation
+  rotational-effort-history-season                                                  ;; variable to store the rotational-effort history of the system for the entire duration of the season
+  rotational-effort-historyXticks-season                                            ;; amount of time the farmer has spent moving cattle from one paddock to another since the start of the season
+  rotational-effort-history-year                                                    ;; variable to store the rotational-effort history of the system for the entire duration of the year
+  rotational-effort-historyXticks-year                                              ;; amount of time the farmer has spent moving cattle from one paddock to another since the start of the year
 
-  other-daily-effort                                                             ;; it measures the time (in minutes) that the farmer spends on other unspecified activities.
-  other-daily-effort-history                                                     ;; variable to store the other-daily-effort history of the system for the entire duration of the simulation
-  other-daily-effort-historyXticks                                               ;; amount of time the farmer has spent doing other unspecified activities since the start of the simulation
-  other-daily-effort-history-season                                              ;; variable to store the other-daily-effort history of the system for the entire duration of the season
-  other-daily-effort-historyXticks-season                                        ;; amount of time the farmer has spent doing other unspecified activities since the start of the season
-  other-daily-effort-history-year                                                ;; variable to store the other-daily-effort history of the system for the entire duration of the year
-  other-daily-effort-historyXticks-year                                          ;; amount of time the farmer has spent doing other unspecified activities since the start of the year
+  other-daily-effort                                                                ;; it measures the time (in minutes) that the farmer spends on other unspecified activities.
+  other-daily-effort-history                                                        ;; variable to store the other-daily-effort history of the system for the entire duration of the simulation
+  other-daily-effort-historyXticks                                                  ;; amount of time the farmer has spent doing other unspecified activities since the start of the simulation
+  other-daily-effort-history-season                                                 ;; variable to store the other-daily-effort history of the system for the entire duration of the season
+  other-daily-effort-historyXticks-season                                           ;; amount of time the farmer has spent doing other unspecified activities since the start of the season
+  other-daily-effort-history-year                                                   ;; variable to store the other-daily-effort history of the system for the entire duration of the year
+  other-daily-effort-historyXticks-year                                             ;; amount of time the farmer has spent doing other unspecified activities since the start of the year
 
-  total-effort                                                                   ;; total time spent by the farmer on all of the management strategies described above
-  total-effort-history                                                           ;; variable to store the total-effort history of the system for the entire duration of the simulation
-  total-effort-history-season                                                    ;; variable to store the total-effort history of the system for the entire duration of the season
-  total-effort-history-year                                                      ;; variable to store the total-effort history of the system for the entire duration of the year
-
+  total-effort                                                                      ;; total time spent by the farmer on all of the management strategies described above
+  total-effort-history                                                              ;; variable to store the total-effort history of the system for the entire duration of the simulation
+  total-effort-history-season                                                       ;; variable to store the total-effort history of the system for the entire duration of the season
+  total-effort-history-year                                                         ;; variable to store the total-effort history of the system for the entire duration of the year
 ]
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -288,7 +286,7 @@ cows-own [
   live-weight-gain-max                                                              ;; defines the maximum weight an animal can gain in one day. 0.60 kg/day by default (can be changed by using the "set-live-weight-gain-max" slider in the interface)
   live-weight-gain                                                                  ;; defines the increment of weight gained from grazing only
   live-weight-gain-feed                                                             ;; defines the increment of weight gained from feed supplements
-  live-weight-gain-feed-breeding                                                    ;; the market farmer gives extra supplements to adult cows when the breeding season is approaching. It defines the increment of weight gained from feed supplements
+  live-weight-gain-feed-breeding                                                    ;; the commercial farmer gives extra supplements to adult cows when the breeding season is approaching. It defines the increment of weight gained from feed supplements
   live-weight-gain-history                                                          ;; variable to store the live-weight-gain history of the animal for the entire duration of the simulation
   live-weight-gain-historyXticks                                                    ;; live weight gained by the animal since the start of the simulation
   live-weight-gain-history-season                                                   ;; variable to store the live-weight-gain history of the animal for the entire duration of the simulation
@@ -313,8 +311,8 @@ cows-own [
 
   kg-supplement-DM                                                                  ;; kg of supplementary feed required by the animal
   USD-supplement-DM                                                                 ;; the price of the feed supplement that is required by the animal (USD)
-  kg-supplement-DM-breeding                                                         ;; the market farmer gives extra supplements to adult cows when the breeding season is approaching. It defines kg of supplementary feed required by the animal
-  USD-supplement-DM-breeding                                                        ;; the market farmer gives extra supplements to adult cows when the breeding season is approaching. It defines the price of the feed supplement that is required by the animal (USD)
+  kg-supplement-DM-breeding                                                         ;; the commercial farmer gives extra supplements to adult cows when the breeding season is approaching. It defines kg of supplementary feed required by the animal
+  USD-supplement-DM-breeding                                                        ;; the commercial farmer gives extra supplements to adult cows when the breeding season is approaching. It defines the price of the feed supplement that is required by the animal (USD)
 ]
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -323,7 +321,7 @@ cows-own [
 
 to setup
   ca
-  resize-world 0 (set-x-size - 1) 0 (set-y-size - 1)                               ;; changes the size of the world, set by the observer in the interface
+  resize-world 0 (set-x-size - 1) 0 (set-y-size - 1)                                ;; changes the size of the world, set by the observer in the interface
   setup-globals
   setup-grassland
   setup-livestock
@@ -331,13 +329,13 @@ to setup
   reset-ticks
 end
 
-to use-new-seed
+to use-new-seed                                                                     ;; DEACTIVATED
   let my-seed new-seed                                                              ;; generate a new seed
   output-print word "Seed: " my-seed                                                ;; print it out
   random-seed my-seed                                                               ;; use the generated seed
 end
 
-to setup_seed-1070152876                                                                       ;; alternative setup that allows us to use the same seed for testing purposes
+to setup_seed-1070152876                                                            ;; DEACTIVATED ;; alternative setup that allows us to use the same seed for testing purposes
   ca
   resize-world 0 (set-x-size - 1) 0 (set-y-size - 1)
   setup-globals
@@ -347,13 +345,13 @@ to setup_seed-1070152876                                                        
   reset-ticks
 end
 
-to seed-1070152876
+to seed-1070152876                                                                  ;; DEACTIVATED
   let my-seed 1070152876
   output-print word "Seed: " my-seed
   random-seed my-seed
 end
 
-to setup_seed--796143067                                                                      ;; alternative setup that allows us to use the same seed for testing purposes
+to setup_seed--796143067                                                            ;; DEACTIVATED ;; alternative setup that allows us to use the same seed for testing purposes
   ca
   resize-world 0 (set-x-size - 1) 0 (set-y-size - 1)
   setup-globals
@@ -363,7 +361,7 @@ to setup_seed--796143067                                                        
   reset-ticks
 end
 
-to seed--796143067
+to seed--796143067                                                                  ;; DEACTIVATED
    let my-seed -796143067
   output-print word "Seed: " my-seed
   random-seed my-seed
@@ -391,7 +389,7 @@ to setup-globals
   set maxLWcow 650
   set maxLWbull 1000
 
-  set historical-climacoef [0.48 0.3 0.72 0.12 0.71 0.65 1.1]                         ;; historic climacoef values. One value = 1 season (for example, 7 values = 7 seasons, the simulation will stop after season 7). Replace these values with historical values. For the model to use "historical-climacoef" values, the observer must select the "historical-climacoef" option within the "climacoef-distribution" chooser in the interface.
+  set historical-climacoef [0.48 0.3 0.72 0.12 0.71 0.65 1.1]                       ;; historic climacoef values. One value = 1 season (for example, 7 values = 7 seasons, the simulation will stop after season 7). Replace these values with historical values. For the model to use "historical-climacoef" values, the observer must select the "historical-climacoef" option within the "climacoef-distribution" chooser in the interface.
 
   set supplement-prices [0.113 0.121 0.123 0.115]
   set born-calf-prices [0.94 1 0.97 0.961]
@@ -537,35 +535,29 @@ to setup-livestock
   if (spatial-management = "free grazing") [                                        ;; livestock setup for the free grazing management strategy
     create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0
       set age random (cow-age-max - cow-age-min) + cow-age-min
-      ;set age cow-age-min
       setxy random-pxcor random-pycor become-cow ]
 
     if bull:cow-ratio > 0 [
     create-cows round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio)
     [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0
       set age random (cow-age-max - heifer-age-min) + heifer-age-min
-      ;set age heifer-age-min
       setxy random-pxcor random-pycor become-bull ]
     if count cows with [bull?] < 1 [
       create-cows 1
       [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0
       set age random (cow-age-max - heifer-age-min) + heifer-age-min
-      ;set age heifer-age-min
       setxy random-pxcor random-pycor become-bull]]]
 
     create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0
       set age random (cow-age-min - heifer-age-min) + heifer-age-min
-      ;set age heifer-age-min
       setxy random-pxcor random-pycor become-heifer ]
 
     create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0
       set age random (cow-age-min - heifer-age-min) + heifer-age-min
-      ;set age heifer-age-min
       setxy random-pxcor random-pycor become-steer ]
 
     create-cows initial-num-weaned-calves [set shape "cow" set live-weight initial-weight-weaned-calves set initial-weight initial-weight-weaned-calves set mortality-rate natural-mortality-rate set DDMC 0
       set age random (heifer-age-min - weaned-calf-age-min) + weaned-calf-age-min
-      ;set age weaned-calf-age-min
       setxy random-pxcor random-pycor
       ifelse random-float 1 < 0.5 [become-weaned-calf-female] [become-weaned-calf-male]]
   ]
@@ -573,118 +565,94 @@ to setup-livestock
   if (spatial-management = "rotational grazing") [                                  ;; livestock setup for the rotational grazing management strategy
     if (starting-paddock = "paddock a") [create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0
       set age random (cow-age-max - cow-age-min) + cow-age-min
-      ;set age cow-age-min
       ask cows [move-to one-of patches with [paddock-a = 1]] become-cow]]
 
     if (starting-paddock = "paddock a") [if bull:cow-ratio > 0 [create-cows round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0
       set age random (cow-age-max - heifer-age-min) + heifer-age-min
-      ;set age heifer-age-min
       ask cows [move-to one-of patches with [paddock-a = 1]] become-bull]
       if count cows with [bull?] < 1 [create-cows 1 [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0
         set age random (cow-age-max - heifer-age-min) + heifer-age-min
-        ;set age heifer-age-min
         ask cows [move-to one-of patches with [paddock-a = 1]] become-bull]]]]
 
     if (starting-paddock = "paddock a") [create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0
       set age random (cow-age-min - heifer-age-min) + heifer-age-min
-      ;set age heifer-age-min
       ask cows [move-to one-of patches with [paddock-a = 1]] become-heifer]]
 
     if (starting-paddock = "paddock a") [create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0
       set age random (cow-age-min - heifer-age-min) + heifer-age-min
-      ;set age heifer-age-min
       ask cows [move-to one-of patches with [paddock-a = 1]] become-steer]]
 
     if (starting-paddock = "paddock a") [create-cows initial-num-weaned-calves [set shape "cow" set live-weight initial-weight-weaned-calves set initial-weight initial-weight-weaned-calves set mortality-rate natural-mortality-rate set DDMC 0
       set age random (heifer-age-min - weaned-calf-age-min) + weaned-calf-age-min
-      ;set age weaned-calf-age-min
       ask cows [move-to one-of patches with [paddock-a = 1]] ifelse random-float 1 < 0.5 [become-weaned-calf-female] [become-weaned-calf-male]]]
 
     if (starting-paddock = "paddock b") [create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0
       set age random (cow-age-max - cow-age-min) + cow-age-min
-      ;set age cow-age-min
       ask cows [move-to one-of patches with [paddock-b = 1]] become-cow]]
 
     if (starting-paddock = "paddock b") [if bull:cow-ratio > 0 [create-cows round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0
       set age random (cow-age-max - heifer-age-min) + heifer-age-min
-      ;set age heifer-age-min
       ask cows [move-to one-of patches with [paddock-b = 1]] become-bull]
       if count cows with [bull?] < 1 [create-cows 1 [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0
         set age random (cow-age-max - heifer-age-min) + heifer-age-min
-        ;set age heifer-age-min
         ask cows [move-to one-of patches with [paddock-b = 1]] become-bull]]]]
 
     if (starting-paddock = "paddock b") [create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0
       set age random (cow-age-min - heifer-age-min) + heifer-age-min
-      ;set age heifer-age-min
       ask cows [move-to one-of patches with [paddock-b = 1]] become-heifer]]
 
     if (starting-paddock = "paddock b") [create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0
       set age random (cow-age-min - heifer-age-min) + heifer-age-min
-      ;set age heifer-age-min
       ask cows [move-to one-of patches with [paddock-b = 1]] become-steer]]
 
     if (starting-paddock = "paddock b") [create-cows initial-num-weaned-calves [set shape "cow" set live-weight initial-weight-weaned-calves set initial-weight initial-weight-weaned-calves set mortality-rate natural-mortality-rate set DDMC 0
       set age random (heifer-age-min - weaned-calf-age-min) + weaned-calf-age-min
-      ;set age weaned-calf-age-min
       ask cows [move-to one-of patches with [paddock-b = 1]] ifelse random-float 1 < 0.5 [become-weaned-calf-female] [become-weaned-calf-male]]]
 
     if (starting-paddock = "paddock c") [create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0
       set age random (cow-age-max - cow-age-min) + cow-age-min
-      ;set age cow-age-min
       ask cows [move-to one-of patches with [paddock-c = 1]] become-cow]]
 
     if (starting-paddock = "paddock c") [if bull:cow-ratio > 0 [create-cows round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0
       set age random (cow-age-max - heifer-age-min) + heifer-age-min
-      ;set age heifer-age-min
       ask cows [move-to one-of patches with [paddock-c = 1]] become-bull]
       if count cows with [bull?] < 1 [create-cows 1 [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0
         set age random (cow-age-max - heifer-age-min) + heifer-age-min
-        ;set age heifer-age-min
         ask cows [move-to one-of patches with [paddock-c = 1]] become-bull]]]]
 
     if (starting-paddock = "paddock c") [create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0
       set age random (cow-age-min - heifer-age-min) + heifer-age-min
-      ;set age heifer-age-min
       ask cows [move-to one-of patches with [paddock-c = 1]] become-heifer]]
 
     if (starting-paddock = "paddock c") [create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0
       set age random (cow-age-min - heifer-age-min) + heifer-age-min
-      ;set age heifer-age-min
       ask cows [move-to one-of patches with [paddock-c = 1]] become-steer]]
 
     if (starting-paddock = "paddock c") [create-cows initial-num-weaned-calves [set shape "cow" set live-weight initial-weight-weaned-calves set initial-weight initial-weight-weaned-calves set mortality-rate natural-mortality-rate set DDMC 0
       set age random (heifer-age-min - weaned-calf-age-min) + weaned-calf-age-min
-      ;set age weaned-calf-age-min
       ask cows [move-to one-of patches with [paddock-c = 1]] ifelse random-float 1 < 0.5 [become-weaned-calf-female] [become-weaned-calf-male]]]
 
     if (starting-paddock = "paddock d") [create-cows initial-num-cows [set shape "cow" set live-weight initial-weight-cows set initial-weight initial-weight-cows set mortality-rate natural-mortality-rate set DDMC 0
       set age random (cow-age-max - cow-age-min) + cow-age-min
-      ;set age cow-age-min
       ask cows [move-to one-of patches with [paddock-d = 1]] become-cow]]
 
     if (starting-paddock = "paddock d") [if bull:cow-ratio > 0 [create-cows round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0
       set age random (cow-age-max - heifer-age-min) + heifer-age-min
-      ;set age heifer-age-min
       ask cows [move-to one-of patches with [paddock-d = 1]] become-bull]
       if count cows with [bull?] < 1 [create-cows 1 [set shape "cow" set live-weight initial-weight-bulls set initial-weight initial-weight-bulls set mortality-rate natural-mortality-rate set DDMC 0
         set age random (cow-age-max - heifer-age-min) + heifer-age-min
-        ;set age heifer-age-min
         ask cows [move-to one-of patches with [paddock-d = 1]] become-bull]]]]
 
     if (starting-paddock = "paddock d") [create-cows initial-num-heifers [set shape "cow" set live-weight initial-weight-heifers set initial-weight initial-weight-heifers set mortality-rate natural-mortality-rate set DDMC 0
       set age random (cow-age-min - heifer-age-min) + heifer-age-min
-      ;set age heifer-age-min
       ask cows [move-to one-of patches with [paddock-d = 1]] become-heifer]]
 
     if (starting-paddock = "paddock d") [create-cows initial-num-steers [set shape "cow" set live-weight initial-weight-steers set initial-weight initial-weight-steers set mortality-rate natural-mortality-rate set DDMC 0
       set age random (cow-age-min - heifer-age-min) + heifer-age-min
-      ;set age heifer-age-min
       ask cows [move-to one-of patches with [paddock-d = 1]] become-steer]]
 
     if (starting-paddock = "paddock d") [create-cows initial-num-weaned-calves [set shape "cow" set live-weight initial-weight-weaned-calves set initial-weight initial-weight-weaned-calves set mortality-rate natural-mortality-rate set DDMC 0
       set age random (heifer-age-min - weaned-calf-age-min) + weaned-calf-age-min
-      ;set age weaned-calf-age-min
       ask cows [move-to one-of patches with [paddock-d = 1]] ifelse random-float 1 < 0.5 [become-weaned-calf-female] [become-weaned-calf-male]]]
   ]
 
@@ -1068,55 +1036,55 @@ to go
 ;; Update of global variables related to grassland (DM-cm-ha; kmax) and seasons (season-length; climacoef-distribution)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-  set DM-cm-ha set-DM-cm-ha                                                          ;; setting the quantity of dry matter contained in one centimeter per hectare (using the "set-DM-cm-ha" slider on the interface)
+  set DM-cm-ha set-DM-cm-ha                                                                                                         ;; setting the quantity of dry matter contained in one centimeter per hectare (using the "set-DM-cm-ha" slider on the interface)
 
-  if current-season = 0 [                                                            ;; setting the Kmax, length of the season and climate distribution for the winter
-    set kmax K-winter                                                                ;; the maximum grass height that can be achieved during winter is set by the "K-winter" slider on the interface
-    set season-length winter-length                                                  ;; the length of the winter season is set using the "winter-length" slider on the interface
+  if current-season = 0 [                                                                                                           ;; setting the Kmax, length of the season and climate distribution for the winter
+    set kmax K-winter                                                                                                               ;; the maximum grass height that can be achieved during winter is set by the "K-winter" slider on the interface
+    set season-length winter-length                                                                                                 ;; the length of the winter season is set using the "winter-length" slider on the interface
     if (climacoef-distribution = "homogeneus") and (season-days = 0 or season-days = 1) [set climacoef winter-climacoef-homogeneus] ;; the distribution followed by the climate coefficient variable is set by the "climacoef-distribution" chooser on the interface
     if (climacoef-distribution = "uniform") and (season-days = 0 or season-days = 1) [set climacoef random-float 1.5]
     if (climacoef-distribution = "normal") and (season-days = 0 or season-days = 1) [set climacoef random-normal 1 0.15 if climacoef < 0 [set climacoef 0.1] if climacoef > 1.5 [set climacoef 1.5]]
     if (climacoef-distribution = "exponential_low") and (season-days = 0 or season-days = 1) [set climacoef random-exponential 0.5 while [climacoef > 1.5] [set climacoef random-exponential 0.5]]
     if (climacoef-distribution = "exponential_high") and (season-days = 0 or season-days = 1) [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]]
 
-  if current-season = 1 [                                                            ;; setting the Kmax, length of the season and climate distribution for the spring
-    set kmax K-spring                                                                ;; the maximum grass height that can be achieved during spring is set by the "K-spring" slider on the interface
-    set season-length spring-length                                                  ;; the length of the spring season is set using the "spring-length" slider on the interface
+  if current-season = 1 [                                                                                                           ;; setting the Kmax, length of the season and climate distribution for the spring
+    set kmax K-spring                                                                                                               ;; the maximum grass height that can be achieved during spring is set by the "K-spring" slider on the interface
+    set season-length spring-length                                                                                                 ;; the length of the spring season is set using the "spring-length" slider on the interface
     if (climacoef-distribution = "homogeneus") and (season-days = 0 or season-days = 1) [set climacoef spring-climacoef-homogeneus] ;; the distribution followed by the climate coefficient variable is set by the "climacoef-distribution" chooser on the interface
     if (climacoef-distribution = "uniform") and (season-days = 0 or season-days = 1) [set climacoef random-float 1.5]
     if (climacoef-distribution = "normal") and (season-days = 0 or season-days = 1) [set climacoef random-normal 1 0.15 if climacoef < 0 [set climacoef 0.1] if climacoef > 1.5 [set climacoef 1.5]]
     if (climacoef-distribution = "exponential_low") and (season-days = 0 or season-days = 1) [set climacoef random-exponential 0.2 while [climacoef > 1.5] [set climacoef random-exponential 0.2]]
     if (climacoef-distribution = "exponential_high") and (season-days = 0 or season-days = 1) [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]]
 
-  if current-season = 2 [                                                            ;; setting the Kmax, length of the season and climate distribution for the summer
-    set kmax K-summer                                                                ;; the maximum grass height that can be achieved during summer is set by the "K-summer" slider on the interface
-    set season-length summer-length                                                  ;; the length of the summer season is set using the "summer-length" slider on the interface
+  if current-season = 2 [                                                                                                           ;; setting the Kmax, length of the season and climate distribution for the summer
+    set kmax K-summer                                                                                                               ;; the maximum grass height that can be achieved during summer is set by the "K-summer" slider on the interface
+    set season-length summer-length                                                                                                 ;; the length of the summer season is set using the "summer-length" slider on the interface
     if (climacoef-distribution = "homogeneus") and (season-days = 0 or season-days = 1) [set climacoef summer-climacoef-homogeneus] ;; the distribution followed by the climate coefficient variable is set by the "climacoef-distribution" chooser on the interface
     if (climacoef-distribution = "uniform") and (season-days = 0 or season-days = 1) [set climacoef random-float 1.5]
     if (climacoef-distribution = "normal") and (season-days = 0 or season-days = 1) [set climacoef random-normal 1 0.15 if climacoef < 0 [set climacoef 0.1] if climacoef > 1.5 [set climacoef 1.5]]
     if (climacoef-distribution = "exponential_low") and (season-days = 0 or season-days = 1) [set climacoef random-exponential 0.5 while [climacoef > 1.5] [set climacoef random-exponential 0.5]]
     if (climacoef-distribution = "exponential_high") and (season-days = 0 or season-days = 1) [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]]
 
-  if current-season = 3 [                                                            ;; setting the Kmax, length of the season and climate distribution for the fall
-    set kmax K-fall                                                                  ;; the maximum grass height that can be achieved during fall is set by the "K-fall" slider on the interface
-    set season-length fall-length                                                    ;; the length of the fall season is set using the "fall-length" slider on the interface
-    if (climacoef-distribution = "homogeneus") and (season-days = 0 or season-days = 1) [set climacoef fall-climacoef-homogeneus] ;; the distribution followed by the climate coefficient variable is set by the "climacoef-distribution" chooser on the interface
+  if current-season = 3 [                                                                                                           ;; setting the Kmax, length of the season and climate distribution for the fall
+    set kmax K-fall                                                                                                                 ;; the maximum grass height that can be achieved during fall is set by the "K-fall" slider on the interface
+    set season-length fall-length                                                                                                   ;; the length of the fall season is set using the "fall-length" slider on the interface
+    if (climacoef-distribution = "homogeneus") and (season-days = 0 or season-days = 1) [set climacoef fall-climacoef-homogeneus]   ;; the distribution followed by the climate coefficient variable is set by the "climacoef-distribution" chooser on the interface
     if (climacoef-distribution = "uniform") and (season-days = 0 or season-days = 1) [set climacoef random-float 1.5]
     if (climacoef-distribution = "normal") and (season-days = 0 or season-days = 1) [set climacoef random-normal 1 0.15 if climacoef < 0 [set climacoef 0.1] if climacoef > 1.5 [set climacoef 1.5]]
     if (climacoef-distribution = "exponential_low") and (season-days = 0 or season-days = 1) [set climacoef random-exponential 0.5 while [climacoef > 1.5] [set climacoef random-exponential 0.5]]
     if (climacoef-distribution = "exponential_high") and (season-days = 0 or season-days = 1) [set climacoef 1.5 - random-exponential 0.1 while [climacoef < 0] [set climacoef 1.5 - random-exponential 0.1]]]
 
-  if current-season = 0 [if season-days >= winter-length [set current-season 1 set season-days 0]] ;; the season change is defined in these lines
+  if current-season = 0 [if season-days >= winter-length [set current-season 1 set season-days 0]]                                  ;; the season change is defined in these lines
   if current-season = 1 [if season-days >= spring-length [set current-season 2 set season-days 0]]
   if current-season = 2 [if season-days >= summer-length [set current-season 3 set season-days 0]]
   if current-season = 3 [if season-days >= fall-length [set current-season 0 set season-days 0]]
 
-  if (climacoef-distribution = "historical-climacoef") [if current-season = 0 [set climacoef item (simulation-time / winter-length) historical-climacoef]]  ;; if "historical-climacoef" is selected with the "climacoef-distribution" chooser, historical values for climacoef are used instead
+  if (climacoef-distribution = "historical-climacoef") [if current-season = 0 [set climacoef item (simulation-time / winter-length) historical-climacoef]]    ;; if "historical-climacoef" is selected with the "climacoef-distribution" chooser, historical values for climacoef are used instead
   if (climacoef-distribution = "historical-climacoef") [if current-season = 1 [set climacoef item (simulation-time / spring-length) historical-climacoef]]
   if (climacoef-distribution = "historical-climacoef") [if current-season = 2 [set climacoef item (simulation-time / summer-length) historical-climacoef]]
   if (climacoef-distribution = "historical-climacoef") [if current-season = 3 [set climacoef item (simulation-time / fall-length) historical-climacoef]]
 
-  set direct-climacoef-control set-direct-climacoef-control                                                               ;; if "direct-climacoef-control" is selected, the user can change the climate coefficient in real time (i.e. while the simulation is running)
+  set direct-climacoef-control set-direct-climacoef-control                                                                                                   ;; if "direct-climacoef-control" is selected, the user can change the climate coefficient in real time (i.e. while the simulation is running)
   if (climacoef-distribution = "direct-climacoef-control") [if current-season = 0 [set climacoef direct-climacoef-control]]
   if (climacoef-distribution = "direct-climacoef-control") [if current-season = 1 [set climacoef direct-climacoef-control]]
   if (climacoef-distribution = "direct-climacoef-control") [if current-season = 2 [set climacoef direct-climacoef-control]]
@@ -1126,14 +1094,14 @@ to go
 ;; Setting of different clocks for measurement of different time scales (days since the start of simulation; since the start of the season; since the start of the year; since animals moved to a new paddock; days left until the start of the breeding season)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-  set simulation-time simulation-time + days-per-tick                               ;; to keep track of how many days have passed since the start of the simulation
-  set season-days season-days + days-per-tick                                       ;; to keep track of how many days have passed since the start of the season
-  set year-days year-days + days-per-tick                                           ;; to keep track of how many days have passed since the start of the year
+  set simulation-time simulation-time + days-per-tick                                                                           ;; to keep track of how many days have passed since the start of the simulation
+  set season-days season-days + days-per-tick                                                                                   ;; to keep track of how many days have passed since the start of the season
+  set year-days year-days + days-per-tick                                                                                       ;; to keep track of how many days have passed since the start of the year
   if year-days >= 369 [set year-days 1]
 
-  if (spatial-management = "rotational grazing") [set ticks-since-here ticks-since-here + days-per-tick]                  ;; DEACTIVATED ;; for rotational grazing strategies only, it measures the number of days since the animals were moved to a new paddock. This variable is important to prevent animals from continuously moving from one paddock to another once they have met the criteria to move to the next paddock. Once animals have met the criteria, they will move to the next paddock and wait X days (defined by the RG-days-in-paddock slider in the interface) to acclimate to the new paddock. Once those days have passed, if the animals still meet the criteria to move between paddocks, they will move
+  if (spatial-management = "rotational grazing") [set ticks-since-here ticks-since-here + days-per-tick]                        ;; DEACTIVATED ;; for rotational grazing strategies only, it measures the number of days since the animals were moved to a new paddock. This variable is important to prevent animals from continuously moving from one paddock to another once they have met the criteria to move to the next paddock. Once animals have met the criteria, they will move to the next paddock and wait X days (defined by the RG-days-in-paddock slider in the interface) to acclimate to the new paddock. Once those days have passed, if the animals still meet the criteria to move between paddocks, they will move
 
-  if controlled-breeding-season = 0 [                                               ;; to keep track of how many days are left until the start of the breeding season
+  if controlled-breeding-season = 0 [                                                                                           ;; to keep track of how many days are left until the start of the breeding season
     if current-season = 0 [set days-until-breeding-season 0]
     if current-season = 1 [set days-until-breeding-season (spring-length + summer-length + fall-length) - season-days]
     if current-season = 2 [set days-until-breeding-season (summer-length + fall-length) - season-days]
@@ -1158,139 +1126,139 @@ to go
 ;; Using clocks to record different variables on different time scales
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-  ask cows [                                                                         ;; average live weight gain of the cows since the start of the simulation
+  ask cows [                                                                                                                    ;; average live weight gain of the cows since the start of the simulation
     set live-weight-gain-history fput live-weight-gain live-weight-gain-history
     set live-weight-gain-historyXticks sum (sublist live-weight-gain-history 0 simulation-time)]
-  ask cows [                                                                         ;; average live weight gain of the cows during the season
+  ask cows [                                                                                                                    ;; average live weight gain of the cows during the season
     set live-weight-gain-history-season fput live-weight-gain live-weight-gain-history-season
     if season-days > 0 [set live-weight-gain-historyXticks-season mean (sublist live-weight-gain-history-season 0 season-days)]
     if season-days = season-length [set live-weight-gain-history-season []]]
-  ask cows [                                                                         ;; average live weight gain of the cows during the year
+  ask cows [                                                                                                                    ;; average live weight gain of the cows during the year
     set live-weight-gain-history-year fput live-weight-gain live-weight-gain-history-year
     if year-days > 0 [set live-weight-gain-historyXticks-year mean (sublist live-weight-gain-history-year 0 year-days)]
     if year-days = 368 [set live-weight-gain-history-year []]]
 
-  ask cows [                                                                         ;; average DDMC of cows since the start pf the simulation
+  ask cows [                                                                                                                    ;; average DDMC of cows since the start pf the simulation
     set DDMC-history fput DDMC DDMC-history
     set DDMC-historyXticks sum (sublist DDMC-history 0 simulation-time)]
-  ask cows [                                                                         ;; average DDMC of cows during the season
+  ask cows [                                                                                                                    ;; average DDMC of cows during the season
     set DDMC-history-season fput DDMC DDMC-history-season
     set DDMC-historyXticks-season sum (sublist DDMC-history-season 0 season-days)
     if season-days = season-length [set DDMC-history-season []]]
-  ask cows [                                                                         ;; average DDMC of cows during the year
+  ask cows [                                                                                                                    ;; average DDMC of cows during the year
     set DDMC-history-year fput DDMC DDMC-history-year
     set DDMC-historyXticks-year sum (sublist DDMC-history-year 0 year-days)
     if year-days = 368 [set DDMC-history-year []]]
 
-  set cost-history fput cost cost-history                                                             ;; cost of the livestock system since the start of the simulation
+  set cost-history fput cost cost-history                                                                                       ;; cost of the livestock system since the start of the simulation
   set cost-historyXticks sum (sublist cost-history 0 simulation-time)
-  set income-history fput income income-history                                                       ;; income of the livestock system since the start of the simulation
+  set income-history fput income income-history                                                                                 ;; income of the livestock system since the start of the simulation
   set income-historyXticks sum (sublist income-history 0 simulation-time)
-  set balance-history fput balance balance-history                                                    ;; balance of the livestock system since the start of the simulation
+  set balance-history fput balance balance-history                                                                              ;; balance of the livestock system since the start of the simulation
   set balance-historyXticks sum (sublist balance-history 0 simulation-time)
 
-  set supplement-effort-history fput supplement-effort supplement-effort-history                      ;; time spent by the farmer (effort, in minutes) on feed supplementation since the start of the simulation
+  set supplement-effort-history fput supplement-effort supplement-effort-history                                                ;; time spent by the farmer (effort, in minutes) on feed supplementation since the start of the simulation
   set supplement-effort-historyXticks sum (sublist supplement-effort-history 0 simulation-time)
-  set supplement-effort-history-season fput supplement-effort supplement-effort-history-season        ;; time spent by the farmer (effort, in minutes) on feed supplementation during the season
+  set supplement-effort-history-season fput supplement-effort supplement-effort-history-season                                  ;; time spent by the farmer (effort, in minutes) on feed supplementation during the season
   set supplement-effort-historyXticks-season sum (sublist supplement-effort-history-season 0 season-days)
   if season-days = season-length [set supplement-effort-history-season []]
-  set supplement-effort-history-year fput supplement-effort supplement-effort-history-year            ;; time spent by the farmer (effort, in minutes) on feed supplementation during the year
+  set supplement-effort-history-year fput supplement-effort supplement-effort-history-year                                      ;; time spent by the farmer (effort, in minutes) on feed supplementation during the year
   set supplement-effort-historyXticks-year sum (sublist supplement-effort-history-year 0 year-days)
   if year-days = 368 [set supplement-effort-history-year []]
 
-  set weaning-effort-history fput weaning-effort weaning-effort-history                      ;; time spent by the farmer (effort, in minutes) on weaning calves since the start of the simulation
+  set weaning-effort-history fput weaning-effort weaning-effort-history                                                         ;; time spent by the farmer (effort, in minutes) on weaning calves since the start of the simulation
   set weaning-effort-historyXticks sum (sublist weaning-effort-history 0 simulation-time)
-  set weaning-effort-history-season fput weaning-effort weaning-effort-history-season        ;; time spent by the farmer (effort, in minutes) on weaning calves during the season
+  set weaning-effort-history-season fput weaning-effort weaning-effort-history-season                                           ;; time spent by the farmer (effort, in minutes) on weaning calves during the season
   set weaning-effort-historyXticks-season sum (sublist weaning-effort-history-season 0 season-days)
   if season-days = season-length [set weaning-effort-history-season []]
-  set weaning-effort-history-year fput weaning-effort weaning-effort-history-year            ;; time spent by the farmer (effort, in minutes) on weaning calves during the year
+  set weaning-effort-history-year fput weaning-effort weaning-effort-history-year                                               ;; time spent by the farmer (effort, in minutes) on weaning calves during the year
   set weaning-effort-historyXticks-year sum (sublist weaning-effort-history-year 0 year-days)
   if year-days = 368 [set weaning-effort-history-year []]
 
-  set OS-males-effort-history fput OS-males-effort OS-males-effort-history                      ;; time spent by the farmer (effort, in minutes) on the ordinary sale of males since the start of the simulation
+  set OS-males-effort-history fput OS-males-effort OS-males-effort-history                                                      ;; time spent by the farmer (effort, in minutes) on the ordinary sale of males since the start of the simulation
   set OS-males-effort-historyXticks sum (sublist OS-males-effort-history 0 simulation-time)
-  set OS-males-effort-history-season fput OS-males-effort OS-males-effort-history-season         ;; time spent by the farmer (effort, in minutes) on the ordinary sale of males during the season
+  set OS-males-effort-history-season fput OS-males-effort OS-males-effort-history-season                                        ;; time spent by the farmer (effort, in minutes) on the ordinary sale of males during the season
   set OS-males-effort-historyXticks-season sum (sublist OS-males-effort-history-season 0 season-days)
   if season-days = season-length [set OS-males-effort-history-season []]
-  set OS-males-effort-history-year fput OS-males-effort OS-males-effort-history-year             ;; time spent by the farmer (effort, in minutes) on the ordinary sale of males during the year
+  set OS-males-effort-history-year fput OS-males-effort OS-males-effort-history-year                                            ;; time spent by the farmer (effort, in minutes) on the ordinary sale of males during the year
   set OS-males-effort-historyXticks-year sum (sublist OS-males-effort-history-year 0 year-days)
   if year-days = 368 [set OS-males-effort-history-year []]
 
-  set OS-old-cow-effort-history fput OS-old-cow-effort OS-old-cow-effort-history                     ;; time spent by the farmer (effort, in minutes) on the ordinary sale of old cows since the start of the simulation
+  set OS-old-cow-effort-history fput OS-old-cow-effort OS-old-cow-effort-history                                                ;; time spent by the farmer (effort, in minutes) on the ordinary sale of old cows since the start of the simulation
   set OS-old-cow-effort-historyXticks sum (sublist OS-old-cow-effort-history 0 simulation-time)
-  set OS-old-cow-effort-history-season fput OS-old-cow-effort OS-old-cow-effort-history-season       ;; time spent by the farmer (effort, in minutes) on the ordinary sale of old cows during the season
+  set OS-old-cow-effort-history-season fput OS-old-cow-effort OS-old-cow-effort-history-season                                  ;; time spent by the farmer (effort, in minutes) on the ordinary sale of old cows during the season
   set OS-old-cow-effort-historyXticks-season sum (sublist OS-old-cow-effort-history-season 0 season-days)
   if season-days = season-length [set OS-old-cow-effort-history-season []]
-  set OS-old-cow-effort-history-year fput OS-old-cow-effort OS-old-cow-effort-history-year           ;; time spent by the farmer (effort, in minutes) on the ordinary sale of old cows during the year
+  set OS-old-cow-effort-history-year fput OS-old-cow-effort OS-old-cow-effort-history-year                                      ;; time spent by the farmer (effort, in minutes) on the ordinary sale of old cows during the year
   set OS-old-cow-effort-historyXticks-year sum (sublist OS-old-cow-effort-history-year 0 year-days)
   if year-days = 368 [set OS-old-cow-effort-history-year []]
 
-  set OS-old-bull-effort-history fput OS-old-bull-effort OS-old-bull-effort-history                 ;; time spent by the farmer (effort, in minutes) on the ordinary sale of old bulls since the start of the simulation
+  set OS-old-bull-effort-history fput OS-old-bull-effort OS-old-bull-effort-history                                             ;; time spent by the farmer (effort, in minutes) on the ordinary sale of old bulls since the start of the simulation
   set OS-old-bull-effort-historyXticks sum (sublist OS-old-bull-effort-history 0 simulation-time)
-  set OS-old-bull-effort-history-season fput OS-old-bull-effort OS-old-bull-effort-history-season   ;; time spent by the farmer (effort, in minutes) on the ordinary sale of old bulls during the season
+  set OS-old-bull-effort-history-season fput OS-old-bull-effort OS-old-bull-effort-history-season                               ;; time spent by the farmer (effort, in minutes) on the ordinary sale of old bulls during the season
   set OS-old-bull-effort-historyXticks-season sum (sublist OS-old-bull-effort-history-season 0 season-days)
   if season-days = season-length [set OS-old-bull-effort-history-season []]
-  set OS-old-bull-effort-history-year fput OS-old-bull-effort OS-old-bull-effort-history-year       ;; time spent by the farmer (effort, in minutes) on the ordinary sale of old bulls during the year
+  set OS-old-bull-effort-history-year fput OS-old-bull-effort OS-old-bull-effort-history-year                                   ;; time spent by the farmer (effort, in minutes) on the ordinary sale of old bulls during the year
   set OS-old-bull-effort-historyXticks-year sum (sublist OS-old-bull-effort-history-year 0 year-days)
   if year-days = 368 [set OS-old-bull-effort-history-year []]
 
-  set OS-females-effort-history fput OS-females-effort OS-females-effort-history              ;; time spent by the farmer (effort, in minutes) on the ordinary sale of females since the start of the simulation
+  set OS-females-effort-history fput OS-females-effort OS-females-effort-history                                                ;; time spent by the farmer (effort, in minutes) on the ordinary sale of females since the start of the simulation
   set OS-females-effort-historyXticks sum (sublist OS-females-effort-history 0 simulation-time)
-  set OS-females-effort-history-season fput OS-females-effort OS-females-effort-history-season    ;; time spent by the farmer (effort, in minutes) on the ordinary sale of females during the season
+  set OS-females-effort-history-season fput OS-females-effort OS-females-effort-history-season                                  ;; time spent by the farmer (effort, in minutes) on the ordinary sale of females during the season
   set OS-females-effort-historyXticks-season sum (sublist OS-females-effort-history-season 0 season-days)
   if season-days = season-length [set OS-females-effort-history-season []]
-  set OS-females-effort-history-year fput OS-females-effort OS-females-effort-history-year           ;; time spent by the farmer (effort, in minutes) on the ordinary sale of females during the year
+  set OS-females-effort-history-year fput OS-females-effort OS-females-effort-history-year                                      ;; time spent by the farmer (effort, in minutes) on the ordinary sale of females during the year
   set OS-females-effort-historyXticks-year sum (sublist OS-females-effort-history-year 0 year-days)
   if year-days = 368 [set OS-females-effort-history-year []]
 
-  set ES-males-effort-history fput ES-males-effort ES-males-effort-history                      ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of males since the start of the simulation
+  set ES-males-effort-history fput ES-males-effort ES-males-effort-history                                                      ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of males since the start of the simulation
   set ES-males-effort-historyXticks sum (sublist ES-males-effort-history 0 simulation-time)
-  set ES-males-effort-history-season fput ES-males-effort ES-males-effort-history-season           ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of males during the season
+  set ES-males-effort-history-season fput ES-males-effort ES-males-effort-history-season                                        ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of males during the season
   set ES-males-effort-historyXticks-season sum (sublist ES-males-effort-history-season 0 season-days)
   if season-days = season-length [set ES-males-effort-history-season []]
-  set ES-males-effort-history-year fput ES-males-effort ES-males-effort-history-year                    ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of males during the year
+  set ES-males-effort-history-year fput ES-males-effort ES-males-effort-history-year                                            ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of males during the year
   set ES-males-effort-historyXticks-year sum (sublist ES-males-effort-history-year 0 year-days)
   if year-days = 368 [set ES-males-effort-history-year []]
 
-  set ES-old-cow-effort-history fput ES-old-cow-effort ES-old-cow-effort-history                             ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of old cows since the start of the simulation
+  set ES-old-cow-effort-history fput ES-old-cow-effort ES-old-cow-effort-history                                                ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of old cows since the start of the simulation
   set ES-old-cow-effort-historyXticks sum (sublist ES-old-cow-effort-history 0 simulation-time)
-  set ES-old-cow-effort-history-season fput ES-old-cow-effort ES-old-cow-effort-history-season                      ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of old cows during the season
+  set ES-old-cow-effort-history-season fput ES-old-cow-effort ES-old-cow-effort-history-season                                  ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of old cows during the season
   set ES-old-cow-effort-historyXticks-season sum (sublist ES-old-cow-effort-history-season 0 season-days)
   if season-days = season-length [set ES-old-cow-effort-history-season []]
-  set ES-old-cow-effort-history-year fput ES-old-cow-effort ES-old-cow-effort-history-year                           ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of old cows during the year
+  set ES-old-cow-effort-history-year fput ES-old-cow-effort ES-old-cow-effort-history-year                                      ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of old cows during the year
   set ES-old-cow-effort-historyXticks-year sum (sublist ES-old-cow-effort-history-year 0 year-days)
   if year-days = 368 [set ES-old-cow-effort-history-year []]
 
-  set ES-females-effort-history fput ES-females-effort ES-females-effort-history                                  ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of females since the start of the simulation
+  set ES-females-effort-history fput ES-females-effort ES-females-effort-history                                                ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of females since the start of the simulation
   set ES-females-effort-historyXticks sum (sublist ES-females-effort-history 0 simulation-time)
-  set ES-females-effort-history-season fput ES-females-effort ES-females-effort-history-season                       ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of females during the season
+  set ES-females-effort-history-season fput ES-females-effort ES-females-effort-history-season                                  ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of females during the season
   set ES-females-effort-historyXticks-season sum (sublist ES-females-effort-history-season 0 season-days)
   if season-days = season-length [set ES-females-effort-history-season []]
-  set ES-females-effort-history-year fput ES-females-effort ES-females-effort-history-year                              ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of females during the year
+  set ES-females-effort-history-year fput ES-females-effort ES-females-effort-history-year                                      ;; time spent by the farmer (effort, in minutes) on the extraordinary sale of females during the year
   set ES-females-effort-historyXticks-year sum (sublist ES-females-effort-history-year 0 year-days)
   if year-days = 368 [set ES-females-effort-history-year []]
 
-  set breeding-effort-history fput breeding-effort breeding-effort-history                         ;; time spent by the farmer since the start of the simulation (effort, in minutes) to move bulls into the paddock where the breeding cows are
+  set breeding-effort-history fput breeding-effort breeding-effort-history                                                      ;; time spent by the farmer since the start of the simulation (effort, in minutes) to move bulls into the paddock where the breeding cows are
   set breeding-effort-historyXticks sum (sublist breeding-effort-history 0 simulation-time)
-  set breeding-effort-history-season fput breeding-effort breeding-effort-history-season             ;; time spent by the farmer during the season (effort, in minutes) to move bulls into the paddock where the breeding cows are
+  set breeding-effort-history-season fput breeding-effort breeding-effort-history-season                                        ;; time spent by the farmer during the season (effort, in minutes) to move bulls into the paddock where the breeding cows are
   set breeding-effort-historyXticks-season sum (sublist breeding-effort-history-season 0 season-days)
-  set breeding-effort-history-year fput breeding-effort breeding-effort-history-year                                 ;; time spent by the farmer since during the year (effort, in minutes) to move bulls into the paddock where the breeding cows are
+  set breeding-effort-history-year fput breeding-effort breeding-effort-history-year                                            ;; time spent by the farmer since during the year (effort, in minutes) to move bulls into the paddock where the breeding cows are
   set breeding-effort-historyXticks-year sum (sublist breeding-effort-history-year 0 year-days)
   set breeding-effort 0
 
-  set rotational-effort-history fput rotational-effort rotational-effort-history                           ;; only when rotational grazing is in effect: time spent by the farmer since the start of the simulation (effort, in minutes) to move cattle from one paddock to another
+  set rotational-effort-history fput rotational-effort rotational-effort-history                                                ;; only when rotational grazing is in effect: time spent by the farmer since the start of the simulation (effort, in minutes) to move cattle from one paddock to another
   set rotational-effort-historyXticks sum (sublist rotational-effort-history 0 simulation-time)
-  set rotational-effort-history-season fput rotational-effort rotational-effort-history-season              ;; only when rotational grazing is in effect: time spent by the farmer during the season (effort, in minutes) to move cattle from one paddock to another
+  set rotational-effort-history-season fput rotational-effort rotational-effort-history-season                                  ;; only when rotational grazing is in effect: time spent by the farmer during the season (effort, in minutes) to move cattle from one paddock to another
   set rotational-effort-historyXticks-season sum (sublist rotational-effort-history-season 0 season-days)
-  set rotational-effort-history-year fput rotational-effort rotational-effort-history-year                  ;; only when rotational grazing is in effect: time spent by the farmer during the year (effort, in minutes) to move cattle from one paddock to another
+  set rotational-effort-history-year fput rotational-effort rotational-effort-history-year                                      ;; only when rotational grazing is in effect: time spent by the farmer during the year (effort, in minutes) to move cattle from one paddock to another
   set rotational-effort-historyXticks-year sum (sublist rotational-effort-history-year 0 year-days)
   if ticks-since-here = 1 [set rotational-effort 0]
 
-  set other-daily-effort-history fput other-daily-effort other-daily-effort-history                     ;; time spent by the farmer (effort, in minutes) on other (undetermined) activities since the start of the simulation
+  set other-daily-effort-history fput other-daily-effort other-daily-effort-history                                             ;; time spent by the farmer (effort, in minutes) on other (undetermined) activities since the start of the simulation
   set other-daily-effort-historyXticks sum (sublist other-daily-effort-history 0 simulation-time)
-  set other-daily-effort-history-season fput other-daily-effort other-daily-effort-history-season          ;; time spent by the farmer (effort, in minutes) on other (undetermined) activities during the season
+  set other-daily-effort-history-season fput other-daily-effort other-daily-effort-history-season                               ;; time spent by the farmer (effort, in minutes) on other (undetermined) activities during the season
   set other-daily-effort-historyXticks-season sum (sublist other-daily-effort-history-season 0 season-days)
-  set other-daily-effort-history-year fput other-daily-effort other-daily-effort-history-year              ;; time spent by the farmer (effort, in minutes) on other (undetermined) activities during the year
+  set other-daily-effort-history-year fput other-daily-effort other-daily-effort-history-year                                   ;; time spent by the farmer (effort, in minutes) on other (undetermined) activities during the year
   set other-daily-effort-historyXticks-year sum (sublist other-daily-effort-history-year 0 year-days)
   set other-daily-effort 0
 
@@ -1298,19 +1266,18 @@ to go
 ;; Determination of the estimated carrying capacity of the system (in Animal Units). The estimated carrying capacity is used exclusively by the environmental farmer to make decisions about when to make exceptional sales
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-  if season-days = 1 [                                                                                     ;; the estimated carrying capacity is always updated at the beginning of the new season. It is estimated because the farmer doesn't have perfect knowledge of all the variables in the system that determines it
+  if season-days = 1 [                                                                                                                                                                                   ;; the estimated carrying capacity is always updated at the beginning of the new season. It is estimated because the farmer doesn't have perfect knowledge of all the variables in the system that determines it
     if (spatial-management = "free grazing") [set estimated-kmax mean [grass-height] of patches set estimated-DM-cm-ha DM-cm-ha set estimated-climacoef climacoef]
 
   if (spatial-management = "rotational grazing") [
       ask patches with [paddock-a = 1] [if any? cows-here [set estimated-kmax mean [grass-height] of patches with [paddock-a = 1] set estimated-DM-cm-ha DM-cm-ha set estimated-climacoef climacoef]]
       ask patches with [paddock-b = 1] [if any? cows-here [set estimated-kmax mean [grass-height] of patches with [paddock-b = 1] set estimated-DM-cm-ha DM-cm-ha set estimated-climacoef climacoef]]
       ask patches with [paddock-c = 1] [if any? cows-here [set estimated-kmax mean [grass-height] of patches with [paddock-c = 1] set estimated-DM-cm-ha DM-cm-ha set estimated-climacoef climacoef]]
-      ask patches with [paddock-d = 1] [if any? cows-here [set estimated-kmax mean [grass-height] of patches with [paddock-d = 1] set estimated-DM-cm-ha DM-cm-ha set estimated-climacoef climacoef]]
-  ]]
+      ask patches with [paddock-d = 1] [if any? cows-here [set estimated-kmax mean [grass-height] of patches with [paddock-d = 1] set estimated-DM-cm-ha DM-cm-ha set estimated-climacoef climacoef]]]]
 
-  if (spatial-management = "free grazing") [                                                              ;; once all the variables used to determine carrying capacity have been set (based on their values on the first day of the season), the estimated carrying capacity can now be determined
-    set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]   ;; "%-DM-available-for-cattle" and "daily-DM-consumed-by-cattle" are assumptions made by the farmer and can be set with the sliders of the same name found on the interface. "%-DM-available-for-cattle" is the percentage of dry matter that the farmer will use from the grassland for his cattle. For example, a value of 50% indicates that the farmer considers the carrying capacity of the system to be 50% of the actual carrying capacity (e.g., if the grassland has 10000 kg of DM, the farmer would consider 5000 kg of DM for his cattle), leaving the remaining 50% for other animals and biological processes
-                                                                                                                                                                                                           ;; "daily-DM-consumed-by-cattle" is the maximum kg of DM a cow can consume in one day
+  if (spatial-management = "free grazing") [                                                                                                                                                             ;; once all the variables used to determine carrying capacity have been set (based on their values on the first day of the season), the estimated carrying capacity can now be determined
+    set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle] ;; "%-DM-available-for-cattle" and "daily-DM-consumed-by-cattle" are assumptions made by the farmer and can be set with the sliders of the same name found on the interface. "%-DM-available-for-cattle" is the percentage of dry matter that the farmer will use from the grassland for his cattle. For example, a value of 50% indicates that the farmer considers the carrying capacity of the system to be 50% of the actual carrying capacity (e.g., if the grassland has 10000 kg of DM, the farmer would consider 5000 kg of DM for his cattle), leaving the remaining 50% for other animals and biological processes
+                                                                                                                                                                                                         ;; "daily-DM-consumed-by-cattle" is the maximum kg of DM a cow can consume in one day
   if (spatial-management = "rotational grazing") [
     ask patches with [paddock-a = 1] [if any? cows-here [set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-a = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
     ask patches with [paddock-b = 1] [if any? cows-here [set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-b = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
@@ -1318,7 +1285,7 @@ to go
     ask patches with [paddock-d = 1] [if any? cows-here [set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-d = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]]
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Determination the real carrying capacity of the system
+;; Determination the actual carrying capacity of the system
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
   if (spatial-management = "free grazing") [
@@ -1352,8 +1319,8 @@ to go
 ;; Simulation termination rules and model procedures
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-  if simulation-time / 368 = STOP-SIMULATION-AT [stop]                               ;; the observer can decide whether the simulation should run indefinitely (setting the "STOP-SIMULATION-AT" slider in the interface to 0 years) or after X years
-  if count cows = 0 [stop]                                                           ;; if the system collapses (number of animals = 0), the simulation stops
+  if simulation-time / 368 = STOP-SIMULATION-AT [stop]                                                                                      ;; the observer can decide whether the simulation should run indefinitely (setting the "STOP-SIMULATION-AT" slider in the interface to 0 years) or after X years
+  if count cows = 0 [stop]                                                                                                                  ;; if the system collapses (number of animals = 0), the simulation stops
 
   grow-grass
 
@@ -1361,21 +1328,21 @@ to go
 
   DM-consumption
 
-  set supplement-cost 0                                                              ;; supplement-cost are reset every tick
+  set supplement-cost 0                                                                                                                     ;; supplement-cost are reset every tick
 
-  if (farmer-profile = "market") or (farmer-profile = "market-fsb") or (farmer-profile = "environmental") or (farmer-profile = "environmental-rot2") [feed-supplementation]
-  if (farmer-profile = "market-fsb") [feed-supplementation-for-controlled-breeding]
+  if (farmer-profile = "commercial") or (farmer-profile = "commercial-fsb") or (farmer-profile = "environmental") [feed-supplementation]
+  if (farmer-profile = "commercial-fsb") [feed-supplementation-for-controlled-breeding]                                                     ;; DEACTIVATED
   if (farmer-profile = "environmental-fmincows") [if count cows <= keep-MIN-n-breeding-cows [feed-supplementation]]
 
   if (farmer-profile = "none") [grow-livestock-natural-weaning-none-profile]
-  if (farmer-profile = "traditional") [grow-livestock-natural-weaning]
-  if (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") or (farmer-profile = "environmental-rot2") [grow-livestock-natural-weaning]
-  if (farmer-profile = "market") or (farmer-profile = "market-fsb") [grow-livestock-early-weaning]
+  if (farmer-profile = "subsistence") [grow-livestock-natural-weaning]
+  if (farmer-profile = "environmental-fmincows") or (farmer-profile = "environmental") [grow-livestock-natural-weaning]
+  if (farmer-profile = "commercial") or (farmer-profile = "commercial-fsb") [grow-livestock-early-weaning]
 
   if (farmer-profile = "none") [uncontrolled-breeding]
-  if (farmer-profile = "traditional") [uncontrolled-breeding]
-  if (farmer-profile = "market") or (farmer-profile = "market-fsb") [controlled-breeding]
-  if (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") or (farmer-profile = "environmental-rot2") [controlled-breeding]
+  if (farmer-profile = "subsistence") [uncontrolled-breeding]
+  if (farmer-profile = "commercial") or (farmer-profile = "commercial-fsb") [controlled-breeding]
+  if (farmer-profile = "environmental-fmincows") or (farmer-profile = "environmental") [controlled-breeding]
 
   update-grass-height
 
@@ -1383,11 +1350,11 @@ to go
 
   update-prices
 
-  if (farmer-profile = "traditional") [ordinary-sale-males]
-  if (farmer-profile = "market") or (farmer-profile = "market-fsb") [
+  if (farmer-profile = "subsistence") [ordinary-sale-males]
+  if (farmer-profile = "commercial") or (farmer-profile = "commercial-fsb") [
     ordinary-sale-males ordinary-sale-old-cows ordinary-sale-old-bulls ordinary-sale-non-replacement-females
-    extraordinary-sale-males-market-farmer extraordinary-sale-old-cows-market-farmer extraordinary-sale-females-market-farmer]
-  if (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") or (farmer-profile = "environmental-rot2") [
+    extraordinary-sale-males-commercial-farmer extraordinary-sale-old-cows-commercial-farmer extraordinary-sale-females-commercial-farmer]
+  if (farmer-profile = "environmental-fmincows") or (farmer-profile = "environmental") [
     ordinary-sale-males ordinary-sale-old-cows ordinary-sale-old-bulls ordinary-sale-non-replacement-females
     extraordinary-sale-males-environmental-farmer extraordinary-sale-old-cows-environmental-farmer extraordinary-sale-females-environmental-farmer]
 
@@ -1451,9 +1418,9 @@ ask cows [
   ]
 end
 
-to feed-supplementation                                                                                        ;; if the animal is below a minimum weight (set by the user in the interface using the "xxx-min-weight-for-feed-sup" slider), the farmer (only market and environmental farmers), if he has enough money, supplements the animal's nutrition by buying feed
-  set FS-cow 0 set FS-cow-with-calf 0 set FS-heifer 0 set FS-steer 0 set FS-weaned-calf 0 set FS-bull 0        ;; the daily cost of purchasing feed supplements is reset every tick. This allows to keep track of the amount of money spent on feed supplements each day
-  ask cows [set live-weight-gain-feed 0]                                                                       ;; in addition, the live weight gained from feed supplements for each animal is reset each day
+to feed-supplementation                                                                                                                                                         ;; if the animal is below a minimum weight (set by the user in the interface using the "xxx-min-weight-for-feed-sup" slider), the farmer (only commercial and environmental farmers), if he has enough money, supplements the animal's nutrition by buying feed
+  set FS-cow 0 set FS-cow-with-calf 0 set FS-heifer 0 set FS-steer 0 set FS-weaned-calf 0 set FS-bull 0                                                                         ;; the daily cost of purchasing feed supplements is reset every tick. This allows to keep track of the amount of money spent on feed supplements each day
+  ask cows [set live-weight-gain-feed 0]                                                                                                                                        ;; in addition, the live weight gained from feed supplements for each animal is reset each day
 
   if balance-historyXticks <= 0 [
     ask cows with [cow?] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]
@@ -1463,31 +1430,31 @@ to feed-supplementation                                                         
     ask cows with [weaned-calf?] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]
     ask cows with [cow-with-calf?] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]]
 
-  if balance-historyXticks > 0 [                                                                               ;; the farmer can buy feed for the animals if the balance of the system is positive (i.e. if there are savings).
-    ask cows with [cow?] [ifelse live-weight < cow-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]] ;; animals below the threshold set by the farmer (the "xxxx-min-weight-for-feed-sup" slider in the interface) are selected for feed supplementation
+  if balance-historyXticks > 0 [                                                                                                                                                ;; the farmer can buy feed for the animals if the balance of the system is positive (i.e. if there are savings).
+    ask cows with [cow?] [ifelse live-weight < cow-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]]   ;; animals below the threshold set by the farmer (the "xxxx-min-weight-for-feed-sup" slider in the interface) are selected for feed supplementation
     ask cows with [bull?] [ifelse live-weight < bull-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]]
     ask cows with [heifer?] [ifelse live-weight < heifer/steer-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]]
     ask cows with [steer?] [ifelse live-weight < heifer/steer-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]]
     ask cows with [weaned-calf?] [ifelse live-weight < weaned-calf-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]]
     ask cows with [cow-with-calf?] [ifelse live-weight < cow-with-calf-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]]
 
-    ask cows with [supplemented?] [                                                                            ;; for all of the animals that have been selected for supplementation, the model calculates the following variables:
-      set live-weight-gain-max set-live-weight-gain-max                                                        ;; first, in order for the farmer to know how many kilograms of supplement to buy, we have to assume what is the maximum weight a cow can gain in a day. This assumption is set by the "set-live-weight-gain-max" slider in the interface, which has a default value of 0.6 kg/day
-      set live-weight-gain-feed live-weight-gain-max - live-weight-gain                                        ;; second, we calculate the difference between the theoretical maximum weight the animal can gain in one day and the weight the animal gained in one day by grazing
-      set kg-supplement-DM live-weight-gain-feed * feed-sup-conversion-ratio]                                   ;; third, this difference is then multiplied by the ratio of kg of feed to kg of cow set by the "feed-sup-conversion-ratio" slider to get the kg of feed the farmer needs to buy for the cow to gain the maximum live weight it can gain in a day (0.6 kg/day by default). By default, this "feed-sup-conversion-ratio" slider has a value of 7 kg, which means that in order for a cow to gain 1 kg of live weight, she must eat 7 kg of supplement
+    ask cows with [supplemented?] [                                                                                                                                             ;; for all of the animals that have been selected for supplementation, the model calculates the following variables:
+      set live-weight-gain-max set-live-weight-gain-max                                                                                                                         ;; first, in order for the farmer to know how many kilograms of supplement to buy, we have to assume what is the maximum weight a cow can gain in a day. This assumption is set by the "set-live-weight-gain-max" slider in the interface, which has a default value of 0.6 kg/day
+      set live-weight-gain-feed live-weight-gain-max - live-weight-gain                                                                                                         ;; second, we calculate the difference between the theoretical maximum weight the animal can gain in one day and the weight the animal gained in one day by grazing
+      set kg-supplement-DM live-weight-gain-feed * feed-sup-conversion-ratio]                                                                                                   ;; third, this difference is then multiplied by the ratio of kg of feed to kg of cow set by the "feed-sup-conversion-ratio" slider to get the kg of feed the farmer needs to buy for the cow to gain the maximum live weight it can gain in a day (0.6 kg/day by default). By default, this "feed-sup-conversion-ratio" slider has a value of 7 kg, which means that in order for a cow to gain 1 kg of live weight, she must eat 7 kg of supplement
 
     ask cows with [supplemented?] [
-      set USD-supplement-DM item current-season supplement-prices * kg-supplement-DM]                          ;; once the farmer knows how many kg of supplement he needs to keep the animals above the threshold (minimum weight set by the "xxx-min-weight-for-feed-sup" slider), it is time to calculate how much it will cost the farmer to buy that amount of feed
+      set USD-supplement-DM item current-season supplement-prices * kg-supplement-DM]                                                                                           ;; once the farmer knows how many kg of supplement he needs to keep the animals above the threshold (minimum weight set by the "xxx-min-weight-for-feed-sup" slider), it is time to calculate how much it will cost the farmer to buy that amount of feed
 
     ask cows with [supplemented?] [
-      ifelse sum [USD-supplement-DM] of cows with [supplemented?] > balance-historyXticks [                    ;; alternative A: if the money needed to supplement all the animals selected for supplementation is greater than the savings of the livestock system (balance-historyXticks)...
-        set kg-supplement-DM (balance-historyXticks / count cows with [supplemented?]) / item current-season supplement-prices  ;; ...the kg of supplement to be purchased is calculated based on the current system's savings and divided among the animals selected for supplementation
+      ifelse sum [USD-supplement-DM] of cows with [supplemented?] > balance-historyXticks [                                                                                     ;; alternative A: if the money needed to supplement all the animals selected for supplementation is greater than the savings of the livestock system (balance-historyXticks)...
+        set kg-supplement-DM (balance-historyXticks / count cows with [supplemented?]) / item current-season supplement-prices                                                  ;; ...the kg of supplement to be purchased is calculated based on the current system's savings and divided among the animals selected for supplementation
         set USD-supplement-DM kg-supplement-DM * item current-season supplement-prices
-        set live-weight-gain-feed (kg-supplement-DM / feed-sup-conversion-ratio)                               ;; the live weight gained from feed supplementation is calculated
-        set live-weight live-weight + live-weight-gain-feed]                                                   ;; and the live weight is updated
+        set live-weight-gain-feed (kg-supplement-DM / feed-sup-conversion-ratio)                                                                                                ;; the live weight gained from feed supplementation is calculated
+        set live-weight live-weight + live-weight-gain-feed]                                                                                                                    ;; and the live weight is updated
 
-        [set live-weight-gain-feed live-weight-gain-max - live-weight-gain                                     ;; alternative B: if the money needed is less than the savings from the livestock system (i.e., if the farmer has enough money), the live weight gained from feed supplementation is the difference between the theoretical maximum weight the animal can gain in one day and the weight the animal gained in one day by grazing
-         set live-weight live-weight + live-weight-gain-feed]                                                  ;; and the live weight is updated (in this case, the animal gained 0.6 kg of live weight (or the value that have been selected in the "set-live-weight-gain-max" slider in the interface)
+        [set live-weight-gain-feed live-weight-gain-max - live-weight-gain                                                                                                      ;; alternative B: if the money needed is less than the savings from the livestock system (i.e., if the farmer has enough money), the live weight gained from feed supplementation is the difference between the theoretical maximum weight the animal can gain in one day and the weight the animal gained in one day by grazing
+         set live-weight live-weight + live-weight-gain-feed]                                                                                                                   ;; and the live weight is updated (in this case, the animal gained 0.6 kg of live weight (or the value that have been selected in the "set-live-weight-gain-max" slider in the interface)
 
       if (heifer? = true) and live-weight > maxLWcow [set live-weight maxLWcow]
       if (adult-cow? = true) and live-weight > maxLWcow [set live-weight maxLWcow]
@@ -1498,20 +1465,19 @@ to feed-supplementation                                                         
 
       set animal-units live-weight / set-1-AU
 
-      set FS-cow sum [USD-supplement-DM] of cows with [cow?]                                                   ;; once the animals have been supplemented, the daily cost of purchasing supplements is calculated for each age group
+      set FS-cow sum [USD-supplement-DM] of cows with [cow?]                                                                                                                    ;; once the animals have been supplemented, the daily cost of purchasing supplements is calculated for each age group
       set FS-bull sum [USD-supplement-DM] of cows with [bull?]
       set FS-heifer sum [USD-supplement-DM] of cows with [heifer?]
       set FS-cow-with-calf sum [USD-supplement-DM] of cows with [cow-with-calf?]
       set FS-steer sum [USD-supplement-DM] of cows with [steer?]
       set FS-weaned-calf sum [USD-supplement-DM] of cows with [weaned-calf?]]]
 
-  set supplement-cost FS-cow + FS-cow-with-calf + FS-heifer + FS-steer + FS-weaned-calf + FS-bull              ;; once the daily cost has been calculated for each age group, the TOTAL daily cost (i.e. the total cost to feed ALL animals in one day) is calculated
+  set supplement-cost FS-cow + FS-cow-with-calf + FS-heifer + FS-steer + FS-weaned-calf + FS-bull                                                                               ;; once the daily cost has been calculated for each age group, the TOTAL daily cost (i.e. the total cost to feed ALL animals in one day) is calculated
 end
 
-to feed-supplementation-for-controlled-breeding                                                                ;; feed supplementation for breeding cows (non-pregnant cows). It follows exactly the same logic as the "feed-supplementation" procedure, but in this case it only affects cows that are not pregnant
-
-  set FSB-cow 0                                                                                                ;; the daily cost of purchasing feed supplements for breeding cows is reset every tick. This allows to keep track of the amount of money spent on feed supplements for breeding cows each day
-  ask cows with [cow?] [set live-weight-gain-feed-breeding 0]                                                  ;; in addition, the live weight gained from feed supplements for each animal is reset each day
+to feed-supplementation-for-controlled-breeding                                                                                                                             ;; DEACTIVATED ;; feed supplementation for breeding cows (non-pregnant cows). It follows exactly the same logic as the "feed-supplementation" procedure, but in this case it only affects cows that are not pregnant
+  set FSB-cow 0                                                                                                                                                             ;; the daily cost of purchasing feed supplements for breeding cows is reset every tick. This allows to keep track of the amount of money spent on feed supplements for breeding cows each day
+  ask cows with [cow?] [set live-weight-gain-feed-breeding 0]                                                                                                               ;; in addition, the live weight gained from feed supplements for each animal is reset each day
   ask cows with [cow?] [if pregnant? = false [set kg-supplement-DM-breeding 0 set USD-supplement-DM-breeding 0]]
 
   ask cows with [cow? and pregnant? = false] [
@@ -1532,17 +1498,17 @@ to feed-supplementation-for-controlled-breeding                                 
           set kg-supplement-DM-breeding live-weight-gain-feed-breeding * feed-sup-conversion-ratio]
 
         ask cows with [cow? and pregnant? = false and supplemented?] [
-          set USD-supplement-DM-breeding item current-season supplement-prices * kg-supplement-DM-breeding]           ;; the price of the feed supplement required to keep the animals above the threshold
+          set USD-supplement-DM-breeding item current-season supplement-prices * kg-supplement-DM-breeding]                                                                 ;; the price of the feed supplement required to keep the animals above the threshold
 
         ask cows with [cow? and pregnant? = false and supplemented?] [
           ifelse sum [USD-supplement-DM-breeding] of cows with [cow? and pregnant? = false and supplemented?] > balance-historyXticks
-          [                                                                                                           ;; alternative A: if the money needed to supplement all the animals selected for supplementation is greater than the savings of the livestock system (balance-historyXticks)...
+          [                                                                                                                                                                 ;; alternative A: if the money needed to supplement all the animals selected for supplementation is greater than the savings of the livestock system (balance-historyXticks)...
             set kg-supplement-DM-breeding (balance-historyXticks / count cows with [cow? and pregnant? = false and supplemented?]) / item current-season supplement-prices  ;; ...the kg of supplement to be purchased is calculated based on the current system's savings and divided among the animals selected for supplementation
             set USD-supplement-DM-breeding kg-supplement-DM-breeding * item current-season supplement-prices                                                                ;; the live weight gained from feed supplementation is calculated
             set live-weight-gain-feed-breeding (kg-supplement-DM-breeding / feed-sup-conversion-ratio)                                                                      ;; and the live weight is updated
             set live-weight live-weight + live-weight-gain-feed-breeding]
-          [                                                                                                            ;; alternative B: if the money needed is below than the savings of the livestock system (i.e., if the farmer has enough money)...
-            set live-weight-gain-feed-breeding live-weight-gain-max - live-weight-gain                                 ;; and the live weight is updated (in this case, the animal gained 0.6 kg of live weight (or the value that have been selected in the "set-live-weight-gain-max" slider in the interface)
+          [                                                                                                                                                                 ;; alternative B: if the money needed is below than the savings of the livestock system (i.e., if the farmer has enough money)...
+            set live-weight-gain-feed-breeding live-weight-gain-max - live-weight-gain                                                                                      ;; and the live weight is updated (in this case, the animal gained 0.6 kg of live weight (or the value that have been selected in the "set-live-weight-gain-max" slider in the interface)
             set live-weight live-weight + live-weight-gain-feed-breeding]
 
           if (adult-cow? = true) and live-weight > maxLWcow [set live-weight maxLWcow]
@@ -1551,9 +1517,9 @@ to feed-supplementation-for-controlled-breeding                                 
 
           set animal-units live-weight / set-1-AU
 
-          set FSB-cow sum [USD-supplement-DM-breeding] of cows with [cow? and pregnant? = false and supplemented?]]]]] ;; once the breeding cows have been supplemented, the daily cost of purchasing supplements is calculated for this specific group (non-pregnant cows)
+          set FSB-cow sum [USD-supplement-DM-breeding] of cows with [cow? and pregnant? = false and supplemented?]]]]]                                                      ;; once the breeding cows have been supplemented, the daily cost of purchasing supplements is calculated for this specific group (non-pregnant cows)
 
-  set supplement-cost supplement-cost + FSB-cow                                                                        ;; the daily cost of purchasing feed supplements is updated
+  set supplement-cost supplement-cost + FSB-cow                                                                                                                             ;; the daily cost of purchasing feed supplements is updated
 end
 
 to grow-livestock-natural-weaning-none-profile                                                    ;; only for when no farmer profile is selected ("farmer-profile = none"). This procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactation period of animals in a NATURAL weaning scenario
@@ -1583,7 +1549,7 @@ ask cows [
   ]
 end
 
-to grow-livestock-natural-weaning                                                    ;; only for when traditional or environmental farmer profile are selected ("farmer-profile = traditional / environmental"). This procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactation period of animals in a NATURAL weaning scenario
+to grow-livestock-natural-weaning                                                                 ;; only for when subsistence or environmental farmer profile are selected ("farmer-profile = subsistence / environmental"). This procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactation period of animals in a NATURAL weaning scenario
 ask cows [
     set age age + days-per-tick                                                                   ;; animals update their age
     if age > cow-age-max [die]                                                                    ;; if the animal is older than the life expectancy (set by the "cow-age-max" variable), the animal dies
@@ -1615,7 +1581,7 @@ ask cows [
   ]
 end
 
-to grow-livestock-early-weaning                                                                   ;; only for when the market farmer profile is selected ("farmer-profile = market"). This procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactation period of animals in a EARLY weaning scenario
+to grow-livestock-early-weaning                                                                   ;; only for when the commercial farmer profile is selected ("farmer-profile = commercial"). This procedure dictates the rules for the death or progression of animals to the next age class, as well as the lactation period of animals in a EARLY weaning scenario
 
   ask cows with [weaning-calf? = true] [set weaning-calf? false]                                  ;; at the beginning of this procedure, we reset the "weaning-calf?" variable, which determines whether a cow-with-calf agent is selected for early weaning (true) or not (false)
 
@@ -1631,28 +1597,28 @@ to grow-livestock-early-weaning                                                 
 
     if (cow-with-calf? = true and live-weight < early-weaning-threshold) [become-cow set weaning-calf? true ask my-out-links [die]]         ;; if the mother (an agent with a "cow-with-calf?" state) is below a certain weight, it will switch to the "cow?" state and will kill the link with its child (an agent with a "born-calf" state). This weight is determined by the "early-weaning-threshold" slider on the interface
 
-    ask cows with [cow-with-calf? and not any? my-links] [become-cow]                                                      ;; if the link with the child (an agent with the state "born-calf") is lost (this happens when the child dies), the mother changes from the state "cow-with-calf" to the state "cow".
-    ask cows with [born-calf-female? and not any? my-links ] [ become-weaned-calf-female ]                                 ;; if the link with the mother (an agent with a "cow-with-calf?" state) is lost (this happens when the mother dies, or when the mother switches from a "cow-with-calf?" state to a "cow?" state), the calf weans prematurely.
+    ask cows with [cow-with-calf? and not any? my-links] [become-cow]                                                                       ;; if the link with the child (an agent with the state "born-calf") is lost (this happens when the child dies), the mother changes from the state "cow-with-calf" to the state "cow".
+    ask cows with [born-calf-female? and not any? my-links ] [ become-weaned-calf-female ]                                                  ;; if the link with the mother (an agent with a "cow-with-calf?" state) is lost (this happens when the mother dies, or when the mother switches from a "cow-with-calf?" state to a "cow?" state), the calf weans prematurely.
     ask cows with [born-calf-male? and not any? my-links ] [ become-weaned-calf-male ]
 
-    if (born-calf-female? = true) and (age >= weaned-calf-age-min) [become-weaned-calf-female ask my-out-links [die]]       ;; lactating calves (i.e., "born-calf?" age class) become weaned calves at 246 days old (set by the "weaned-calf-age-min" variable). When the lactating calf moves on to the next age group (weaned-calf), the link (dependency) with its parent is terminated
+    if (born-calf-female? = true) and (age >= weaned-calf-age-min) [become-weaned-calf-female ask my-out-links [die]]                       ;; lactating calves (i.e., "born-calf?" age class) become weaned calves at 246 days old (set by the "weaned-calf-age-min" variable). When the lactating calf moves on to the next age group (weaned-calf), the link (dependency) with its parent is terminated
     if (born-calf-male? = true) and (age >= weaned-calf-age-min) [become-weaned-calf-male ask my-out-links [die]]
-    if (weaned-calf-female? = true) and (age >= heifer-age-min) [become-heifer]                                             ;; female weaned calves become heifers at 369 days old(set by the "heifer-age-min" variable)
+    if (weaned-calf-female? = true) and (age >= heifer-age-min) [become-heifer]                                                             ;; female weaned calves become heifers at 369 days old(set by the "heifer-age-min" variable)
 
-    if (weaned-calf-male? = true) and (age >= heifer-age-min) [                                                             ;; in this line, when the male weaned calf is 369 days old (set by the "heifer-age-min" variable), if there are not enough number of bulls in the system (this number is determined by the "bull:cow-ratio" slider on the interface), the male weaned calf becomes a bull. If there are enough number of bulls, it becomes a steer
+    if (weaned-calf-male? = true) and (age >= heifer-age-min) [                                                                             ;; in this line, when the male weaned calf is 369 days old (set by the "heifer-age-min" variable), if there are not enough number of bulls in the system (this number is determined by the "bull:cow-ratio" slider on the interface), the male weaned calf becomes a bull. If there are enough number of bulls, it becomes a steer
       ifelse count cows with [bull?] > 0
       [if bull:cow-ratio > 0 [if count cows with [bull?] <= round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [ask up-to-n-of (round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) - count cows with [bull?]) cows with [(weaned-calf-male? = true) and (age >= heifer-age-min)] [become-bull]]]]
       [ask n-of 1 cows with [(weaned-calf-male? = true) and (age >= heifer-age-min)] [become-bull]]]
 
-    if (weaned-calf-male? = true) and (age >= heifer-age-min) [become-steer]                                                ;; if there are enough number of bulls, the male weaned calf becomes a steer
+    if (weaned-calf-male? = true) and (age >= heifer-age-min) [become-steer]                      ;; if there are enough number of bulls, the male weaned calf becomes a steer
 
-    if (heifer? = true) and (age >= cow-age-min) and (live-weight >= 280 ) [become-cow]                                     ;; heifers become adult cows when they are 737 days old (as determined by the "cow-age-min" variable) and weigh more than 280 kg
-    if cow-with-calf? = true [set lactating-time lactating-time + days-per-tick]                                            ;; cows with calves (i.e., "cow-with-calf?" age class) has a lactating period of 246 days
-    if lactating-time >= lactation-period [become-cow]                                                                      ;; after 246 days, cows in the "cow-with-calf?" age class return to cows without calves (i.e., "cow?" age class)
+    if (heifer? = true) and (age >= cow-age-min) and (live-weight >= 280 ) [become-cow]           ;; heifers become adult cows when they are 737 days old (as determined by the "cow-age-min" variable) and weigh more than 280 kg
+    if cow-with-calf? = true [set lactating-time lactating-time + days-per-tick]                  ;; cows with calves (i.e., "cow-with-calf?" age class) has a lactating period of 246 days
+    if lactating-time >= lactation-period [become-cow]                                            ;; after 246 days, cows in the "cow-with-calf?" age class return to cows without calves (i.e., "cow?" age class)
   ]
 end
 
-to uncontrolled-breeding                                                                                                                   ;; only for when none or traditional farmer profiles are selected ("farmer-profile = none / traditional"). This procedure dictates the rules for which each of the reproductive age classes (i.e., heifer, cow, cow-with-calf) can become pregnant in an UNCONTROLLED breeding scenario, as well as the gestation period of animals
+to uncontrolled-breeding                                                                                                                   ;; only for when none or subsistence farmer profiles are selected ("farmer-profile = none / subsistence"). This procedure dictates the rules for which each of the reproductive age classes (i.e., heifer, cow, cow-with-calf) can become pregnant in an UNCONTROLLED breeding scenario, as well as the gestation period of animals
   ask cows [
     if (heifer? = true) or (cow? = true) or (cow-with-calf? = true) [set pregnancy-rate (1 / (1 + coefA * e ^ (- coefB * live-weight)))]   ;; pregnancy rate is calculated here (a number between 0 and 1)
 
@@ -1679,7 +1645,7 @@ to uncontrolled-breeding                                                        
   ]
 end
 
-to controlled-breeding                                                                                                                     ;; only for when the market or environmental farmer profiles are selected ("farmer-profile = market / environmental"). this procedure dictates the rules for which each of the reproductive age classes (i.e., heifer, cow, cow-with-calf) can become pregnant in an CONTROLLED breeding scenario, as well as the gestation period of animals
+to controlled-breeding                                                                                                                     ;; only for when the commercial or environmental farmer profiles are selected ("farmer-profile = commercial / environmental"). this procedure dictates the rules for which each of the reproductive age classes (i.e., heifer, cow, cow-with-calf) can become pregnant in an CONTROLLED breeding scenario, as well as the gestation period of animals
   ask cows [
     if (heifer? = true) or (cow? = true) or (cow-with-calf? = true) [set pregnancy-rate (1 / (1 + coefA * e ^ (- coefB * live-weight)))]   ;; pregnancy rate is calculated here (a number between 0 and 1)
 
@@ -1753,7 +1719,7 @@ to move                                                                         
         [move-to target-d1]
         [move-to one-of neighbors with [paddock-d = 1]]]]
 
-    if (farmer-profile = "none") or (farmer-profile = "traditional") or (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") [             ;; traditional and environmental farmers move cows at the end of each season
+    if (farmer-profile = "none") or (farmer-profile = "subsistence") or (farmer-profile = "environmental-fmincows") [             ;; subsistence farmers move cows at the end of each season
       if season-days >= season-length [
         set ticks-since-here 0
         ask cows
@@ -1765,8 +1731,8 @@ to move                                                                         
               [let next-paddock one-of patches with [paddock-d = 1] move-to next-paddock]
               [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]]]]]]
 
+    if (farmer-profile = "environmental") [                                                                                      ;; environmental farmers move cows from one plot to another when the Animal Units (AU) of all animals is above the ESTIMATED carrying capacity of the paddock
 
-    if (farmer-profile = "environmental-rot2") [
       if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity ;and ticks-since-here > RG-days-in-paddock
       [
         set ticks-since-here 0
@@ -1780,48 +1746,43 @@ to move                                                                         
               [let next-paddock one-of patches with [paddock-a = 1] move-to next-paddock]]]]]
 
       if ticks-since-here = 0 [
+        ask patches with [paddock-a = 1] [
+          if any? cows-here [
+            set estimated-kmax mean [grass-height] of patches with [paddock-a = 1] * mean [soil-quality] of patches with [paddock-a = 1]
+            set estimated-DM-cm-ha DM-cm-ha
+            set estimated-climacoef climacoef]]
+        ask patches with [paddock-b = 1] [
+          if any? cows-here [
+            set estimated-kmax mean [grass-height] of patches with [paddock-b = 1] * mean [soil-quality] of patches with [paddock-b = 1]
+            set estimated-DM-cm-ha DM-cm-ha
+            set estimated-climacoef climacoef]]
+        ask patches with [paddock-c = 1] [
+          if any? cows-here [
+            set estimated-kmax mean [grass-height] of patches with [paddock-c = 1] * mean [soil-quality] of patches with [paddock-c = 1]
+            set estimated-DM-cm-ha DM-cm-ha
+            set estimated-climacoef climacoef]]
+        ask patches with [paddock-d = 1] [
+          if any? cows-here [
+            set estimated-kmax mean [grass-height] of patches with [paddock-d = 1] * mean [soil-quality] of patches with [paddock-d = 1]
+            set estimated-DM-cm-ha DM-cm-ha
+            set estimated-climacoef climacoef]]
+        ask patches with [paddock-a = 1] [
+          if any? cows-here [
+            set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-a = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+        ask patches with [paddock-b = 1] [
+          if any? cows-here [
+            set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-b = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+        ask patches with [paddock-c = 1] [
+          if any? cows-here [
+            set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-c = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+        ask patches with [paddock-d = 1] [
+          if any? cows-here [
+            set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-d = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]]]
 
-      ask patches with [paddock-a = 1] [
-        if any? cows-here [
-          set estimated-kmax mean [grass-height] of patches with [paddock-a = 1] * mean [soil-quality] of patches with [paddock-a = 1]
-          set estimated-DM-cm-ha DM-cm-ha
-          set estimated-climacoef climacoef]]
-
-      ask patches with [paddock-b = 1] [
-        if any? cows-here [
-          set estimated-kmax mean [grass-height] of patches with [paddock-b = 1] * mean [soil-quality] of patches with [paddock-b = 1]
-          set estimated-DM-cm-ha DM-cm-ha
-          set estimated-climacoef climacoef]]
-
-      ask patches with [paddock-c = 1] [
-        if any? cows-here [
-          set estimated-kmax mean [grass-height] of patches with [paddock-c = 1] * mean [soil-quality] of patches with [paddock-c = 1]
-          set estimated-DM-cm-ha DM-cm-ha
-          set estimated-climacoef climacoef]]
-
-      ask patches with [paddock-d = 1] [
-        if any? cows-here [
-          set estimated-kmax mean [grass-height] of patches with [paddock-d = 1] * mean [soil-quality] of patches with [paddock-d = 1]
-          set estimated-DM-cm-ha DM-cm-ha
-          set estimated-climacoef climacoef]]
-
-    ask patches with [paddock-a = 1] [
-      if any? cows-here [
-        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-a = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
-    ask patches with [paddock-b = 1] [
-      if any? cows-here [
-        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-b = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
-    ask patches with [paddock-c = 1] [
-      if any? cows-here [
-        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-c = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
-    ask patches with [paddock-d = 1] [
-      if any? cows-here [
-        set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-d = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]]]
-
-    if (farmer-profile = "market") or (farmer-profile = "market-fsb") [                                                                                     ;; market-oriented farmers move cows from one plot to another when the average live weight of the cows is below a threshold (determined by the "RG-live-weight-threshold" slider in the interface).
+    if (farmer-profile = "commercial") or (farmer-profile = "commercial-fsb") [                                                  ;; commercial-oriented farmers move cows from one plot to another when the average live weight of the cows is below a threshold (determined by the "RG-live-weight-threshold" slider on the interface)
       if any? cows with [born-calf? = false] [
-        if RG-market-farmer-live-weight-threshold > mean [live-weight] of cows with [born-calf? = false] ; and ticks-since-here > RG-days-in-paddock
-        [                                                                                                                                                   ;; once the animals are moved to the next paddock because they have met the criteria, because the effects of the new paddock on the animals' live weight take several days, and to avoid animals moving continuously from one paddock to another during these first days (because they will still have a value below the threshold), the minimum number of days the animals have to adapt to the new paddock before moving to the next is set with the "RG-days-in-paddock" slider.
+        if RG-commercial-farmer-live-weight-threshold > mean [live-weight] of cows with [born-calf? = false] ; and ticks-since-here > RG-days-in-paddock
+        [                                                                                                                        ;; once the animals are moved to the next paddock because they have met the criteria, because the effects of the new paddock on the animals' live weight take several days, and to avoid animals moving continuously from one paddock to another during these first days (because they will still have a value below the threshold), the minimum number of days the animals have to adapt to the new paddock before moving to the next is set with the "RG-days-in-paddock" slider
           set ticks-since-here 0
           ask cows
           [ifelse paddock-a = 1
@@ -1841,7 +1802,7 @@ end
 ;; Cattle prices
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to update-prices                                                                     ;; the price of cattle varies from season to season for each age class
+to update-prices                                                                                      ;; the price of cattle varies from season to season for each age class
   ask cows [
     if born-calf? = true [set price item current-season born-calf-prices set value price * live-weight]
     if weaned-calf? = true [set price item current-season weaned-calf-prices set value price * live-weight]
@@ -1854,102 +1815,102 @@ to update-prices                                                                
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Cattle sales: ordinary sales                                                      ;; ordinary cattle sales are held on the first day of fall
+;; Cattle sales: ordinary sales                                                                       ;; ordinary cattle sales are held on the first day of fall
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to ordinary-sale-males                                                                        ;; ordinary sale of weaned male calves, steers and bulls, determined by the maximum number of bulls the farmer wants to keep in the system ("bull:cow-ratio" slider on the interface)
+to ordinary-sale-males                                                                                ;; ordinary sale of weaned male calves, steers and bulls, determined by the maximum number of bulls the farmer wants to keep in the system ("bull:cow-ratio" slider on the interface)
 
   if current-season = 3 and (season-days = 1) [
     if any? cows with [weaned-calf-male?] [
-      if count cows with [bull?] >= 1 [                                                       ;; if there is at least one bull in the system...
-      if count cows with [weaned-calf-male?] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [    ;; ...and if the number of weaned male calves is greater than the number of bulls desired in the system...
+      if count cows with [bull?] >= 1 [                                                               ;; if there is at least one bull in the system...
+      if count cows with [weaned-calf-male?] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [                                                                                     ;; ...and if the number of weaned male calves is greater than the number of bulls desired in the system...
         while [any? cows with [weaned-calf-male? and sale? = false] and count cows with [weaned-calf-male? and sale? = false] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio)] [   ;; ...the farmer sells weaned male calves until there are no more weaned male calves or the number of animals in this age class equals the number of bulls desired in the system
-          if (ordinary-sale-of-cows-with = "highest live weight") [                                          ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+          if (ordinary-sale-of-cows-with = "highest live weight") [                                   ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
             ask max-n-of 1 cows with [weaned-calf-male? and sale? = false] [live-weight] [
               set sale? true
               set OS-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]
-          if (ordinary-sale-of-cows-with = "lowest live weight") [                                           ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+          if (ordinary-sale-of-cows-with = "lowest live weight") [                                    ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
             ask min-n-of 1 cows with [weaned-calf-male? and sale? = false] [live-weight] [
               set sale? true
               set OS-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]]]]]]
 
   if current-season = 3 and (season-days = 1) [
-    if any? cows with [steer?] [                                                              ;; all steers in the system are sold
+    if any? cows with [steer?] [                                                                      ;; all steers in the system are sold
             ask cows with [steer? and sale? = false] [
               set sale? true
               set OS-males-steer sum [value] of cows with [steer? and sale?]]]]
 
   if current-season = 3 and (season-days = 1) [
-    if count cows with [bull?] > 1  [                                                         ;; if there is more than one bull in the system...
-      if count cows with [bull?] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [    ;; ...and if the number of bulls is greater than the number of bulls desired in the system...
+    if count cows with [bull?] > 1  [                                                                 ;; if there is more than one bull in the system...
+      if count cows with [bull?] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [                                                                                                                         ;; ...and if the number of bulls is greater than the number of bulls desired in the system...
         while [any? cows with [bull? and sale? = false] and count cows with [bull? and sale? = false] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) and count cows with [bull? and sale? = false] > 1] [ ;;...the farmer sells bulls until there are no more bulls or the numer of animals in this age class equals the number of bulls desires in the system
-          if (ordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+          if (ordinary-sale-of-cows-with = "highest live weight") [                                   ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
             ask max-n-of 1 cows with [bull? and sale? = false] [live-weight] [
               set sale? true
               set OS-bull sum [value] of cows with [bull? and sale?]]]
-          if (ordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+          if (ordinary-sale-of-cows-with = "lowest live weight") [                                    ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
             ask min-n-of 1 cows with [bull? and sale? = false] [live-weight] [
               set sale? true
               set OS-bull sum [value] of cows with [bull? and sale?]]]]]]]
 
-  set OS-males-effort count cows with [sale?] * sales-effort-time                ;; the effort of selling animals is calculated
+  set OS-males-effort count cows with [sale?] * sales-effort-time                                     ;; the effort of selling animals is calculated
 
-  ask cows with [sale?] [die]                                                    ;; animals selected for sale leave the livestock system
+  ask cows with [sale?] [die]                                                                         ;; animals selected for sale leave the livestock system
 
 end
 
-to ordinary-sale-old-cows                                                               ;; ordinary sale of old empty cows. The age at which a cow is considered old is determined by the "age-sell-old-cow/bull" slider on the interface
+to ordinary-sale-old-cows                                                                             ;; ordinary sale of old empty cows. The age at which a cow is considered old is determined by the "age-sell-old-cow/bull" slider on the interface
 
   if current-season = 3 and (season-days = 1) [
     if any? cows with [cow? and old? = true] [
-      if count cows with [cow? and old? = true] > (count cows with [cow? and old? = true] - count cows with [heifer?]) [                           ;; old cows are sold only if there are more old cows than replacement heifers (i.e., future breeding cows) in the system, and the number of old cows for sale is equal to the number of heifers present in the system
+      if count cows with [cow? and old? = true] > (count cows with [cow? and old? = true] - count cows with [heifer?]) [                                                                                       ;; old cows are sold only if there are more old cows than replacement heifers (i.e., future breeding cows) in the system, and the number of old cows for sale is equal to the number of heifers present in the system
         while [any? cows with [cow? and old? = true and sale? = false] and count cows with [cow? and old? = true and sale? = false] > (count cows with [cow? and old? = true] - count cows with [heifer?])] [  ;; if the number of old cows is greater than the number of heifers, the farmer sells old cows until there are no more old cows or the number of animals in this age class equals the number of heifers
-          if (ordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+          if (ordinary-sale-of-cows-with = "highest live weight") [                                   ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
             ask max-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
               set sale? true
               set OS-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]
-          if (ordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+          if (ordinary-sale-of-cows-with = "lowest live weight") [                                    ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
             ask min-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
               set sale? true
               set OS-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]]]]]
 
-  set OS-old-cow-effort count cows with [sale?] * sales-effort-time                ;; the effort of selling animals is calculated
+  set OS-old-cow-effort count cows with [sale?] * sales-effort-time                                   ;; the effort of selling animals is calculated
 
-  ask cows with [sale?] [die]                                                    ;; animals selected for sale leave the livestock system
+  ask cows with [sale?] [die]                                                                         ;; animals selected for sale leave the livestock system
 
  end
 
-to ordinary-sale-old-bulls                                                               ;; ordinary sale of old bulls. The age at which a bull is considered old is determined by the "age-sell-old-cow/bull" slider on the interface
+to ordinary-sale-old-bulls                                                                            ;; ordinary sale of old bulls. The age at which a bull is considered old is determined by the "age-sell-old-cow/bull" slider on the interface
 
   if current-season = 3 and (season-days = 1) [
     if any? cows with [bull? and old? = true] [
-      if count cows with [bull?] > 1 [                                                         ;; if there is more than one bull in the system...
+      if count cows with [bull?] > 1 [                                                                ;; if there is more than one bull in the system...
       while [any? cows with [bull? and old? = true and sale? = false] and round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) < 1] [  ;; ...the farmer sells all old bulls
-          if (ordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+          if (ordinary-sale-of-cows-with = "highest live weight") [                                   ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
             ask max-n-of 1 cows with [bull? and old? = true and sale? = false] [live-weight] [
               set sale? true
               set OS-old-bull sum [value] of cows with [bull? and old? = true and sale?]]]
-          if (ordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+          if (ordinary-sale-of-cows-with = "lowest live weight") [                                    ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
             ask min-n-of 1 cows with [bull? and old? = true and sale? = false] [live-weight] [
               set sale? true
               set OS-old-bull sum [value] of cows with [bull? and old? = true and sale?]]]]]]]
 
-  set OS-old-bull-effort count cows with [sale?] * sales-effort-time                ;; the effort of selling animals is calculated
+  set OS-old-bull-effort count cows with [sale?] * sales-effort-time                                  ;; the effort of selling animals is calculated
 
-  ask cows with [sale?] [die]                                                    ;; animals selected for sale leave the livestock system
+  ask cows with [sale?] [die]                                                                         ;; animals selected for sale leave the livestock system
 
  end
 
-to ordinary-sale-non-replacement-females                                           ;; ordinary sale of non-replacement females (female weaned calves, heifers and cows). The number of females sold is determined by the maximum number of breeding cows (i.e., "adult-cows") the farmer wishes to keep in the system ("keep-MAX-n-breeding-cows" slider on the interface)
+to ordinary-sale-non-replacement-females                                                              ;; ordinary sale of non-replacement females (female weaned calves, heifers and cows). The number of females sold is determined by the maximum number of breeding cows (i.e., "adult-cows") the farmer wishes to keep in the system ("keep-MAX-n-breeding-cows" slider on the interface)
 
   if current-season = 3 and (season-days = 1) [
     if any? cows with [weaned-calf-female?] [
       while [any? cows with [weaned-calf-female? and sale? = false] and count cows with [weaned-calf-female? and sale? = false] > (keep-MAX-n-breeding-cows - count cows with [adult-cow?])] [  ;; the farmer sells weaned female calves until there are no more weaned female calves or the number of animals in that age group equals the number of breeding cows (i.e., "adult-cows") needed to reach the desired number of breeding cows
-        if (ordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+        if (ordinary-sale-of-cows-with = "highest live weight") [                                     ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
           ask max-n-of 1 cows with [weaned-calf-female? and sale? = false] [live-weight] [
             set sale? true
             set OS-females-weaned-calf sum [value] of cows with [weaned-calf-female? and sale?]]]
-        if (ordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+        if (ordinary-sale-of-cows-with = "lowest live weight") [                                      ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
           ask min-n-of 1 cows with [weaned-calf-female? and sale? = false] [live-weight] [
             set sale? true
             set OS-females-weaned-calf sum [value] of cows with [weaned-calf-female? and sale?]]]]]]
@@ -1957,11 +1918,11 @@ to ordinary-sale-non-replacement-females                                        
   if current-season = 3 and (season-days = 1) [
     if any? cows with [heifer?] [
       while [any? cows with [heifer? and sale? = false] and count cows with [heifer? and sale? = false] > (keep-MAX-n-breeding-cows - count cows with [adult-cow?])] [  ;; the farmer sells heifers until there are no more heifers or the number of animals in that age group equals the number of breeding cows (i.e., "adult-cows") needed to reach the desired number of breeding cows
-        if (ordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+        if (ordinary-sale-of-cows-with = "highest live weight") [                                     ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
           ask max-n-of 1 cows with [heifer? and sale? = false] [live-weight] [
             set sale? true
             set OS-heifer sum [value] of cows with [heifer? and sale?]]]
-        if (ordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+        if (ordinary-sale-of-cows-with = "lowest live weight") [                                      ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
           ask min-n-of 1 cows with [heifer? and sale? = false] [live-weight] [
             set sale? true
             set OS-heifer sum [value] of cows with [heifer? and sale?]]]]]]
@@ -1969,18 +1930,18 @@ to ordinary-sale-non-replacement-females                                        
   if current-season = 3 and (season-days = 1) [
     if any? cows with [adult-cow?] [
       while [any? cows with [adult-cow? and sale? = false] and count cows with [adult-cow? and sale? = false] > keep-MAX-n-breeding-cows] [  ;; the farmer sells breeding cows (i.e., "adult-cows") until there are no more breeding cows or the number of breeding cows reach the desired number
-        if (ordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+        if (ordinary-sale-of-cows-with = "highest live weight") [                                     ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
           ask max-n-of 1 cows with [adult-cow? and sale? = false] [live-weight] [
             set sale? true
             set OS-cow sum [value] of cows with [adult-cow? and sale?]]]
-        if (ordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+        if (ordinary-sale-of-cows-with = "lowest live weight") [                                      ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
           ask min-n-of 1 cows with [adult-cow? and sale? = false] [live-weight] [
             set sale? true
             set OS-cow sum [value] of cows with [adult-cow? and sale?]]]]]]
 
-  set OS-females-effort count cows with [sale?] * sales-effort-time                ;; the effort of selling animals is calculated
+  set OS-females-effort count cows with [sale?] * sales-effort-time                                   ;; the effort of selling animals is calculated
 
-  ask cows with [sale?] [die]                                                    ;; animals selected for sale leave the livestock system
+  ask cows with [sale?] [die]                                                                         ;; animals selected for sale leave the livestock system
 
 end
 
@@ -1989,208 +1950,207 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Extraordinary sales for the MARKET-ORIENTED FARMER
+;; Extraordinary sales for the COMMERCIAL-ORIENTED FARMER
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to extraordinary-sale-males-market-farmer                                           ;; extraordinary sale of male animals for the market-oriented farmer. If the market-oriented farmer profile is selected, the extraordinary sale of male animals takes place when the average live weight of all animals in the system is below a threshold (the threshold is a minimum weight set by the user using the "ES-market-farmer-min-weight" slider on the interface)
+to extraordinary-sale-males-commercial-farmer                                                      ;; extraordinary sale of male animals for the commercial-oriented farmer. If the commercial-oriented farmer profile is selected, the extraordinary sale of male animals takes place when the average live weight of all animals in the system is below a threshold (the threshold is a minimum weight set by the user using the "commercial-farmer-ES-min-weight" slider on the interface)
 
   if any? cows with [weaned-calf-male?] [
-    if mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [weaned-calf-male?] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [  ;; if the average live weight of all animals (except animals within the "born-calf?" age class) is below the threshold and if the number of weaned male calves is greater than the number of desired bulls...
-      if (extraordinary-sale-of-cows-with = "highest live weight") [                     ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
-        ask max-n-of 1 cows with [weaned-calf-male? and sale? = false] [live-weight] [   ;;...the farmer sells one weaned male calf (with the highest live weight in this case)
+    if mean [live-weight] of cows with [born-calf? = false] < commercial-farmer-ES-min-weight and count cows with [weaned-calf-male?] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [  ;; if the average live weight of all animals (except animals within the "born-calf?" age class) is below the threshold and if the number of weaned male calves is greater than the number of desired bulls...
+      if (extraordinary-sale-of-cows-with = "highest live weight") [                               ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+        ask max-n-of 1 cows with [weaned-calf-male? and sale? = false] [live-weight] [             ;;...the farmer sells one weaned male calf (with the highest live weight in this case)
           set sale? true
           set ES-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]
-      if (extraordinary-sale-of-cows-with = "lowest live weight") [                      ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
-        ask min-n-of 1 cows with [weaned-calf-male? and sale? = false] [live-weight] [   ;;...the farmer sells one weaned male calf (with the lowest live weight in this case)
+      if (extraordinary-sale-of-cows-with = "lowest live weight") [                                ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+        ask min-n-of 1 cows with [weaned-calf-male? and sale? = false] [live-weight] [             ;;...the farmer sells one weaned male calf (with the lowest live weight in this case)
           set sale? true
           set ES-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]]]
 
   if not any? cows with [weaned-calf-male?] or count cows with [weaned-calf-male?] = round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [ ;; if there are no weaned male calves to sell or the number of weaned male calves equals the number of bulls desired...
 
     if any? cows with [steer?] [   ;;...and there are steers...
-      if mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight [  ;;...and if the average live weight of all animals (except animals within the "born-calf?" age class) is below the threshold...
-        if (extraordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
-          ask max-n-of 1 cows with [steer? and sale? = false] [live-weight] [       ;;...the farmer sells one steer (with the highest live weight in this case)
+      if mean [live-weight] of cows with [born-calf? = false] < commercial-farmer-ES-min-weight [  ;;...and if the average live weight of all animals (except animals within the "born-calf?" age class) is below the threshold...
+        if (extraordinary-sale-of-cows-with = "highest live weight") [                             ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+          ask max-n-of 1 cows with [steer? and sale? = false] [live-weight] [                      ;;...the farmer sells one steer (with the highest live weight in this case)
             set sale? true
             set ES-males-steer sum [value] of cows with [steer? and sale?]]]
-        if (extraordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
-          ask min-n-of 1 cows with [steer? and sale? = false] [live-weight] [       ;;...the farmer sells one steer (with the lowest live weight in this case)
+        if (extraordinary-sale-of-cows-with = "lowest live weight") [                              ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+          ask min-n-of 1 cows with [steer? and sale? = false] [live-weight] [                      ;;...the farmer sells one steer (with the lowest live weight in this case)
             set sale? true
             set ES-males-steer sum [value] of cows with [steer? and sale?]]]]]]
 
-  set ES-males-effort count cows with [sale?] * sales-effort-time                 ;; the effort of selling animals is calculated
+  set ES-males-effort count cows with [sale?] * sales-effort-time                                  ;; the effort of selling animals is calculated
 
-  ask cows with [sale?] [die]                                                     ;; animals selected for sale leave the livestock system
+  ask cows with [sale?] [die]                                                                      ;; animals selected for sale leave the livestock system
 
   end
 
-to extraordinary-sale-old-cows-market-farmer                                      ;; extrardinary sale of old cows for the market-oriented farmer. The age at which a cow is considered old is determined by the "age-sell-old-cow/bull" slider on the interface
+to extraordinary-sale-old-cows-commercial-farmer                                                   ;; extrardinary sale of old cows for the commercial-oriented farmer. The age at which a cow is considered old is determined by the "age-sell-old-cow/bull" slider on the interface
 
-  if not any? cows with [steer?] [     ;; when there are no more males available for the extraordinary sales, the farmer starts selling old cows
+  if not any? cows with [steer?] [                                                                 ;; when there are no more males available for the extraordinary sales, the farmer starts selling old cows
 
     if any? cows with [cow? and old? = true] [
-      if mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [  ;; if the average live weight of all animals (except animals within the "born-calf?" age class) is below the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
-        if (extraordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
-          ask max-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [ ;;...the farmer sells one old cow  (with the highest live weight in this case)
+      if mean [live-weight] of cows with [born-calf? = false] < commercial-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [  ;; if the average live weight of all animals (except animals within the "born-calf?" age class) is below the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
+        if (extraordinary-sale-of-cows-with = "highest live weight") [                             ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+          ask max-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [        ;;...the farmer sells one old cow  (with the highest live weight in this case)
             set sale? true
             set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]
-        if (extraordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
-          ask min-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [ ;;...the farmer sells one old cow  (with the lowest live weight in this case)
+        if (extraordinary-sale-of-cows-with = "lowest live weight") [                              ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+          ask min-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [        ;;...the farmer sells one old cow  (with the lowest live weight in this case)
             set sale? true
             set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]]]]
 
-  set ES-old-cow-effort count cows with [sale?] * sales-effort-time                ;; the effort of selling animals is calculated
+  set ES-old-cow-effort count cows with [sale?] * sales-effort-time                                ;; the effort of selling animals is calculated
 
-  ask cows with [sale?] [die]                                                      ;; animals selected for sale leave the livestock system
+  ask cows with [sale?] [die]                                                                      ;; animals selected for sale leave the livestock system
 
  end
 
-to extraordinary-sale-females-market-farmer                      ;; extraordinary sale of females (female weaned calves, heifers and cows) for the market-oriented farmer
+to extraordinary-sale-females-commercial-farmer                                                    ;; extraordinary sale of females (female weaned calves, heifers and cows) for the commercial-oriented farmer
 
-  if not any? cows with [cow? and old?]  [     ;; when there are no more old cows available for the extraordinary sales, the farmer starts selling female weaned calves
+  if not any? cows with [cow? and old?]  [                                                         ;; when there are no more old cows available for the extraordinary sales, the farmer starts selling female weaned calves
 
     if any? cows with [weaned-calf-female?] [
-      if mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [  ;; if the average live weight of all animals (except animals within the "born-calf?" age class) is below the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
-        if (ordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
-          ask max-n-of 1 cows with [weaned-calf-female? and sale? = false] [live-weight] [  ;;...the farmer sells one female weaned calf (with the highest live weight in this case)
+      if mean [live-weight] of cows with [born-calf? = false] < commercial-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [  ;; if the average live weight of all animals (except animals within the "born-calf?" age class) is below the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
+        if (ordinary-sale-of-cows-with = "highest live weight") [                                  ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+          ask max-n-of 1 cows with [weaned-calf-female? and sale? = false] [live-weight] [         ;;...the farmer sells one female weaned calf (with the highest live weight in this case)
             set sale? true
             set ES-females-weaned-calf sum [value] of cows with [weaned-calf-female? and sale?]]]
-        if (ordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
-          ask min-n-of 1 cows with [weaned-calf-female? and sale? = false] [live-weight] [  ;;...the farmer sells one female weaned calf (with the lowest live weight in this case)
+        if (ordinary-sale-of-cows-with = "lowest live weight") [                                   ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+          ask min-n-of 1 cows with [weaned-calf-female? and sale? = false] [live-weight] [         ;;...the farmer sells one female weaned calf (with the lowest live weight in this case)
             set sale? true
             set ES-females-weaned-calf sum [value] of cows with [weaned-calf-female? and sale?]]]]]
 
-    if not any? cows with [weaned-calf-female?] [     ;; when there are no more female weaned calves available for the extraordinary sales, the farmer starts selling heifers
+    if not any? cows with [weaned-calf-female?] [                                                  ;; when there are no more female weaned calves available for the extraordinary sales, the farmer starts selling heifers
 
       if any? cows with [heifer?] [
-        if mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [   ;; if the average live weight of all animals (except animals within the "born-calf?" age class) is below the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
-          if (ordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
-            ask max-n-of 1 cows with [heifer? and sale? = false] [live-weight] [   ;;...the farmer sells one heifer (with the highest live weight in this case)
+        if mean [live-weight] of cows with [born-calf? = false] < commercial-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [   ;; if the average live weight of all animals (except animals within the "born-calf?" age class) is below the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
+          if (ordinary-sale-of-cows-with = "highest live weight") [                                ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+            ask max-n-of 1 cows with [heifer? and sale? = false] [live-weight] [                   ;;...the farmer sells one heifer (with the highest live weight in this case)
               set sale? true
               set ES-heifer sum [value] of cows with [heifer? and sale?]]]
-          if (ordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
-            ask min-n-of 1 cows with [heifer? and sale? = false] [live-weight] [   ;;...the farmer sells one heifer (with the lowest live weight in this case)
+          if (ordinary-sale-of-cows-with = "lowest live weight") [                                 ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+            ask min-n-of 1 cows with [heifer? and sale? = false] [live-weight] [                   ;;...the farmer sells one heifer (with the lowest live weight in this case)
               set sale? true
               set ES-heifer sum [value] of cows with [heifer? and sale?]]]]]]
 
-    if not any? cows with [heifer?] [     ;; when there are no more heifers available for the extraordinary sales, the farmer starts selling breeding cows
+    if not any? cows with [heifer?] [                                                              ;; when there are no more heifers available for the extraordinary sales, the farmer starts selling breeding cows
 
       if any? cows with [adult-cow?] [
-        if mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [    ;; if the average live weight of all animals (except animals within the "born-calf?" age class) is below the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
-          if (ordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
-            ask max-n-of 1 cows with [adult-cow? and sale? = false] [live-weight] [   ;;...the farmer sells one adult cow (with the highest live weight in this case)
+        if mean [live-weight] of cows with [born-calf? = false] < commercial-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [    ;; if the average live weight of all animals (except animals within the "born-calf?" age class) is below the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
+          if (ordinary-sale-of-cows-with = "highest live weight") [                                ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+            ask max-n-of 1 cows with [adult-cow? and sale? = false] [live-weight] [                ;;...the farmer sells one adult cow (with the highest live weight in this case)
               set sale? true
               set ES-cow sum [value] of cows with [adult-cow? and sale?]]]
-          if (ordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
-            ask min-n-of 1 cows with [adult-cow? and sale? = false] [live-weight] [   ;;...the farmer sells one adult cow (with the highest lowest weight in this case)
+          if (ordinary-sale-of-cows-with = "lowest live weight") [                                 ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+            ask min-n-of 1 cows with [adult-cow? and sale? = false] [live-weight] [                ;;...the farmer sells one adult cow (with the highest lowest weight in this case)
               set sale? true
               set ES-cow sum [value] of cows with [adult-cow? and sale?]]]]]]]
 
-  set ES-females-effort count cows with [sale?] * sales-effort-time                ;; the effort of selling animals is calculated
+  set ES-females-effort count cows with [sale?] * sales-effort-time                                ;; the effort of selling animals is calculated
 
-  ask cows with [sale?] [die]                                                    ;; animals selected for sale leave the livestock system
+  ask cows with [sale?] [die]                                                                      ;; animals selected for sale leave the livestock system
 
 end
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Extraordinary sales for the ENVIRONMENTAL-ORIENTED FARMER
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to extraordinary-sale-males-environmental-farmer                                           ;; extraordinary sale of male animals for the environmental farmer. If the environmental-oriented farmer profile is selected, the extraordinary sale of male animals occurs when the Animal Units (AU) of all animals (except animals within the "born-calf?" age class) are above the ESTIMATED carrying capacity of the grassland
+to extraordinary-sale-males-environmental-farmer                                                   ;; extraordinary sale of male animals for the environmental farmer. If the environmental-oriented farmer profile is selected, the extraordinary sale of male animals occurs when the Animal Units (AU) of all animals (except animals within the "born-calf?" age class) are above the ESTIMATED carrying capacity of the grassland
 
   if any? cows with [weaned-calf-male?] [
 
-    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [weaned-calf-male?] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [ ;; if the AU of all animals (except animals within the "born-calf?" age class) is above the estimated carrying capacity and if the number of weaned male calves is greater than the number of desired bulls...
-      while [any? cows with [weaned-calf-male? and sale? = false] and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity and count cows with [weaned-calf-male? and sale? = false] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio)] [ ;;...the farmer sells weaned male weaned calves until there are no more male weaned calves to sell or until the AU is below the threshold or until the number of male weaned calves is below the desired number of bulls
-        if (extraordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [weaned-calf-male?] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [                                                                                                      ;; if the AU of all animals (except animals within the "born-calf?" age class) is above the estimated carrying capacity and if the number of weaned male calves is greater than the number of desired bulls...
+      while [any? cows with [weaned-calf-male? and sale? = false] and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity and count cows with [weaned-calf-male? and sale? = false] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio)] [  ;;...the farmer sells weaned male weaned calves until there are no more male weaned calves to sell or until the AU is below the threshold or until the number of male weaned calves is below the desired number of bulls
+        if (extraordinary-sale-of-cows-with = "highest live weight") [                             ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
           ask max-n-of 1 cows with [weaned-calf-male? and sale? = false] [live-weight] [
             set sale? true
             set ES-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]
-        if (extraordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+        if (extraordinary-sale-of-cows-with = "lowest live weight") [                              ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
           ask min-n-of 1 cows with [weaned-calf-male? and sale? = false] [live-weight] [
             set sale? true
             set ES-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]]]]
 
-  if any? cows with [steer?] [  ;; if there are no weaned male calves to sell, the farmer starts selling steers...
-    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity [ ;;...if the AU is above the threshold...
-      while [any? cows with [steer? and sale? = false] and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity] [ ;;...until there are not more steers to sell or until the AU is below the threshold
-        if (extraordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+  if any? cows with [steer?] [                                                                     ;; if there are no weaned male calves to sell, the farmer starts selling steers...
+    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity [        ;;...if the AU is above the threshold...
+      while [any? cows with [steer? and sale? = false] and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity] [       ;;...until there are not more steers to sell or until the AU is below the threshold
+        if (extraordinary-sale-of-cows-with = "highest live weight") [                             ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
           ask max-n-of 1 cows with [steer? and sale? = false] [live-weight] [
             set sale? true
             set ES-males-steer sum [value] of cows with [steer? and sale?]]]
-        if (extraordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+        if (extraordinary-sale-of-cows-with = "lowest live weight") [                              ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
           ask min-n-of 1 cows with [steer? and sale? = false] [live-weight] [
             set sale? true
             set ES-males-steer sum [value] of cows with [steer? and sale?]]]]]]
 
-  set ES-males-effort count cows with [sale?] * sales-effort-time                ;; the effort of selling animals is calculated
+  set ES-males-effort count cows with [sale?] * sales-effort-time                                  ;; the effort of selling animals is calculated
 
-  ask cows with [sale?] [die]                                                    ;; animals selected for sale leave the livestock system
+  ask cows with [sale?] [die]                                                                      ;; animals selected for sale leave the livestock system
 
   end
 
-to extraordinary-sale-old-cows-environmental-farmer                            ;; extraordinary sale of old cows for the environmental farmer. The age at which a cow is considered old is determined by the "age-sell-old-cow/bull" slider on the interface
+to extraordinary-sale-old-cows-environmental-farmer                                                ;; extraordinary sale of old cows for the environmental farmer. The age at which a cow is considered old is determined by the "age-sell-old-cow/bull" slider on the interface
 
-  if any? cows with [cow? and old? = true] [                                        ;; if there are no steers to sell, the farmer starts selling old cows...
-    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [   ;;...when the AU is above the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
+  if any? cows with [cow? and old? = true] [                                                       ;; if there are no steers to sell, the farmer starts selling old cows...
+    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [                  ;;...when the AU is above the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
       while [any? cows with [cow? and old? = true and sale? = false] and count cows with [adult-cow? and sale? = false] > keep-MIN-n-breeding-cows and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity] [ ;;...until there are no more old cows to sell or the number of breeding cows is below the MINIMUM number of breeding cows desired or the AU is below the threshold
-        if (extraordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+        if (extraordinary-sale-of-cows-with = "highest live weight") [                             ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
           ask max-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
             set sale? true
             set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]
-        if (extraordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+        if (extraordinary-sale-of-cows-with = "lowest live weight") [                              ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
           ask min-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
             set sale? true
             set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]]]]
 
-  set ES-old-cow-effort count cows with [sale?] * sales-effort-time                ;; the effort of selling animals is calculated
+  set ES-old-cow-effort count cows with [sale?] * sales-effort-time                                ;; the effort of selling animals is calculated
 
-  ask cows with [sale?] [die]                                                      ;; animals selected for sale leave the livestock system
+  ask cows with [sale?] [die]                                                                      ;; animals selected for sale leave the livestock system
 
  end
 
-to extraordinary-sale-females-environmental-farmer                             ;; extraordinary sale of females (female weaned calves, heifers and cows) for the environmental farmer
+to extraordinary-sale-females-environmental-farmer                                                 ;; extraordinary sale of females (female weaned calves, heifers and cows) for the environmental farmer
 
-  if any? cows with [weaned-calf-female?] [   ;; when there are no more old cows available for the extraordinary sales, the farmer starts selling female weaned calves
-    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [   ;;...when the AU is above the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
+  if any? cows with [weaned-calf-female?] [                                                        ;; when there are no more old cows available for the extraordinary sales, the farmer starts selling female weaned calves
+    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [                  ;;...when the AU is above the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
       while [any? cows with [weaned-calf-female? and sale? = false] and count cows with [adult-cow? and sale? = false] > keep-MIN-n-breeding-cows and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity] [ ;;...until there are no more female weaned calves to sell or the number of breeding cows is below the MINIMUM number of breeding cows desired or the AU is below the threshold
-        if (extraordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+        if (extraordinary-sale-of-cows-with = "highest live weight") [                             ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
           ask max-n-of 1 cows with [weaned-calf-female? and sale? = false] [live-weight] [
             set sale? true
             set ES-females-weaned-calf sum [value] of cows with [weaned-calf-female? and sale?]]]
-        if (extraordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+        if (extraordinary-sale-of-cows-with = "lowest live weight") [                              ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
           ask min-n-of 1 cows with [weaned-calf-female? and sale? = false] [live-weight] [
             set sale? true
             set ES-females-weaned-calf sum [value] of cows with [weaned-calf-female? and sale?]]]]]]
 
-  if any? cows with [heifer?] [    ;; when there are no more female weaned calves available for the extraordinary sales, the farmer starts selling heifers
-    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [  ;;...when the AU is above the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
+  if any? cows with [heifer?] [                                                                    ;; when there are no more female weaned calves available for the extraordinary sales, the farmer starts selling heifers
+    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [                  ;;...when the AU is above the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
       while [any? cows with [heifer? and sale? = false] and count cows with [adult-cow? and sale? = false] > keep-MIN-n-breeding-cows and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity] [ ;;...until there are no more heifers to sell or the number of breeding cows is below the MINIMUM number of breeding cows desired or the AU is below the threshold
-        if (extraordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+        if (extraordinary-sale-of-cows-with = "highest live weight") [                             ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
           ask max-n-of 1 cows with [heifer? and sale? = false] [live-weight] [
             set sale? true
             set ES-heifer sum [value] of cows with [heifer? and sale?]]]
-        if (extraordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+        if (extraordinary-sale-of-cows-with = "lowest live weight") [                              ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
           ask min-n-of 1 cows with [heifer? and sale? = false] [live-weight] [
             set sale? true
             set ES-heifer sum [value] of cows with [heifer? and sale?]]]]]]
 
-  if any? cows with [adult-cow?] [  ;; when there are no more heifers available for the extraordinary sales, the farmer starts selling breeding cows
-    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [  ;;...when the AU is above the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
+  if any? cows with [adult-cow?] [                                                                 ;; when there are no more heifers available for the extraordinary sales, the farmer starts selling breeding cows
+    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [                  ;;...when the AU is above the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
       while [any? cows with [adult-cow? and sale? = false] and count cows with [adult-cow? and sale? = false] > keep-MIN-n-breeding-cows and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity] [ ;;...until there are no more breeding cows to sell or the number of breeding cows is below the MINIMUM number of breeding cows desired or the AU is below the threshold
-        if (extraordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+        if (extraordinary-sale-of-cows-with = "highest live weight") [                             ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
           ask max-n-of 1 cows with [adult-cow? and sale? = false] [live-weight] [
             set sale? true
             set ES-cow sum [value] of cows with [adult-cow? and sale?]]]
-        if (extraordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+        if (extraordinary-sale-of-cows-with = "lowest live weight") [                              ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
           ask min-n-of 1 cows with [adult-cow? and sale? = false] [live-weight] [
             set sale? true
             set ES-cow sum [value] of cows with [adult-cow? and sale?]]]]]]
 
-  set ES-females-effort count cows with [sale?] * sales-effort-time                ;; the effort of selling animals is calculated
+  set ES-females-effort count cows with [sale?] * sales-effort-time                                ;; the effort of selling animals is calculated
 
-  ask cows with [sale?] [die]                                                      ;; animals selected for sale leave the livestock system
+  ask cows with [sale?] [die]                                                                      ;; animals selected for sale leave the livestock system
 
 end
 
@@ -2198,19 +2158,19 @@ end
 ;; Farm balance
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to farm-balance                                                         ;; farm balance (i.e., the savings derived from the livestock system) is estimated here
-  set ordinary-sales-income OS-males-weaned-calf + OS-males-steer + OS-old-cow + OS-heifer + OS-cow + OS-bull + OS-old-bull + OS-females-weaned-calf   ;; the total income derived from all ordinary sales of the different age classes is calculated
+to farm-balance                                                                                    ;; farm balance (i.e., the savings derived from the livestock system) is estimated here
+  set ordinary-sales-income OS-males-weaned-calf + OS-males-steer + OS-old-cow + OS-heifer + OS-cow + OS-bull + OS-old-bull + OS-females-weaned-calf      ;; the total income derived from all ordinary sales of the different age classes is calculated
 
-  set extraordinary-sales-income ES-males-weaned-calf + ES-males-steer + ES-old-cow + ES-heifer + ES-cow + ES-bull + ES-females-weaned-calf   ;; the total income derived from all extraordinary sales of the different age classes is calculated
+  set extraordinary-sales-income ES-males-weaned-calf + ES-males-steer + ES-old-cow + ES-heifer + ES-cow + ES-females-weaned-calf               ;; the total income derived from all extraordinary sales of the different age classes is calculated
 
-  set other-cost set-other-monthly-costs / (368 / 12)   ;; other costs, derived from other activities of the livestock system, are calculated (by default, other costs are set to 0)
+  set other-cost set-other-monthly-costs / (368 / 12)                                              ;; other costs, derived from other activities of the livestock system, are calculated (by default, other costs are set to 0)
 
-  set income ordinary-sales-income + extraordinary-sales-income   ;; total income is calculated (ordinary + extraordinary earnings)
-  set cost supplement-cost + other-cost    ;; total cost is calculated (feed supplement cost + other costs)
-  set balance income - cost   ;; and finally, balance is calculated
+  set income ordinary-sales-income + extraordinary-sales-income                                    ;; total income is calculated (ordinary + extraordinary earnings)
+  set cost supplement-cost + other-cost                                                            ;; total cost is calculated (feed supplement cost + other costs)
+  set balance income - cost                                                                        ;; and finally, balance is calculated
 
   set OS-males-weaned-calf 0 set OS-males-steer 0 set OS-old-cow 0 set OS-heifer 0 set OS-cow 0 set OS-bull 0 set OS-old-bull 0 set OS-females-weaned-calf 0   ;; once the balance has been calculated, the ordinary sales variables, which store the earnings derived from the ordinary sales of each age class, are reset to 0.
-  set ES-males-weaned-calf 0 set ES-males-steer 0 set ES-old-cow 0 set ES-heifer 0 set ES-cow 0 set ES-bull 0 set ES-females-weaned-calf 0     ;; the same is done with the extraordinary sales variables
+  set ES-males-weaned-calf 0 set ES-males-steer 0 set ES-old-cow 0 set ES-heifer 0 set ES-cow 0 set ES-females-weaned-calf 0     ;; the same is done with the extraordinary sales variables
 
   if balance-historyXticks < 0 [set balance-historyXticks 0]   ;; to avoid negative values in the savings
 end
@@ -2219,7 +2179,7 @@ end
 ;; WELLBEING MODULE
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to effort                                                               ;; time spent by the farmer implementing different management strategies
+to effort                                                                                          ;; time spent by the farmer implementing different management strategies
 
   ;; Feed supplementation effort
   set supplement-effort count cows with [supplemented?] * supplement-effort-time
@@ -2238,7 +2198,7 @@ to effort                                                               ;; time 
   set ES-total-effort-history-year ES-males-effort-historyXticks-year + ES-old-cow-effort-historyXticks-year + ES-females-effort-historyXticks-year + OS-old-bull-effort-historyXticks-year
 
   ;; Controlled breeding effort
-  if farmer-profile = "market" [if current-season = controlled-breeding-season and (season-days = 1) [set breeding-effort breeding-effort-time]]
+  if farmer-profile = "commercial" [if current-season = controlled-breeding-season and (season-days = 1) [set breeding-effort breeding-effort-time]]
   if farmer-profile = "environmental" [if current-season = controlled-breeding-season and (season-days = 1) [set breeding-effort breeding-effort-time]]
 
   ;, Other daily efforts
@@ -2247,8 +2207,8 @@ to effort                                                               ;; time 
   ;; Rotational grazing effort
   if (spatial-management = "rotational grazing") [
     if any? cows [
-      if farmer-profile = "traditional" [if season-days >= season-length [set rotational-effort rotational-effort-time]]
-      if farmer-profile = "market" [if RG-market-farmer-live-weight-threshold > mean [live-weight] of cows and ticks-since-here >= RG-days-in-paddock [set rotational-effort rotational-effort-time]]
+      if farmer-profile = "subsistence" [if season-days >= season-length [set rotational-effort rotational-effort-time]]
+      if farmer-profile = "commercial" [if RG-commercial-farmer-live-weight-threshold > mean [live-weight] of cows and ticks-since-here >= RG-days-in-paddock [set rotational-effort rotational-effort-time]]
       if farmer-profile = "environmental" [if season-days >= season-length [set rotational-effort rotational-effort-time]]]]
 
   ;; Total effort
@@ -2263,7 +2223,7 @@ end
 ;; REPORTERS (This section of the code contains the reporters that collect the model outputs)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to-report stocking-rate                                                              ;; outputs the relation between the number of livestock (in terms of animal units) and the total grassland area (num. of patches. 1 patch = 1 ha)
+to-report stocking-rate                                                                                             ;; outputs the relation between the number of livestock (in terms of animal units) and the total grassland area (num. of patches. 1 patch = 1 ha)
   report sum [animal-units] of cows / count patches
 end
 
@@ -2272,159 +2232,159 @@ to-report paddock-SR
 end
 
 to-report paddock-size
-  if (spatial-management = "rotational grazing") [report count patches / 4]          ;; outputs the paddock area when the rotational grazing management strategy is in effect
+  if (spatial-management = "rotational grazing") [report count patches / 4]                                         ;; outputs the paddock area when the rotational grazing management strategy is in effect
 end
 
-to-report grass-height-report                                                        ;; outputs the mean grass-height of the grassland
+to-report grass-height-report                                                                                       ;; outputs the mean grass-height of the grassland
   report mean [grass-height] of patches
 end
 
-to-report season-report                                                              ;; outputs the name of the season
+to-report season-report                                                                                             ;; outputs the name of the season
   report  item current-season current-season-name
 end
 
- to-report dmgr                                                                      ;; outputs the Dry Matter Growth Rate (DMGR, units: kgDM/ha/day)
+ to-report dmgr                                                                                                     ;; outputs the Dry Matter Growth Rate (DMGR, units: kgDM/ha/day)
   report DM-cm-ha * sum [grass-height] of patches
 end
 
-to-report ALWG                                                                       ;; outputs the Annual Live Weight Gain per hectare (kg/year/ha)
+to-report ALWG                                                                                                      ;; outputs the Annual Live Weight Gain per hectare (kg/year/ha)
   report (sum [live-weight] of cows - sum [initial-weight] of cows) / count patches
 end
 
-to-report ILWG                                                                       ;; outputs the mean Inidividual Live Weight Gain (kg/animal)
+to-report ILWG                                                                                                      ;; outputs the mean Inidividual Live Weight Gain (kg/animal)
   report mean [live-weight-gain] of cows
 end
 
 
-to-report ILWG_ACUMMULATED                                                           ;; outputs the mean IWLG since the start of the simulation
+to-report ILWG_ACUMMULATED                                                                                          ;; outputs the mean IWLG since the start of the simulation
   report mean [live-weight-gain-historyXticks] of cows
 end
 
-to-report ILWG_SEASON                                                                ;; outputs the mean IWLG throughout the season
+to-report ILWG_SEASON                                                                                               ;; outputs the mean IWLG throughout the season
   report mean [live-weight-gain-historyXticks-season] of cows
 end
 
-to-report ILWG_YEAR                                                                  ;; outputs the mean IWLG throughout the year
+to-report ILWG_YEAR                                                                                                 ;; outputs the mean IWLG throughout the year
   report mean [live-weight-gain-historyXticks-year] of cows
 end
 
-to-report crop-efficiency                                                            ;; outputs the crop eficiency (DM consumed / DM offered)
+to-report crop-efficiency                                                                                           ;; outputs the crop eficiency (DM consumed / DM offered)
   report sum [DDMC] of cows / (DM-cm-ha * sum [grass-height] of patches) * 100
  end
 
-to-report accumulated-cost                                                           ;; outputs the accumulated balance of the system since the start of the simulation (USD)
+to-report accumulated-cost                                                                                          ;; outputs the accumulated balance of the system since the start of the simulation (USD)
   report cost-historyXticks
 end
 
-to-report accumulated-income                                                         ;; outputs the accumulated balance of the system since the start of the simulation (USD)
+to-report accumulated-income                                                                                        ;; outputs the accumulated balance of the system since the start of the simulation (USD)
   report income-historyXticks
 end
 
-to-report accumulated-balance                                                        ;; outputs the accumulated balance of the system since the start of the simulation (USD)
+to-report accumulated-balance                                                                                       ;; outputs the accumulated balance of the system since the start of the simulation (USD)
   report balance-historyXticks
 end
 
-to-report accumulated-supplement-effort-season                                       ;; outputs the amount of time the farmer has spent on supplementing animals since the start of the season
+to-report accumulated-supplement-effort-season                                                                      ;; outputs the amount of time the farmer has spent on supplementing animals since the start of the season
   report supplement-effort-historyXticks-season
 end
 
-to-report accumulated-supplement-effort-year                                         ;; outputs the amount of time the farmer has spent on supplementing animals since the start of the year
+to-report accumulated-supplement-effort-year                                                                        ;; outputs the amount of time the farmer has spent on supplementing animals since the start of the year
   report supplement-effort-historyXticks-year
 end
 
-to-report accumulated-weaning-effort-season                                          ;; outputs the amount of time the farmer has spent weaning calves since the start of the season
+to-report accumulated-weaning-effort-season                                                                         ;; outputs the amount of time the farmer has spent weaning calves since the start of the season
   report weaning-effort-historyXticks-season
 end
 
-to-report accumulated-weaning-effort-year                                            ;; outputs the amount of time the farmer has spent weaning calves since the start of the year
+to-report accumulated-weaning-effort-year                                                                           ;; outputs the amount of time the farmer has spent weaning calves since the start of the year
   report weaning-effort-historyXticks-year
 end
 
-to-report acummulated-OS-males-effort-season                                        ;; outputs the amount of time the farmer has spent selling males since the start of the season during the ordinary sales
+to-report acummulated-OS-males-effort-season                                                                        ;; outputs the amount of time the farmer has spent selling males since the start of the season during the ordinary sales
   report OS-males-effort-historyXticks-season
 end
 
-to-report acummulated-OS-males-effort-year                                          ;; outputs the amount of time the farmer has spent selling males since the start of the year during the ordinary sales
+to-report acummulated-OS-males-effort-year                                                                          ;; outputs the amount of time the farmer has spent selling males since the start of the year during the ordinary sales
   report OS-males-effort-historyXticks-year
 end
 
-to-report acummulated-OS-old-cow-effort-season                                       ;; outputs the amount of time the farmer has spent selling old cows since the start of the season during the ordinary sales
+to-report acummulated-OS-old-cow-effort-season                                                                      ;; outputs the amount of time the farmer has spent selling old cows since the start of the season during the ordinary sales
   report OS-old-cow-effort-historyXticks-season
 end
 
-to-report acummulated-OS-old-cow-effort-year                                        ;; outputs the amount of time the farmer has spent selling old cows since the start of the year during the ordinary sales
+to-report acummulated-OS-old-cow-effort-year                                                                        ;; outputs the amount of time the farmer has spent selling old cows since the start of the year during the ordinary sales
   report OS-old-cow-effort-historyXticks-year
 end
 
-to-report acummulated-OS-old-bull-effort-season                                        ;; outputs the amount of time the farmer has spent selling old bulls since the start of the season during the ordinary sales
+to-report acummulated-OS-old-bull-effort-season                                                                     ;; outputs the amount of time the farmer has spent selling old bulls since the start of the season during the ordinary sales
   report OS-old-bull-effort-historyXticks-season
 end
 
-to-report acummulated-OS-old-bull-effort-year                                        ;; outputs the amount of time the farmer has spent selling old bulls since the start of the year during the ordinary sales
+to-report acummulated-OS-old-bull-effort-year                                                                       ;; outputs the amount of time the farmer has spent selling old bulls since the start of the year during the ordinary sales
   report OS-old-bull-effort-historyXticks-year
 end
 
-to-report acummulated-OS-females-effort-season                                       ;; outputs the amount of time the farmer has spent selling females since the start of the season during the ordinary sales
+to-report acummulated-OS-females-effort-season                                                                      ;; outputs the amount of time the farmer has spent selling females since the start of the season during the ordinary sales
   report OS-females-effort-historyXticks-season
 end
 
-to-report acummulated-OS-females-effort-year                                       ;; outputs the amount of time the farmer has spent selling females since the start of the year during the ordinary sales
+to-report acummulated-OS-females-effort-year                                                                        ;; outputs the amount of time the farmer has spent selling females since the start of the year during the ordinary sales
   report OS-females-effort-historyXticks-year
 end
 
-to-report acummulated-ES-males-effort-season                                       ;; outputs the amount of time the farmer has spent selling males since the start of the season during the extraordinary sales
+to-report acummulated-ES-males-effort-season                                                                        ;; outputs the amount of time the farmer has spent selling males since the start of the season during the extraordinary sales
   report ES-males-effort-historyXticks-season
 end
 
-to-report acummulated-ES-males-effort-year                                       ;; outputs the amount of time the farmer has spent selling males since the start of the year during the extraordinary sales
+to-report acummulated-ES-males-effort-year                                                                          ;; outputs the amount of time the farmer has spent selling males since the start of the year during the extraordinary sales
   report ES-males-effort-historyXticks-year
 end
 
-to-report acummulated-ES-old-cow-effort-season                                     ;; outputs the amount of time the farmer has spent selling old cows since the start of the season during the extraordinary sales
+to-report acummulated-ES-old-cow-effort-season                                                                      ;; outputs the amount of time the farmer has spent selling old cows since the start of the season during the extraordinary sales
   report ES-old-cow-effort-historyXticks-season
 end
 
-to-report acummulated-ES-old-cow-effort-year                                       ;; outputs the amount of time the farmer has spent selling old cows since the start of the year during the extraordinary sales
+to-report acummulated-ES-old-cow-effort-year                                                                        ;; outputs the amount of time the farmer has spent selling old cows since the start of the year during the extraordinary sales
   report ES-old-cow-effort-historyXticks-year
 end
 
-to-report acummulated-ES-females-effort-season                                       ;; outputs the amount of time the farmer has spent selling females since the start of the season during the extraordinary sales
+to-report acummulated-ES-females-effort-season                                                                      ;; outputs the amount of time the farmer has spent selling females since the start of the season during the extraordinary sales
   report ES-females-effort-historyXticks-season
 end
 
-to-report acummulated-ES-females-effort-year                                       ;; outputs the amount of time the farmer has spent selling females since the start of the year during the extraordinary sales
+to-report acummulated-ES-females-effort-year                                                                        ;; outputs the amount of time the farmer has spent selling females since the start of the year during the extraordinary sales
   report ES-females-effort-historyXticks-year
 end
 
-to-report acummulated-breeding-effort-season                                       ;; outputs the amount of time the farmer has spent moving bulls since the start of the season
+to-report acummulated-breeding-effort-season                                                                        ;; outputs the amount of time the farmer has spent moving bulls since the start of the season
   report breeding-effort-historyXticks-season
 end
 
-to-report acummulated-breeding-effort-year                                       ;; outputs the amount of time the farmer has spent moving bulls since the start of the year
+to-report acummulated-breeding-effort-year                                                                          ;; outputs the amount of time the farmer has spent moving bulls since the start of the year
   report breeding-effort-historyXticks-year
 end
 
-to-report acummulated-rotational-effort-season                                       ;; outputs the amount of time the farmer has spent moving cattle from one paddock to another since the start of the season
+to-report acummulated-rotational-effort-season                                                                      ;; outputs the amount of time the farmer has spent moving cattle from one paddock to another since the start of the season
   report rotational-effort-historyXticks-season
 end
 
-to-report acummulated-rotational-effort-year                                       ;; outputs the amount of time the farmer has spent moving cattle from one paddock to another since the start of the year
+to-report acummulated-rotational-effort-year                                                                        ;; outputs the amount of time the farmer has spent moving cattle from one paddock to another since the start of the year
   report rotational-effort-historyXticks-year
 end
 
-to-report acummulated-other-daily-effort-season                                       ;; outputs the amount of time the farmer has spent doing other unspecified activities since the start of the season
+to-report acummulated-other-daily-effort-season                                                                     ;; outputs the amount of time the farmer has spent doing other unspecified activities since the start of the season
   report other-daily-effort-historyXticks-season
 end
 
-to-report acummulated-other-daily-effort-year                                       ;; outputs the amount of time the farmer has spent doing other unspecified activities since the start of the year
+to-report acummulated-other-daily-effort-year                                                                       ;; outputs the amount of time the farmer has spent doing other unspecified activities since the start of the year
   report other-daily-effort-historyXticks-year
 end
 
-to-report DDMC_SEASON                                                                ;; outputs the mean IWLG throughout the season
+to-report DDMC_SEASON                                                                                               ;; outputs the mean IWLG throughout the season
   report mean [DDMC-historyXticks-season] of cows
 end
 
-to-report DDMC_YEAR                                                                  ;; outputs the mean IWLG throughout the year
+to-report DDMC_YEAR                                                                                                 ;; outputs the mean IWLG throughout the year
   report mean [DDMC-historyXticks-year] of cows
 end
 
@@ -2533,10 +2493,10 @@ NIL
 HORIZONTAL
 
 PLOT
-1414
-671
-1752
-851
+1412
+632
+1750
+774
 Average of grass-height (GH)
 Days
 cm
@@ -2551,10 +2511,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot grass-height-report"
 
 PLOT
-820
-722
-1278
-983
+830
+691
+1288
+952
 Live-weight (LW)
 Days
 kg
@@ -2607,10 +2567,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-1124
-818
-1360
-863
+1134
+787
+1378
+832
 Average LW (all age classes) (kg/animal)
 mean [live-weight] of cows
 3
@@ -2633,10 +2593,10 @@ cm
 HORIZONTAL
 
 PLOT
-1753
-670
-2076
-851
+1751
+631
+2074
+776
 Dry-matter (DM) and DM consumption (DDMC)
 Days
 kg
@@ -2662,10 +2622,10 @@ TEXTBOX
 1
 
 MONITOR
-1416
-854
-1542
-899
+1412
+775
+1538
+820
 Average GH (cm)
 grass-height-report
 3
@@ -2736,10 +2696,10 @@ Area (ha)
 11
 
 PLOT
-822
-984
-1280
-1210
+832
+953
+1290
+1179
 Daily individual-live-weight-gain (ILWG)
 Days
 kg
@@ -2755,10 +2715,10 @@ PENS
 "Average LWG (all age classes)" 1.0 0 -7500403 true "" "plot mean [live-weight-gain] of cows + mean [live-weight-gain-feed] of cows + mean [live-weight-gain-feed-breeding] of cows"
 
 MONITOR
-1754
-900
-1903
-945
+1751
+823
+1900
+868
 Total DDMC (kg)
 sum [DDMC] of cows
 3
@@ -2766,10 +2726,10 @@ sum [DDMC] of cows
 11
 
 MONITOR
-1903
-900
-2077
-945
+1900
+823
+2074
+868
 Average DDMC (kg/animal)
 mean [DDMC] of cows
 3
@@ -2892,10 +2852,10 @@ mean [pregnancy-rate] of cows with [heifer?] * 100
 11
 
 MONITOR
-1754
-855
-1903
-900
+1751
+778
+1900
+823
 Total DM (kg)
 dmgr
 7
@@ -2914,10 +2874,10 @@ BCS of cows-with-calf (points)
 11
 
 MONITOR
-1124
-775
-1368
-820
+1134
+744
+1378
+789
 Average LW (only adult cows) (kg/animal)
 mean [live-weight] of cows with [adult-cow?]
 3
@@ -2925,10 +2885,10 @@ mean [live-weight] of cows with [adult-cow?]
 11
 
 MONITOR
-1115
-1036
-1397
-1081
+1125
+1005
+1407
+1050
 Average ILWG (only adult cows) (kg/animal/day)
 mean [live-weight-gain] of cows with [adult-cow?] + mean [live-weight-gain-feed] of cows with [adult-cow?] + mean [live-weight-gain-feed-breeding] of cows with [adult-cow?]
 3
@@ -3036,10 +2996,10 @@ kg
 HORIZONTAL
 
 PLOT
-816
-1215
-1349
-1388
+826
+1184
+1293
+1357
 Stocking rate
 Days
 AU/ha
@@ -3112,10 +3072,10 @@ season-days
 11
 
 MONITOR
-1903
-855
-2077
-900
+1900
+778
+2074
+823
 Total DM per ha (kg/ha)
 ;(DM-cm-ha * mean [grass-height] of patches) / DM-available-for-cattle\n(dmgr) / count patches
 7
@@ -3131,7 +3091,7 @@ STOP-SIMULATION-AT
 STOP-SIMULATION-AT
 0
 100
-20.0
+50.0
 1
 1
 years
@@ -3486,10 +3446,10 @@ NIL
 1
 
 MONITOR
-1328
-221
-1511
-266
+1375
+212
+1558
+257
 Ordinary sales (OS) income (USD)
 ordinary-sales-income
 3
@@ -3497,10 +3457,10 @@ ordinary-sales-income
 11
 
 PLOT
-1329
-269
-1676
-419
+1376
+260
+1723
+410
 Daily income
 Days
 USD
@@ -3516,10 +3476,10 @@ PENS
 "ES income" 1.0 0 -2674135 true "" "plot extraordinary-sales-income"
 
 PLOT
-1690
-101
-2053
-228
+1737
+92
+2100
+219
 Daily balance
 Days
 USD
@@ -3570,7 +3530,7 @@ CHOOSER
 727
 farmer-profile
 farmer-profile
-"none" "traditional" "market" "market-fsb" "environmental" "environmental-rot2" "environmental-fmincows"
+"none" "subsistence" "commercial" "commercial-fsb" "environmental" "environmental-fmincows"
 2
 
 TEXTBOX
@@ -3597,35 +3557,6 @@ set-direct-climacoef-control
 1
 NIL
 HORIZONTAL
-
-MONITOR
-2063
-49
-2241
-94
-meat production (kg/ha)
-sum [live-weight] of cows / count patches
-3
-1
-11
-
-PLOT
-2064
-101
-2429
-251
-meat production 
-days
-kg/ha
-0.0
-92.0
-0.0
-10.0
-true
-false
-"" ""
-PENS
-"default" 1.0 0 -16777216 true "" "plot sum [live-weight] of cows / count patches"
 
 SLIDER
 4542
@@ -3668,10 +3599,10 @@ ordinary-sale-of-cows-with
 1
 
 MONITOR
-1330
-49
-1509
-94
+1377
+40
+1556
+85
 Accumulated balance (USD)
 accumulated-balance
 17
@@ -3679,10 +3610,10 @@ accumulated-balance
 11
 
 PLOT
-1330
-95
-1674
-215
+1377
+86
+1721
+206
 Accumulated balance
 Days
 USD
@@ -3697,10 +3628,10 @@ PENS
 "Balance" 1.0 0 -16777216 true "" "plot accumulated-balance"
 
 MONITOR
-1513
-221
-1673
-266
+1560
+212
+1720
+257
 Extraordinary sales (ES) income (USD)
 extraordinary-sales-income
 3
@@ -3720,10 +3651,10 @@ extraordinary-sale-of-cows-with
 SLIDER
 525
 987
-747
+783
 1020
-market-farmer-ES-min-weight
-market-farmer-ES-min-weight
+commercial-farmer-ES-min-weight
+commercial-farmer-ES-min-weight
 0
 1000
 225.0
@@ -3748,12 +3679,12 @@ NIL
 HORIZONTAL
 
 SLIDER
-234
-985
-487
-1018
-RG-market-farmer-live-weight-threshold
-RG-market-farmer-live-weight-threshold
+227
+987
+507
+1020
+RG-commercial-farmer-live-weight-threshold
+RG-commercial-farmer-live-weight-threshold
 180
 300
 245.0
@@ -3789,10 +3720,10 @@ days
 HORIZONTAL
 
 MONITOR
-1688
-424
-1907
-469
+1735
+415
+1954
+460
 Total daily kg-supplement-DM (kg)
 sum [kg-supplement-DM] of cows + sum [kg-supplement-DM-breeding] of cows
 7
@@ -3800,10 +3731,10 @@ sum [kg-supplement-DM] of cows + sum [kg-supplement-DM-breeding] of cows
 11
 
 MONITOR
-1690
-227
-1859
-272
+1737
+218
+1906
+263
 Daily supplement cost (USD)
 supplement-cost
 7
@@ -3886,10 +3817,10 @@ kg
 HORIZONTAL
 
 PLOT
-1689
-274
-2055
-423
+1736
+265
+2102
+414
 Daily costs
 Days
 USD
@@ -3903,23 +3834,6 @@ true
 PENS
 "Supplements" 1.0 0 -2674135 true "" "plot supplement-cost   "
 "Other" 1.0 0 -13791810 true "" "plot other-cost"
-
-BUTTON
-4912
-110
-5032
-144
-free 1000 USD
-set balance 1000
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
 
 MONITOR
 403
@@ -3944,19 +3858,19 @@ count cows
 11
 
 TEXTBOX
-819
-696
-1130
-740
+930
+658
+1241
+702
 LIVESTOCK RELATED OUTPUTS
 18
 34.0
 1
 
 TEXTBOX
-1329
+1377
 10
-1633
+1681
 54
 ECONOMIC RELATED OUTPUTS
 18
@@ -3964,20 +3878,20 @@ ECONOMIC RELATED OUTPUTS
 1
 
 TEXTBOX
-1416
-465
-1714
-500
+1413
+445
+1711
+480
 RESOURCE RELATED OUTPUTS
 18
 64.0
 1
 
 MONITOR
-1690
-50
-1828
-95
+1737
+41
+1875
+86
 Daily balance (USD)
 balance
 17
@@ -4011,10 +3925,10 @@ other-cost
 11
 
 MONITOR
-1845
-49
-1994
-94
+1892
+40
+2041
+85
 Accumulated cost (USD)
 accumulated-cost
 17
@@ -4043,10 +3957,10 @@ supplement-effort
 11
 
 SLIDER
-851
-566
-1047
-599
+852
+561
+1048
+594
 sales-effort-time
 sales-effort-time
 1
@@ -4113,33 +4027,33 @@ accumulated-weaning-effort-year
 11
 
 MONITOR
-1068
-210
-1164
-255
-Total effort (h)
+850
+306
+975
+351
+Total daily effort (h)
 total-effort / 60
 3
 1
 11
 
 MONITOR
-1068
-253
-1238
-298
-TOTAL-EFFORT-SEASON (h)
+975
+306
+1110
+351
+Total seasonal effort (h)
 total-effort-history-season / 60
 3
 1
 11
 
 MONITOR
-1068
-296
-1222
-341
-TOTAL-EFFORT-YEAR (h)
+1112
+306
+1241
+351
+Total annual effort ( h)
 total-effort-history-year / 60
 3
 1
@@ -4587,9 +4501,9 @@ acummulated-rotational-effort-year
 
 PLOT
 851
-347
-1234
-504
+353
+1242
+510
 total-effort (h)
 Days
 Effort (h)
@@ -4604,10 +4518,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot total-effort / 60"
 
 MONITOR
-866
-295
-1060
-340
+943
+262
+1152
+307
 Accumulated effort over time (h)
 total-effort-history / 60
 3
@@ -4615,20 +4529,20 @@ total-effort-history / 60
 11
 
 TEXTBOX
-822
+933
+230
+1182
 263
-1071
-296
 EFFORT RELATED OUTPUTS
 18
 135.0
 1
 
 SLIDER
-851
-526
-1047
-559
+852
+521
+1048
+554
 rotational-effort-time
 rotational-effort-time
 1
@@ -4640,10 +4554,10 @@ min
 HORIZONTAL
 
 SLIDER
-1055
-526
-1279
-559
+1056
+521
+1280
+554
 breeding-effort-time
 breeding-effort-time
 1
@@ -4655,10 +4569,10 @@ min
 HORIZONTAL
 
 SLIDER
-852
-607
-1050
-640
+853
+602
+1051
+635
 weaning-effort-time
 weaning-effort-time
 1
@@ -4670,10 +4584,10 @@ min/calf
 HORIZONTAL
 
 SLIDER
-1055
-565
-1279
-598
+1056
+560
+1280
+593
 supplement-effort-time
 supplement-effort-time
 1
@@ -4685,10 +4599,10 @@ min/animal
 HORIZONTAL
 
 SLIDER
-543
-918
-727
-951
+4899
+254
+5083
+287
 min-weight-for-breeding
 min-weight-for-breeding
 0
@@ -5048,10 +4962,10 @@ sum [DDMC] of cows
 11
 
 PLOT
-1415
-495
-2077
-670
+1412
+475
+2074
+631
 Carrying capacity vs Livestock population
 Days
 Animal Units (AU)
@@ -5063,14 +4977,14 @@ true
 true
 "" ""
 PENS
-"REAL Carrying capacity" 1.0 0 -2674135 true "" "plot carrying-capacity"
+"ACTUAL Carrying capacity" 1.0 0 -2674135 true "" "plot carrying-capacity"
 "EST. Carrying capacity (for Env. farmer)" 1.0 0 -5825686 true "" "plot estimated-carrying-capacity"
 "Livestock population" 1.0 0 -13791810 true "" "plot sum [animal-units] of cows"
 
 SLIDER
 514
 1074
-739
+773
 1107
 daily-DM-consumed-by-cattle
 daily-DM-consumed-by-cattle
@@ -5117,7 +5031,7 @@ carrying-capacity
 SLIDER
 514
 1106
-739
+773
 1139
 %-DM-available-for-cattle
 %-DM-available-for-cattle
@@ -5130,10 +5044,10 @@ SLIDER
 HORIZONTAL
 
 MONITOR
-1115
-1080
-1365
 1125
+1049
+1407
+1094
 Average ILWG (all age classes) (kg/animal/day)
 mean [live-weight-gain] of cows + mean [live-weight-gain-feed] of cows + mean [live-weight-gain-feed-breeding] of cows
 17
