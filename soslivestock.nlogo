@@ -1386,11 +1386,10 @@ to go
   if (farmer-profile = "traditional") [ordinary-sale-males]
   if (farmer-profile = "market") or (farmer-profile = "market-fsb") [
     ordinary-sale-males ordinary-sale-old-cows ordinary-sale-old-bulls ordinary-sale-non-replacement-females
-    extraordinary-sale-males-market-farmer extraordinary-sale-old-cows-market-farmer extraordinary-sale-non-replacement-females-market-farmer]
-
+    extraordinary-sale-males-market-farmer extraordinary-sale-old-cows-market-farmer extraordinary-sale-females-market-farmer]
   if (farmer-profile = "environmental") or (farmer-profile = "environmental-fmincows") or (farmer-profile = "environmental-rot2") [
     ordinary-sale-males ordinary-sale-old-cows ordinary-sale-old-bulls ordinary-sale-non-replacement-females
-    extraordinary-sale-males-environmental-farmer extraordinary-sale-old-cows-environmental-farmer extraordinary-sale-non-replacement-females-environmental-farmer]
+    extraordinary-sale-males-environmental-farmer extraordinary-sale-old-cows-environmental-farmer extraordinary-sale-females-environmental-farmer]
 
   farm-balance
 
@@ -1864,7 +1863,7 @@ to ordinary-sale-males                                                          
     if any? cows with [weaned-calf-male?] [
       if count cows with [bull?] >= 1 [                                                       ;; if there is at least one bull in the system...
       if count cows with [weaned-calf-male?] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [    ;; ...and if the number of weaned male calves is greater than the number of bulls desired in the system...
-        while [any? cows with [weaned-calf-male? and sale? = false] and count cows with [weaned-calf-male? and sale? = false] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio)] [   ;; ...the farmer sells weaned male calves until the number of animals in this age class equals the number of bulls desired in the system
+        while [any? cows with [weaned-calf-male? and sale? = false] and count cows with [weaned-calf-male? and sale? = false] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio)] [   ;; ...the farmer sells weaned male calves until there are no more weaned male calves or the number of animals in this age class equals the number of bulls desired in the system
           if (ordinary-sale-of-cows-with = "highest live weight") [                                          ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
             ask max-n-of 1 cows with [weaned-calf-male? and sale? = false] [live-weight] [
               set sale? true
@@ -1883,7 +1882,7 @@ to ordinary-sale-males                                                          
   if current-season = 3 and (season-days = 1) [
     if count cows with [bull?] > 1  [                                                         ;; if there is more than one bull in the system...
       if count cows with [bull?] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [    ;; ...and if the number of bulls is greater than the number of bulls desired in the system...
-        while [any? cows with [bull? and sale? = false] and count cows with [bull? and sale? = false] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) and count cows with [bull? and sale? = false] > 1] [ ;;...the farmer sells bulls until the numer of animals in this age class equals the number of bulls desires in the system
+        while [any? cows with [bull? and sale? = false] and count cows with [bull? and sale? = false] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) and count cows with [bull? and sale? = false] > 1] [ ;;...the farmer sells bulls until there are no more bulls or the numer of animals in this age class equals the number of bulls desires in the system
           if (ordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
             ask max-n-of 1 cows with [bull? and sale? = false] [live-weight] [
               set sale? true
@@ -1904,7 +1903,7 @@ to ordinary-sale-old-cows                                                       
   if current-season = 3 and (season-days = 1) [
     if any? cows with [cow? and old? = true] [
       if count cows with [cow? and old? = true] > (count cows with [cow? and old? = true] - count cows with [heifer?]) [                           ;; old cows are sold only if there are more old cows than replacement heifers (i.e., future breeding cows) in the system, and the number of old cows for sale is equal to the number of heifers present in the system
-        while [any? cows with [cow? and old? = true and sale? = false] and count cows with [cow? and old? = true and sale? = false] > (count cows with [cow? and old? = true] - count cows with [heifer?])] [  ;; if the number of old cows is greater than the number of heifers, the farmer sells old cows until the number of animals in this age class equals the number of heifers
+        while [any? cows with [cow? and old? = true and sale? = false] and count cows with [cow? and old? = true and sale? = false] > (count cows with [cow? and old? = true] - count cows with [heifer?])] [  ;; if the number of old cows is greater than the number of heifers, the farmer sells old cows until there are no more old cows or the number of animals in this age class equals the number of heifers
           if (ordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
             ask max-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
               set sale? true
@@ -1925,7 +1924,7 @@ to ordinary-sale-old-bulls                                                      
   if current-season = 3 and (season-days = 1) [
     if any? cows with [bull? and old? = true] [
       if count cows with [bull?] > 1 [                                                         ;; if there is more than one bull in the system...
-      while [any? cows with [bull? and old? = true and sale? = false] and round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) < 1] [  ;; ...the farmer sells old bulls until the number of desired bulls in the system is below 1
+      while [any? cows with [bull? and old? = true and sale? = false] and round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) < 1] [  ;; ...the farmer sells all old bulls
           if (ordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
             ask max-n-of 1 cows with [bull? and old? = true and sale? = false] [live-weight] [
               set sale? true
@@ -1943,9 +1942,9 @@ to ordinary-sale-old-bulls                                                      
 
 to ordinary-sale-non-replacement-females                                           ;; ordinary sale of non-replacement females (female weaned calves, heifers and cows). The number of females sold is determined by the maximum number of breeding cows (i.e., "adult-cows") the farmer wishes to keep in the system ("keep-MAX-n-breeding-cows" slider on the interface)
 
-  if current-season = 3 and (season-days = 1) [                                     ;; De normal solo se venden hembras de no reposición correspondientes a weaned-calf-females y heifers
+  if current-season = 3 and (season-days = 1) [
     if any? cows with [weaned-calf-female?] [
-      while [any? cows with [weaned-calf-female? and sale? = false] and count cows with [weaned-calf-female? and sale? = false] > (keep-MAX-n-breeding-cows - count cows with [adult-cow?])] [  ;; the farmer sells weaned female calves until the number of animals in that age group equals the number of breeding cows (i.e., "adult-cows") needed to reach the desired number of breeding cows
+      while [any? cows with [weaned-calf-female? and sale? = false] and count cows with [weaned-calf-female? and sale? = false] > (keep-MAX-n-breeding-cows - count cows with [adult-cow?])] [  ;; the farmer sells weaned female calves until there are no more weaned female calves or the number of animals in that age group equals the number of breeding cows (i.e., "adult-cows") needed to reach the desired number of breeding cows
         if (ordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
           ask max-n-of 1 cows with [weaned-calf-female? and sale? = false] [live-weight] [
             set sale? true
@@ -1957,7 +1956,7 @@ to ordinary-sale-non-replacement-females                                        
 
   if current-season = 3 and (season-days = 1) [
     if any? cows with [heifer?] [
-      while [any? cows with [heifer? and sale? = false] and count cows with [heifer? and sale? = false] > (keep-MAX-n-breeding-cows - count cows with [adult-cow?])] [  ;; the farmer sells heifers until the number of animals in that age group equals the number of breeding cows (i.e., "adult-cows") needed to reach the desired number of breeding cows
+      while [any? cows with [heifer? and sale? = false] and count cows with [heifer? and sale? = false] > (keep-MAX-n-breeding-cows - count cows with [adult-cow?])] [  ;; the farmer sells heifers until there are no more heifers or the number of animals in that age group equals the number of breeding cows (i.e., "adult-cows") needed to reach the desired number of breeding cows
         if (ordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
           ask max-n-of 1 cows with [heifer? and sale? = false] [live-weight] [
             set sale? true
@@ -1969,7 +1968,7 @@ to ordinary-sale-non-replacement-females                                        
 
   if current-season = 3 and (season-days = 1) [
     if any? cows with [adult-cow?] [
-      while [any? cows with [adult-cow? and sale? = false] and count cows with [adult-cow? and sale? = false] > keep-MAX-n-breeding-cows] [  ;; the farmer sells breeding cows (i.e., "adult-cows") until the number of breeding cows reach the desired number
+      while [any? cows with [adult-cow? and sale? = false] and count cows with [adult-cow? and sale? = false] > keep-MAX-n-breeding-cows] [  ;; the farmer sells breeding cows (i.e., "adult-cows") until there are no more breeding cows or the number of breeding cows reach the desired number
         if (ordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
           ask max-n-of 1 cows with [adult-cow? and sale? = false] [live-weight] [
             set sale? true
@@ -1985,14 +1984,6 @@ to ordinary-sale-non-replacement-females                                        
 
 end
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;   SEGUIR A PARTIR DE AQUI   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Cattle sales: extraordinary sales
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2004,9 +1995,7 @@ end
 to extraordinary-sale-males-market-farmer                                           ;; extraordinary sale of male animals for the market-oriented farmer. If the market-oriented farmer profile is selected, the extraordinary sale of male animals takes place when the average live weight of all animals in the system is below a threshold (the threshold is a minimum weight set by the user using the "ES-market-farmer-min-weight" slider on the interface)
 
   if any? cows with [weaned-calf-male?] [
-
     if mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [weaned-calf-male?] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [  ;; if the average live weight of all animals (except animals within the "born-calf?" age class) is below the threshold and if the number of weaned male calves is greater than the number of desired bulls...
-    ;while [any? cows with [weaned-calf-male? and sale? = false] and mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [weaned-calf-male?] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio)] [
       if (extraordinary-sale-of-cows-with = "highest live weight") [                     ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
         ask max-n-of 1 cows with [weaned-calf-male? and sale? = false] [live-weight] [   ;;...the farmer sells one weaned male calf (with the highest live weight in this case)
           set sale? true
@@ -2016,22 +2005,18 @@ to extraordinary-sale-males-market-farmer                                       
           set sale? true
           set ES-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]]]
 
-  if not any? cows with [weaned-calf-male?] or count cows with [weaned-calf-male?] = round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [ ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  if not any? cows with [weaned-calf-male?] or count cows with [weaned-calf-male?] = round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [ ;; if there are no weaned male calves to sell or the number of weaned male calves equals the number of bulls desired...
 
-  if any? cows with [steer?] [
-
-    if mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight [  ;; if the average live weight of all animals (except animals within the "born-calf?" age class) is below the threshold...
-    ;while [any? cows with [steer? and sale? = false] and mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight] [
-      if (extraordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
-        ask max-n-of 1 cows with [steer? and sale? = false] [live-weight] [       ;;...the farmer sells one steer (with the highest live weight in this case)
-          set sale? true
-          set ES-males-steer sum [value] of cows with [steer? and sale?]]]
-      if (extraordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
-        ask min-n-of 1 cows with [steer? and sale? = false] [live-weight] [       ;;...the farmer sells one steer (with the lowest live weight in this case)
-          set sale? true
-          set ES-males-steer sum [value] of cows with [steer? and sale?]]]]]
-
-]  ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    if any? cows with [steer?] [   ;;...and there are steers...
+      if mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight [  ;;...and if the average live weight of all animals (except animals within the "born-calf?" age class) is below the threshold...
+        if (extraordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+          ask max-n-of 1 cows with [steer? and sale? = false] [live-weight] [       ;;...the farmer sells one steer (with the highest live weight in this case)
+            set sale? true
+            set ES-males-steer sum [value] of cows with [steer? and sale?]]]
+        if (extraordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+          ask min-n-of 1 cows with [steer? and sale? = false] [live-weight] [       ;;...the farmer sells one steer (with the lowest live weight in this case)
+            set sale? true
+            set ES-males-steer sum [value] of cows with [steer? and sale?]]]]]]
 
   set ES-males-effort count cows with [sale?] * sales-effort-time                 ;; the effort of selling animals is calculated
 
@@ -2039,101 +2024,68 @@ to extraordinary-sale-males-market-farmer                                       
 
   end
 
+to extraordinary-sale-old-cows-market-farmer                                      ;; extrardinary sale of old cows for the market-oriented farmer. The age at which a cow is considered old is determined by the "age-sell-old-cow/bull" slider on the interface
 
+  if not any? cows with [steer?] [     ;; when there are no more males available for the extraordinary sales, the farmer starts selling old cows
 
-
-
-to extraordinary-sale-old-cows-market-farmer                                                               ;;## EXTRAORDINARY SALES MODULE ;; Extrardinary sale of old cows for the market-oriented farmer. The age at which a cow is considered old is determined by the "age-sell-old-cow/bull" slider on the interface
-
-  if not any? cows with [steer?] [
-
-  ;; when there are no more males available for the extraordinary sales (because the "keep-MAX-n-bulls" number is the maximum number of breeding males the farmer wants to have in the system), the farmer starts selling old cows
     if any? cows with [cow? and old? = true] [
-
-    if mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
-    ;while [any? cows with [cow? and old? = true and sale? = false] and mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows] [
+      if mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [  ;; if the average live weight of all animals (except animals within the "born-calf?" age class) is below the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
         if (extraordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
-
-          ask max-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
+          ask max-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [ ;;...the farmer sells one old cow  (with the highest live weight in this case)
             set sale? true
             set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]
-
         if (extraordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
-
-          ask min-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
+          ask min-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [ ;;...the farmer sells one old cow  (with the lowest live weight in this case)
             set sale? true
-              set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]]]
-
-  ]
+            set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]]]]
 
   set ES-old-cow-effort count cows with [sale?] * sales-effort-time                ;; the effort of selling animals is calculated
 
-  ask cows with [sale?] [die]                                                    ;; animals selected for sale leave the livestock system
+  ask cows with [sale?] [die]                                                      ;; animals selected for sale leave the livestock system
 
  end
 
+to extraordinary-sale-females-market-farmer                      ;; extraordinary sale of females (female weaned calves, heifers and cows) for the market-oriented farmer
 
+  if not any? cows with [cow? and old?]  [     ;; when there are no more old cows available for the extraordinary sales, the farmer starts selling female weaned calves
 
-to extraordinary-sale-non-replacement-females-market-farmer                                           ;;## EXTRAORDINARY SALES MODULE ;; Extraordinary sale of heifers and cows for the market-oriented farmer
-
-  if not any? cows with [cow? and old?]  [
-                                       ;;FEMALESALESNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW  De normal solo se venden hembras de no reposición correspondientes a weaned-calf-females y heifers
-
-  if any? cows with [weaned-calf-female?] [
-
-    if mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
-    ;while [any? cows with [weaned-calf-female? and sale? = false] and mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows] [
-
-          if (ordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
-            ask max-n-of 1 cows with [weaned-calf-female? and sale? = false] [live-weight] [
-              set sale? true
-              set ES-females-weaned-calf sum [value] of cows with [weaned-calf-female? and sale?]]]
-
-          if (ordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
-            ask min-n-of 1 cows with [weaned-calf-female? and sale? = false] [live-weight] [
-              set sale? true
-              set ES-females-weaned-calf sum [value] of cows with [weaned-calf-female? and sale?]]]]]
-
-
-
-  if not any? cows with [weaned-calf-female?] [ ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-    if any? cows with [heifer?] [
-
-    if mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
-    ;while [any? cows with [heifer? and sale? = false] and mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows] [
-
-          if (ordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
-            ask max-n-of 1 cows with [heifer? and sale? = false] [live-weight] [
+    if any? cows with [weaned-calf-female?] [
+      if mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [  ;; if the average live weight of all animals (except animals within the "born-calf?" age class) is below the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
+        if (ordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+          ask max-n-of 1 cows with [weaned-calf-female? and sale? = false] [live-weight] [  ;;...the farmer sells one female weaned calf (with the highest live weight in this case)
             set sale? true
-            set ES-heifer sum [value] of cows with [heifer? and sale?]]]
-
-          if (ordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
-            ask min-n-of 1 cows with [heifer? and sale? = false] [live-weight] [
-                set sale? true
-                set ES-heifer sum [value] of cows with [heifer? and sale?]]]]]
-
-  ] ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-    if not any? cows with [heifer?] [ ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-    if any? cows with [adult-cow?] [
-
-    if mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
-    ;while [any? cows with [adult-cow? and sale? = false] and mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows] [
-
-          if (ordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
-            ask max-n-of 1 cows with [adult-cow? and sale? = false] [live-weight] [           ;;FEMALESALESNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW   solo se venden las vacas NO preñadas
+            set ES-females-weaned-calf sum [value] of cows with [weaned-calf-female? and sale?]]]
+        if (ordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+          ask min-n-of 1 cows with [weaned-calf-female? and sale? = false] [live-weight] [  ;;...the farmer sells one female weaned calf (with the lowest live weight in this case)
             set sale? true
-            set ES-cow sum [value] of cows with [adult-cow? and sale?]]]
+            set ES-females-weaned-calf sum [value] of cows with [weaned-calf-female? and sale?]]]]]
 
+    if not any? cows with [weaned-calf-female?] [     ;; when there are no more female weaned calves available for the extraordinary sales, the farmer starts selling heifers
+
+      if any? cows with [heifer?] [
+        if mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [   ;; if the average live weight of all animals (except animals within the "born-calf?" age class) is below the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
+          if (ordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+            ask max-n-of 1 cows with [heifer? and sale? = false] [live-weight] [   ;;...the farmer sells one heifer (with the highest live weight in this case)
+              set sale? true
+              set ES-heifer sum [value] of cows with [heifer? and sale?]]]
           if (ordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
-            ask min-n-of 1 cows with [adult-cow? and sale? = false] [live-weight] [
-                set sale? true
-                set ES-cow sum [value] of cows with [adult-cow? and sale?]]]]]
-  ] ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  ]
+            ask min-n-of 1 cows with [heifer? and sale? = false] [live-weight] [   ;;...the farmer sells one heifer (with the lowest live weight in this case)
+              set sale? true
+              set ES-heifer sum [value] of cows with [heifer? and sale?]]]]]]
+
+    if not any? cows with [heifer?] [     ;; when there are no more heifers available for the extraordinary sales, the farmer starts selling breeding cows
+
+      if any? cows with [adult-cow?] [
+        if mean [live-weight] of cows with [born-calf? = false] < market-farmer-ES-min-weight and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [    ;; if the average live weight of all animals (except animals within the "born-calf?" age class) is below the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
+          if (ordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+            ask max-n-of 1 cows with [adult-cow? and sale? = false] [live-weight] [   ;;...the farmer sells one adult cow (with the highest live weight in this case)
+              set sale? true
+              set ES-cow sum [value] of cows with [adult-cow? and sale?]]]
+          if (ordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+            ask min-n-of 1 cows with [adult-cow? and sale? = false] [live-weight] [   ;;...the farmer sells one adult cow (with the highest lowest weight in this case)
+              set sale? true
+              set ES-cow sum [value] of cows with [adult-cow? and sale?]]]]]]]
+
   set ES-females-effort count cows with [sale?] * sales-effort-time                ;; the effort of selling animals is calculated
 
   ask cows with [sale?] [die]                                                    ;; animals selected for sale leave the livestock system
@@ -2141,49 +2093,36 @@ to extraordinary-sale-non-replacement-females-market-farmer                     
 end
 
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Extraordinary sales for the ENVIRONMENTAL-ORIENTED FARMER
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to extraordinary-sale-males-environmental-farmer                                           ;; ## EXTRAORDINARY SALES MODULE ;; Extraordinary sale of male animals for the environmental farmer. If the enviromental-oriented farmer profile is selected, the extraordinary sale of male animals takes place when the Stocking Rate (SR) of the farm is above the desirable SR ("ES-env-farmer-SR" slider in the interface).
+to extraordinary-sale-males-environmental-farmer                                           ;; extraordinary sale of male animals for the environmental farmer. If the environmental-oriented farmer profile is selected, the extraordinary sale of male animals occurs when the Animal Units (AU) of all animals (except animals within the "born-calf?" age class) are above the ESTIMATED carrying capacity of the grassland
 
-    if any? cows with [weaned-calf-male?] [
-    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [weaned-calf-male?] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [
+  if any? cows with [weaned-calf-male?] [
 
+    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [weaned-calf-male?] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [ ;; if the AU of all animals (except animals within the "born-calf?" age class) is above the estimated carrying capacity and if the number of weaned male calves is greater than the number of desired bulls...
+      while [any? cows with [weaned-calf-male? and sale? = false] and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity and count cows with [weaned-calf-male? and sale? = false] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio)] [ ;;...the farmer sells weaned male weaned calves until there are no more male weaned calves to sell or until the AU is below the threshold or until the number of male weaned calves is below the desired number of bulls
+        if (extraordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+          ask max-n-of 1 cows with [weaned-calf-male? and sale? = false] [live-weight] [
+            set sale? true
+            set ES-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]
+        if (extraordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+          ask min-n-of 1 cows with [weaned-calf-male? and sale? = false] [live-weight] [
+            set sale? true
+            set ES-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]]]]
 
-        while [any? cows with [weaned-calf-male? and sale? = false] and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity and count cows with [weaned-calf-male? and sale? = false] > round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio)] [
-
-          if (extraordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
-            ask max-n-of 1 cows with [weaned-calf-male? and sale? = false] [live-weight] [
-              set sale? true
-              set ES-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]
-
-          if (extraordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
-            ask min-n-of 1 cows with [weaned-calf-male? and sale? = false] [live-weight] [
-              set sale? true
-              set ES-males-weaned-calf sum [value] of cows with [weaned-calf-male? and sale?]]]]]]
-
-
-    ;if not any? cows with [weaned-calf-male?] or count cows with [weaned-calf-male?] = round ((count cows with [adult-cow?] + count cows with [heifer?]) / bull:cow-ratio) [ ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-    if any? cows with [steer?] [
-
-      if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity [
-
-          while [any? cows with [steer? and sale? = false] and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity] [
-
-          if (extraordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
-            ask max-n-of 1 cows with [steer? and sale? = false] [live-weight] [
-              set sale? true
-              set ES-males-steer sum [value] of cows with [steer? and sale?]]]
-
-          if (extraordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
-            ask min-n-of 1 cows with [steer? and sale? = false] [live-weight] [
-              set sale? true
-                set ES-males-steer sum [value] of cows with [steer? and sale?]]]]]]
-
-    ;]  ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  if any? cows with [steer?] [  ;; if there are no weaned male calves to sell, the farmer starts selling steers...
+    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity [ ;;...if the AU is above the threshold...
+      while [any? cows with [steer? and sale? = false] and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity] [ ;;...until there are not more steers to sell or until the AU is below the threshold
+        if (extraordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+          ask max-n-of 1 cows with [steer? and sale? = false] [live-weight] [
+            set sale? true
+            set ES-males-steer sum [value] of cows with [steer? and sale?]]]
+        if (extraordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+          ask min-n-of 1 cows with [steer? and sale? = false] [live-weight] [
+            set sale? true
+            set ES-males-steer sum [value] of cows with [steer? and sale?]]]]]]
 
   set ES-males-effort count cows with [sale?] * sales-effort-time                ;; the effort of selling animals is calculated
 
@@ -2191,170 +2130,134 @@ to extraordinary-sale-males-environmental-farmer                                
 
   end
 
-to extraordinary-sale-old-cows-environmental-farmer                                                               ;;## EXTRAORDINARY SALES MODULE ;; Extraordinary sale of old cows for the environmental farmer. The age at which a cow is considered old is determined by the "age-sell-old-cow/bull" slider on the interface
+to extraordinary-sale-old-cows-environmental-farmer                            ;; extraordinary sale of old cows for the environmental farmer. The age at which a cow is considered old is determined by the "age-sell-old-cow/bull" slider on the interface
 
-    ;if not any? cows with [steer?] [
-
-    if any? cows with [cow? and old? = true] [
-      if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
-
-        while [any? cows with [cow? and old? = true and sale? = false] and count cows with [adult-cow? and sale? = false] > keep-MIN-n-breeding-cows and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity] [
-          if (extraordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
-            ask max-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
-              set sale? true
-              set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]
-
-          if (extraordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
-            ask min-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
-              set sale? true
-                set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]]]]
-
-  ;]
+  if any? cows with [cow? and old? = true] [                                        ;; if there are no steers to sell, the farmer starts selling old cows...
+    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [   ;;...when the AU is above the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
+      while [any? cows with [cow? and old? = true and sale? = false] and count cows with [adult-cow? and sale? = false] > keep-MIN-n-breeding-cows and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity] [ ;;...until there are no more old cows to sell or the number of breeding cows is below the MINIMUM number of breeding cows desired or the AU is below the threshold
+        if (extraordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+          ask max-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
+            set sale? true
+            set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]
+        if (extraordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+          ask min-n-of 1 cows with [cow? and old? = true and sale? = false] [live-weight] [
+            set sale? true
+            set ES-old-cow sum [value] of cows with [cow? and old? = true and sale?]]]]]]
 
   set ES-old-cow-effort count cows with [sale?] * sales-effort-time                ;; the effort of selling animals is calculated
 
-  ask cows with [sale?] [die]                                                    ;; animals selected for sale leave the livestock system
+  ask cows with [sale?] [die]                                                      ;; animals selected for sale leave the livestock system
 
  end
 
-to extraordinary-sale-non-replacement-females-environmental-farmer                                           ;;## EXTRAORDINARY SALES MODULE ;; Extraordinary sale of heifers and cows for the environmental farmer.
+to extraordinary-sale-females-environmental-farmer                             ;; extraordinary sale of females (female weaned calves, heifers and cows) for the environmental farmer
 
-    if any? cows with [weaned-calf-female?] [
+  if any? cows with [weaned-calf-female?] [   ;; when there are no more old cows available for the extraordinary sales, the farmer starts selling female weaned calves
+    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [   ;;...when the AU is above the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
+      while [any? cows with [weaned-calf-female? and sale? = false] and count cows with [adult-cow? and sale? = false] > keep-MIN-n-breeding-cows and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity] [ ;;...until there are no more female weaned calves to sell or the number of breeding cows is below the MINIMUM number of breeding cows desired or the AU is below the threshold
+        if (extraordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+          ask max-n-of 1 cows with [weaned-calf-female? and sale? = false] [live-weight] [
+            set sale? true
+            set ES-females-weaned-calf sum [value] of cows with [weaned-calf-female? and sale?]]]
+        if (extraordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+          ask min-n-of 1 cows with [weaned-calf-female? and sale? = false] [live-weight] [
+            set sale? true
+            set ES-females-weaned-calf sum [value] of cows with [weaned-calf-female? and sale?]]]]]]
 
-        if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
-
-        while [any? cows with [weaned-calf-female? and sale? = false] and count cows with [adult-cow? and sale? = false] > keep-MIN-n-breeding-cows and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity] [
-
-          if (extraordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
-            ask max-n-of 1 cows with [weaned-calf-female? and sale? = false] [live-weight] [
-              set sale? true
-              set ES-females-weaned-calf sum [value] of cows with [weaned-calf-female? and sale?]]]
-
-          if (extraordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
-            ask min-n-of 1 cows with [weaned-calf-female? and sale? = false] [live-weight] [
-              set sale? true
-              set ES-females-weaned-calf sum [value] of cows with [weaned-calf-female? and sale?]]]]]]
-
-  ;if not any? cows with [weaned-calf-female?] [ ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-    if any? cows with [heifer?] [
-
-    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
-
-         while [any? cows with [heifer? and sale? = false] and count cows with [adult-cow? and sale? = false] > keep-MIN-n-breeding-cows and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity] [
-
-          if (extraordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
-            ask max-n-of 1 cows with [heifer? and sale? = false] [live-weight] [
+  if any? cows with [heifer?] [    ;; when there are no more female weaned calves available for the extraordinary sales, the farmer starts selling heifers
+    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [  ;;...when the AU is above the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
+      while [any? cows with [heifer? and sale? = false] and count cows with [adult-cow? and sale? = false] > keep-MIN-n-breeding-cows and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity] [ ;;...until there are no more heifers to sell or the number of breeding cows is below the MINIMUM number of breeding cows desired or the AU is below the threshold
+        if (extraordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+          ask max-n-of 1 cows with [heifer? and sale? = false] [live-weight] [
             set sale? true
             set ES-heifer sum [value] of cows with [heifer? and sale?]]]
+        if (extraordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+          ask min-n-of 1 cows with [heifer? and sale? = false] [live-weight] [
+            set sale? true
+            set ES-heifer sum [value] of cows with [heifer? and sale?]]]]]]
 
-          if (extraordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
-            ask min-n-of 1 cows with [heifer? and sale? = false] [live-weight] [
-                set sale? true
-              set ES-heifer sum [value] of cows with [heifer? and sale?]]]]]]
-  ;] ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-     ; if not any? cows with [heifer?] [ ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-    if any? cows with [adult-cow?] [
-
-    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [
-
-        while [any? cows with [adult-cow? and sale? = false] and count cows with [adult-cow? and sale? = false] > keep-MIN-n-breeding-cows and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity] [
-
-          if (extraordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
-            ask max-n-of 1 cows with [adult-cow? and sale? = false] [live-weight] [           ;;FEMALESALESNEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW   solo se venden las vacas NO preñadas
+  if any? cows with [adult-cow?] [  ;; when there are no more heifers available for the extraordinary sales, the farmer starts selling breeding cows
+    if sum [animal-units] of cows with [born-calf? = false] > estimated-carrying-capacity and count cows with [adult-cow?] > keep-MIN-n-breeding-cows [  ;;...when the AU is above the threshold and if the number of breeding cows is greater than the MINIMUM number of breeding cows desired (set by the "keep-MIN-n-breeding-cows" slider on the interface)...
+      while [any? cows with [adult-cow? and sale? = false] and count cows with [adult-cow? and sale? = false] > keep-MIN-n-breeding-cows and sum [animal-units] of cows with [born-calf? = false and sale? = false] > estimated-carrying-capacity] [ ;;...until there are no more breeding cows to sell or the number of breeding cows is below the MINIMUM number of breeding cows desired or the AU is below the threshold
+        if (extraordinary-sale-of-cows-with = "highest live weight") [              ;; if the "highest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the highest live weight
+          ask max-n-of 1 cows with [adult-cow? and sale? = false] [live-weight] [
             set sale? true
             set ES-cow sum [value] of cows with [adult-cow? and sale?]]]
-
-
-          if (extraordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
-            ask min-n-of 1 cows with [adult-cow? and sale? = false] [live-weight] [
-              set sale? true
-              set ES-cow sum [value] of cows with [adult-cow? and sale?]]]]]]
-
-      ;] ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+        if (extraordinary-sale-of-cows-with = "lowest live weight") [               ;; if the "lowest live weight" option is selected in the "ordinary-sale-of-cows" chooser on the interface, the farmer will prioritize the sale of animals in this age class with the lowest live weight
+          ask min-n-of 1 cows with [adult-cow? and sale? = false] [live-weight] [
+            set sale? true
+            set ES-cow sum [value] of cows with [adult-cow? and sale?]]]]]]
 
   set ES-females-effort count cows with [sale?] * sales-effort-time                ;; the effort of selling animals is calculated
 
-  ask cows with [sale?] [die]                                                    ;; animals selected for sale leave the livestock system
+  ask cows with [sale?] [die]                                                      ;; animals selected for sale leave the livestock system
 
 end
-
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Farm balance
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to farm-balance                                                                      ;;## ORDINARY SALES MODULE
-  set ordinary-sales-income OS-males-weaned-calf + OS-males-steer + OS-old-cow + OS-heifer + OS-cow + OS-bull + OS-old-bull + OS-females-weaned-calf
+to farm-balance                                                         ;; farm balance (i.e., the savings derived from the livestock system) is estimated here
+  set ordinary-sales-income OS-males-weaned-calf + OS-males-steer + OS-old-cow + OS-heifer + OS-cow + OS-bull + OS-old-bull + OS-females-weaned-calf   ;; the total income derived from all ordinary sales of the different age classes is calculated
 
-  set extraordinary-sales-income ES-males-weaned-calf + ES-males-steer + ES-old-cow + ES-heifer + ES-cow + ES-bull + ES-females-weaned-calf
+  set extraordinary-sales-income ES-males-weaned-calf + ES-males-steer + ES-old-cow + ES-heifer + ES-cow + ES-bull + ES-females-weaned-calf   ;; the total income derived from all extraordinary sales of the different age classes is calculated
 
-  set other-cost set-other-monthly-costs / (368 / 12)
+  set other-cost set-other-monthly-costs / (368 / 12)   ;; other costs, derived from other activities of the livestock system, are calculated (by default, other costs are set to 0)
 
-  set income ordinary-sales-income + extraordinary-sales-income
-  set cost supplement-cost + other-cost
-  set balance income - cost
+  set income ordinary-sales-income + extraordinary-sales-income   ;; total income is calculated (ordinary + extraordinary earnings)
+  set cost supplement-cost + other-cost    ;; total cost is calculated (feed supplement cost + other costs)
+  set balance income - cost   ;; and finally, balance is calculated
 
-  set OS-males-weaned-calf 0 set OS-males-steer 0 set OS-old-cow 0 set OS-heifer 0 set OS-cow 0 set OS-bull 0 set OS-old-bull 0 set OS-females-weaned-calf 0
-  set ES-males-weaned-calf 0 set ES-males-steer 0 set ES-old-cow 0 set ES-heifer 0 set ES-cow 0 set ES-bull 0 set ES-females-weaned-calf 0
+  set OS-males-weaned-calf 0 set OS-males-steer 0 set OS-old-cow 0 set OS-heifer 0 set OS-cow 0 set OS-bull 0 set OS-old-bull 0 set OS-females-weaned-calf 0   ;; once the balance has been calculated, the ordinary sales variables, which store the earnings derived from the ordinary sales of each age class, are reset to 0.
+  set ES-males-weaned-calf 0 set ES-males-steer 0 set ES-old-cow 0 set ES-heifer 0 set ES-cow 0 set ES-bull 0 set ES-females-weaned-calf 0     ;; the same is done with the extraordinary sales variables
 
-  if balance-historyXticks < 0 [set balance-historyXticks 0]
+  if balance-historyXticks < 0 [set balance-historyXticks 0]   ;; to avoid negative values in the savings
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; WELLBEING MODULE
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to effort
+to effort                                                               ;; time spent by the farmer implementing different management strategies
 
-  ;; Feed supplementation effort                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ;; Feed supplementation effort
   set supplement-effort count cows with [supplemented?] * supplement-effort-time
 
-  ;; Weaning effort                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ;; Weaning effort
   set weaning-effort count cows with [weaning-calf?] * weaning-effort-time
 
-  ;; Ordinary sales effort                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ;; Ordinary sales effort
   set OS-total-effort OS-males-effort + OS-old-cow-effort + OS-females-effort + OS-old-bull-effort
   set OS-total-effort-history-season OS-males-effort-historyXticks-season + OS-old-cow-effort-historyXticks-season + OS-females-effort-historyXticks-season + OS-old-bull-effort-historyXticks-season
   set OS-total-effort-history-year OS-males-effort-historyXticks-year + OS-old-cow-effort-historyXticks-year + OS-females-effort-historyXticks-year
 
-  ;; Extraordinary sales effort                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ;; Extraordinary sales effort
   set ES-total-effort ES-males-effort + ES-old-cow-effort + ES-females-effort
   set ES-total-effort-history-season ES-males-effort-historyXticks-season + ES-old-cow-effort-historyXticks-season + ES-females-effort-historyXticks-season
   set ES-total-effort-history-year ES-males-effort-historyXticks-year + ES-old-cow-effort-historyXticks-year + ES-females-effort-historyXticks-year + OS-old-bull-effort-historyXticks-year
 
-  ;; Controlled breeding effort                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ;; Controlled breeding effort
   if farmer-profile = "market" [if current-season = controlled-breeding-season and (season-days = 1) [set breeding-effort breeding-effort-time]]
   if farmer-profile = "environmental" [if current-season = controlled-breeding-season and (season-days = 1) [set breeding-effort breeding-effort-time]]
 
   ;, Other daily efforts
   set other-daily-effort other-daily-effort-time
 
-
-  ;; Rotational grazing effort                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ;; Rotational grazing effort
   if (spatial-management = "rotational grazing") [
     if any? cows [
       if farmer-profile = "traditional" [if season-days >= season-length [set rotational-effort rotational-effort-time]]
       if farmer-profile = "market" [if RG-market-farmer-live-weight-threshold > mean [live-weight] of cows and ticks-since-here >= RG-days-in-paddock [set rotational-effort rotational-effort-time]]
       if farmer-profile = "environmental" [if season-days >= season-length [set rotational-effort rotational-effort-time]]]]
 
-
-  ;; Total effort                                    ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  ;; Total effort
   set total-effort supplement-effort + weaning-effort + OS-total-effort + ES-total-effort + breeding-effort + rotational-effort + other-daily-effort
   set total-effort-history supplement-effort-historyXticks + weaning-effort-historyXticks + OS-males-effort-historyXticks + OS-old-bull-effort-historyXticks + OS-females-effort-historyXticks + OS-old-cow-effort-historyXticks + ES-males-effort-historyXticks + ES-old-cow-effort-historyXticks + ES-females-effort-historyXticks + breeding-effort-historyXticks + rotational-effort-historyXticks + other-daily-effort-historyXticks ;; Accumulated effort over time
   set total-effort-history-season supplement-effort-historyXticks-season + weaning-effort-historyXticks-season + OS-total-effort-history-season + ES-total-effort-history-season + breeding-effort-historyXticks-season + rotational-effort-historyXticks-season + other-daily-effort-historyXticks-season
   set total-effort-history-year supplement-effort-historyXticks-year + weaning-effort-historyXticks-year + OS-total-effort-history-year + ES-total-effort-history-year + breeding-effort-historyXticks-year + rotational-effort-historyXticks-year + other-daily-effort-historyXticks-year
 
 end
-
-
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; REPORTERS (This section of the code contains the reporters that collect the model outputs)
@@ -2390,11 +2293,10 @@ end
 
 to-report ILWG                                                                       ;; outputs the mean Inidividual Live Weight Gain (kg/animal)
   report mean [live-weight-gain] of cows
-  ;report mean [live-weight-gain] of cows with [born-calf? = false]
 end
 
 
-to-report ILWG_ACUMMULATED
+to-report ILWG_ACUMMULATED                                                           ;; outputs the mean IWLG since the start of the simulation
   report mean [live-weight-gain-historyXticks] of cows
 end
 
@@ -2410,150 +2312,121 @@ to-report crop-efficiency                                                       
   report sum [DDMC] of cows / (DM-cm-ha * sum [grass-height] of patches) * 100
  end
 
-to-report accumulated-cost                                                           ;;## SALES MODULE ;; outputs the accumulated balance of the system since the start of the simulation (USD)
+to-report accumulated-cost                                                           ;; outputs the accumulated balance of the system since the start of the simulation (USD)
   report cost-historyXticks
 end
 
-to-report accumulated-income                                                         ;;## SALES MODULE ;; outputs the accumulated balance of the system since the start of the simulation (USD)
+to-report accumulated-income                                                         ;; outputs the accumulated balance of the system since the start of the simulation (USD)
   report income-historyXticks
 end
 
-to-report accumulated-balance                                                        ;;## SALES MODULE ;; outputs the accumulated balance of the system since the start of the simulation (USD)
+to-report accumulated-balance                                                        ;; outputs the accumulated balance of the system since the start of the simulation (USD)
   report balance-historyXticks
 end
 
-to-report accumulated-supplement-effort-season                                       ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+to-report accumulated-supplement-effort-season                                       ;; outputs the amount of time the farmer has spent on supplementing animals since the start of the season
   report supplement-effort-historyXticks-season
 end
 
-to-report accumulated-supplement-effort-year                                         ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+to-report accumulated-supplement-effort-year                                         ;; outputs the amount of time the farmer has spent on supplementing animals since the start of the year
   report supplement-effort-historyXticks-year
 end
 
-to-report accumulated-weaning-effort-season                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+to-report accumulated-weaning-effort-season                                          ;; outputs the amount of time the farmer has spent weaning calves since the start of the season
   report weaning-effort-historyXticks-season
 end
 
-to-report accumulated-weaning-effort-year                                            ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+to-report accumulated-weaning-effort-year                                            ;; outputs the amount of time the farmer has spent weaning calves since the start of the year
   report weaning-effort-historyXticks-year
 end
 
-to-report acummulated-OS-males-effort-season
-  report OS-males-effort-historyXticks-season                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+to-report acummulated-OS-males-effort-season                                        ;; outputs the amount of time the farmer has spent selling males since the start of the season during the ordinary sales
+  report OS-males-effort-historyXticks-season
 end
 
-to-report acummulated-OS-males-effort-year
-  report OS-males-effort-historyXticks-year                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+to-report acummulated-OS-males-effort-year                                          ;; outputs the amount of time the farmer has spent selling males since the start of the year during the ordinary sales
+  report OS-males-effort-historyXticks-year
 end
 
-to-report acummulated-OS-old-cow-effort-season
-  report OS-old-cow-effort-historyXticks-season                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+to-report acummulated-OS-old-cow-effort-season                                       ;; outputs the amount of time the farmer has spent selling old cows since the start of the season during the ordinary sales
+  report OS-old-cow-effort-historyXticks-season
 end
 
-to-report acummulated-OS-old-cow-effort-year
-  report OS-old-cow-effort-historyXticks-year                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+to-report acummulated-OS-old-cow-effort-year                                        ;; outputs the amount of time the farmer has spent selling old cows since the start of the year during the ordinary sales
+  report OS-old-cow-effort-historyXticks-year
 end
 
-to-report acummulated-OS-old-bull-effort-season
+to-report acummulated-OS-old-bull-effort-season                                        ;; outputs the amount of time the farmer has spent selling old bulls since the start of the season during the ordinary sales
   report OS-old-bull-effort-historyXticks-season
 end
 
-to-report acummulated-OS-old-bull-effort-year
+to-report acummulated-OS-old-bull-effort-year                                        ;; outputs the amount of time the farmer has spent selling old bulls since the start of the year during the ordinary sales
   report OS-old-bull-effort-historyXticks-year
 end
 
-to-report acummulated-OS-females-effort-season
-  report OS-females-effort-historyXticks-season                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+to-report acummulated-OS-females-effort-season                                       ;; outputs the amount of time the farmer has spent selling females since the start of the season during the ordinary sales
+  report OS-females-effort-historyXticks-season
 end
 
-to-report acummulated-OS-females-effort-year
-  report OS-females-effort-historyXticks-year                                     ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+to-report acummulated-OS-females-effort-year                                       ;; outputs the amount of time the farmer has spent selling females since the start of the year during the ordinary sales
+  report OS-females-effort-historyXticks-year
 end
 
-to-report acummulated-ES-males-effort-season
-  report ES-males-effort-historyXticks-season                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+to-report acummulated-ES-males-effort-season                                       ;; outputs the amount of time the farmer has spent selling males since the start of the season during the extraordinary sales
+  report ES-males-effort-historyXticks-season
 end
 
-to-report acummulated-ES-males-effort-year
-  report ES-males-effort-historyXticks-year                                          ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+to-report acummulated-ES-males-effort-year                                       ;; outputs the amount of time the farmer has spent selling males since the start of the year during the extraordinary sales
+  report ES-males-effort-historyXticks-year
 end
 
-to-report acummulated-ES-old-cow-effort-season
-  report ES-old-cow-effort-historyXticks-season                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+to-report acummulated-ES-old-cow-effort-season                                     ;; outputs the amount of time the farmer has spent selling old cows since the start of the season during the extraordinary sales
+  report ES-old-cow-effort-historyXticks-season
 end
 
-to-report acummulated-ES-old-cow-effort-year
-  report ES-old-cow-effort-historyXticks-year                                        ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+to-report acummulated-ES-old-cow-effort-year                                       ;; outputs the amount of time the farmer has spent selling old cows since the start of the year during the extraordinary sales
+  report ES-old-cow-effort-historyXticks-year
 end
 
-to-report acummulated-ES-females-effort-season
-  report ES-females-effort-historyXticks-season                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+to-report acummulated-ES-females-effort-season                                       ;; outputs the amount of time the farmer has spent selling females since the start of the season during the extraordinary sales
+  report ES-females-effort-historyXticks-season
 end
 
-to-report acummulated-ES-females-effort-year
-  report ES-females-effort-historyXticks-year                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+to-report acummulated-ES-females-effort-year                                       ;; outputs the amount of time the farmer has spent selling females since the start of the year during the extraordinary sales
+  report ES-females-effort-historyXticks-year
 end
 
-
-
-
-
-
-
-to-report acummulated-breeding-effort-season
-  report breeding-effort-historyXticks-season                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+to-report acummulated-breeding-effort-season                                       ;; outputs the amount of time the farmer has spent moving bulls since the start of the season
+  report breeding-effort-historyXticks-season
 end
 
-to-report acummulated-breeding-effort-year
-  report breeding-effort-historyXticks-year                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+to-report acummulated-breeding-effort-year                                       ;; outputs the amount of time the farmer has spent moving bulls since the start of the year
+  report breeding-effort-historyXticks-year
 end
 
-
-
-
-
-
-
-
-
-to-report acummulated-rotational-effort-season
-  report rotational-effort-historyXticks-season                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+to-report acummulated-rotational-effort-season                                       ;; outputs the amount of time the farmer has spent moving cattle from one paddock to another since the start of the season
+  report rotational-effort-historyXticks-season
 end
 
-to-report acummulated-rotational-effort-year
-  report rotational-effort-historyXticks-year                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+to-report acummulated-rotational-effort-year                                       ;; outputs the amount of time the farmer has spent moving cattle from one paddock to another since the start of the year
+  report rotational-effort-historyXticks-year
 end
 
-
-
-
-
-
-to-report acummulated-other-daily-effort-season
-  report other-daily-effort-historyXticks-season                                   ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+to-report acummulated-other-daily-effort-season                                       ;; outputs the amount of time the farmer has spent doing other unspecified activities since the start of the season
+  report other-daily-effort-historyXticks-season
 end
 
-to-report acummulated-other-daily-effort-year
-  report other-daily-effort-historyXticks-year                                      ;;## WELLBEING MODULE ;; NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+to-report acummulated-other-daily-effort-year                                       ;; outputs the amount of time the farmer has spent doing other unspecified activities since the start of the year
+  report other-daily-effort-historyXticks-year
 end
-
-
-
-
-
-
-
 
 to-report DDMC_SEASON                                                                ;; outputs the mean IWLG throughout the season
-  report mean [DDMC-historyXticks-season] of cows ;with [adult-cow?]
+  report mean [DDMC-historyXticks-season] of cows
 end
 
 to-report DDMC_YEAR                                                                  ;; outputs the mean IWLG throughout the year
-  report mean [DDMC-historyXticks-year] of cows ;with [adult-cow?]
+  report mean [DDMC-historyXticks-year] of cows
 end
-
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; REFERENCES
