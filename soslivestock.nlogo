@@ -10729,9 +10729,9 @@ NetLogo 6.2.2
       <value value="11.1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="Experiment_climacoef" repetitions="150" runMetricsEveryStep="false">
+  <experiment name="Experiment_climacoef" repetitions="200" runMetricsEveryStep="true">
     <setup>setup</setup>
-    <go>go</go>
+    <go>repeat 92 [ go ]</go>
     <timeLimit steps="14720"/>
     <metric>simulation-time / 368</metric>
     <metric>income</metric>
@@ -10970,9 +10970,9 @@ NetLogo 6.2.2
       <value value="11.1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="Experiment_climacoef_subsistence" repetitions="150" runMetricsEveryStep="false">
+  <experiment name="Experiment_climacoef_subsistence" repetitions="200" runMetricsEveryStep="true">
     <setup>setup</setup>
-    <go>go</go>
+    <go>repeat 92 [ go ]</go>
     <timeLimit steps="14720"/>
     <metric>simulation-time / 368</metric>
     <metric>income</metric>
@@ -11209,9 +11209,9 @@ NetLogo 6.2.2
       <value value="11.1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="Experiment_climacoef_commercial" repetitions="150" runMetricsEveryStep="false">
+  <experiment name="Experiment_climacoef_commercial" repetitions="200" runMetricsEveryStep="true">
     <setup>setup</setup>
-    <go>go</go>
+    <go>repeat 92 [ go ]</go>
     <timeLimit steps="14720"/>
     <metric>simulation-time / 368</metric>
     <metric>income</metric>
@@ -11448,9 +11448,9 @@ NetLogo 6.2.2
       <value value="11.1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="Experiment_climacoef_environmental_30" repetitions="150" runMetricsEveryStep="false">
+  <experiment name="Experiment_climacoef_environmental_30" repetitions="200" runMetricsEveryStep="true">
     <setup>setup</setup>
-    <go>go</go>
+    <go>repeat 92 [ go ]</go>
     <timeLimit steps="14720"/>
     <metric>simulation-time / 368</metric>
     <metric>income</metric>
@@ -11687,9 +11687,9 @@ NetLogo 6.2.2
       <value value="11.1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="Experiment_climacoef_environmental_10" repetitions="150" runMetricsEveryStep="false">
+  <experiment name="Experiment_climacoef_environmental_10" repetitions="200" runMetricsEveryStep="true">
     <setup>setup</setup>
-    <go>go</go>
+    <go>repeat 92 [ go ]</go>
     <timeLimit steps="14720"/>
     <metric>simulation-time / 368</metric>
     <metric>income</metric>
