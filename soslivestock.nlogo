@@ -5449,7 +5449,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.2.2
+NetLogo 6.4.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
@@ -10729,9 +10729,9 @@ NetLogo 6.2.2
       <value value="11.1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="Experiment_climacoef" repetitions="200" runMetricsEveryStep="true">
+  <experiment name="Experiment_climacoef" repetitions="200" runMetricsEveryStep="false">
     <setup>setup</setup>
-    <go>repeat 92 [ go ]</go>
+    <go>go</go>
     <timeLimit steps="14720"/>
     <metric>simulation-time / 368</metric>
     <metric>income</metric>
@@ -10740,6 +10740,8 @@ NetLogo 6.2.2
     <metric>cost</metric>
     <metric>balance</metric>
     <metric>accumulated-balance</metric>
+    <metric>total-effort-history-season / 60</metric>
+    <metric>total-effort-history-year / 60</metric>
     <metric>total-effort-history / 60 ;; accumulated-effort</metric>
     <metric>sum [kg-supplement-DM] of cows + sum [kg-supplement-DM-breeding] of cows ;; Total daily kg-supplement-DM (kg)</metric>
     <metric>grass-height-report</metric>
@@ -10776,6 +10778,7 @@ NetLogo 6.2.2
     <metric>mean [live-weight] of cows with [pregnant?]</metric>
     <metric>mean [live-weight] of cows with [adult-cow?]</metric>
     <metric>mean [live-weight] of cows with [bull?]</metric>
+    <runMetricsCondition>ticks mod 92 = 0</runMetricsCondition>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
     </enumeratedValueSet>
@@ -10970,9 +10973,9 @@ NetLogo 6.2.2
       <value value="11.1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="Experiment_climacoef_subsistence" repetitions="200" runMetricsEveryStep="true">
+  <experiment name="Experiment_climacoef_subsistence" repetitions="200" runMetricsEveryStep="false">
     <setup>setup</setup>
-    <go>repeat 92 [ go ]</go>
+    <go>go</go>
     <timeLimit steps="14720"/>
     <metric>simulation-time / 368</metric>
     <metric>income</metric>
@@ -10981,6 +10984,8 @@ NetLogo 6.2.2
     <metric>cost</metric>
     <metric>balance</metric>
     <metric>accumulated-balance</metric>
+    <metric>total-effort-history-season / 60</metric>
+    <metric>total-effort-history-year / 60</metric>
     <metric>total-effort-history / 60 ;; accumulated-effort</metric>
     <metric>sum [kg-supplement-DM] of cows + sum [kg-supplement-DM-breeding] of cows ;; Total daily kg-supplement-DM (kg)</metric>
     <metric>grass-height-report</metric>
@@ -11017,6 +11022,7 @@ NetLogo 6.2.2
     <metric>mean [live-weight] of cows with [pregnant?]</metric>
     <metric>mean [live-weight] of cows with [adult-cow?]</metric>
     <metric>mean [live-weight] of cows with [bull?]</metric>
+    <runMetricsCondition>ticks mod 92 = 0</runMetricsCondition>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
     </enumeratedValueSet>
@@ -11209,9 +11215,9 @@ NetLogo 6.2.2
       <value value="11.1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="Experiment_climacoef_commercial" repetitions="200" runMetricsEveryStep="true">
+  <experiment name="Experiment_climacoef_commercial" repetitions="200" runMetricsEveryStep="false">
     <setup>setup</setup>
-    <go>repeat 92 [ go ]</go>
+    <go>go</go>
     <timeLimit steps="14720"/>
     <metric>simulation-time / 368</metric>
     <metric>income</metric>
@@ -11220,6 +11226,8 @@ NetLogo 6.2.2
     <metric>cost</metric>
     <metric>balance</metric>
     <metric>accumulated-balance</metric>
+    <metric>total-effort-history-season / 60</metric>
+    <metric>total-effort-history-year / 60</metric>
     <metric>total-effort-history / 60 ;; accumulated-effort</metric>
     <metric>sum [kg-supplement-DM] of cows + sum [kg-supplement-DM-breeding] of cows ;; Total daily kg-supplement-DM (kg)</metric>
     <metric>grass-height-report</metric>
@@ -11256,6 +11264,7 @@ NetLogo 6.2.2
     <metric>mean [live-weight] of cows with [pregnant?]</metric>
     <metric>mean [live-weight] of cows with [adult-cow?]</metric>
     <metric>mean [live-weight] of cows with [bull?]</metric>
+    <runMetricsCondition>ticks mod 92 = 0</runMetricsCondition>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
     </enumeratedValueSet>
@@ -11448,9 +11457,9 @@ NetLogo 6.2.2
       <value value="11.1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="Experiment_climacoef_environmental_30" repetitions="200" runMetricsEveryStep="true">
+  <experiment name="Experiment_climacoef_environmental_30" repetitions="200" runMetricsEveryStep="false">
     <setup>setup</setup>
-    <go>repeat 92 [ go ]</go>
+    <go>go</go>
     <timeLimit steps="14720"/>
     <metric>simulation-time / 368</metric>
     <metric>income</metric>
@@ -11459,6 +11468,8 @@ NetLogo 6.2.2
     <metric>cost</metric>
     <metric>balance</metric>
     <metric>accumulated-balance</metric>
+    <metric>total-effort-history-season / 60</metric>
+    <metric>total-effort-history-year / 60</metric>
     <metric>total-effort-history / 60 ;; accumulated-effort</metric>
     <metric>sum [kg-supplement-DM] of cows + sum [kg-supplement-DM-breeding] of cows ;; Total daily kg-supplement-DM (kg)</metric>
     <metric>grass-height-report</metric>
@@ -11495,6 +11506,7 @@ NetLogo 6.2.2
     <metric>mean [live-weight] of cows with [pregnant?]</metric>
     <metric>mean [live-weight] of cows with [adult-cow?]</metric>
     <metric>mean [live-weight] of cows with [bull?]</metric>
+    <runMetricsCondition>ticks mod 92 = 0</runMetricsCondition>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
     </enumeratedValueSet>
@@ -11687,9 +11699,9 @@ NetLogo 6.2.2
       <value value="11.1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="Experiment_climacoef_environmental_10" repetitions="200" runMetricsEveryStep="true">
+  <experiment name="Experiment_climacoef_environmental_10" repetitions="200" runMetricsEveryStep="false">
     <setup>setup</setup>
-    <go>repeat 92 [ go ]</go>
+    <go>go</go>
     <timeLimit steps="14720"/>
     <metric>simulation-time / 368</metric>
     <metric>income</metric>
@@ -11698,6 +11710,8 @@ NetLogo 6.2.2
     <metric>cost</metric>
     <metric>balance</metric>
     <metric>accumulated-balance</metric>
+    <metric>total-effort-history-season / 60</metric>
+    <metric>total-effort-history-year / 60</metric>
     <metric>total-effort-history / 60 ;; accumulated-effort</metric>
     <metric>sum [kg-supplement-DM] of cows + sum [kg-supplement-DM-breeding] of cows ;; Total daily kg-supplement-DM (kg)</metric>
     <metric>grass-height-report</metric>
@@ -11734,6 +11748,7 @@ NetLogo 6.2.2
     <metric>mean [live-weight] of cows with [pregnant?]</metric>
     <metric>mean [live-weight] of cows with [adult-cow?]</metric>
     <metric>mean [live-weight] of cows with [bull?]</metric>
+    <runMetricsCondition>ticks mod 92 = 0</runMetricsCondition>
     <enumeratedValueSet variable="initial-num-heifers">
       <value value="0"/>
     </enumeratedValueSet>
