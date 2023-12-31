@@ -108,11 +108,25 @@ globals [
   balance                                                                           ;; balance (income - cost)
 
   cost-history                                                                      ;; variable to store the cost history of the system
-  cost-historyXticks                                                                ;; costs of the system since the start of the simulation
+  cost-historyXticks                                                                ;; cost of the system since the start of the simulation
+  cost-history-season                                                               ;; variable to store the cost of the system since the start of the season
+  cost-historyXticks-season                                                         ;; cost of the system since the start of the season
+  cost-history-year                                                                 ;; variable to store the cost of the system since the start of the year
+  cost-historyXticks-year                                                           ;; cost of the system since the start of the year
+
   income-history                                                                    ;; variable to store the income history of the system
   income-historyXticks                                                              ;; income of the system since the start of the simulation
+  income-history-season                                                             ;; variable to store the income of the system since the start of the season
+  income-historyXticks-season                                                       ;; income of the system since the start of the season
+  income-history-year                                                               ;; variable to store the income of the system since the start of the year
+  income-historyXticks-year                                                         ;; income of the system since the start of the year
+
   balance-history                                                                   ;; variable to store the balance history of the system
   balance-historyXticks                                                             ;; balance (i.e., savings) of the system since the start of the simulation
+  balance-history-season                                                            ;; variable to store the balance of the system since the start of the season
+  balance-historyXticks-season                                                      ;; balance of the system since the start of the season
+  balance-history-year                                                              ;; variable to store the balance of the system since the start of the year
+  balance-historyXticks-year                                                        ;; balance of the system since the start of the year
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Wellbeing related global variables
@@ -420,10 +434,24 @@ to setup-globals
 
   set cost-history []
   set cost-historyXticks []
+  set cost-history-season []
+  set cost-historyXticks-season []
+  set cost-history-year []
+  set cost-historyXticks-year []
+
   set income-history []
   set income-historyXticks []
+  set income-history-season []
+  set income-historyXticks-season []
+  set income-history-year []
+  set income-historyXticks-year []
+
   set balance-history []
   set balance-historyXticks []
+  set balance-history-season []
+  set balance-historyXticks-season []
+  set balance-history-year []
+  set balance-historyXticks-year []
 
   set supplement-effort-history []
   set supplement-effort-history-season []
@@ -496,7 +524,6 @@ to setup-globals
   set other-daily-effort-historyXticks-season []
   set other-daily-effort-history-year []
   set other-daily-effort-historyXticks-year []
-
 end
 
 to setup-grassland
@@ -1150,12 +1177,32 @@ to go
     set DDMC-historyXticks-year sum (sublist DDMC-history-year 0 year-days)
     if year-days = 368 [set DDMC-history-year []]]
 
-  set cost-history fput cost cost-history                                                                                       ;; cost of the livestock system since the start of the simulation
+  set cost-history fput cost cost-history                                                                                       ;; costs of the livestock system since the start of the simulation
   set cost-historyXticks sum (sublist cost-history 0 simulation-time)
+  set cost-history-season fput cost cost-history-season                                                                         ;; costs of the livestock system since the start of the season
+  set cost-historyXticks-season sum (sublist cost-history-season 0 season-days)
+  if season-days = season-length [set cost-history-season []]
+  set cost-history-year fput cost cost-history-year                                                                             ;; costs of the livestock system since the start of the year
+  set cost-historyXticks-year sum (sublist cost-history-year 0 year-days)
+  if year-days = 368 [set cost-history-year []]
+
   set income-history fput income income-history                                                                                 ;; income of the livestock system since the start of the simulation
   set income-historyXticks sum (sublist income-history 0 simulation-time)
+  set income-history-season fput income income-history-season                                                                   ;; income of the livestock system since the start of the season
+  set income-historyXticks-season sum (sublist income-history-season 0 season-days)
+  if season-days = season-length [set income-history-season []]
+  set income-history-year fput income income-history-year                                                                       ;; income of the livestock system since the start of the year
+  set income-historyXticks-year sum (sublist income-history-year 0 year-days)
+  if year-days = 368 [set income-history-year []]
+
   set balance-history fput balance balance-history                                                                              ;; balance of the livestock system since the start of the simulation
   set balance-historyXticks sum (sublist balance-history 0 simulation-time)
+  set balance-history-season fput balance balance-history-season                                                                ;; balance of the livestock system since the start of the season
+  set balance-historyXticks-season sum (sublist balance-history-season 0 season-days)
+  if season-days = season-length [set balance-history-season []]
+  set balance-history-year fput balance balance-history-year                                                                    ;; balance of the livestock system since the start of the year
+  set balance-historyXticks-year sum (sublist balance-history-year 0 year-days)
+  if year-days = 368 [set balance-history-year []]
 
   set supplement-effort-history fput supplement-effort supplement-effort-history                                                ;; time spent by the farmer (effort, in minutes) on feed supplementation since the start of the simulation
   set supplement-effort-historyXticks sum (sublist supplement-effort-history 0 simulation-time)
@@ -3446,9 +3493,9 @@ NIL
 1
 
 MONITOR
-1375
+1463
 212
-1558
+1646
 257
 Ordinary sales (OS) income (USD)
 ordinary-sales-income
@@ -3457,9 +3504,9 @@ ordinary-sales-income
 11
 
 PLOT
-1376
+1464
 260
-1723
+1811
 410
 Daily income
 Days
@@ -3476,9 +3523,9 @@ PENS
 "ES income" 1.0 0 -2674135 true "" "plot extraordinary-sales-income"
 
 PLOT
-1737
+1825
 92
-2100
+2188
 219
 Daily balance
 Days
@@ -3599,20 +3646,20 @@ ordinary-sale-of-cows-with
 1
 
 MONITOR
-1377
+1465
 40
-1556
+1644
 85
 Accumulated balance (USD)
 accumulated-balance
-17
+3
 1
 11
 
 PLOT
-1377
+1465
 86
-1721
+1809
 206
 Accumulated balance
 Days
@@ -3628,9 +3675,9 @@ PENS
 "Balance" 1.0 0 -16777216 true "" "plot accumulated-balance"
 
 MONITOR
-1560
+1648
 212
-1720
+1808
 257
 Extraordinary sales (ES) income (USD)
 extraordinary-sales-income
@@ -3720,24 +3767,24 @@ days
 HORIZONTAL
 
 MONITOR
-1735
+1823
 415
-1954
+2015
 460
 Total daily kg-supplement-DM (kg)
 sum [kg-supplement-DM] of cows + sum [kg-supplement-DM-breeding] of cows
-7
+3
 1
 11
 
 MONITOR
-1737
-218
-1906
-263
+2017
+415
+2190
+460
 Daily supplement cost (USD)
 supplement-cost
-7
+3
 1
 11
 
@@ -3817,9 +3864,9 @@ kg
 HORIZONTAL
 
 PLOT
-1736
+1824
 265
-2102
+2190
 414
 Daily costs
 Days
@@ -3868,10 +3915,10 @@ LIVESTOCK RELATED OUTPUTS
 1
 
 TEXTBOX
-1377
+1459
 10
-1681
-54
+1763
+30
 ECONOMIC RELATED OUTPUTS
 18
 0.0
@@ -3888,13 +3935,13 @@ RESOURCE RELATED OUTPUTS
 1
 
 MONITOR
-1737
-41
-1875
-86
+2187
+91
+2331
+136
 Daily balance (USD)
 balance
-17
+3
 1
 11
 
@@ -3925,13 +3972,13 @@ other-cost
 11
 
 MONITOR
-1892
-40
-2041
-85
+1823
+220
+1972
+265
 Accumulated cost (USD)
 accumulated-cost
-17
+3
 1
 11
 
@@ -5106,6 +5153,94 @@ NIL
 NIL
 NIL
 1
+
+MONITOR
+2188
+135
+2332
+180
+Seasonal balance (USD)
+balance-historyXticks-season
+3
+1
+11
+
+MONITOR
+2188
+179
+2332
+224
+Annual balance (USD)
+balance-historyXticks-year
+3
+1
+11
+
+MONITOR
+1301
+260
+1465
+305
+Daily income (USD)
+income
+3
+1
+11
+
+MONITOR
+1301
+304
+1465
+349
+Seasonal income (USD)
+income-historyXticks-season
+3
+1
+11
+
+MONITOR
+1301
+348
+1465
+393
+Annual income (USD)
+income-historyXticks-year
+3
+1
+11
+
+MONITOR
+2190
+265
+2344
+310
+Daily cost (USD)
+cost
+3
+1
+11
+
+MONITOR
+2190
+309
+2344
+354
+Seasonal cost (USD)
+cost-historyXticks-season
+3
+1
+11
+
+MONITOR
+2190
+352
+2344
+397
+Annual cost (USD)
+cost-historyXticks-year
+3
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -10734,11 +10869,18 @@ NetLogo 6.4.0
     <go>go</go>
     <timeLimit steps="14720"/>
     <metric>simulation-time / 368</metric>
-    <metric>income</metric>
+    <metric>income ;; daily income</metric>
+    <metric>income-historyXticks-season</metric>
+    <metric>income-historyXticks-year</metric>
     <metric>ordinary-sales-income</metric>
     <metric>extraordinary-sales-income</metric>
-    <metric>cost</metric>
-    <metric>balance</metric>
+    <metric>cost ;; daily cost</metric>
+    <metric>cost-historyXticks-season</metric>
+    <metric>cost-historyXticks-year</metric>
+    <metric>accumulated-cost</metric>
+    <metric>balance ;; daily balance</metric>
+    <metric>balance-historyXticks-season</metric>
+    <metric>balance-historyXticks-year</metric>
     <metric>accumulated-balance</metric>
     <metric>total-effort-history-season / 60</metric>
     <metric>total-effort-history-year / 60</metric>
@@ -10978,11 +11120,18 @@ NetLogo 6.4.0
     <go>go</go>
     <timeLimit steps="14720"/>
     <metric>simulation-time / 368</metric>
-    <metric>income</metric>
+    <metric>income ;; daily income</metric>
+    <metric>income-historyXticks-season</metric>
+    <metric>income-historyXticks-year</metric>
     <metric>ordinary-sales-income</metric>
     <metric>extraordinary-sales-income</metric>
-    <metric>cost</metric>
-    <metric>balance</metric>
+    <metric>cost ;; daily cost</metric>
+    <metric>cost-historyXticks-season</metric>
+    <metric>cost-historyXticks-year</metric>
+    <metric>accumulated-cost</metric>
+    <metric>balance ;; daily balance</metric>
+    <metric>balance-historyXticks-season</metric>
+    <metric>balance-historyXticks-year</metric>
     <metric>accumulated-balance</metric>
     <metric>total-effort-history-season / 60</metric>
     <metric>total-effort-history-year / 60</metric>
@@ -11220,11 +11369,18 @@ NetLogo 6.4.0
     <go>go</go>
     <timeLimit steps="14720"/>
     <metric>simulation-time / 368</metric>
-    <metric>income</metric>
+    <metric>income ;; daily income</metric>
+    <metric>income-historyXticks-season</metric>
+    <metric>income-historyXticks-year</metric>
     <metric>ordinary-sales-income</metric>
     <metric>extraordinary-sales-income</metric>
-    <metric>cost</metric>
-    <metric>balance</metric>
+    <metric>cost ;; daily cost</metric>
+    <metric>cost-historyXticks-season</metric>
+    <metric>cost-historyXticks-year</metric>
+    <metric>accumulated-cost</metric>
+    <metric>balance ;; daily balance</metric>
+    <metric>balance-historyXticks-season</metric>
+    <metric>balance-historyXticks-year</metric>
     <metric>accumulated-balance</metric>
     <metric>total-effort-history-season / 60</metric>
     <metric>total-effort-history-year / 60</metric>
@@ -11462,11 +11618,18 @@ NetLogo 6.4.0
     <go>go</go>
     <timeLimit steps="14720"/>
     <metric>simulation-time / 368</metric>
-    <metric>income</metric>
+    <metric>income ;; daily income</metric>
+    <metric>income-historyXticks-season</metric>
+    <metric>income-historyXticks-year</metric>
     <metric>ordinary-sales-income</metric>
     <metric>extraordinary-sales-income</metric>
-    <metric>cost</metric>
-    <metric>balance</metric>
+    <metric>cost ;; daily cost</metric>
+    <metric>cost-historyXticks-season</metric>
+    <metric>cost-historyXticks-year</metric>
+    <metric>accumulated-cost</metric>
+    <metric>balance ;; daily balance</metric>
+    <metric>balance-historyXticks-season</metric>
+    <metric>balance-historyXticks-year</metric>
     <metric>accumulated-balance</metric>
     <metric>total-effort-history-season / 60</metric>
     <metric>total-effort-history-year / 60</metric>
@@ -11704,11 +11867,18 @@ NetLogo 6.4.0
     <go>go</go>
     <timeLimit steps="14720"/>
     <metric>simulation-time / 368</metric>
-    <metric>income</metric>
+    <metric>income ;; daily income</metric>
+    <metric>income-historyXticks-season</metric>
+    <metric>income-historyXticks-year</metric>
     <metric>ordinary-sales-income</metric>
     <metric>extraordinary-sales-income</metric>
-    <metric>cost</metric>
-    <metric>balance</metric>
+    <metric>cost ;; daily cost</metric>
+    <metric>cost-historyXticks-season</metric>
+    <metric>cost-historyXticks-year</metric>
+    <metric>accumulated-cost</metric>
+    <metric>balance ;; daily balance</metric>
+    <metric>balance-historyXticks-season</metric>
+    <metric>balance-historyXticks-year</metric>
     <metric>accumulated-balance</metric>
     <metric>total-effort-history-season / 60</metric>
     <metric>total-effort-history-year / 60</metric>
