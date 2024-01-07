@@ -41,7 +41,7 @@ globals [
   grass-energy                                                                      ;; metabolizable energy per Kg of dry matter: 1.8 Mcal/Kg of DM
   carrying-capacity                                                                 ;; system current carrying capacity expressed in animal units (AU)
   estimated-carrying-capacity                                                       ;; carrying capacity of the system (expressed in AU) as estimated by the environmental farmer
-  estimated-kmax                                                                    ;; the environmental farmer uses the grass height present at the beginning of the season to estimate the carrying capacity of the system during that season
+  estimated-gh                                                                      ;; the environmental farmer uses the grass height present at the beginning of the season to estimate the carrying capacity of the system during that season
   estimated-DM-cm-ha                                                                ;; the environmental farmer uses the DM-cm-ha value present at the beginning of the season to estimate the carrying capacity of the system during that season
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1314,22 +1314,22 @@ to go
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
   if season-days = 1 [                                                                                                                                                                                   ;; the estimated carrying capacity is always updated at the beginning of the new season. It is estimated because the farmer doesn't have perfect knowledge of all the variables in the system that determines it
-    if (spatial-management = "free grazing") [set estimated-kmax mean [grass-height] of patches set estimated-DM-cm-ha DM-cm-ha set estimated-climacoef climacoef]
+    if (spatial-management = "free grazing") [set estimated-gh mean [grass-height] of patches set estimated-DM-cm-ha DM-cm-ha set estimated-climacoef climacoef]
 
   if (spatial-management = "rotational grazing") [
-      ask patches with [paddock-a = 1] [if any? cows-here [set estimated-kmax mean [grass-height] of patches with [paddock-a = 1] set estimated-DM-cm-ha DM-cm-ha set estimated-climacoef climacoef]]
-      ask patches with [paddock-b = 1] [if any? cows-here [set estimated-kmax mean [grass-height] of patches with [paddock-b = 1] set estimated-DM-cm-ha DM-cm-ha set estimated-climacoef climacoef]]
-      ask patches with [paddock-c = 1] [if any? cows-here [set estimated-kmax mean [grass-height] of patches with [paddock-c = 1] set estimated-DM-cm-ha DM-cm-ha set estimated-climacoef climacoef]]
-      ask patches with [paddock-d = 1] [if any? cows-here [set estimated-kmax mean [grass-height] of patches with [paddock-d = 1] set estimated-DM-cm-ha DM-cm-ha set estimated-climacoef climacoef]]]]
+      ask patches with [paddock-a = 1] [if any? cows-here [set estimated-gh mean [grass-height] of patches with [paddock-a = 1] set estimated-DM-cm-ha DM-cm-ha set estimated-climacoef climacoef]]
+      ask patches with [paddock-b = 1] [if any? cows-here [set estimated-gh mean [grass-height] of patches with [paddock-b = 1] set estimated-DM-cm-ha DM-cm-ha set estimated-climacoef climacoef]]
+      ask patches with [paddock-c = 1] [if any? cows-here [set estimated-gh mean [grass-height] of patches with [paddock-c = 1] set estimated-DM-cm-ha DM-cm-ha set estimated-climacoef climacoef]]
+      ask patches with [paddock-d = 1] [if any? cows-here [set estimated-gh mean [grass-height] of patches with [paddock-d = 1] set estimated-DM-cm-ha DM-cm-ha set estimated-climacoef climacoef]]]]
 
   if (spatial-management = "free grazing") [                                                                                                                                                             ;; once all the variables used to determine carrying capacity have been set (based on their values on the first day of the season), the estimated carrying capacity can now be determined
-    set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle] ;; "%-DM-available-for-cattle" and "daily-DM-consumed-by-cattle" are assumptions made by the farmer and can be set with the sliders of the same name found on the interface. "%-DM-available-for-cattle" is the percentage of dry matter that the farmer will use from the grassland for his cattle. For example, a value of 50% indicates that the farmer considers the carrying capacity of the system to be 50% of the actual carrying capacity (e.g., if the grassland has 10000 kg of DM, the farmer would consider 5000 kg of DM for his cattle), leaving the remaining 50% for other animals and biological processes
+    set estimated-carrying-capacity ((((estimated-gh * estimated-DM-cm-ha) * estimated-climacoef * count patches) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]   ;; "%-DM-available-for-cattle" and "daily-DM-consumed-by-cattle" are assumptions made by the farmer and can be set with the sliders of the same name found on the interface. "%-DM-available-for-cattle" is the percentage of dry matter that the farmer will use from the grassland for his cattle. For example, a value of 50% indicates that the farmer considers the carrying capacity of the system to be 50% of the actual carrying capacity (e.g., if the grassland has 10000 kg of DM, the farmer would consider 5000 kg of DM for his cattle), leaving the remaining 50% for other animals and biological processes
                                                                                                                                                                                                          ;; "daily-DM-consumed-by-cattle" is the maximum kg of DM a cow can consume in one day
   if (spatial-management = "rotational grazing") [
-    ask patches with [paddock-a = 1] [if any? cows-here [set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-a = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
-    ask patches with [paddock-b = 1] [if any? cows-here [set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-b = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
-    ask patches with [paddock-c = 1] [if any? cows-here [set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-c = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
-    ask patches with [paddock-d = 1] [if any? cows-here [set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-d = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]]
+    ask patches with [paddock-a = 1] [if any? cows-here [set estimated-carrying-capacity ((((estimated-gh * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-a = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+    ask patches with [paddock-b = 1] [if any? cows-here [set estimated-carrying-capacity ((((estimated-gh * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-b = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+    ask patches with [paddock-c = 1] [if any? cows-here [set estimated-carrying-capacity ((((estimated-gh * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-c = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+    ask patches with [paddock-d = 1] [if any? cows-here [set estimated-carrying-capacity ((((estimated-gh * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-d = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]]
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Determination the actual carrying capacity of the system
@@ -1795,36 +1795,36 @@ to move                                                                         
       if ticks-since-here = 0 [
         ask patches with [paddock-a = 1] [
           if any? cows-here [
-            set estimated-kmax mean [grass-height] of patches with [paddock-a = 1] * mean [soil-quality] of patches with [paddock-a = 1]
+            set estimated-gh mean [grass-height] of patches with [paddock-a = 1] * mean [soil-quality] of patches with [paddock-a = 1]
             set estimated-DM-cm-ha DM-cm-ha
             set estimated-climacoef climacoef]]
         ask patches with [paddock-b = 1] [
           if any? cows-here [
-            set estimated-kmax mean [grass-height] of patches with [paddock-b = 1] * mean [soil-quality] of patches with [paddock-b = 1]
+            set estimated-gh mean [grass-height] of patches with [paddock-b = 1] * mean [soil-quality] of patches with [paddock-b = 1]
             set estimated-DM-cm-ha DM-cm-ha
             set estimated-climacoef climacoef]]
         ask patches with [paddock-c = 1] [
           if any? cows-here [
-            set estimated-kmax mean [grass-height] of patches with [paddock-c = 1] * mean [soil-quality] of patches with [paddock-c = 1]
+            set estimated-gh mean [grass-height] of patches with [paddock-c = 1] * mean [soil-quality] of patches with [paddock-c = 1]
             set estimated-DM-cm-ha DM-cm-ha
             set estimated-climacoef climacoef]]
         ask patches with [paddock-d = 1] [
           if any? cows-here [
-            set estimated-kmax mean [grass-height] of patches with [paddock-d = 1] * mean [soil-quality] of patches with [paddock-d = 1]
+            set estimated-gh mean [grass-height] of patches with [paddock-d = 1] * mean [soil-quality] of patches with [paddock-d = 1]
             set estimated-DM-cm-ha DM-cm-ha
             set estimated-climacoef climacoef]]
         ask patches with [paddock-a = 1] [
           if any? cows-here [
-            set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-a = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+            set estimated-carrying-capacity ((((estimated-gh * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-a = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
         ask patches with [paddock-b = 1] [
           if any? cows-here [
-            set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-b = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+            set estimated-carrying-capacity ((((estimated-gh * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-b = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
         ask patches with [paddock-c = 1] [
           if any? cows-here [
-            set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-c = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
+            set estimated-carrying-capacity ((((estimated-gh * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-c = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]
         ask patches with [paddock-d = 1] [
           if any? cows-here [
-            set estimated-carrying-capacity ((((estimated-kmax * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-d = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]]]
+            set estimated-carrying-capacity ((((estimated-gh * estimated-DM-cm-ha) * estimated-climacoef * count patches with [paddock-d = 1]) * (%-DM-available-for-cattle / 100)) / season-length) / daily-DM-consumed-by-cattle]]]]
 
     if (farmer-profile = "commercial") or (farmer-profile = "commercial-fsb") [                                                  ;; commercial-oriented farmers move cows from one plot to another when the average live weight of the cows is below a threshold (determined by the "RG-live-weight-threshold" slider on the interface)
       if any? cows with [born-calf? = false] [
@@ -3577,8 +3577,8 @@ CHOOSER
 727
 farmer-profile
 farmer-profile
-"none" "subsistence" "commercial" "commercial-fsb" "environmental" "environmental-fmincows"
-2
+"none" "subsistence" "commercial" "environmental"
+3
 
 TEXTBOX
 238
@@ -3696,10 +3696,10 @@ extraordinary-sale-of-cows-with
 1
 
 SLIDER
-525
-987
-783
-1020
+529
+928
+787
+961
 commercial-farmer-ES-min-weight
 commercial-farmer-ES-min-weight
 0
@@ -3726,10 +3726,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-227
-987
-507
-1020
+231
+928
+511
+961
 RG-commercial-farmer-live-weight-threshold
 RG-commercial-farmer-live-weight-threshold
 180
@@ -5029,10 +5029,10 @@ PENS
 "Livestock population" 1.0 0 -13791810 true "" "plot sum [animal-units] of cows"
 
 SLIDER
-514
-1074
-773
-1107
+518
+1015
+777
+1048
 daily-DM-consumed-by-cattle
 daily-DM-consumed-by-cattle
 0.1
@@ -5055,10 +5055,10 @@ estimated-carrying-capacity
 11
 
 TEXTBOX
-514
-1045
-738
-1071
+518
+986
+742
+1012
 Parameter used by the environmental farmer to estimate the carrying capacity
 11
 0.0
@@ -5076,10 +5076,10 @@ carrying-capacity
 11
 
 SLIDER
-514
-1106
-773
-1139
+518
+1047
+777
+1080
 %-DM-available-for-cattle
 %-DM-available-for-cattle
 0
