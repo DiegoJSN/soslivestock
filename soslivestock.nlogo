@@ -17,7 +17,8 @@ globals [
   current-season-name                                                               ;; translates the numbers "0, 1, 2, 3" to "winter, spring, summer, fall"
   season-coef                                                                       ;; affects the live weight gain of animals in relation with the grass quality according to the season: winter = 1, spring = 1.15, summer = 1.05, fall = 1
   climacoef                                                                         ;; climacoef relates the primary production in a season with the average for that season due to climate variations. Takes values from 0.1 to 1.5, and is set by the observer in the interface
-  historical-climacoef                                                              ;; in case the observer wants to use historical values for climacoef. For the model to use "historical-climacoef" values, the observer must select the "historical-climacoef" option within the "climacoef-distribution" chooser in the interface, and enter the historic climacoef values within the "setup-globals" procedure
+  historical-climacoef                                                              ;; in case the observer wants to use historical values for climacoef. For the model to use "historical-climacoef" values, the observer must select the "historical-climacoef" option within the "climacoef-distribution" chooser in the interface, and enter the historic climacoef values within the "setup-globals" procedure, in the "historical-climacoef" list
+  clock-historical-climacoef                                                        ;; variable used to stop the simulation when the historical-climacoef list finished. It is updated each season
   direct-climacoef-control                                                          ;; in case the observer wants to change the climate coefficient in real time (i.e. while the simulation is running), the observer must select the "direct-climacoef-control" option within the "climacoef-distribution" chooser in the interface, and select the desired climacoef value using the "set-direct-climacoef-control" slider in the interface
   estimated-climacoef                                                               ;; the environmental farmer uses the climacoef value present at the beginning of the season to estimate the carrying capacity of the system during that season
 
@@ -371,6 +372,7 @@ to setup-globals
   set maxLWbull 1000
 
   set historical-climacoef [0.48 0.3 0.72 0.12 0.71 0.65 1.1]                       ;; historic climacoef values. One value = 1 season (for example, 7 values = 7 seasons, the simulation will stop after season 7). Replace these values with historical values. For the model to use "historical-climacoef" values, the observer must select the "historical-climacoef" option within the "climacoef-distribution" chooser in the interface.
+  set clock-historical-climacoef -1
 
   set supplement-prices [0.113 0.121 0.123 0.115]
   set born-calf-prices [0.94 1 0.97 0.961]
@@ -400,97 +402,97 @@ to setup-globals
   set other-daily-effort 0
 
   set cost-history []
-  set cost-historyXticks []
+  set cost-historyXticks 0
   set cost-history-season []
-  set cost-historyXticks-season []
+  set cost-historyXticks-season 0
   set cost-history-year []
-  set cost-historyXticks-year []
+  set cost-historyXticks-year 0
 
   set income-history []
-  set income-historyXticks []
+  set income-historyXticks 0
   set income-history-season []
-  set income-historyXticks-season []
+  set income-historyXticks-season 0
   set income-history-year []
-  set income-historyXticks-year []
+  set income-historyXticks-year 0
 
   set balance-history []
-  set balance-historyXticks []
+  set balance-historyXticks 0
   set balance-history-season []
-  set balance-historyXticks-season []
+  set balance-historyXticks-season 0
   set balance-history-year []
-  set balance-historyXticks-year []
+  set balance-historyXticks-year 0
 
   set supplement-effort-history []
   set supplement-effort-history-season []
-  set supplement-effort-historyXticks-season []
+  set supplement-effort-historyXticks-season 0
   set supplement-effort-history-year []
-  set supplement-effort-historyXticks-year []
+  set supplement-effort-historyXticks-year 0
 
   set weaning-effort-history []
   set weaning-effort-history-season []
-  set weaning-effort-historyXticks-season []
+  set weaning-effort-historyXticks-season 0
   set weaning-effort-history-year []
-  set weaning-effort-historyXticks-year []
+  set weaning-effort-historyXticks-year 0
 
   set OS-males-effort-history []
   set OS-males-effort-history-season []
-  set OS-males-effort-historyXticks-season []
+  set OS-males-effort-historyXticks-season 0
   set OS-males-effort-history-year []
-  set OS-males-effort-historyXticks-year []
+  set OS-males-effort-historyXticks-year 0
 
   set OS-old-cow-effort-history []
   set OS-old-cow-effort-history-season []
-  set OS-old-cow-effort-historyXticks-season []
+  set OS-old-cow-effort-historyXticks-season 0
   set OS-old-cow-effort-history-year []
-  set OS-old-cow-effort-historyXticks-year []
+  set OS-old-cow-effort-historyXticks-year 0
 
   set OS-old-bull-effort-history []
   set OS-old-bull-effort-history-season []
-  set OS-old-bull-effort-historyXticks-season []
+  set OS-old-bull-effort-historyXticks-season 0
   set OS-old-bull-effort-history-year []
-  set OS-old-bull-effort-historyXticks-year []
+  set OS-old-bull-effort-historyXticks-year 0
 
   set OS-females-effort-history []
   set OS-females-effort-history-season []
-  set OS-females-effort-historyXticks-season []
+  set OS-females-effort-historyXticks-season 0
   set OS-females-effort-history-year []
-  set OS-females-effort-historyXticks-year []
+  set OS-females-effort-historyXticks-year 0
 
   set ES-males-effort-history []
   set ES-males-effort-history-season []
-  set ES-males-effort-historyXticks-season []
+  set ES-males-effort-historyXticks-season 0
   set ES-males-effort-history-year []
-  set ES-males-effort-historyXticks-year []
+  set ES-males-effort-historyXticks-year 0
 
   set ES-old-cow-effort-history []
   set ES-old-cow-effort-history-season []
-  set ES-old-cow-effort-historyXticks-season []
+  set ES-old-cow-effort-historyXticks-season 0
   set ES-old-cow-effort-history-year []
-  set ES-old-cow-effort-historyXticks-year []
+  set ES-old-cow-effort-historyXticks-year 0
 
   set ES-females-effort-history []
   set ES-females-effort-history-season []
-  set ES-females-effort-historyXticks-season []
+  set ES-females-effort-historyXticks-season 0
   set ES-females-effort-history-year []
-  set ES-females-effort-historyXticks-year []
+  set ES-females-effort-historyXticks-year 0
 
   set breeding-effort-history []
   set breeding-effort-history-season []
-  set breeding-effort-historyXticks-season []
+  set breeding-effort-historyXticks-season 0
   set breeding-effort-history-year []
-  set breeding-effort-historyXticks-year []
+  set breeding-effort-historyXticks-year 0
 
   set rotational-effort-history []
   set rotational-effort-history-season []
-  set rotational-effort-historyXticks-season []
+  set rotational-effort-historyXticks-season 0
   set rotational-effort-history-year []
-  set rotational-effort-historyXticks-year []
+  set rotational-effort-historyXticks-year 0
 
   set other-daily-effort-history []
   set other-daily-effort-history-season []
-  set other-daily-effort-historyXticks-season []
+  set other-daily-effort-historyXticks-season 0
   set other-daily-effort-history-year []
-  set other-daily-effort-historyXticks-year []
+  set other-daily-effort-historyXticks-year 0
 end
 
 to setup-grassland
@@ -1073,10 +1075,12 @@ to go
   if current-season = 2 [if season-days >= summer-length [set current-season 3 set season-days 0]]
   if current-season = 3 [if season-days >= fall-length [set current-season 0 set season-days 0]]
 
-  if (climacoef-distribution = "historical-climacoef") [if current-season = 0 [set climacoef item (simulation-time / winter-length) historical-climacoef]]    ;; if "historical-climacoef" is selected with the "climacoef-distribution" chooser, historical values for climacoef are used instead
-  if (climacoef-distribution = "historical-climacoef") [if current-season = 1 [set climacoef item (simulation-time / spring-length) historical-climacoef]]
-  if (climacoef-distribution = "historical-climacoef") [if current-season = 2 [set climacoef item (simulation-time / summer-length) historical-climacoef]]
-  if (climacoef-distribution = "historical-climacoef") [if current-season = 3 [set climacoef item (simulation-time / fall-length) historical-climacoef]]
+  if season-days = 0 [set clock-historical-climacoef clock-historical-climacoef + 1]                                                ;; every season, the clock-historical-climacoef variable is updated. This variable is used to stop the simulation when the historical-climacoef list is finished
+  if (climacoef-distribution = "historical-climacoef") [if clock-historical-climacoef = length historical-climacoef [stop]]         ;; when the variable clock-historical-climacoef has the same value as the number of elements in the historical-climacoef list, the simulation stops
+  if (climacoef-distribution = "historical-climacoef") [if current-season = 0 [set climacoef item clock-historical-climacoef historical-climacoef]]    ;; if "historical-climacoef" is selected with the "climacoef-distribution" chooser, historical values for climacoef are used instead
+  if (climacoef-distribution = "historical-climacoef") [if current-season = 1 [set climacoef item  clock-historical-climacoef historical-climacoef]]
+  if (climacoef-distribution = "historical-climacoef") [if current-season = 2 [set climacoef item clock-historical-climacoef historical-climacoef]]
+  if (climacoef-distribution = "historical-climacoef") [if current-season = 3 [set climacoef item clock-historical-climacoef historical-climacoef]]
 
   set direct-climacoef-control set-direct-climacoef-control                                                                                                   ;; if "direct-climacoef-control" is selected, the user can change the climate coefficient in real time (i.e. while the simulation is running)
   if (climacoef-distribution = "direct-climacoef-control") [if current-season = 0 [set climacoef direct-climacoef-control]]
@@ -2284,11 +2288,11 @@ to-report crop-efficiency                                                       
   report sum [DDMC] of cows / (DM-cm-ha * sum [grass-height] of patches) * 100
  end
 
-to-report accumulated-cost                                                                                          ;; outputs the accumulated balance of the system since the start of the simulation (USD)
+to-report accumulated-cost                                                                                          ;; outputs the accumulated cost of the system since the start of the simulation (USD)
   report cost-historyXticks
 end
 
-to-report accumulated-income                                                                                        ;; outputs the accumulated balance of the system since the start of the simulation (USD)
+to-report accumulated-income                                                                                        ;; outputs the accumulated income of the system since the start of the simulation (USD)
   report income-historyXticks
 end
 
@@ -2902,7 +2906,7 @@ SLIDER
 10
 1343
 148
-1377
+1376
 set-MW-1-AU
 set-MW-1-AU
 1
@@ -2930,7 +2934,7 @@ true
 "" ""
 PENS
 "SR total area" 1.0 0 -16777216 true "" "plot stocking-rate"
-"SR paddock area (only for RG)" 1.0 0 -7500403 true "" "plot paddock-SR"
+"SR paddock area (only for RG)" 1.0 0 -7500403 true "" "ifelse (spatial-management = \"rotational grazing\") [plot paddock-SR][plot-pen-up]"
 
 MONITOR
 832
@@ -3536,7 +3540,7 @@ SLIDER
 229
 968
 466
-1002
+1001
 RG-days-in-paddock
 RG-days-in-paddock
 0
@@ -3654,7 +3658,7 @@ MONITOR
 57
 Climacoef
 climacoef
-17
+3
 1
 11
 
@@ -4057,7 +4061,7 @@ true
 "" ""
 PENS
 "ACTUAL Carrying capacity" 1.0 0 -2674135 true "" "plot carrying-capacity"
-"EST. Carrying capacity (for Env. farmer)" 1.0 0 -5825686 true "" "plot estimated-carrying-capacity"
+"EST. Carrying capacity (only for Env. farmer)" 1.0 0 -5825686 true "" "ifelse (farmer-profile = \"environmental\") [plot estimated-carrying-capacity ][plot-pen-up]"
 "Livestock population" 1.0 0 -13791810 true "" "plot sum [animal-units] of cows"
 
 SLIDER
@@ -4089,8 +4093,8 @@ estimated-carrying-capacity
 TEXTBOX
 518
 986
-742
-1012
+743
+1013
 Parameter used by the environmental farmer to estimate the carrying capacity
 11
 0.0

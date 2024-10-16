@@ -17,7 +17,8 @@ globals [
   current-season-name                                                               ;; translates the numbers "0, 1, 2, 3" to "winter, spring, summer, fall"
   season-coef                                                                       ;; affects the live weight gain of animals in relation with the grass quality according to the season: winter = 1, spring = 1.15, summer = 1.05, fall = 1
   climacoef                                                                         ;; climacoef relates the primary production in a season with the average for that season due to climate variations. Takes values from 0.1 to 1.5, and is set by the observer in the interface
-  historical-climacoef                                                              ;; in case the observer wants to use historical values for climacoef. For the model to use "historical-climacoef" values, the observer must select the "historical-climacoef" option within the "climacoef-distribution" chooser in the interface, and enter the historic climacoef values within the "setup-globals" procedure
+  historical-climacoef                                                              ;; in case the observer wants to use historical values for climacoef. For the model to use "historical-climacoef" values, the observer must select the "historical-climacoef" option within the "climacoef-distribution" chooser in the interface, and enter the historic climacoef values within the "setup-globals" procedure, in the "historical-climacoef" list
+  clock-historical-climacoef                                                        ;; variable used to stop the simulation when the historical-climacoef list finished. It is updated each season
   direct-climacoef-control                                                          ;; in case the observer wants to change the climate coefficient in real time (i.e. while the simulation is running), the observer must select the "direct-climacoef-control" option within the "climacoef-distribution" chooser in the interface, and select the desired climacoef value using the "set-direct-climacoef-control" slider in the interface
   estimated-climacoef                                                               ;; the environmental farmer uses the climacoef value present at the beginning of the season to estimate the carrying capacity of the system during that season
 
@@ -101,7 +102,6 @@ globals [
   FS-bull                                                                           ;; cost of supplementing bulls
 
   supplement-cost                                                                   ;; total cost of feed supplementation
-  other-cost                                                                        ;; DEACTIVATED ;; other costs associated with the livestock system
 
   cost                                                                              ;; total costs resulting from the livestock system (supplement cost + other cost)
   income                                                                            ;; total income (ordinary + extraordinary sales)
@@ -297,7 +297,7 @@ cows-own [
 
   initial-weight                                                                    ;; initial weight of the animal at the beginning of the simulation. Set by the observer using the different sliders found in the "INITIAL LIVESTOCK NUMBER AND WEIGHT" section of the interface
   live-weight                                                                       ;; variable that defines the state of the animals in terms of live weight
-  live-weight-gain-max                                                              ;; defines the maximum weight an animal can gain in one day. 0.60 kg/day by default (can be changed by using the "set-live-weight-gain-max" slider in the interface)
+  live-weight-gain-max                                                              ;; defines the maximum weight an animal can gain in one day. 0.60 kg/day by default
   live-weight-gain                                                                  ;; defines the increment of weight gained from grazing only
   live-weight-gain-feed                                                             ;; defines the increment of weight gained from feed supplements
   live-weight-gain-feed-breeding                                                    ;; the commercial farmer gives extra supplements to adult cows when the breeding season is approaching. It defines the increment of weight gained from feed supplements
@@ -349,6 +349,8 @@ to use-new-seed                                                                 
   random-seed my-seed                                                               ;; use the generated seed
 end
 
+;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;
+
 to setup_seed-1070152876                                                            ;; DEACTIVATED ;; alternative setup that allows us to use the same seed for testing purposes
   ca
   resize-world 0 (set-x-size - 1) 0 (set-y-size - 1)
@@ -365,21 +367,7 @@ to seed-1070152876                                                              
   random-seed my-seed
 end
 
-to setup_seed--796143067                                                            ;; DEACTIVATED ;; alternative setup that allows us to use the same seed for testing purposes
-  ca
-  resize-world 0 (set-x-size - 1) 0 (set-y-size - 1)
-  setup-globals
-  setup-grassland
-  setup-livestock
-  seed--796143067
-  reset-ticks
-end
-
-to seed--796143067                                                                  ;; DEACTIVATED
-   let my-seed -796143067
-  output-print word "Seed: " my-seed
-  random-seed my-seed
-end
+;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;;; BORRAR ;;
 
 to setup-globals
   set days-per-tick 1
@@ -404,6 +392,7 @@ to setup-globals
   set maxLWbull 1000
 
   set historical-climacoef [0.48 0.3 0.72 0.12 0.71 0.65 1.1]                       ;; historic climacoef values. One value = 1 season (for example, 7 values = 7 seasons, the simulation will stop after season 7). Replace these values with historical values. For the model to use "historical-climacoef" values, the observer must select the "historical-climacoef" option within the "climacoef-distribution" chooser in the interface.
+  set clock-historical-climacoef -1
 
   set supplement-prices [0.113 0.121 0.123 0.115]
   set born-calf-prices [0.94 1 0.97 0.961]
@@ -433,97 +422,97 @@ to setup-globals
   set other-daily-effort 0
 
   set cost-history []
-  set cost-historyXticks []
+  set cost-historyXticks 0
   set cost-history-season []
-  set cost-historyXticks-season []
+  set cost-historyXticks-season 0
   set cost-history-year []
-  set cost-historyXticks-year []
+  set cost-historyXticks-year 0
 
   set income-history []
-  set income-historyXticks []
+  set income-historyXticks 0
   set income-history-season []
-  set income-historyXticks-season []
+  set income-historyXticks-season 0
   set income-history-year []
-  set income-historyXticks-year []
+  set income-historyXticks-year 0
 
   set balance-history []
-  set balance-historyXticks []
+  set balance-historyXticks 0
   set balance-history-season []
-  set balance-historyXticks-season []
+  set balance-historyXticks-season 0
   set balance-history-year []
-  set balance-historyXticks-year []
+  set balance-historyXticks-year 0
 
   set supplement-effort-history []
   set supplement-effort-history-season []
-  set supplement-effort-historyXticks-season []
+  set supplement-effort-historyXticks-season 0
   set supplement-effort-history-year []
-  set supplement-effort-historyXticks-year []
+  set supplement-effort-historyXticks-year 0
 
   set weaning-effort-history []
   set weaning-effort-history-season []
-  set weaning-effort-historyXticks-season []
+  set weaning-effort-historyXticks-season 0
   set weaning-effort-history-year []
-  set weaning-effort-historyXticks-year []
+  set weaning-effort-historyXticks-year 0
 
   set OS-males-effort-history []
   set OS-males-effort-history-season []
-  set OS-males-effort-historyXticks-season []
+  set OS-males-effort-historyXticks-season 0
   set OS-males-effort-history-year []
-  set OS-males-effort-historyXticks-year []
+  set OS-males-effort-historyXticks-year 0
 
   set OS-old-cow-effort-history []
   set OS-old-cow-effort-history-season []
-  set OS-old-cow-effort-historyXticks-season []
+  set OS-old-cow-effort-historyXticks-season 0
   set OS-old-cow-effort-history-year []
-  set OS-old-cow-effort-historyXticks-year []
+  set OS-old-cow-effort-historyXticks-year 0
 
   set OS-old-bull-effort-history []
   set OS-old-bull-effort-history-season []
-  set OS-old-bull-effort-historyXticks-season []
+  set OS-old-bull-effort-historyXticks-season 0
   set OS-old-bull-effort-history-year []
-  set OS-old-bull-effort-historyXticks-year []
+  set OS-old-bull-effort-historyXticks-year 0
 
   set OS-females-effort-history []
   set OS-females-effort-history-season []
-  set OS-females-effort-historyXticks-season []
+  set OS-females-effort-historyXticks-season 0
   set OS-females-effort-history-year []
-  set OS-females-effort-historyXticks-year []
+  set OS-females-effort-historyXticks-year 0
 
   set ES-males-effort-history []
   set ES-males-effort-history-season []
-  set ES-males-effort-historyXticks-season []
+  set ES-males-effort-historyXticks-season 0
   set ES-males-effort-history-year []
-  set ES-males-effort-historyXticks-year []
+  set ES-males-effort-historyXticks-year 0
 
   set ES-old-cow-effort-history []
   set ES-old-cow-effort-history-season []
-  set ES-old-cow-effort-historyXticks-season []
+  set ES-old-cow-effort-historyXticks-season 0
   set ES-old-cow-effort-history-year []
-  set ES-old-cow-effort-historyXticks-year []
+  set ES-old-cow-effort-historyXticks-year 0
 
   set ES-females-effort-history []
   set ES-females-effort-history-season []
-  set ES-females-effort-historyXticks-season []
+  set ES-females-effort-historyXticks-season 0
   set ES-females-effort-history-year []
-  set ES-females-effort-historyXticks-year []
+  set ES-females-effort-historyXticks-year 0
 
   set breeding-effort-history []
   set breeding-effort-history-season []
-  set breeding-effort-historyXticks-season []
+  set breeding-effort-historyXticks-season 0
   set breeding-effort-history-year []
-  set breeding-effort-historyXticks-year []
+  set breeding-effort-historyXticks-year 0
 
   set rotational-effort-history []
   set rotational-effort-history-season []
-  set rotational-effort-historyXticks-season []
+  set rotational-effort-historyXticks-season 0
   set rotational-effort-history-year []
-  set rotational-effort-historyXticks-year []
+  set rotational-effort-historyXticks-year 0
 
   set other-daily-effort-history []
   set other-daily-effort-history-season []
-  set other-daily-effort-historyXticks-season []
+  set other-daily-effort-historyXticks-season 0
   set other-daily-effort-history-year []
-  set other-daily-effort-historyXticks-year []
+  set other-daily-effort-historyXticks-year 0
 end
 
 to setup-grassland
@@ -1106,10 +1095,12 @@ to go
   if current-season = 2 [if season-days >= summer-length [set current-season 3 set season-days 0]]
   if current-season = 3 [if season-days >= fall-length [set current-season 0 set season-days 0]]
 
-  if (climacoef-distribution = "historical-climacoef") [if current-season = 0 [set climacoef item (simulation-time / winter-length) historical-climacoef]]    ;; if "historical-climacoef" is selected with the "climacoef-distribution" chooser, historical values for climacoef are used instead
-  if (climacoef-distribution = "historical-climacoef") [if current-season = 1 [set climacoef item (simulation-time / spring-length) historical-climacoef]]
-  if (climacoef-distribution = "historical-climacoef") [if current-season = 2 [set climacoef item (simulation-time / summer-length) historical-climacoef]]
-  if (climacoef-distribution = "historical-climacoef") [if current-season = 3 [set climacoef item (simulation-time / fall-length) historical-climacoef]]
+  if season-days = 0 [set clock-historical-climacoef clock-historical-climacoef + 1]                                                ;; every season, the clock-historical-climacoef variable is updated. This variable is used to stop the simulation when the historical-climacoef list is finished
+  if (climacoef-distribution = "historical-climacoef") [if clock-historical-climacoef = length historical-climacoef [stop]]         ;; when the variable clock-historical-climacoef has the same value as the number of elements in the historical-climacoef list, the simulation stops
+  if (climacoef-distribution = "historical-climacoef") [if current-season = 0 [set climacoef item clock-historical-climacoef historical-climacoef]]    ;; if "historical-climacoef" is selected with the "climacoef-distribution" chooser, historical values for climacoef are used instead
+  if (climacoef-distribution = "historical-climacoef") [if current-season = 1 [set climacoef item  clock-historical-climacoef historical-climacoef]]
+  if (climacoef-distribution = "historical-climacoef") [if current-season = 2 [set climacoef item clock-historical-climacoef historical-climacoef]]
+  if (climacoef-distribution = "historical-climacoef") [if current-season = 3 [set climacoef item clock-historical-climacoef historical-climacoef]]
 
   set direct-climacoef-control set-direct-climacoef-control                                                                                                   ;; if "direct-climacoef-control" is selected, the user can change the climate coefficient in real time (i.e. while the simulation is running)
   if (climacoef-distribution = "direct-climacoef-control") [if current-season = 0 [set climacoef direct-climacoef-control]]
@@ -1486,7 +1477,7 @@ to feed-supplementation                                                         
     ask cows with [cow-with-calf?] [ifelse live-weight < cow-with-calf-min-weight-for-feed-sup [set supplemented? true] [set supplemented? false set kg-supplement-DM 0 set USD-supplement-DM 0]]
 
     ask cows with [supplemented?] [                                                                                                                                             ;; for all of the animals that have been selected for supplementation, the model calculates the following variables:
-      set live-weight-gain-max set-live-weight-gain-max                                                                                                                         ;; first, in order for the farmer to know how many kilograms of supplement to buy, we have to assume what is the maximum weight a cow can gain in a day. This assumption is set by the "set-live-weight-gain-max" slider in the interface, which has a default value of 0.6 kg/day
+      set live-weight-gain-max 0.6                                                                                                                                              ;; first, in order for the farmer to know how many kilograms of supplement to buy, we have to assume what is the maximum weight a cow can gain in a day. In this case, we assume a value of 0.6 kg/day
       set live-weight-gain-feed live-weight-gain-max - live-weight-gain                                                                                                         ;; second, we calculate the difference between the theoretical maximum weight the animal can gain in one day and the weight the animal gained in one day by grazing
       set kg-supplement-DM live-weight-gain-feed * feed-sup-conversion-ratio]                                                                                                   ;; third, this difference is then multiplied by the ratio of kg of feed to kg of cow set by the "feed-sup-conversion-ratio" slider to get the kg of feed the farmer needs to buy for the cow to gain the maximum live weight it can gain in a day (0.6 kg/day by default). By default, this "feed-sup-conversion-ratio" slider has a value of 7 kg, which means that in order for a cow to gain 1 kg of live weight, she must eat 7 kg of supplement
 
@@ -1501,7 +1492,7 @@ to feed-supplementation                                                         
         set live-weight live-weight + live-weight-gain-feed]                                                                                                                    ;; and the live weight is updated
 
         [set live-weight-gain-feed live-weight-gain-max - live-weight-gain                                                                                                      ;; alternative B: if the money needed is less than the savings from the livestock system (i.e., if the farmer has enough money), the live weight gained from feed supplementation is the difference between the theoretical maximum weight the animal can gain in one day and the weight the animal gained in one day by grazing
-         set live-weight live-weight + live-weight-gain-feed]                                                                                                                   ;; and the live weight is updated (in this case, the animal gained 0.6 kg of live weight (or the value that have been selected in the "set-live-weight-gain-max" slider in the interface)
+         set live-weight live-weight + live-weight-gain-feed]                                                                                                                   ;; and the live weight is updated (in this case, the animal gained 0.6 kg of live weight
 
       if (heifer? = true) and live-weight > maxLWcow [set live-weight maxLWcow]
       if (adult-cow? = true) and live-weight > maxLWcow [set live-weight maxLWcow]
@@ -1535,12 +1526,12 @@ to feed-supplementation-for-controlled-breeding                                 
 
       if balance-historyXticks > 0 [
         ask cows with [cow? and pregnant? = false] [
-          ifelse live-weight < min-weight-for-breeding
+          ifelse live-weight < 380
           [set supplemented? true]
           [set supplemented? false set kg-supplement-DM-breeding 0 set USD-supplement-DM-breeding 0]]
 
         ask cows with [cow? and pregnant? = false and supplemented?] [
-          set live-weight-gain-max set-live-weight-gain-max
+          set live-weight-gain-max 0.6
           set live-weight-gain-feed-breeding live-weight-gain-max - live-weight-gain
           set kg-supplement-DM-breeding live-weight-gain-feed-breeding * feed-sup-conversion-ratio]
 
@@ -1555,7 +1546,7 @@ to feed-supplementation-for-controlled-breeding                                 
             set live-weight-gain-feed-breeding (kg-supplement-DM-breeding / feed-sup-conversion-ratio)                                                                      ;; and the live weight is updated
             set live-weight live-weight + live-weight-gain-feed-breeding]
           [                                                                                                                                                                 ;; alternative B: if the money needed is below than the savings of the livestock system (i.e., if the farmer has enough money)...
-            set live-weight-gain-feed-breeding live-weight-gain-max - live-weight-gain                                                                                      ;; and the live weight is updated (in this case, the animal gained 0.6 kg of live weight (or the value that have been selected in the "set-live-weight-gain-max" slider in the interface)
+            set live-weight-gain-feed-breeding live-weight-gain-max - live-weight-gain                                                                                      ;; and the live weight is updated (in this case, the animal gained 0.6 kg of live weight
             set live-weight live-weight + live-weight-gain-feed-breeding]
 
           if (adult-cow? = true) and live-weight > maxLWcow [set live-weight maxLWcow]
@@ -2210,10 +2201,8 @@ to farm-balance                                                                 
 
   set extraordinary-sales-income ES-males-weaned-calf + ES-males-steer + ES-old-cow + ES-heifer + ES-cow + ES-females-weaned-calf               ;; the total income derived from all extraordinary sales of the different age classes is calculated
 
-  set other-cost set-other-monthly-costs / (368 / 12)                                              ;; other costs, derived from other activities of the livestock system, are calculated (by default, other costs are set to 0)
-
   set income ordinary-sales-income + extraordinary-sales-income                                    ;; total income is calculated (ordinary + extraordinary earnings)
-  set cost supplement-cost + other-cost                                                            ;; total cost is calculated (feed supplement cost + other costs)
+  set cost supplement-cost                                                                         ;; total cost is calculated (feed supplement cost)
   set balance income - cost                                                                        ;; and finally, balance is calculated
 
   set OS-males-weaned-calf 0 set OS-males-steer 0 set OS-old-cow 0 set OS-heifer 0 set OS-cow 0 set OS-bull 0 set OS-old-bull 0 set OS-females-weaned-calf 0   ;; once the balance has been calculated, the ordinary sales variables, which store the earnings derived from the ordinary sales of each age class, are reset to 0.
@@ -2319,11 +2308,11 @@ to-report crop-efficiency                                                       
   report sum [DDMC] of cows / (DM-cm-ha * sum [grass-height] of patches) * 100
  end
 
-to-report accumulated-cost                                                                                          ;; outputs the accumulated balance of the system since the start of the simulation (USD)
+to-report accumulated-cost                                                                                          ;; outputs the accumulated cost of the system since the start of the simulation (USD)
   report cost-historyXticks
 end
 
-to-report accumulated-income                                                                                        ;; outputs the accumulated balance of the system since the start of the simulation (USD)
+to-report accumulated-income                                                                                        ;; outputs the accumulated income of the system since the start of the simulation (USD)
   report income-historyXticks
 end
 
@@ -2558,10 +2547,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot grass-height-report"
 
 PLOT
-830
-691
-1288
-952
+829
+754
+1287
+1015
 Live-weight (LW)
 Days
 kg
@@ -2599,10 +2588,10 @@ stocking-rate
 11
 
 SLIDER
-11
-1304
-148
-1337
+12
+1388
+149
+1421
 perception
 perception
 0
@@ -2614,10 +2603,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-1134
-787
-1378
-832
+1133
+850
+1377
+895
 Average LW (all age classes) (kg/animal)
 mean [live-weight] of cows
 3
@@ -2743,10 +2732,10 @@ Area (ha)
 11
 
 PLOT
-832
-953
-1290
-1179
+831
+1016
+1289
+1242
 Daily individual-live-weight-gain (ILWG)
 Days
 kg
@@ -2815,89 +2804,6 @@ initial-weight-cows
 kg
 HORIZONTAL
 
-PLOT
-3157
-1186
-3499
-1380
-Body condition ccore (BCS)
-Days
-points
-0.0
-92.0
-0.0
-5.0
-true
-true
-"" ""
-PENS
-"Cow" 1.0 0 -6459832 true "" "plot (mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40"
-"Cow-with-calf" 1.0 0 -5825686 true "" "plot (mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40"
-
-MONITOR
-3157
-1139
-3287
-1184
-BCS of cows (points)
-;(mean [live-weight] of cows with [cow?] - mean [min-weight] of cows with [cow?]) / 40\n;(mean [live-weight] of cows with [cow?] - (((mean [live-weight] of cows with [cow?]) * set-MW-1-AU) / set-1-AU)) / 40\n(mean [live-weight] of cows with [cow?] - set-MW-1-AU) / 40
-2
-1
-11
-
-PLOT
-3511
-1186
-3921
-1379
-Pregnancy rate (PR)
-Days
-%
-0.0
-92.0
-0.0
-1.0E-4
-true
-true
-"" ""
-PENS
-"Heifer" 1.0 0 -2064490 true "" "plot mean [pregnancy-rate] of cows with [heifer?] * 100"
-"Cow" 1.0 0 -6459832 true "" "plot mean [pregnancy-rate] of cows with [cow?] * 100"
-"Cow-with-calf" 1.0 0 -5825686 true "" "plot mean [pregnancy-rate] of cows with [cow-with-calf?] * 100"
-
-MONITOR
-3512
-1138
-3644
-1183
-PR of cows (%)
-mean [pregnancy-rate] of cows with [cow?] * 100
-2
-1
-11
-
-MONITOR
-3643
-1138
-3786
-1183
-PR of cows-with-calf (%)
-mean [pregnancy-rate] of cows with [cow-with-calf?] * 100
-2
-1
-11
-
-MONITOR
-3786
-1138
-3923
-1183
-PR of heifers (%)
-mean [pregnancy-rate] of cows with [heifer?] * 100
-2
-1
-11
-
 MONITOR
 1751
 778
@@ -2910,21 +2816,10 @@ dmgr
 11
 
 MONITOR
-3288
-1139
-3443
-1184
-BCS of cows-with-calf (points)
-;(mean [live-weight] of cows with [cow-with-calf?] - mean [min-weight] of cows with [cow-with-calf?]) / 40\n;(mean [live-weight] of cows with [cow-with-calf?] - (((mean [live-weight] of cows with [cow-with-calf?]) * set-MW-1-AU) / set-1-AU)) / 40\n\n(mean [live-weight] of cows with [cow-with-calf?] - set-MW-1-AU) / 40
-2
-1
-11
-
-MONITOR
-1134
-744
-1378
-789
+1133
+807
+1377
+852
 Average LW (only adult cows) (kg/animal)
 mean [live-weight] of cows with [adult-cow?]
 3
@@ -2932,10 +2827,10 @@ mean [live-weight] of cows with [adult-cow?]
 11
 
 MONITOR
-1125
-1005
-1407
-1050
+1124
+1068
+1406
+1113
 Average ILWG (only adult cows) (kg/animal/day)
 mean [live-weight-gain] of cows with [adult-cow?] + mean [live-weight-gain-feed] of cows with [adult-cow?] + mean [live-weight-gain-feed-breeding] of cows with [adult-cow?]
 3
@@ -3013,10 +2908,10 @@ GRAZING AREA
 1
 
 SLIDER
-5127
-209
-5225
-242
+10
+1308
+108
+1341
 set-1-AU
 set-1-AU
 1
@@ -3028,10 +2923,10 @@ kg
 HORIZONTAL
 
 SLIDER
-5228
-209
-5349
-242
+10
+1343
+148
+1376
 set-MW-1-AU
 set-MW-1-AU
 1
@@ -3043,10 +2938,10 @@ kg
 HORIZONTAL
 
 PLOT
-826
-1184
-1293
-1357
+830
+1249
+1294
+1423
 Stocking rate
 Days
 AU/ha
@@ -3059,42 +2954,7 @@ true
 "" ""
 PENS
 "SR total area" 1.0 0 -16777216 true "" "plot stocking-rate"
-"SR paddock area (only for RG)" 1.0 0 -7500403 true "" "plot paddock-SR"
-
-OUTPUT
-926
-10
-1126
-55
-12
-
-BUTTON
-1144
-10
-1314
-44
-NIL
-setup_seed-1070152876
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-MONITOR
-5103
-855
-5405
-900
-Average annual live weight gain per hectare (ALWG, kg/ha)
-;(sum [live-weight] of cows with [steer?] - sum [initial-weight] of cows with [steer?]) / count patches; para calcular el WGH de los steers\n;(sum [live-weight] of cows - sum [initial-weight] of cows) / count patches\nALWG
-3
-1
-11
+"SR paddock area (only for RG)" 1.0 0 -7500403 true "" "ifelse (spatial-management = \"rotational grazing\") [plot paddock-SR][plot-pen-up]"
 
 MONITOR
 832
@@ -3153,46 +3013,6 @@ soil-quality-distribution
 soil-quality-distribution
 "homogeneus" "uniform" "normal" "exponential_low" "exponential_high"
 0
-
-PLOT
-5087
-500
-5422
-714
-Grass height distribution
-cm
-nº patches
-0.0
-35.0
-0.0
-10.0
-true
-false
-"" ""
-PENS
-"default" 1.0 1 -16777216 true "" "histogram [grass-height] of patches"
-
-MONITOR
-5088
-716
-5235
-761
-min grass-height of patches
-min [grass-height] of patches
-17
-1
-11
-
-MONITOR
-5254
-717
-5425
-762
-max grass-height of patches
-max [grass-height] of patches
-17
-1
-11
 
 CHOOSER
 9
@@ -3456,7 +3276,7 @@ CHOOSER
 climacoef-distribution
 climacoef-distribution
 "homogeneus" "uniform" "normal" "exponential_low" "exponential_high" "historical-climacoef" "direct-climacoef-control"
-6
+0
 
 BUTTON
 168
@@ -3578,7 +3398,7 @@ CHOOSER
 farmer-profile
 farmer-profile
 "none" "subsistence" "commercial" "environmental"
-3
+2
 
 TEXTBOX
 238
@@ -3606,25 +3426,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-4542
-1499
-4731
-1532
-early-weaning-threshold
-early-weaning-threshold
-180
-800
-230.0
-1
-1
-kg
-HORIZONTAL
-
-SLIDER
-4898
-213
-5081
-246
+10
+1429
+193
+1462
 controlled-breeding-season
 controlled-breeding-season
 0
@@ -3752,10 +3557,10 @@ paddock-SR
 11
 
 SLIDER
-5128
-162
-5328
-195
+229
+968
+466
+1001
 RG-days-in-paddock
 RG-days-in-paddock
 0
@@ -3801,21 +3606,6 @@ feed-sup-conversion-ratio
 1
 1
 NIL
-HORIZONTAL
-
-SLIDER
-4749
-1389
-5004
-1422
-cow-min-weight-for-feed-sup
-cow-min-weight-for-feed-sup
-0
-350
-240.0
-1
-1
-kg
 HORIZONTAL
 
 SLIDER
@@ -3880,7 +3670,6 @@ true
 "" ""
 PENS
 "Supplements" 1.0 0 -2674135 true "" "plot supplement-cost   "
-"Other" 1.0 0 -13791810 true "" "plot other-cost"
 
 MONITOR
 403
@@ -3889,7 +3678,7 @@ MONITOR
 57
 Climacoef
 climacoef
-17
+3
 1
 11
 
@@ -3905,10 +3694,10 @@ count cows
 11
 
 TEXTBOX
-930
-658
-1241
-702
+929
+721
+1240
+765
 LIVESTOCK RELATED OUTPUTS
 18
 34.0
@@ -3945,32 +3734,6 @@ balance
 1
 11
 
-SLIDER
-5125
-297
-5328
-330
-set-other-monthly-costs
-set-other-monthly-costs
-0
-10000
-0.0
-50
-1
-USD
-HORIZONTAL
-
-MONITOR
-5333
-289
-5475
-334
-Daily other costs (USD)
-other-cost
-17
-1
-11
-
 MONITOR
 1823
 220
@@ -3979,27 +3742,6 @@ MONITOR
 Accumulated cost (USD)
 accumulated-cost
 3
-1
-11
-
-TEXTBOX
-5082
-333
-5440
-482
-Slider to simulate other costs related to the livestock system (maintenance, veterinary, vehicles, gas, etc.) and/or the farmer's personal (non-work related) costs (such as family costs, etc.).\n\nRight now, the only cost associated with the livestock system is feed supplementing.
-13
-0.0
-1
-
-MONITOR
-4750
-1210
-4863
-1255
-NIL
-supplement-effort
-17
 1
 11
 
@@ -4017,61 +3759,6 @@ sales-effort-time
 1
 min/animal
 HORIZONTAL
-
-MONITOR
-4750
-1254
-4924
-1299
-SUPP-EFFORT-SEASON
-accumulated-supplement-effort-season
-17
-1
-11
-
-MONITOR
-4750
-1299
-4924
-1344
-SUPP-EFFORT-YEAR
-accumulated-supplement-effort-year
-17
-1
-11
-
-MONITOR
-4538
-1213
-4634
-1258
-NIL
-weaning-effort
-17
-1
-11
-
-MONITOR
-4538
-1256
-4707
-1301
-WEAN-EFFORT-SEASON
-accumulated-weaning-effort-season
-17
-1
-11
-
-MONITOR
-4538
-1301
-4707
-1346
-WEAN-EFFORT-YEAR
-accumulated-weaning-effort-year
-17
-1
-11
 
 MONITOR
 850
@@ -4103,446 +3790,6 @@ MONITOR
 Total annual effort ( h)
 total-effort-history-year / 60
 3
-1
-11
-
-MONITOR
-4599
-988
-4701
-1033
-NIL
-OS-males-effort
-17
-1
-11
-
-MONITOR
-4574
-944
-4676
-989
-n steers
-count cows with [steer?]
-17
-1
-11
-
-MONITOR
-4599
-1032
-4756
-1077
-OS-MALES-EFFORT-SEASON
-acummulated-OS-males-effort-season
-17
-1
-11
-
-MONITOR
-4599
-1075
-4756
-1120
-OS-MALES-EFFORT-YEAR
-OS-males-effort-historyXticks-year
-17
-1
-11
-
-MONITOR
-4431
-988
-4544
-1033
-NIL
-OS-old-cow-effort
-17
-1
-11
-
-MONITOR
-4431
-1031
-4599
-1076
-OS-OLD-COW-EFFORT-SEASON
-acummulated-OS-old-cow-effort-season
-17
-1
-11
-
-MONITOR
-4431
-1075
-4599
-1120
-OS-OLD-COW-EFFORT-YEAR
-acummulated-OS-old-cow-effort-year
-17
-1
-11
-
-MONITOR
-4431
-944
-4502
-989
-n old cow
-count cows with [cow? and age / 368 > age-sell-old-cow/bull]
-17
-1
-11
-
-MONITOR
-4401
-898
-4458
-943
-n cow
-count cows with [cow?]
-17
-1
-11
-
-MONITOR
-4285
-988
-4404
-1033
-NIL
-OS-females-effort
-17
-1
-11
-
-MONITOR
-4285
-1031
-4432
-1076
-OS-HEIFER-COW-SEASON
-acummulated-OS-females-effort-season
-17
-1
-11
-
-MONITOR
-4285
-1075
-4432
-1120
-OS-HEIFER-COW-YEAR
-acummulated-OS-females-effort-year
-17
-1
-11
-
-MONITOR
-4285
-943
-4362
-988
-n heifer cow
-count cows with [cow? or heifer?]
-17
-1
-11
-
-MONITOR
-4345
-898
-4402
-943
-n heifer
-count cows with [heifer?]
-17
-1
-11
-
-MONITOR
-4132
-988
-4228
-1033
-NIL
-OS-total-effort
-17
-1
-11
-
-MONITOR
-4132
-1031
-4287
-1076
-OS-TOTAL-EFFORT-SEASON
-OS-total-effort-history-season
-17
-1
-11
-
-MONITOR
-4132
-1075
-4287
-1120
-OS-TOTAL-EFFORT-YEAR
-OS-total-effort-history-year
-17
-1
-11
-
-MONITOR
-4675
-760
-4775
-805
-NIL
-ES-males-effort
-17
-1
-11
-
-MONITOR
-4675
-803
-4827
-848
-ES-MALES-EFFORT-SEASON
-acummulated-ES-males-effort-season
-17
-1
-11
-
-MONITOR
-4675
-847
-4827
-892
-ES-MALES-EFFORT-YEAR
-acummulated-ES-males-effort-year
-17
-1
-11
-
-MONITOR
-4675
-716
-4733
-761
-n steers
-count cows with [steer?]
-17
-1
-11
-
-MONITOR
-4505
-759
-4618
-804
-NIL
-ES-old-cow-effort
-17
-1
-11
-
-MONITOR
-4505
-803
-4675
-848
-ES-OLD-COW-EFFORT-SEASON
-acummulated-ES-old-cow-effort-season
-17
-1
-11
-
-MONITOR
-4505
-847
-4675
-892
-ES-OLD-COW-EFFORT-YEAR
-acummulated-ES-old-cow-effort-year
-17
-1
-11
-
-MONITOR
-4505
-715
-4570
-760
-n old cow
-count cows with [cow? and age / 368 > age-sell-old-cow/bull]
-17
-1
-11
-
-MONITOR
-4474
-671
-4527
-716
-n cow
-count cows with [cow?]
-17
-1
-11
-
-MONITOR
-4362
-760
-4482
-805
-NIL
-ES-females-effort
-17
-1
-11
-
-MONITOR
-4362
-803
-4506
-848
-ES-HEIFER-COW-SEASON
-acummulated-ES-females-effort-season
-17
-1
-11
-
-MONITOR
-4362
-847
-4506
-892
-ES-HEIFER-COW-YEAR
-acummulated-ES-females-effort-year
-17
-1
-11
-
-MONITOR
-4362
-716
-4443
-761
-n heifer cow
-count cows with [cow? or heifer?]
-17
-1
-11
-
-MONITOR
-4421
-671
-4475
-716
-n heifer
-count cows with [heifer?]
-17
-1
-11
-
-MONITOR
-4205
-759
-4299
-804
-NIL
-ES-total-effort
-17
-1
-11
-
-MONITOR
-4205
-803
-4363
-848
-ES-TOTAL-EFFORT-SEASON
-ES-total-effort-history-season
-17
-1
-11
-
-MONITOR
-4205
-847
-4363
-892
-ES-TOTAL-EFFORT-YEAR
-ES-total-effort-history-year
-17
-1
-11
-
-MONITOR
-4332
-1221
-4430
-1266
-NIL
-breeding-effort
-17
-1
-11
-
-MONITOR
-4333
-1266
-4493
-1311
-BREEDING-EFFORT-SEASON
-acummulated-breeding-effort-season
-17
-1
-11
-
-MONITOR
-4333
-1311
-4494
-1356
-BREEDING-EFFORT-YEAR
-acummulated-breeding-effort-year
-17
-1
-11
-
-MONITOR
-4130
-1220
-4233
-1265
-NIL
-rotational-effort
-17
-1
-11
-
-MONITOR
-4130
-1264
-4297
-1309
-ROTATIONAL-EFFORT-SEASON
-acummulated-rotational-effort-season
-17
-1
-11
-
-MONITOR
-4130
-1308
-4297
-1353
-ROTATIONAL-EFFORT-YEAR
-acummulated-rotational-effort-year
-17
 1
 11
 
@@ -4646,21 +3893,6 @@ min/animal
 HORIZONTAL
 
 SLIDER
-4899
-254
-5083
-287
-min-weight-for-breeding
-min-weight-for-breeding
-0
-460
-380.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
 11
 1020
 201
@@ -4716,105 +3948,6 @@ initial-num-bulls
 1
 11
 
-MONITOR
-4537
-1354
-4727
-1399
-NIL
-count cows with [weaning-calf?]
-17
-1
-11
-
-MONITOR
-4538
-1404
-4708
-1449
-NIL
-count cows with [born-calf?]
-17
-1
-11
-
-MONITOR
-4739
-1501
-4986
-1546
-NIL
-mean [live-weight] of cows with [cow-with-calf?]
-3
-1
-11
-
-MONITOR
-5011
-1389
-5239
-1434
-NIL
-mean [live-weight] of cows with [cow?]
-17
-1
-11
-
-MONITOR
-4755
-942
-4827
-987
-n old bull
-count cows with [bull? and old?]
-17
-1
-11
-
-MONITOR
-4675
-944
-4733
-989
-n bull
-count cows with [bull?]
-17
-1
-11
-
-MONITOR
-4755
-986
-4865
-1031
-NIL
-OS-old-bull-effort
-17
-1
-11
-
-MONITOR
-4755
-1031
-4923
-1076
-OS-OLD-BULL-EFFORT-SEASON
-acummulated-OS-old-bull-effort-season
-17
-1
-11
-
-MONITOR
-4755
-1074
-4923
-1119
-OS-OLD-BULL-EFFORT-YEAR
-acummulated-OS-old-bull-effort-year
-17
-1
-11
-
 SLIDER
 233
 878
@@ -4846,10 +3979,10 @@ kg
 HORIZONTAL
 
 SLIDER
-4783
-297
-4979
-330
+1058
+603
+1280
+636
 other-daily-effort-time
 other-daily-effort-time
 0
@@ -4861,39 +3994,6 @@ min
 HORIZONTAL
 
 MONITOR
-4994
-1211
-5104
-1256
-NIL
-other-daily-effort
-17
-1
-11
-
-MONITOR
-4994
-1255
-5146
-1300
-OTHER-EFFORT-SEASON
-acummulated-other-daily-effort-season
-17
-1
-11
-
-MONITOR
-4993
-1299
-5129
-1344
-OTHER-EFFORT-YEAR
-acummulated-other-daily-effort-year
-17
-1
-11
-
-MONITOR
 660
 108
 816
@@ -4901,28 +4001,6 @@ MONITOR
 Animal Units Equivalent (AU)
 sum [animal-units] of cows
 3
-1
-11
-
-MONITOR
-4195
-452
-4351
-497
-NIL
-DDMC_SEASON
-17
-1
-11
-
-MONITOR
-4195
-496
-4350
-541
-NIL
-DDMC_YEAR
-17
 1
 11
 
@@ -4986,28 +4064,6 @@ K-fall
 cm
 HORIZONTAL
 
-MONITOR
-4195
-407
-4350
-452
-DDMC_MONTH
-DDMC_SEASON / 3
-17
-1
-11
-
-MONITOR
-4195
-363
-4421
-408
-NIL
-sum [DDMC] of cows
-3
-1
-11
-
 PLOT
 1412
 475
@@ -5025,7 +4081,7 @@ true
 "" ""
 PENS
 "ACTUAL Carrying capacity" 1.0 0 -2674135 true "" "plot carrying-capacity"
-"EST. Carrying capacity (for Env. farmer)" 1.0 0 -5825686 true "" "plot estimated-carrying-capacity"
+"EST. Carrying capacity (only for Env. farmer)" 1.0 0 -5825686 true "" "ifelse (farmer-profile = \"environmental\") [plot estimated-carrying-capacity ][plot-pen-up]"
 "Livestock population" 1.0 0 -13791810 true "" "plot sum [animal-units] of cows"
 
 SLIDER
@@ -5057,8 +4113,8 @@ estimated-carrying-capacity
 TEXTBOX
 518
 986
-742
-1012
+743
+1013
 Parameter used by the environmental farmer to estimate the carrying capacity
 11
 0.0
@@ -5091,67 +4147,24 @@ SLIDER
 HORIZONTAL
 
 MONITOR
-1125
-1049
-1407
-1094
+1124
+1112
+1406
+1157
 Average ILWG (all age classes) (kg/animal/day)
 mean [live-weight-gain] of cows + mean [live-weight-gain-feed] of cows + mean [live-weight-gain-feed-breeding] of cows
 17
 1
 11
 
-SLIDER
-5127
-247
-5350
-280
-set-live-weight-gain-max
-set-live-weight-gain-max
-0
-1.5
-0.6
-0.01
-1
-kg/day
-HORIZONTAL
-
-MONITOR
-4914
-163
-5078
-208
-NIL
-days-until-breeding-season
-17
-1
-11
-
 TEXTBOX
-4767
-340
-5025
-407
+1059
+643
+1317
+710
 Slider to simulate the time dedicated to other activities related to the livestock system.
 13
 0.0
-1
-
-BUTTON
-1144
-43
-1314
-76
-NIL
-setup_seed--796143067
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
 1
 
 MONITOR
@@ -5241,6 +4254,30 @@ cost-historyXticks-year
 3
 1
 11
+
+OUTPUT
+926
+12
+1130
+59
+12
+
+BUTTON
+1166
+19
+1336
+52
+NIL
+setup_seed-1070152876
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
